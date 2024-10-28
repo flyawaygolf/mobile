@@ -7,6 +7,7 @@ import SessionManager from './Managers/SessionManager';
 import GuildManager from './Managers/GuildManager';
 import BlockManager from './Managers/BlockManager';
 import MessageManager from './Managers/MessageManager';
+import PushNoficationManager from './Managers/PushNoficationManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -19,6 +20,7 @@ class Client extends RequestEmitter {
     public guilds: GuildManager;
     public block: BlockManager;
     public messages: MessageManager;
+    public pushNotification: PushNoficationManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -28,6 +30,7 @@ class Client extends RequestEmitter {
         this.guilds = new GuildManager(params);
         this.block = new BlockManager(params);
         this.messages = new MessageManager(params);
+        this.pushNotification = new PushNoficationManager(params);
     }
 
     public async status() {

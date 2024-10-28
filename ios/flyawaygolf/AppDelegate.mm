@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
 
@@ -8,12 +9,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AIzaSyDgPI0BAgrp31pg12r-YyE2f5fIaXxis54"]];
+  [FIRApp configure];
   self.moduleName = @"flyawaygolf";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
-
-  [GMSServices provideAPIKey:@"AIzaSyDgPI0BAgrp31pg12r-YyE2f5fIaXxis54"]; // add this line using the api key obtained from Google Console
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }

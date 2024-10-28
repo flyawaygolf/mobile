@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import MapView, { MapType, Marker, PROVIDER_GOOGLE  } from 'react-native-maps';
-import { Avatar, IconButton, Tooltip } from 'react-native-paper';
+import MapView, { MapType, Marker } from 'react-native-maps';
+import { IconButton, Tooltip } from 'react-native-paper';
 import { full_width } from '../Style/style';
 import { useClient, useTheme } from '../Components/Container';
 import { getCurrentLocation, handleToast } from '../Services';
@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { BottomModal, LoaderBox } from '../Other';
 import CustomCallout from '../Components/Map/CustomCallout';
+import { Avatar } from '../Components/Member';
 
 type LocationType = {
   latitude: number,
@@ -22,8 +23,7 @@ const MapScreen = () => {
   const { client } = useClient();
   const [location, setLocation] = useState<LocationType | undefined>(undefined);
   const [searchLocation, setSearchLocation] = useState<LocationType & { width?: number, heigth?: number } | undefined>(undefined);
-  const [users, setUsers] = useState<userInfo[] | undefined>(undefined)
-  const [max_distance, setMaxDistance] = useState<number>(1000)
+  const [users, setUsers] = useState<userInfo[] | undefined>(undefined);
   const [mapType, setMapType] = useState<MapType>("satellite");
   const [modal, setModal] = useState({
     visible: false,
@@ -173,15 +173,11 @@ const MapScreen = () => {
                       longitude: u.golf_info.location[0],
                       latitude: u.golf_info.location[1]
                     }}
-
                   // calloutOffset={{ x: -8, y: 28 }}
                   // calloutAnchor={{ x: 0.5, y: -0.2 }}
                   // tracksViewChanges={false}
                   >
-                    <Avatar.Image size={33} source={{
-                      cache: "force-cache",
-                      uri: client.user.avatar(u.user_id, u.avatar)
-                    }} />
+                    <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={25} />
                   </Marker>
                 )
               })

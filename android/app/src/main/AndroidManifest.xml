@@ -32,6 +32,6 @@
       <meta-data
           android:hardwareAccelerated="true"
           android:name="com.google.android.geo.API_KEY"
-          android:value="AIzaSyDgPI0BAgrp31pg12r-YyE2f5fIaXxis54" />
+          android:value="AIzaSyAM9udSUwT3dG1xdsMdwGjZ9khdZfoiXnA" />
     </application>
 </manifest>

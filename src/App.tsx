@@ -5,7 +5,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast, { BaseToastProps } from 'react-native-toast-message';
 import { Provider } from 'react-redux';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ClientContainer, ThemeContainer } from './Components/Container';
 import { BaseToast } from './Components/Elements/Toasts';
 import Routes from './Routes';

@@ -15,7 +15,7 @@ class RequestEmitter {
     this.instance = axios.create({
       baseURL: params?.apiurl ?? apibaseurl,
       headers: {
-        flyawayftoken: params?.token ?? ''
+        flyawaytoken: params?.token ?? ''
       },
       validateStatus: s => s < 501
     });

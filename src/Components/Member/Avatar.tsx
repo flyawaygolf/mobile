@@ -10,9 +10,10 @@ type PropsType = {
     marginLeft?: number;
     radius?: number;
     style?: StyleProp<ImageStyle>;
+    rounded?: boolean;
 }
 
-export default function Avatar({ url, size = 33, marginRight = 5, marginLeft = 0, style }: PropsType) {
+export default function Avatar({ url, size = 33, marginRight = 5, marginLeft = 0, style, rounded = true }: PropsType) {
 
     const { colors } = useTheme();
 
@@ -20,7 +21,7 @@ export default function Avatar({ url, size = 33, marginRight = 5, marginLeft = 0
         <Image src={url} style={[{
             width: size,
             height: size,
-            borderRadius: size / 2,
+            borderRadius: rounded ? size / 2 : undefined,
             marginRight: marginRight,
             marginLeft: marginLeft,
             resizeMode: "cover",
