@@ -76,7 +76,7 @@ const SettingsScreen = () => {
         <SettingsModifyProfile setModalVisible={setModalVisible} />
       </BottomModal>
       <SafeBottomContainer padding={0}>
-        <Card mode='contained' style={{ position: "absolute", zIndex: 99, right: 0 }}>
+        <Card mode='contained' style={{ position: "absolute", zIndex: 99, right: 0, margin: 5 }}>
           <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             <IconButton style={{ margin: 0 }} icon={"theme-light-dark"} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
             <IconButton style={{ margin: 0 }} icon={"cog"} onPress={() => setModalVisible(true)} />

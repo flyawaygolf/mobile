@@ -24,8 +24,7 @@ const BottomModal = (props: SectionProps) => {
       swipeDirection="down"
       style={{
         justifyContent: 'flex-end',
-        margin: 0,
-        marginBottom: 70,
+        margin: 0
       }}
       onBackButtonPress={dismiss}
       onBackdropPress={dismiss}

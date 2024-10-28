@@ -30,7 +30,8 @@
         </intent-filter>
       </activity>
       <meta-data
+          android:hardwareAccelerated="true"
           android:name="com.google.android.geo.API_KEY"
-          android:value="${MAPS_API_KEY}" />
+          android:value="AIzaSyDgPI0BAgrp31pg12r-YyE2f5fIaXxis54" />
     </application>
 </manifest>

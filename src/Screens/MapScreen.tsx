@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import MapView, { MapType, Marker } from 'react-native-maps';
+import MapView, { MapType, Marker, PROVIDER_GOOGLE  } from 'react-native-maps';
 import { Avatar, IconButton, Tooltip } from 'react-native-paper';
 import { full_width } from '../Style/style';
 import { useClient, useTheme } from '../Components/Container';
@@ -66,7 +66,7 @@ const MapScreen = () => {
 
   const updateMapUsers = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
     const request = await client.user.displayUsersMap(long ?? 48.864716, lat ?? 2.349014, {
-      max_distance: searchLocation?.width ?? 15000
+      max_distance: searchLocation?.width ?? 50000
     });
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     return setUsers(request.data);
