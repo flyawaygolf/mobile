@@ -177,7 +177,7 @@ const MapScreen = () => {
                   // calloutAnchor={{ x: 0.5, y: -0.2 }}
                   // tracksViewChanges={false}
                   >
-                    <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={25} />
+                    <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
                   </Marker>
                 )
               })

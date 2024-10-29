@@ -71,6 +71,7 @@ const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootPa
             </View>
             <View style={style.section}>
               <PaperTextInput
+                mode='outlined'
                 label={`${t("login.email")}`}
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -81,6 +82,7 @@ const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootPa
             </View>
             <View style={style.section}>
               <PaperTextInput
+                mode='outlined'
                 label={`${t("login.username")}`}
                 autoCapitalize="none"
                 returnKeyType="next"

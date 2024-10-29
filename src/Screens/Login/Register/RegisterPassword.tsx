@@ -63,6 +63,7 @@ const RegisterPassword = ({ navigation, route }: ScreenNavigationProps<LoginRoot
                         </View>
                         <View style={style.section}>
                             <PaperTextInput
+                                mode='outlined'
                                 label={`${t("login.password")}`}
                                 autoCapitalize="none"
                                 secureTextEntry={showPass}
@@ -74,6 +75,7 @@ const RegisterPassword = ({ navigation, route }: ScreenNavigationProps<LoginRoot
                         </View>
                         <View style={style.section}>
                             <PaperTextInput
+                                mode='outlined'
                                 label={`${t("login.repeat_password")}`}
                                 autoCapitalize="none"
                                 secureTextEntry={showPass}

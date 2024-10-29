@@ -22,7 +22,6 @@ const SettingsScreen = () => {
   const { colors, setTheme, theme } = useTheme();
   const navigation = useNavigation();
   const realm = useRealm();
-  const [password, setPassword] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const changeStorage = (type: "theme" | "language", txt: Ithemes | string) => {

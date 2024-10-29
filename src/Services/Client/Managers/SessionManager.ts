@@ -1,6 +1,6 @@
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { emptyResponse, successResponse } from './Interfaces/Global';
-import { createSessionFetchResponse, sessionFetchResponse } from './Interfaces/Session';
+import { createSessionFetchResponse, sendCodeResponseInterface, sessionFetchResponse } from './Interfaces/Session';
 
 class SessionManager extends RequestEmitter {
   constructor(params: requestParams) {
@@ -42,13 +42,22 @@ class SessionManager extends RequestEmitter {
 
   public async create(options: {
     email: string;
-    password: string;
-    device_name: string;
-    captcha_code?: string;
+    code: string;
 }) {  
     const request = await this.postRequest(`/sessions`, options);
 
     const response = request as createSessionFetchResponse;
+
+    return response;
+  }
+
+  public async sendCode(options: {
+    email: string;
+    device_name: string;
+  }){
+    const request = await this.postRequest(`/sessions/code`, options);
+
+    const response = request as sendCodeResponseInterface;
 
     return response;
   }

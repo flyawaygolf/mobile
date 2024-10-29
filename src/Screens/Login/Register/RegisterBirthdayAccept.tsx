@@ -5,14 +5,13 @@ import { Text, Checkbox } from 'react-native-paper';
 import dayjs from 'dayjs';
 
 import styles from '../../../Style/style';
-
 import { useClient, useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
 import { Logo } from '../../../Components/Elements/Assets';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DateInput } from '../../../Components/Elements/Input';
 import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
-import { CaptchaBlock, LoaderBox } from '../../../Other';
+import { LoaderBox } from '../../../Other';
 
 const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterBirthdayAccept">) => {
 
@@ -28,7 +27,6 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
         response: ""
     });
     const [loading, setLoading] = useState(false);
-    const [captcha, setCaptcha] = useState(false);
     const [users, setUsers] = useState({
         ...params,
         birthday: dayjs().subtract(13, "years").subtract(1, 'day').toDate(),
@@ -45,21 +43,13 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
 
         if (dayjs(birthday).isBefore(min_birthday) || dayjs(birthday).isAfter(max_birthday)) return setError({ error: true, response: t(`errors.4`) });
 
-        setCaptcha(true)
-    };
-
-    const onMessage = async (data: string) => {
-        if (data === "cancel") return setCaptcha(false);        
-
-        setCaptcha(false)
-        setLoading(true)       
+        setLoading(true)
 
         const response = await client.user.register({
             email: users.email.toLowerCase().trim(),
             username: users.username,
             password: users.password,
-            birthday: users.birthday,
-            captcha_code: data
+            birthday: users.birthday
         });
 
         if (response.error) {
@@ -73,13 +63,11 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
                 email: users.email
             });
         }
-    }
-
+    };
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
             <LoaderBox loading={loading} />
-            <CaptchaBlock onMessage={onMessage} show={captcha} />
             <ScrollView
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={style.area}>

@@ -1,5 +1,4 @@
-import { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
-import type { error } from "./Global"
+import type { error, successReponseInterface } from "./Global"
 import { myInformationInterface } from "./Me";
 
 export interface fetchSessionsResponseSchema {
@@ -20,4 +19,9 @@ export interface sessionFetchResponse {
 export interface createSessionFetchResponse {
   error?: error,
   data?: myInformationInterface
+}
+
+export interface sendCodeResponseInterface {
+  error?: error,
+  data?: successReponseInterface
 }

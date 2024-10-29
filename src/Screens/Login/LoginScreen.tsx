@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, View, ScrollView, SafeAreaView, StyleSheet, Easing } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Text, TextInput } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { Logo } from '../../Components/Elements/Assets';
 import { convertFirstCharacterToUppercase, deviceInfo, LoginRootParamList, ScreenNavigationProps } from '../../Services';
 import { useClient, useTheme } from '../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../Components/Elements/Buttons';
-import { CaptchaBlock, LoaderBox } from '../../Other';
+import { LoaderBox } from '../../Other';
 import Client from '../../Services/Client';
 import { setStorage } from '../../Services/storage';
 import { addUser } from '../../Services/Realm/userDatabase';
@@ -22,55 +22,63 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
   const allvalues = useClient();
   const realm = useRealm();
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
   const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(true);
+  const [showCode, setShowCode] = useState(false);
+  const [loadingSendCode, setLoadingSendCode] = useState(false);
   const [error, setError] = useState({
     error: false,
     response: ""
   });
-  const [captcha, setCaptcha] = useState(false);
   const [users, setUsers] = useState({
     email: '',
-    password: ''
+    code: ''
   });
 
-  const handleSubmit = async () => {
-    if (!users.email || !users.password) return setError({ error: true, response: t(`errors.verify_fields`) })
-    setCaptcha(true)
-  };
+  const sendCode = async () => {
+    if (loadingSendCode) return;
+    if (!users.email) return setError({ error: true, response: t(`errors.verify_fields`) })
 
-  const onMessage = async (data: string) => {
-    setCaptcha(false);
-
-    if (data === "cancel") return;
-
-    setLoading(true);
-
+    setLoadingSendCode(true);
     const browser = await deviceInfo();
 
-    let friendly_name;
-    if (browser) {
-      friendly_name = `${convertFirstCharacterToUppercase(browser.base_os)} ${browser.system_version} - FlyAway mobile`;
+    let friendly_name = "Unknown Device";
+    if (browser) friendly_name = `${convertFirstCharacterToUppercase(browser.base_os)} ${browser.system_version} - FlyAway mobile`;
 
-    } else {
-      friendly_name = "Unknown Device";
-    }
+    const response = await client.sessions.sendCode({
+      email: users.email,
+      device_name: friendly_name
+    })
+    setLoadingSendCode(false)
 
+    if (response.error || !response.data) return setError({ error: true, response: t(`errors.${response?.error?.code}`) })
+    setError({ error: false, response: t(`login.email_code_send`) });
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 2000, // Durée de l'animation en millisecondes
+      easing: Easing.ease, // Utilisation de la fonction d'ease
+      useNativeDriver: true,
+    }).start();
+    return setShowCode(true);
+  }
+
+  const handleSubmit = async () => {
+    if (!users.email || !users.code) return setError({ error: true, response: t(`errors.verify_fields`) })
+
+    setLoading(true);
     const response = await client.sessions.create({
       email: users.email,
-      password: users.password,
-      device_name: friendly_name,
-      captcha_code: data
+      code: users.code
     })
 
     if (response.error || !response.data) {
       setLoading(false)
       return setError({ error: true, response: t(`errors.${response?.error?.code}`) })
-
     } else {
 
-      const data = response.data;      
-      
+      const data = response.data;
+
       setStorage("user_info", data);
       addUser(realm, data);
 
@@ -80,12 +88,12 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
 
       setValue({ ...allvalues, client: new_client, token: data.token, user: data, state: "loged" })
     }
+
   };
 
   return (
     <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
       <LoaderBox loading={loading} />
-      <CaptchaBlock onMessage={onMessage} show={captcha} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={style.area}>
@@ -99,6 +107,8 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
             </View>
             <View style={style.section}>
               <TextInput
+                mode='outlined'
+                placeholder='email@example.com'
                 label={`${t("login.email")}`}
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -106,20 +116,28 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
                 value={users.email}
                 onChangeText={(email) => setUsers({ ...users, email: email })}
               />
+              {
+                !showCode && <NormalButton onPress={() => sendCode()} text={t("login.send_email")} />
+              }
             </View>
-            <View style={style.section}>
-              <TextInput
-                label={`${t("login.password")}`}
-                autoCapitalize="none"
-                secureTextEntry={showPass}
-                returnKeyType="next"
-                right={<TextInput.Icon onPress={() => setShowPass(!showPass)} icon={!showPass ? `eye` : "eye-off"} />}
-                value={users.password}
-                onChangeText={(password) => setUsers({ ...users, password: password })}
-              />
-              <LinkButtonText text={t("login.forgot_password")} onPress={() => navigation.navigate('ForgotPassword')} />
-            </View>
-            <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} />
+            {
+              showCode && (
+                <Animated.View style={{ opacity: fadeAnim }}>
+                  <View style={style.section}>
+                    <TextInput
+                      mode='outlined'
+                      placeholder='Email code'
+                      label={`${t("login.code")}`}
+                      autoCapitalize="none"
+                      returnKeyType="next"
+                      value={users.code}
+                      onChangeText={(code) => setUsers({ ...users, code: code })}
+                    />
+                  </View>
+                  <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} />
+                </Animated.View>
+              )
+            }
             <View style={{
               alignSelf: 'center',
             }}>
