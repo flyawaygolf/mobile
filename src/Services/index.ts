@@ -139,7 +139,7 @@ export const storeLink = (): string => {
 };
 
 export const cguLink = (language: string) => {
-  let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/terms_of_use.pdf';
+  let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/terms_of_service.pdf';
   if(language === 'fr') {lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_utilisations.pdf';}
   return lang;
 };
