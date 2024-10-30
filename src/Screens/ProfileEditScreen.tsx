@@ -158,7 +158,7 @@ function ProfileEditScreen() {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: colors.bg_primary, height: "100%" }}>
+        <View style={{ backgroundColor: colors.bg_primary, height: "100%" }}>
             <Appbar.Header style={{ width: full_width, backgroundColor: colors.bg_primary, flexDirection: "row", justifyContent: "space-between" }}>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
                 <Text variant="titleSmall">{t("profile.edit")}</Text>
@@ -239,20 +239,12 @@ function ProfileEditScreen() {
                     </View>
                                  */
                             }
-                            <Pressable onPress={() => showModal()}>
-                                <TextInput
-                                    label={`Handicap`}
-                                    style={[{ backgroundColor: colors.bg_primary }, styles.inputStyle]}
-                                    returnKeyType="next"
-                                    disabled
-                                    value={displayHCP(modif.golf_info.handicap)}
-                                />
-                            </Pressable>
+                            <Button mode={"contained"} onPress={() => showModal()}>Change Handicap : {displayHCP(modif.golf_info.handicap)}</Button>
                         </View>
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     )
 }
 

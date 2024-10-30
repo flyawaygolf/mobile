@@ -46,7 +46,6 @@ function GuildInfo({ info }: sectionProps) {
         setUsers(info.users.filter(u => u.user_id !== user.user_id))
     }, [info])
 
-
     return (
         <SafeBottomContainer padding={0}>
             <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>

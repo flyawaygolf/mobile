@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import { Badge, Button, Card, IconButton, Text } from 'react-native-paper';
+import { Alert, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Appbar, Badge, Button, Card, IconButton, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -53,35 +53,36 @@ const SettingsScreen = () => {
 
   const Disconnect = () => {
     Alert.alert(t("settings.logout"), t("settings.sure_logout"), [
-        {
-            text: t("commons.no"),
-            style: "cancel"
+      {
+        text: t("commons.no"),
+        style: "cancel"
+      },
+      {
+        text: t("commons.yes"),
+        onPress: async () => {
+          await client.sessions.logout();
+          deleteUser(realm, user.user_id)
+          setValue({ ...client, client: client, token: user.token, user: user, state: "switch_user" })
         },
-        {
-            text: t("commons.yes"),
-            onPress: async () => {
-                await client.sessions.logout();
-                deleteUser(realm, user.user_id)
-                setValue({ ...client, client: client, token: user.token, user: user, state: "switch_user" })
-            },
-            style: "default"
-        }
+        style: "default"
+      }
     ])
-}
+  }
 
   return (
     <>
       <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
         <SettingsModifyProfile setModalVisible={setModalVisible} />
       </BottomModal>
-      <SafeBottomContainer padding={0}>
-        <Card mode='contained' style={{ position: "absolute", zIndex: 99, right: 0, margin: 5 }}>
-          <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-            <IconButton style={{ margin: 0 }} icon={"theme-light-dark"} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
-            <IconButton style={{ margin: 0 }} icon={"cog"} onPress={() => setModalVisible(true)} />
-            <IconButton style={{ margin: 0 }} icon={"exit-to-app"} onPress={() => Disconnect()} />
-          </View>
-        </Card>
+      <Appbar.Header style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{user.username}</Text>
+        <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
+          <IconButton style={{ margin: 0 }} icon={"theme-light-dark"} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
+          <IconButton style={{ margin: 0 }} icon={"cog"} onPress={() => setModalVisible(true)} />
+          <IconButton style={{ margin: 0 }} icon={"exit-to-app"} onPress={() => Disconnect()} />
+        </View>
+      </Appbar.Header>
+      <SafeBottomContainer>
         <View style={{ height: 125 }}>
           <View style={[style.banner_image, { backgroundColor: user.accent_color }]} />
         </View>

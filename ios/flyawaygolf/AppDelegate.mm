@@ -9,7 +9,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSServices provideAPIKey:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AIzaSyDgPI0BAgrp31pg12r-YyE2f5fIaXxis54"]];
+  [GMSServices provideAPIKey:@"AIzaSyDgPI0BAgrp31pg12r-YyE2f5fIaXxis54"];
   [FIRApp configure];
   self.moduleName = @"flyawaygolf";
   // You can add your custom initial props in the dictionary below.

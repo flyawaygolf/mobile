@@ -103,7 +103,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
               <Logo />
             </View>
             <View style={style.section}>
-              <Text style={{ color: colors.warning_color, textAlign: "center" }}>{error.error && error.response}</Text>
+              <Text style={{ color: error.error ? colors.warning_color : colors.color_green, textAlign: "center" }}>{error.response}</Text>
             </View>
             <View style={style.section}>
               <TextInput

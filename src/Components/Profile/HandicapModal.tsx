@@ -4,6 +4,7 @@ import { Button, Dialog, Portal, RadioButton, Text, TouchableRipple } from "reac
 import { handicapNumbersFloat, handicapNumbersInt } from "../../Services/handicapNumbers";
 import styles from "../../Style/style";
 import { modifI } from "../../Screens/ProfileEditScreen";
+import { useTheme } from "../Container";
 
 type PropsType = {
     handicap: number;
@@ -21,6 +22,7 @@ const HandicapModal = ({ handicap, visible, hideModal, setModif, modif }: PropsT
         int: Math.floor(parseFloat(((handicap) / 10).toFixed(1))),
         float: parseFloat(((handicap - Math.floor(handicap)) / 10).toFixed(1)),
     });
+    const { colors } = useTheme();
 
     const displayHCP = () => {
         if (hcp.int < 0) return `+${(hcp.float - hcp.int)}`;
