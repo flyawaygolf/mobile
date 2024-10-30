@@ -1,5 +1,4 @@
 import React from "react";
-import dayjs from 'dayjs';
 import { useTranslation } from "react-i18next";
 import { Icon, IconButton, Text } from "react-native-paper";
 import { View } from "react-native";
@@ -29,7 +28,7 @@ function SessionBox({ item, session_id, onPress }: sectionProps) {
         } else if(name.match(/chrome/gi)) {
             return "google-chrome"
         } else {
-            return "..."
+            return "devices"
         }
     }
     

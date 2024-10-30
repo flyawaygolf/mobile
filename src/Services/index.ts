@@ -123,44 +123,43 @@ export const getAppInfo = async () => {
     }
   };
 
-  if(!response.data?.ios_version || !response.data?.android_version) {return false;}
-  if(Platform.OS === 'ios') {return response.data.ios_version > parseInt(version);}
-  if(Platform.OS === 'android') {return response.data.android_version > parseInt(version);}
+  if(!response.data?.ios_version || !response.data?.android_version) return false;
+  if(Platform.OS === 'ios') return response.data.ios_version > parseInt(version);
+  if(Platform.OS === 'android') return response.data.android_version > parseInt(version);
   return false;
 };
 
 export const storeLink = (): string => {
-  if(Platform.OS === 'ios') {return '';}
-  if(Platform.OS === 'android') {return '';}
+  if(Platform.OS === 'ios') return 'https://apps.apple.com/us/app/flyaway-golf-community/id6737476007';
+  if(Platform.OS === 'android') return 'https://play.google.com/store/apps/details?id=com.flyawaygolf';
   return 'https://flyawaygolf.com';
 };
 
 export const cguLink = (language: string) => {
   let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/terms_of_service.pdf';
-  if(language === 'fr') {lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_utilisations.pdf';}
+  if(language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_utilisations.pdf';
   return lang;
 };
 
 export const cgvLink = (language: string) => {
   let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/terms_of_sales.pdf';
-  if(language === 'fr') {lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_ventes.pdf';}
+  if(language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_ventes.pdf';
   return lang;
 };
 
 export const privacyLink = (language: string) => {
   let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/privacy_policy.pdf';
-  if(language === 'fr') {lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/politique_confidentialite.pdf';}
+  if(language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/politique_confidentialite.pdf';
   return lang;
 };
 
 export const parseURL = (url: string): string | false => {
-    if(!url) {return false;}
-
+    if(!url) return false;
     let link = [''];
-    if(url.startsWith('https://www.flyawaygolf.com')) {link = url.split('https://www.flyawaygolf.com');}
-    else if(url.startsWith('https://flyawaygolf.com')) {link = url.split('https://flyawaygolf.com');}
-    else if(url.startsWith('http://www.flyawaygolf.com')) {link = url.split('http://www.flyawaygolf.com');}
-    else if(url.startsWith('http://flyawaygolf.com')) {link = url.split('http://flyawaygolf.com');}
+    if(url.startsWith('https://www.flyawaygolf.com')) link = url.split('https://www.flyawaygolf.com');
+    else if(url.startsWith('https://flyawaygolf.com')) link = url.split('https://flyawaygolf.com');
+    else if(url.startsWith('http://www.flyawaygolf.com')) link = url.split('http://www.flyawaygolf.com');
+    else if(url.startsWith('http://flyawaygolf.com')) link = url.split('http://flyawaygolf.com');
 
     return link[1];
 };

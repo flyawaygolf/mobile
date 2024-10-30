@@ -3354,15 +3354,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@notifee/react-native@npm:^9.1.2":
-  version: 9.1.2
-  resolution: "@notifee/react-native@npm:9.1.2"
-  peerDependencies:
-    react-native: "*"
-  checksum: 1cf39654ed9679992f098e7df1586d47a65239297903ab57c76ca5834641d9171f8d2d3a337c8453950c9f6ee2cea1b5388093e1a386e7a89eceb96bf27ef374
-  languageName: node
-  linkType: hard
-
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.2
   resolution: "@npmcli/agent@npm:2.2.2"
@@ -7308,7 +7299,6 @@ __metadata:
     "@flyerhq/react-native-keyboard-accessory-view": ^2.4.0
     "@flyerhq/react-native-link-preview": ^1.6.0
     "@gorhom/bottom-sheet": ^4.6.4
-    "@notifee/react-native": ^9.1.2
     "@react-native-clipboard/clipboard": ^1.14.3
     "@react-native-community/geolocation": ^3.4.0
     "@react-native-firebase/app": ^21.2.0

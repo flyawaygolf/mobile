@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { Platform, SafeAreaView, View } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Appbar, IconButton, Text, Tooltip } from 'react-native-paper';
 import { full_width } from '../Style/style';
@@ -97,9 +97,13 @@ const MapScreen = () => {
 
   return (
     <>
-      <Appbar.Header>
-        <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>Find users</Text>
-      </Appbar.Header>
+      {
+        Platform.OS === "ios" && (
+          <Appbar.Header>
+          <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>Find users</Text>
+        </Appbar.Header>
+        )
+      }
       <View style={{
         flex: 1,
         justifyContent: "center",

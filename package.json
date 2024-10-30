@@ -1,7 +1,7 @@
 {
   "name": "flyawaygolf",
-  "version": "1.5.0",
-  "version_number": 6,
+  "version": "1.5.1",
+  "version_number": 7,
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -25,7 +25,6 @@
     "@flyerhq/react-native-keyboard-accessory-view": "^2.4.0",
     "@flyerhq/react-native-link-preview": "^1.6.0",
     "@gorhom/bottom-sheet": "^4.6.4",
-    "@notifee/react-native": "^9.1.2",
     "@react-native-clipboard/clipboard": "^1.14.3",
     "@react-native-community/geolocation": "^3.4.0",
     "@react-native-firebase/app": "^21.2.0",

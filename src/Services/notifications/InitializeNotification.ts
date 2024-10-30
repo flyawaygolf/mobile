@@ -1,41 +1,6 @@
 import messaging from "@react-native-firebase/messaging";
-import notifee, { AndroidImportance } from "@notifee/react-native";
 import { checkNotifications, requestNotifications, RESULTS } from 'react-native-permissions';
 import { getStorageInfo, setStorage, userStorageI } from "../storage";
-
-export const notificationChannels = async () => {
-  // await notifee.deleteChannel("sound")
-  const channels = await notifee.getChannels();
-  if(channels.some(c => c.name === "sound")) return;
-  await notifee.createChannel({
-    id: "sound",
-    name: "Custom notification sound",
-    description: "The default message notification channel",
-    lights: false,
-    vibration: true,
-    importance: AndroidImportance.HIGH,
-    sound: "notification",
-    vibrationPattern: [200, 100, 200, 75, 300, 150]
-  })
-  await notifee.setNotificationCategories([
-    {
-      id: "message",
-      actions: [
-        {
-          id: "read",
-          title: "mark as read",
-        },
-        {
-          id: "reply",
-          title: "Reply",
-          input: {
-            placeholderText: "Aa ..."
-          }
-        }
-      ]
-    }
-  ])
-}
 
 export const resetFcmToken = async (user_info: userStorageI, refresh: boolean = false) => {
   try {

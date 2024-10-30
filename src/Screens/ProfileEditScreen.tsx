@@ -123,7 +123,7 @@ function ProfileEditScreen() {
             var config: AxiosRequestConfig = {
                 headers: {
                     'content-type': 'multipart/form-data',
-                    "flyawayftoken": token
+                    "flyawaytoken": token
                 },
                 onUploadProgress: function (progressEvent) {
                     const total = progressEvent?.total ?? 1;
