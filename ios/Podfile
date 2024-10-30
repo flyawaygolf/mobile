@@ -24,7 +24,7 @@ setup_permissions([
   'LocationAccuracy',
   'LocationAlways',
   'LocationWhenInUse',
-# 'MediaLibrary',
+  'MediaLibrary',
 #  'Microphone',
 #  'Motion',
   'Notifications',

@@ -1912,11 +1912,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNNotifee (9.1.2):
-    - React-Core
-    - RNNotifee/NotifeeCore (= 9.1.2)
-  - RNNotifee/NotifeeCore (9.1.2):
-    - React-Core
   - RNPermissions (4.1.5):
     - DoubleConversion
     - glog
@@ -2158,7 +2153,6 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNLocalize (from `../node_modules/react-native-localize`)
-  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -2344,8 +2338,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-inappbrowser-reborn"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
-  RNNotifee:
-    :path: "../node_modules/@notifee/react-native"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNReanimated:
@@ -2451,7 +2443,6 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 3d888d481c65776063556b72c19893a8b8344b1b
   RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNLocalize: e71144345f68c167d4cc4b41c8b0a6650f88e789
-  RNNotifee: bc20a5e3d581f629db988075944fdd944d363dfe
   RNPermissions: 72ae6fb1302d9f51b35130215be676c2bab45589
   RNReanimated: f46df3b08d5d59cd83c47bb6697ce88e565e0dc7
   RNScreens: e389d6a6a66a4f0d3662924ecae803073ccce8ec
@@ -2460,6 +2451,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: aa3df615739504eebb91925fc9c58b4922ea9a08
 
-PODFILE CHECKSUM: 1330b46f1fa826ee953daf3eb1ae9f2b3ea00105
+PODFILE CHECKSUM: 897f1fc9fce43a4afc5c9744d11f5b578625dcbf
 
 COCOAPODS: 1.16.0
