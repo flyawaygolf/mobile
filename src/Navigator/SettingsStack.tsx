@@ -4,6 +4,11 @@ import BlockedScreen from "../Screens/Settings/BlockedScreen";
 import SessionScreen from "../Screens/Settings/SessionScreen";
 import SecurityScreen from "../Screens/Settings/SecurityScreen";
 
+export type SettingsStackScreens =
+    "BlockScreen" |
+    "SessionScreen" |
+    "SecurityScreen"
+
 const Stack = createStackNavigator();
 
 const SettingsStack = () => {

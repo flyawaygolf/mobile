@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Appbar, Badge, Button, Card, IconButton, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -82,7 +82,7 @@ const SettingsScreen = () => {
           <IconButton style={{ margin: 0 }} icon={"exit-to-app"} onPress={() => Disconnect()} />
         </View>
       </Appbar.Header>
-      <SafeBottomContainer>
+      <SafeBottomContainer padding={0}>
         <View style={{ height: 125 }}>
           <View style={[style.banner_image, { backgroundColor: user.accent_color }]} />
         </View>
@@ -103,17 +103,11 @@ const SettingsScreen = () => {
             <Badge size={20} style={{ marginLeft: -30 }}>{displayHCP(user.golf_info.handicap)}</Badge>
           </View>
           <View style={{ position: "absolute", right: 5 }}>
-            <Button icon="account-edit" onPress={() => navigation.push("ProfileEditScreen")}>Edit</Button>
+            <Button icon="account-edit" onPress={() => navigation.push("ProfileStack", { screen: "ProfileEditScreen" })}>{t("profile.edit")}</Button>
           </View>
         </View>
         <Card style={{ margin: 5 }} mode='contained'>
-          <Card.Title
-            titleStyle={{
-              fontWeight: 800
-            }}
-            subtitleStyle={{
-              fontWeight: 500
-            }}
+          <Card.Title titleStyle={{ fontWeight: 800 }} subtitleStyle={{ fontWeight: 500 }}
             left={() => <IconButton mode='contained' icon="content-copy" onPress={() => copyNickname()} />}
             titleVariant='titleLarge'
             subtitleVariant='labelLarge'
@@ -124,7 +118,7 @@ const SettingsScreen = () => {
         <Card style={{ margin: 5 }} mode='contained'>
           <Card.Content>
             <View style={{ marginBottom: 5 }}>
-              <Text style={{ fontWeight: '900' }}>Description</Text>
+              <Text style={{ fontWeight: '900' }}>{t("profile.description")}</Text>
               <Text>{user.description}</Text>
             </View>
             {

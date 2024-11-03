@@ -3,6 +3,10 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import CreateGuildScreen from "../Screens/Messages/CreateGuildScreen";
 import MessageScreen from "../Screens/Messages/MessageScreen";
 
+export type MessageStackScreens =
+    "MessageScreen" |
+    "CreateGroupScreen"
+
 const Stack = createStackNavigator();
 
 const MessageStack = () => {

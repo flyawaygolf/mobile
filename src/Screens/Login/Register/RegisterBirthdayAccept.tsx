@@ -12,6 +12,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { DateInput } from '../../../Components/Elements/Input';
 import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
 import { LoaderBox } from '../../../Other';
+import LoginContainer from '../../../Components/LoginContainer';
 
 const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterBirthdayAccept">) => {
 
@@ -66,45 +67,34 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
     };
 
     return (
-        <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
-            <LoaderBox loading={loading} />
-            <ScrollView
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={style.area}>
-                <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
-                    <View>
-                        <View style={{ alignItems: 'center' }}>
-                            <Logo />
-                        </View>
-                        <View style={style.section}>
-                            <Text style={{ color: colors.warning_color, textAlign: "center" }}>{error.error && error.response}</Text>
-                        </View>
-                        <View style={style.section}>
-                            <DateInput onChange={(date) => setUsers({ ...users, birthday: date })} minimumDate={new Date(min_birthday)} value={users?.birthday} label={t("login.birthday")} />
-                            <View style={styles.row}>
-                                <Checkbox.Android status={users.accept_tas ? "checked" : "unchecked"} onPress={() => setUsers({ ...users, accept_tas: !users.accept_tas })} />
-                                <LinkButtonText text={t("login.t_and_s")} onPress={() => {
-                                    setUsers({ ...users, accept_tas: !users.accept_tas })
-                                    openURL(cguLink(i18n.language))
-                                }} />
-                            </View>
-                        </View>
-                        <NormalButton onPress={() => handleSubmit()} text={t("login.register")} />
-                        <View style={{
-                            alignSelf: 'center',
-                        }}>
-                            <View style={{
-                                flex: 1,
-                                flexDirection: 'column',
-                                justifyContent: "space-between"
-                            }}>
-                                <LinkButtonText text={t("login.go_back")} onPress={() => navigation.goBack()} />
-                            </View>
-                        </View>
-                    </View>
-                </KeyboardAwareScrollView>
-            </ScrollView>
-        </SafeAreaView>
+        <LoginContainer>
+            <View style={style.section}>
+                <LoaderBox loading={loading} />
+            </View>
+            <View style={style.section}>
+                <Text style={{ color: colors.warning_color, textAlign: "center", marginBottom: 10 }}>{error.error && error.response}</Text>
+                <DateInput onChange={(date) => setUsers({ ...users, birthday: date })} minimumDate={new Date(min_birthday)} value={users?.birthday} label={t("login.birthday")} />
+                <View style={styles.row}>
+                    <Checkbox.Android status={users.accept_tas ? "checked" : "unchecked"} onPress={() => setUsers({ ...users, accept_tas: !users.accept_tas })} />
+                    <LinkButtonText text={t("login.t_and_s")} onPress={() => {
+                        setUsers({ ...users, accept_tas: !users.accept_tas })
+                        openURL(cguLink(i18n.language))
+                    }} />
+                </View>
+            </View>
+            <NormalButton onPress={() => handleSubmit()} text={t("login.register")} />
+            <View style={{
+                alignSelf: 'center',
+            }}>
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: "space-between"
+                }}>
+                    <LinkButtonText text={t("login.go_back")} onPress={() => navigation.goBack()} />
+                </View>
+            </View>
+        </LoginContainer>
     );
 };
 

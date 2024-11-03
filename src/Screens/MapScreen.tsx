@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Platform, SafeAreaView, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Platform, ScrollView, View } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Appbar, IconButton, Text, Tooltip } from 'react-native-paper';
+import { Appbar, Chip, IconButton, Text, Tooltip } from 'react-native-paper';
 import { full_width } from '../Style/style';
-import { useClient, useTheme } from '../Components/Container';
+import { useClient, useNavigation, useTheme } from '../Components/Container';
 import { getCurrentLocation, handleToast } from '../Services';
 import { useTranslation } from 'react-i18next';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
-import { BottomModal, LoaderBox } from '../Other';
-import CustomCallout from '../Components/Map/CustomCallout';
 import { Avatar } from '../Components/Member';
+import { SearchBar } from '../Components/Elements/Input';
+import { StyleSheet } from 'react-native';
+import { ShrinkEffect } from '../Components/Effects';
 
 type LocationType = {
   latitude: number,
@@ -21,15 +22,19 @@ type LocationType = {
 const MapScreen = () => {
   const { theme, colors } = useTheme();
   const { client } = useClient();
-  const [location, setLocation] = useState<LocationType | undefined>(undefined);
-  const [searchLocation, setSearchLocation] = useState<LocationType & { width?: number, heigth?: number } | undefined>(undefined);
-  const [users, setUsers] = useState<userInfo[] | undefined>(undefined);
-  const [mapType, setMapType] = useState<MapType>("satellite");
-  const [modal, setModal] = useState({
-    visible: false,
-    user_index: 0,
-  })
+  const navigation = useNavigation();
   const { t } = useTranslation();
+  const mapRef = useRef<MapView>(null);
+  const [location, setLocation] = useState<LocationType>({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 1,
+    longitudeDelta: 1,
+  });
+  const [searchLocation, setSearchLocation] = useState<LocationType & { width?: number, heigth?: number } | undefined>(undefined);
+  const [searchUser, setSearchUser] = useState("");
+  const [users, setUsers] = useState<userInfo[] | undefined>(undefined);
+  const [mapType, setMapType] = useState<MapType>("standard");
 
   const changeMapType = () => mapType === "standard" ? setMapType("satellite") : setMapType("standard");
 
@@ -72,12 +77,6 @@ const MapScreen = () => {
     return setUsers(request.data);
   }
 
-  const UserModal = (user: userInfo) => (
-    <BottomModal isVisible={modal.visible} dismiss={() => setModal({ ...modal, visible: false })}>
-      <CustomCallout onDismiss={() => setModal({ ...modal, visible: false })} user_info={user} />
-    </BottomModal>
-  )
-
   function calculateMapSize(region: LocationType) {
     const { latitude, latitudeDelta, longitudeDelta } = region;
 
@@ -95,109 +94,175 @@ const MapScreen = () => {
     return { widthMeters, heightMeters };
   }
 
+  const [searchChips] = useState([
+    {
+      text: "Search users",
+      value: "users"
+    },
+    {
+      text: "Search golfs",
+      value: "golfs"
+    },
+    /*{
+      text: "Search events",
+      value: "events"
+    },*/
+  ])
+
+  const centerMap = () => {
+    if (location && mapRef.current) {
+      mapRef.current.animateToRegion(location, 1000);
+    }
+  };
+
   return (
     <>
       {
         Platform.OS === "ios" && (
           <Appbar.Header>
-          <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>Find users</Text>
-        </Appbar.Header>
+            <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>Find users</Text>
+          </Appbar.Header>
         )
       }
+      <View style={styles.globalView}>
       <View style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        width: full_width,
-        height: "100%"
-      }}>
-        {location ? (
-          <>
-            {users && modal.visible && <UserModal {...users[modal.user_index]} />}
-            <View style={{
-              position: "absolute",
-              zIndex: 3,
-              left: 5,
-              top: 5,
-              flexDirection: "column",
-              alignItems: "center"
-            }}>
-              <Tooltip title='Change Map Type'>
-                <IconButton icon={mapType === "standard" ? "map" : "satellite-variant"} onPress={() => changeMapType()} mode='contained' size={25} />
-              </Tooltip>
-              <Tooltip title='Update Showed Users'>
-                <IconButton icon="sync" onPress={() => updateMapUsers()} mode='contained' size={25} />
-              </Tooltip>
-              <Tooltip title='Update Location'>
-                <IconButton icon="account-sync" onPress={() => updateUserLocation()} mode='contained' size={25} />
-              </Tooltip>
-              {
-                /**
-                 * <Tooltip title='Search Distance'>
-                <IconButton icon={`numeric-${max_distance}-circle`} onPress={() => setMaxDistance(max_distance === 50 ? 100 : 5)} mode='contained' size={25} />
-              </Tooltip>
-                 */
-              }
-            </View>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              initialRegion={location}
-              showsUserLocation={true}
-              followsUserLocation={true}
-              showsCompass={true}
-              showsMyLocationButton={true}
-              scrollEnabled={true}
-              zoomEnabled={true}
-              pitchEnabled={true}
-              rotateEnabled={true}
-              loadingIndicatorColor={colors.fa_primary}
-              loadingBackgroundColor={colors.bg_primary}
-              onRegionChangeComplete={(region) => {
-                const { widthMeters, heightMeters } = calculateMapSize(region);
-                setSearchLocation({
-                  ...region,
-                  heigth: heightMeters > 50000 ? 50000 : heightMeters,
-                  width: widthMeters > 50000 ? 50000 : widthMeters
-                })
-              }}
-              mapType={mapType}
-              onUserLocationChange={(event) => setLocation({
-                ...location,
-                latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
-                longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude
-              })}
-              userInterfaceStyle={theme === "dark" ? "dark" : "light"}
+            position: "absolute",
+            zIndex: 3,
+            top: 5, // 85,
+            right: 5,
+            flexDirection: "column"
+          }}>
+            <Tooltip title='Change Map Type'>
+              <IconButton icon={mapType === "standard" ? "map" : "satellite-variant"} onPress={() => changeMapType()} mode='contained' size={25} />
+            </Tooltip>
+            <Tooltip title='Update Showed Users'>
+              <IconButton icon="sync" onPress={() => updateMapUsers()} mode='contained' size={25} />
+            </Tooltip>
+            <Tooltip title='Update Location'>
+              <IconButton icon="account-sync" onPress={() => updateUserLocation()} mode='contained' size={25} />
+            </Tooltip>
+            <Tooltip title='Center'>
+              <IconButton icon="crosshairs-gps" onPress={() => centerMap()} mode='contained' size={25} />
+            </Tooltip>
+          </View>
+        <View style={styles.elements}>
+          {
+            /**
+             *           <View style={styles.searchElements}>
+            <SearchBar
               style={{
-                width: full_width,
-                height: "100%"
+                width: "100%"
               }}
-            >
+              onClearPress={() => { }}
+              onSearchPress={() => { }}
+              value={searchUser}
+              onChangeText={(txt) => setSearchUser(txt)}
+              placeholder='Search...'
+            />
+            <ScrollView contentContainerStyle={styles.searchChips} style={{ width: "100%" }}>
               {
-                users && users.length > 0 && users.map((u, idx) => {
-                  return (
-                    <Marker
-                      key={idx}
-                      onPress={() => setModal({ visible: true, user_index: idx })}
-                      coordinate={{
-                        longitude: u.golf_info.location[0],
-                        latitude: u.golf_info.location[1]
-                      }}
-                    // calloutOffset={{ x: -8, y: 28 }}
-                    // calloutAnchor={{ x: 0.5, y: -0.2 }}
-                    // tracksViewChanges={false}
-                    >
-                      <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
-                    </Marker>
-                  )
-                })
+                searchChips.map((c, idx) => <ShrinkEffect key={idx} shrinkAmount={0.90}><Chip style={{ borderRadius: 60 }}>{c.text}</Chip></ShrinkEffect>)
               }
-            </MapView>
-          </>
-        ) : <LoaderBox loading={true} />
-        }
+            </ScrollView>
+          </View>
+             */
+          }
+        </View>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          ref={mapRef}
+          initialRegion={location}
+          onRegionChange={(region) => {
+            const { widthMeters, heightMeters } = calculateMapSize(region);
+            setSearchLocation({
+              ...region,
+              heigth: heightMeters,
+              width: widthMeters
+            })
+          }}
+          onUserLocationChange={(event) => setLocation({
+            ...location,
+            latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
+            longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude
+          })}
+          loadingIndicatorColor={colors.fa_primary}
+          loadingBackgroundColor={colors.bg_primary}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          toolbarEnabled={false}
+          showsCompass={false}
+          showsMyLocationButton={false}
+          scrollEnabled={true}
+          zoomEnabled={true}
+          pitchEnabled={false}
+          rotateEnabled={false}
+          mapType={mapType}
+          userInterfaceStyle={theme === "dark" ? "dark" : "light"}
+          style={{
+            width: full_width,
+            height: "100%"
+          }}
+        >
+          {
+            users && users.length > 0 && users.map((u, idx) => {
+              return (
+                <Marker
+                  key={idx}
+                  onPress={() => navigation.push("ProfileStack", {
+                    screen: "ProfileScreen",
+                    params: {
+                      user_info: u
+                    }
+                  })}
+                  coordinate={{
+                    longitude: u.golf_info.location[0],
+                    latitude: u.golf_info.location[1]
+                  }}
+                // calloutOffset={{ x: -8, y: 28 }}
+                // calloutAnchor={{ x: 0.5, y: -0.2 }}
+                // tracksViewChanges={false}
+                >
+                  <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
+                </Marker>
+              )
+            })
+          }
+        </MapView>
       </View>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  globalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: full_width,
+    height: "100%"
+  },
+  elements: {
+    position: "absolute",
+    zIndex: 3,
+    top: 5,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  searchElements: {
+    width: "90%",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  searchChips: {
+    marginTop: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 5
+  }
+})
 
 export default MapScreen;

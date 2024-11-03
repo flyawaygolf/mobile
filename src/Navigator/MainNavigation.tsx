@@ -4,9 +4,10 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import { NavigationProvider } from "../Components/Container";
 import { BottomNavigation } from "./";
 import { NavigationContextI } from "../Components/Container/Navigation/NavigationContext";
-import { MapScreen, ProfileEditScreen } from "../Screens";
+import { MapScreen } from "../Screens";
 import MessageStack from "./MessageStack";
 import SettingsStack from "./SettingsStack";
+import ProfileStack from "./ProfileStack";
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,7 @@ export default function MainNavigation({ navigation }: { navigation: NavigationC
   const [routes] = useState([
     { name: "BottomNavigation", screen: BottomNavigation },
     { name: "MapScreen", screen: MapScreen },
-    { name: "ProfileEditScreen", screen: ProfileEditScreen },
+    { name: "ProfileStack", screen: ProfileStack },
     { name: "MessagesStack", screen: MessageStack },
     { name: "SettingsStack", screen: SettingsStack },
   ])

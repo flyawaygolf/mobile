@@ -1,7 +1,5 @@
 export { default as ExploreScreen } from "./ExploreScreen";
 export { default as GuildListSreen } from "./GuildListSreen";
-export { default as ProfileScreen } from "./ProfileScreen";
-export { default as ProfileEditScreen } from "./ProfileEditScreen";
 export { default as SplashScreen } from "./SplashScreen";
 export { default as MapScreen } from "./MapScreen";
 export { default as NotificationScreen } from "./NotificationScreen";

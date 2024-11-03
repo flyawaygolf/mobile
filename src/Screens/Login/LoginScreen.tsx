@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Animated, View, ScrollView, SafeAreaView, StyleSheet, Easing } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Text, TextInput } from 'react-native-paper';
+import { HelperText, Icon, Text, TextInput } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useRealm } from '@realm/react';
 
-import { Logo } from '../../Components/Elements/Assets';
+import { FlyAway, Logo } from '../../Components/Elements/Assets';
 import { convertFirstCharacterToUppercase, deviceInfo, LoginRootParamList, ScreenNavigationProps } from '../../Services';
 import { useClient, useTheme } from '../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../Components/Elements/Buttons';
@@ -13,6 +13,8 @@ import { LoaderBox } from '../../Other';
 import Client from '../../Services/Client';
 import { setStorage } from '../../Services/storage';
 import { addUser } from '../../Services/Realm/userDatabase';
+import LoginContainer from '../../Components/LoginContainer';
+import { ShakeEffect } from '../../Components/Effects';
 
 const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "LoginScreen">) => {
 
@@ -92,61 +94,58 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
   };
 
   return (
-    <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
+    <LoginContainer>
       <LoaderBox loading={loading} />
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={style.area}>
-        <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
-          <View>
-            <View style={{ alignItems: 'center' }}>
-              <Logo />
-            </View>
-            <View style={style.section}>
-              <Text style={{ color: error.error ? colors.warning_color : colors.color_green, textAlign: "center" }}>{error.response}</Text>
-            </View>
+      <View style={style.section}>
+      </View>
+      <Text style={{ color: error.error ? colors.warning_color : colors.color_green, textAlign: "center", marginBottom: 10 }}>{error.response}</Text>
+      <View style={style.section}>
+        <TextInput
+          mode='outlined'
+          placeholder='email@example.com'
+          label={`${t("login.email")}`}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          returnKeyType="next"
+          value={users.email}
+          onChangeText={(email) => setUsers({ ...users, email: email })}
+        />
+        <ShakeEffect shakeOnDisplay>
+        <HelperText type="info" visible={true}><Icon source="information-outline" size={15} /> {t("login.passwordless_info")}</HelperText>
+        </ShakeEffect>
+        {
+          !showCode && (
+            <>
+              <NormalButton onPress={() => sendCode()} text={t("login.send_email")} />
+            </>
+          )
+        }
+      </View>
+      {
+        showCode && (
+          <Animated.View style={{ opacity: fadeAnim }}>
             <View style={style.section}>
               <TextInput
                 mode='outlined'
-                placeholder='email@example.com'
-                label={`${t("login.email")}`}
+                placeholder='Email code'
+                label={`${t("login.code")}`}
                 autoCapitalize="none"
-                keyboardType="email-address"
                 returnKeyType="next"
-                value={users.email}
-                onChangeText={(email) => setUsers({ ...users, email: email })}
+                value={users.code}
+                onChangeText={(code) => setUsers({ ...users, code: code })}
               />
-              {
-                !showCode && <NormalButton onPress={() => sendCode()} text={t("login.send_email")} />
-              }
             </View>
-            {
-              showCode && (
-                <Animated.View style={{ opacity: fadeAnim }}>
-                  <View style={style.section}>
-                    <TextInput
-                      mode='outlined'
-                      placeholder='Email code'
-                      label={`${t("login.code")}`}
-                      autoCapitalize="none"
-                      returnKeyType="next"
-                      value={users.code}
-                      onChangeText={(code) => setUsers({ ...users, code: code })}
-                    />
-                  </View>
-                  <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} />
-                </Animated.View>
-              )
-            }
-            <View style={{
-              alignSelf: 'center',
-            }}>
-              <LinkButtonText text={t("login.no_account")} onPress={() => navigation.navigate('RegisterEmailUsername')} />
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
-      </ScrollView>
-    </SafeAreaView>
+            <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} />
+          </Animated.View>
+        )
+      }
+      <View style={{
+        alignSelf: 'center',
+      }}>
+        <LinkButtonText text={t("login.no_account")} onPress={() => navigation.navigate('RegisterEmailUsername')} />
+      </View>
+    </LoginContainer>
+
   );
 };
 

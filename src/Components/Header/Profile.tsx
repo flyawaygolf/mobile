@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
-import { Appbar, Avatar } from 'react-native-paper';
-import { Animated, Image, TouchableWithoutFeedback, View } from 'react-native';
+import React from "react";
+import { Appbar } from 'react-native-paper';
+import { Image, View } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 
-import styles from '../../Style/style';
 import { navigationProps } from '../../Services';
 import { useTheme } from "../Container";
 
@@ -11,24 +10,7 @@ const ProfileHeader = () => {
 
     const navigation = useNavigation<navigationProps>();
 
-    const scaleValue = useRef(new Animated.Value(1)).current;
     const { theme } = useTheme();
-
-    const shrinkView = () => {
-        Animated.timing(scaleValue, {
-            toValue: 0.85,
-            duration: 100,
-            useNativeDriver: true,
-        }).start();
-    };
-
-    const expandView = () => {
-        Animated.timing(scaleValue, {
-            toValue: 1,
-            duration: 100,
-            useNativeDriver: true,
-        }).start();
-    };
 
     const pressAvatar = () => {};
 
@@ -37,17 +19,13 @@ const ProfileHeader = () => {
             {
                 /**
                  *             <View style={[styles.row, { justifyContent: "flex-end" }]}>
-                <TouchableWithoutFeedback onPressIn={shrinkView} onPressOut={expandView} onPress={() => pressAvatar()}>
-                    <Animated.View style={[
-                        {
-                            transform: [{ scale: scaleValue }],
-                        },
-                    ]}>
+                <TouchableWithoutFeedback onPress={() => pressAvatar()}>
+                    <View>
                         <Avatar.Image size={33} source={{
                             cache: "force-cache",
                             uri: "https://cdn.trenderapp.com/profile_avatars/227796574762303490/ddYac_ilwHqwrwN-l4UvbSdMDzcuFZXeNhP7PZeK2GCZ49Pn0.jpg"
                         }} />
-                    </Animated.View>
+                    </View>
                 </TouchableWithoutFeedback>
             </View>
                  */

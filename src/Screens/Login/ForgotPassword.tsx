@@ -23,7 +23,6 @@ function ForgotPassword({ navigation }: ScreenNavigationProps<LoginRootParamList
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
-
         if (loading) return;
         if (!EmailValidator(email)) return setError({ error: true, response: t(`errors.verify_fields`) });
 

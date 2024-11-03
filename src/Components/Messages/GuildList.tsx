@@ -46,7 +46,7 @@ function GuildList() {
                 height: "100%"
             }}
             data={groups}
-            ListEmptyComponent={<Text style={{ padding: 5 }}>{t("commons.nothing_display")}</Text>}
+            ListEmptyComponent={<Text style={{ padding: 5 }}>{t("messages.no_guilds")}</Text>}
             renderItem={memoizedValue}
             keyExtractor={item => item.guild_id}
             refreshControl={<RefreshControl refreshing={loading} progressBackgroundColor={colors.bg_primary} tintColor={colors.fa_primary} colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]} onRefresh={() => getData()} />}

@@ -62,7 +62,7 @@ export default function BottomStack() {
                 component={GuildListSreen}
                 options={{
                     tabBarIcon: ({ color, size, focused }) => {
-                        return <Icon source={focused ? "home" : "home-outline"} size={size} color={color} />;
+                        return <Icon source={focused ? "message-text" : "message-text-outline"} size={size} color={color} />;
                     },
                 }}
             />

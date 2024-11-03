@@ -1,14 +1,15 @@
 import React from 'react';
-import { DimensionValue, Image } from 'react-native';
+import { DimensionValue, Image, ImageStyle, StyleProp } from 'react-native';
 import { useTheme } from '../../Container';
 
 type PropsType = {
     size?: number;
     margin?: number;
-    width?: DimensionValue
+    width?: DimensionValue,
+    style?: StyleProp<ImageStyle>
 }
 
-function Logo({ size, margin, width }: PropsType) {
+function Logo({ size, margin, width, style }: PropsType) {
 
     const { theme } = useTheme();
 
@@ -19,12 +20,12 @@ function Logo({ size, margin, width }: PropsType) {
                     require(`./Images/logo_white.png`) 
                         : require(`./Images/logo_dark.png`)
             }
-            style={{
-            width: width ?? '100%',
-            height: size ?? 150,
-            resizeMode: 'contain',
-            margin: margin ?? 10,
-            }}
+            style={[{
+                width: width ?? '100%',
+                height: size ?? 80,
+                resizeMode: 'contain',
+                margin: margin ?? 10
+                }, style]}
         />
     );
 }

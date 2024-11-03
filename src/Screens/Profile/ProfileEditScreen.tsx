@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-crop-picker';
-import { Pressable, ScrollView, View, SafeAreaView, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Appbar, TextInput, ProgressBar, IconButton, Button, SegmentedButtons } from "react-native-paper";
-import useTheme from "../Components/Container/Theme/useTheme";
-import { Text } from "react-native-paper";
-import { useClient } from "../Components/Container";
-import { axiosInstance, getPermissions, handleToast } from "../Services";
-import { AxiosRequestConfig } from "axios";
-import { Avatar } from "../Components/Member";
-import { full_width } from "../Style/style";
-import { displayHCP } from "../Services/handicapNumbers";
-import { addUser } from "../Services/Realm/userDatabase";
+import { Appbar, Text, TextInput, ProgressBar, IconButton, Button, SegmentedButtons } from "react-native-paper";
 import { useRealm } from "@realm/react";
-import { gender } from "../Services/Client/Managers/Interfaces/Global";
-import HandicapModal from "../Components/Profile/HandicapModal";
+import { AxiosRequestConfig } from "axios";
+
+import useTheme from "../../Components/Container/Theme/useTheme";
+import { useClient } from "../../Components/Container";
+import { axiosInstance, getPermissions, handleToast } from "../../Services";
+import { Avatar } from "../../Components/Member";
+import { full_width } from "../../Style/style";
+import { displayHCP } from "../../Services/handicapNumbers";
+import { addUser } from "../../Services/Realm/userDatabase";
+import { gender } from "../../Services/Client/Managers/Interfaces/Global";
+import HandicapModal from "../../Components/Profile/HandicapModal";
 
 export interface fileI {
     size: number;
@@ -174,7 +174,7 @@ function ProfileEditScreen() {
                         <View style={[{ padding: 5 }]}>
                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: 10, marginBottom: 5 }}>
                                 <Avatar style={{ marginRight: 20 }} size={64} url={profilePictures.avatar} />
-                                <Button mode="contained" onPress={() => changePictures("avatar")}>Change Profile Picture</Button>
+                                <Button mode="contained" onPress={() => changePictures("avatar")}>{t("profile.edit_pfp")}</Button>
                             </View>
                             <TextInput
                                 label={`${t("profile.username")}`}
@@ -200,17 +200,17 @@ function ProfileEditScreen() {
                                 onChangeText={(text) => setModif({ ...modif, description: text })}
                             />
                             <View style={{ margin: 10 }}>
-                                <Text style={{ marginBottom: 10 }}>Player status </Text>
+                                <Text style={{ marginBottom: 10 }}>{t("profile.edit_player_status")}</Text>
                                 <SegmentedButtons
                                     value={modif.golf_info?.player_status?.toString() ?? "0"}
                                     onValueChange={(value) => setModif({ ...modif, golf_info: { ...modif.golf_info, player_status: parseInt(value) } })}
                                     buttons={[
                                         {
-                                            label: "Amateur",
+                                            label: t("profile.player_status_amateur"),
                                             value: "0"
                                         },
                                         {
-                                            label: "Pro",
+                                            label: t("profile.player_status_pro"),
                                             value: "1"
                                         }
                                     ]}
@@ -239,7 +239,7 @@ function ProfileEditScreen() {
                     </View>
                                  */
                             }
-                            <Button mode={"contained"} onPress={() => showModal()}>Change Handicap : {displayHCP(modif.golf_info.handicap)}</Button>
+                            <Button mode={"contained"} onPress={() => showModal()}>{t("profile.edit_hcp")} : {displayHCP(modif.golf_info.handicap)}</Button>
                         </View>
                     </View>
                 </KeyboardAwareScrollView>

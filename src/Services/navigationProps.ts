@@ -2,6 +2,9 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { loginRoutesNames } from '../Navigator/LoginNavigation';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ParamListBase } from '@react-navigation/native';
+import { MessageStackScreens } from '../Navigator/MessageStack';
+import { SettingsStackScreens } from '../Navigator/SettingsStack';
+import { userInfo } from './Client/Managers/Interfaces/Global';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -22,27 +25,31 @@ export type LoginRootParamList = {
     DrawerNavigation: undefined;
 }
 
-export type RootStackParamList = {
-    ProfileStack: {
-        screen: string,
-        params: {
-            nickname?: string
-            [x: string]: any;
-        }
+export type ProfileStackParams = {
+    ProfileScreen: {
+        user_info: userInfo;
     };
+    ProfileEditScreen: undefined;
+}
+
+export type RootStackParamList = {
     MapScreen: undefined;
     DrawerNavigation: undefined;
+    ProfileStack: {
+        screen: string,
+        params?: object;
+    };
     Splash: undefined;
     LoginNavigator?: {
         screen: loginRoutesNames
     };
     ProfileEditScreen: undefined;
     MessagesStack: {
-        screen?: "CreateGroupScreen" | "MessageScreen",
+        screen?: MessageStackScreens
         params?: object;
     },
     SettingsStack: {
-        screen?: "BlockScreen" | "SessionScreen" | "SecurityScreen"
+        screen?: SettingsStackScreens
     },
     RegisterVerificationCode: {
         code: string[] | false;
