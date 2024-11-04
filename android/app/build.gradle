@@ -107,7 +107,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode googleVer
         versionName userVer
-        setProperty("archivesBaseName", "trender-v" + versionCode + "(" + versionName + ")")
+        setProperty("archivesBaseName", "flyaway-v" + versionCode + "(" + versionName + ")")
     }
     signingConfigs {
         debug {
