@@ -11,6 +11,7 @@ import { Avatar } from '../Components/Member';
 import { SearchBar } from '../Components/Elements/Input';
 import { StyleSheet } from 'react-native';
 import { ShrinkEffect } from '../Components/Effects';
+import { golfInterface } from '../Services/Client/Managers/Interfaces/Search';
 
 type LocationType = {
   latitude: number,
@@ -34,11 +35,12 @@ const MapScreen = () => {
   const [searchLocation, setSearchLocation] = useState<LocationType & { width?: number, heigth?: number } | undefined>(undefined);
   const [searchUser, setSearchUser] = useState("");
   const [users, setUsers] = useState<userInfo[] | undefined>(undefined);
+  const [golfs, setGolfs] = useState<golfInterface[] | undefined>(undefined);
   const [mapType, setMapType] = useState<MapType>("standard");
 
   const changeMapType = () => mapType === "standard" ? setMapType("satellite") : setMapType("standard");
 
-  const getCurrentPosition = async () => {
+  const start = async () => {
     try {
       const position = await getCurrentLocation();
       if (position) {
@@ -51,7 +53,8 @@ const MapScreen = () => {
         }
         setLocation(location);
         setSearchLocation(location);
-        updateMapUsers(crd.longitude, crd.latitude)
+        await updateMapUsers(crd.longitude, crd.latitude);
+        await updateMapGolfs(crd.longitude, crd.latitude);
       }
       return;
     } catch (error) {
@@ -60,7 +63,7 @@ const MapScreen = () => {
   }
 
   useEffect(() => {
-    getCurrentPosition()
+    start()
   }, [])
 
   const updateUserLocation = async (long = location?.longitude, lat = location?.latitude) => {
@@ -69,12 +72,24 @@ const MapScreen = () => {
     return handleToast(t(`commons.success`));
   }
 
-  const updateMapUsers = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
-    const request = await client.user.displayUsersMap(long ?? 48.864716, lat ?? 2.349014, {
+  const updateMapGolfs = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+    const request = await client.search.map.golfs({
+      long: long ?? 48.864716,
+      lat: lat ?? 2.349014,
       max_distance: searchLocation?.width ?? 50000
-    });
+    })
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
-    return setUsers(request.data);
+    return setGolfs(request.data.golfs.items);
+  }
+
+  const updateMapUsers = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+    const request = await client.search.map.users({
+      long: long ?? 48.864716,
+      lat: lat ?? 2.349014,
+      max_distance: searchLocation?.width ?? 50000
+    })
+    if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
+    return setUsers(request.data.users.items);
   }
 
   function calculateMapSize(region: LocationType) {
@@ -92,6 +107,23 @@ const MapScreen = () => {
     const heightMeters = latitudeDelta * 111320;
 
     return { widthMeters, heightMeters };
+  }
+
+  const pressChip = async (type: "users" | "golfs" | string) => {
+    switch (type) {
+      case "golfs":
+        await updateMapGolfs();
+        setUsers([])
+        break;
+      case 'users':
+        await updateMapUsers();
+        setGolfs([])
+      case 'events':
+        setGolfs([])
+        setUsers([])
+      default:
+        break;
+    }
   }
 
   const [searchChips] = useState([
@@ -125,30 +157,30 @@ const MapScreen = () => {
         )
       }
       <View style={styles.globalView}>
-      <View style={{
-            position: "absolute",
-            zIndex: 3,
-            top: 5, // 85,
+        <View style={styles.elements}>
+          <View style={{
+            top: 85,
             right: 5,
             flexDirection: "column"
           }}>
             <Tooltip title='Change Map Type'>
               <IconButton icon={mapType === "standard" ? "map" : "satellite-variant"} onPress={() => changeMapType()} mode='contained' size={25} />
             </Tooltip>
-            <Tooltip title='Update Showed Users'>
-              <IconButton icon="sync" onPress={() => updateMapUsers()} mode='contained' size={25} />
-            </Tooltip>
-            <Tooltip title='Update Location'>
+            {
+              !searchLocation?.width || searchLocation.width && searchLocation.width < 100 * 1000 && (
+                <Tooltip title='Update Map'>
+                  <IconButton icon="sync" onPress={() => updateMapUsers()} mode='contained' size={25} />
+                </Tooltip>
+              )
+            }
+            <Tooltip title='Update Your Location'>
               <IconButton icon="account-sync" onPress={() => updateUserLocation()} mode='contained' size={25} />
             </Tooltip>
             <Tooltip title='Center'>
               <IconButton icon="crosshairs-gps" onPress={() => centerMap()} mode='contained' size={25} />
             </Tooltip>
           </View>
-        <View style={styles.elements}>
-          {
-            /**
-             *           <View style={styles.searchElements}>
+          <View style={styles.searchElements}>
             <SearchBar
               style={{
                 width: "100%"
@@ -161,12 +193,10 @@ const MapScreen = () => {
             />
             <ScrollView contentContainerStyle={styles.searchChips} style={{ width: "100%" }}>
               {
-                searchChips.map((c, idx) => <ShrinkEffect key={idx} shrinkAmount={0.90}><Chip style={{ borderRadius: 60 }}>{c.text}</Chip></ShrinkEffect>)
+                searchChips.map((c, idx) => <ShrinkEffect key={idx} shrinkAmount={0.90}><Chip style={{ borderRadius: 60 }} onPress={() => pressChip(c.value)}>{c.text}</Chip></ShrinkEffect>)
               }
             </ScrollView>
           </View>
-             */
-          }
         </View>
         <MapView
           provider={PROVIDER_GOOGLE}
@@ -215,8 +245,8 @@ const MapScreen = () => {
                     }
                   })}
                   coordinate={{
-                    longitude: u.golf_info.location[0],
-                    latitude: u.golf_info.location[1]
+                    longitude: u.golf_info.location.longitude,
+                    latitude: u.golf_info.location.latitude
                   }}
                 // calloutOffset={{ x: -8, y: 28 }}
                 // calloutAnchor={{ x: 0.5, y: -0.2 }}
@@ -224,6 +254,19 @@ const MapScreen = () => {
                 >
                   <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
                 </Marker>
+              )
+            })
+          }
+          {
+            golfs && golfs.length > 0 && golfs.map((g, idx) => {
+              return (
+                <Marker
+                  key={idx}
+                  coordinate={{
+                    longitude: g.location.longitude,
+                    latitude: g.location.latitude
+                  }}
+                />
               )
             })
           }

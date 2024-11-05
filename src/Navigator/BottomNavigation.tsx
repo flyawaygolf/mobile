@@ -18,6 +18,7 @@ export default function BottomStack() {
             screenOptions={{
                 headerShown: false,
             }}
+            initialRouteName='MapScreen'
             tabBar={({ navigation, state, descriptors, insets }) => (
                 <BottomNavigation.Bar
                     labeled={false}

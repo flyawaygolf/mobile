@@ -8,6 +8,7 @@ import GuildManager from './Managers/GuildManager';
 import BlockManager from './Managers/BlockManager';
 import MessageManager from './Managers/MessageManager';
 import PushNoficationManager from './Managers/PushNoficationManager';
+import SearchManager from './Managers/SearchManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -20,6 +21,7 @@ class Client extends RequestEmitter {
     public guilds: GuildManager;
     public block: BlockManager;
     public messages: MessageManager;
+    public search: SearchManager;
     public pushNotification: PushNoficationManager;
 
     constructor(params: requestParams) {
@@ -30,6 +32,7 @@ class Client extends RequestEmitter {
         this.guilds = new GuildManager(params);
         this.block = new BlockManager(params);
         this.messages = new MessageManager(params);
+        this.search = new SearchManager(params);
         this.pushNotification = new PushNoficationManager(params);
     }
 

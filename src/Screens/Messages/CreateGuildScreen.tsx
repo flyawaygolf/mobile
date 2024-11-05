@@ -56,12 +56,14 @@ const CreateGuildScreen = () => {
     }, [])
 
     const searchMember = async () => {
-        const request = await client.user.search(text, {
-            long: location?.longitude,
-            lat: location?.latitude
+        const request = await client.search.users(text, {
+            location: location && {
+                lat: location.latitude,
+                long: location.longitude
+            }
         })
         if (request.error) return handleToast(t(`errors.${request.error.code}`));
-        if (request.data) return setList(request.data);
+        if (request.data) return setList(request.data.users.items);
     }
 
     useEffect(() => {
@@ -95,7 +97,13 @@ const CreateGuildScreen = () => {
                 {
                     selected.length > 0 && (
                         <View style={[styles.row, { justifyContent: "flex-end" }]}>
-                            <Button textColor={colors.text_normal} loading={loading} onPress={() => loading ? {} : createDm()} labelStyle={{ fontSize: 16, fontWeight: '700' }} style={{ marginRight: 10 }} uppercase={false}>{t("commons.next")}</Button>
+                            <Button
+                                textColor={colors.text_normal}
+                                loading={loading}
+                                onPress={() => loading ? {} : createDm()}
+                                labelStyle={{ fontSize: 16, fontWeight: '700' }}
+                                style={{ marginRight: 10 }}
+                                uppercase={false}>{t("commons.next")}</Button>
                         </View>
                     )
                 }
@@ -108,7 +116,11 @@ const CreateGuildScreen = () => {
                     }}
                     data={selected}
                     keyExtractor={item => item.user_id}
-                    renderItem={({ item }) => <Chip compact={false} style={{ backgroundColor: colors.bg_secondary, width: 120, marginRight: 5 }} avatar={<Avatar size={25} url={client.user.avatar(item.user_id, item.avatar)} />} onPress={() => setSelected((s) => s.filter(m => m.user_id !== item.user_id))}>{item.username}</Chip>}
+                    renderItem={({ item }) => <Chip
+                        compact={false}
+                        style={{ backgroundColor: colors.bg_secondary, width: 120, marginRight: 5 }}
+                        avatar={<Avatar size={25} url={client.user.avatar(item.user_id, item.avatar)} />}
+                        onPress={() => setSelected((s) => s.filter(m => m.user_id !== item.user_id))}>{item.username}</Chip>}
                     numColumns={3}
                     horizontal={false}
                 />

@@ -3,8 +3,7 @@ import { cdnbaseurl } from '../../constante';
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { successResponse } from './Interfaces/Global';
 import { myInformations } from './Interfaces/Me';
-import { searchUsers } from './Interfaces/Search';
-import { modifI } from '../../../Screens/ProfileEditScreen';
+import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
 
 class UserManager extends RequestEmitter {
   private cdnurl: string;
@@ -59,9 +58,7 @@ class UserManager extends RequestEmitter {
 
   public async edit(options: modifI) {
     const request = await this.patchRequest("/users/me", options);
-
     const response = request as myInformations;
-
     return response;
   }
 
@@ -78,47 +75,6 @@ class UserManager extends RequestEmitter {
     });
 
     const response = request as myInformations;
-
-    return response;
-  }
-
-  public async search(query: string, options?: {
-    pagination_key?: string,
-    long?: number,
-    lat?: number
-  }) {
-    let _url = `/users`;
-    const parameters = []
-
-    parameters.push(`query=${encodeURIComponent(query)}`);
-    if (options?.pagination_key) parameters.push(`pagination_key=${options.pagination_key}`);
-    if (options?.long) parameters.push(`long=${options.long}`);
-    if (options?.lat) parameters.push(`lat=${options.lat}`);
-    if (parameters.length > 0) _url = _url.concat("?");
-
-    const request = await this.getRequest(_url.concat(parameters.join("&")));
-    const response = request as searchUsers;
-
-    return response;
-  }
-
-  public async displayUsersMap(long: number, lat: number, options?: {
-    max_distance?: number,
-    width_m?: number,
-    height_m?: number
-  }) {
-    let _url = `/map/users`;
-    const parameters = []
-
-    parameters.push(`long=${encodeURIComponent(long)}`);
-    parameters.push(`lat=${encodeURIComponent(lat)}`);
-    if (options?.max_distance) parameters.push(`max_distance=${encodeURIComponent(options.max_distance)}`);
-    if (options?.width_m) parameters.push(`width_m=${encodeURIComponent(options.width_m)}`);
-    if (options?.height_m) parameters.push(`height_m=${encodeURIComponent(options.height_m)}`);
-    if (parameters.length > 0) _url = _url.concat("?");
-
-    const request = await this.getRequest(_url.concat(parameters.join("&")));
-    const response = request as searchUsers;
 
     return response;
   }

@@ -1,5 +1,10 @@
 import { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 
+export interface requestResponseInterface<T extends Record<string, any>> {
+    error?: error,
+    data?: T
+}
+
 export interface error {
     message: string,
     code: number
@@ -57,8 +62,12 @@ export interface userInfo {
         handicap: number;
         started?: Date;
         player_status: player_status;
-        location: [number, number]; // [longitude, latitude]
-    }
+        location: {
+            latitude: number,
+            longitude: number
+        }
+    },
+    distance?: number
 }
 
 export interface embeds {
@@ -109,16 +118,16 @@ export interface uploadFiles {
 export interface pollInterface {
     poll_id: string,
     time: {
-      days: number,
-      hours: number,
-      minutes: number
+        days: number,
+        hours: number,
+        minutes: number
     },
     options: Array<{
         name: string;
         option_id: string
     }> | []
 }
-  
+
 
 export interface givewayInterface {
     follow: Array<string>;
