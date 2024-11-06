@@ -22,14 +22,14 @@ const formatMessages = (messages: fetchMessageResponseInterface[], guild_id: str
     author: {
       id: m.from.user_id,
       firstName: m.from.username,
-      imageUrl: client.user.avatar(m.from.user_id, m.from.avatar)
+      imageUrl: client.user.avatar(m.from.user_id, m.from.avatar),
     },
     guild_id: guild_id,
     id: m.message_id,
     status: undefined,
     text: m.content,
     type: "text",
-    createdAt: dayjs(m.created_at).toDate().getTime()
+    createdAt: dayjs(m.created_at).toDate().getTime(),
   }
 }))
 
@@ -54,7 +54,7 @@ const MessageScreen = ({ route }: any) => {
       const request = await client.messages.fetch(params.guild_id);
       setLoadMessages(false)
       if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
-      if (request.data.length < 1) return;    
+      if (request.data.length < 1) return;
       dispatch(initGuildMessages(formatMessages(request.data, params.guild_id, client)))
       dispatch(modifyGuildList({ guild_id: params.guild_id, content: request.data[0].content, created_at: request.data[0].created_at, message_id: request.data[0].message_id, unread: false }))
       setPaginationKey(request.pagination_key)
@@ -108,14 +108,9 @@ const MessageScreen = ({ route }: any) => {
     dispatch(addGuildMessages(formatMessages([request.data], params.guild_id, client)))
     dispatch(changeLastMessageGuildList({
       data: request.data,
-      guild_id: params.guild_id
+      guild_id: params.guild_id,
     }))
   }, []);
-
-
-  const createAttachments = () => {
-    console.log("pressed");
-  }
 
   const enableModal = (message: MessageType.Text) => {
     setMessageInfo(message);
@@ -133,7 +128,7 @@ const MessageScreen = ({ route }: any) => {
       )
     );
   };
-  
+
   const theme = useMemo(() => ({
     ...defaultTheme,
     colors: {
@@ -153,7 +148,7 @@ const MessageScreen = ({ route }: any) => {
       receivedMessageBodyTextStyle: { ...defaultTheme.fonts.receivedMessageBodyTextStyle, color: colors.text_normal },
     },
   }), [colors]);
-  
+
 
   return (
     <SafeBottomContainer padding={0}>
@@ -162,7 +157,7 @@ const MessageScreen = ({ route }: any) => {
       <Chat
         locale={i18n.language}
         onEndReached={() => onBottom()}
-        sendButtonVisibilityMode='editing'
+        sendButtonVisibilityMode="editing"
         emptyState={() => loadMessages ? <Loader /> : <Text>{t("messages.no_messages")}</Text>}
         // onAttachmentPress={() => createAttachments()}
         showUserAvatars={true}
@@ -174,7 +169,7 @@ const MessageScreen = ({ route }: any) => {
         onSendPress={(message) => sendMessageToChannel(message)}
         user={{
           id: user.user_id,
-          imageUrl: client.user.avatar(user.user_id, user.avatar)
+          imageUrl: client.user.avatar(user.user_id, user.avatar),
         }}
       />
     </SafeBottomContainer>
@@ -192,7 +187,7 @@ const mapDispatchToProps = {
   modifyGuildList,
   initGuildMessages,
   addGuildMessages,
-  addScrollGuildMessages
+  addScrollGuildMessages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageScreen);

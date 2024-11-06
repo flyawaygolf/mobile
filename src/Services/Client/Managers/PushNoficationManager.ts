@@ -8,7 +8,7 @@ class PushNoficationManager extends RequestEmitter {
 
   public async register(fcmToken: string) {
     const request = await this.postRequest(`/notifications/push`, {
-      fcmToken: fcmToken
+      fcmToken: fcmToken,
     });
     const response = request as successResponse;
 
@@ -17,7 +17,7 @@ class PushNoficationManager extends RequestEmitter {
 
   public async delete(fcmToken: string) {
     const request = await this.deleteRequest(`/notifications/push`, {
-      fcmToken: fcmToken
+      fcmToken: fcmToken,
     });
     const response = request as emptyResponse;
 

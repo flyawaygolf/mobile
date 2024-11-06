@@ -9,10 +9,10 @@ export default function MultipleAvatar({ size = 33 }) {
             width: size,
             height: size,
             borderRadius: 60 / 2,
-            marginRight: 5
+            marginRight: 5,
             }} source={{
                 cache: "force-cache",
-                uri: `${cdnbaseurl}/guilds_avatars/guilds_1.png`
+                uri: `${cdnbaseurl}/guilds_avatars/guilds_1.png`,
             }} />
     )
 }

@@ -8,7 +8,7 @@ export const getCurrentLocation = async (): Promise<GeolocationResponse | false>
         return new Promise((resolve, reject) => {
             Geolocation.getCurrentPosition(
                 async (pos) => {
-                    // Retourner la localisation via "resolve"                  
+                    // Retourner la localisation via "resolve"
                     resolve(pos);
                 },
                 (err) => {

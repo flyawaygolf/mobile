@@ -16,15 +16,15 @@ function Logo({ size, margin, width, style }: PropsType) {
     return (
         <Image
             source={
-                theme === "dark" ? 
-                    require(`./Images/logo_white.png`) 
+                theme === "dark" ?
+                    require(`./Images/logo_white.png`)
                         : require(`./Images/logo_dark.png`)
             }
             style={[{
                 width: width ?? '100%',
                 height: size ?? 80,
                 resizeMode: 'contain',
-                margin: margin ?? 10
+                margin: margin ?? 10,
                 }, style]}
         />
     );

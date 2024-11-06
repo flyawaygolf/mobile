@@ -44,8 +44,7 @@ export interface searchGolfsMap extends requestResponseInterface<{
 
 export interface searchAll extends requestResponseInterface<{
     query: searchResponseQuery;
-    users: itemsInterface<userInfo>;
-    golfs: itemsInterface<golfInterface>;
+    result: itemsInterface<userInfo | golfInterface>;
 }> {}
 
 export interface searchUsers extends requestResponseInterface<{

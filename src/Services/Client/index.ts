@@ -15,7 +15,7 @@ export const webSocketRoutes = WebSocketRoutes;
 export const languageList = LanguageList;
 
 class Client extends RequestEmitter {
-    
+
     public user: UserManager;
     public sessions: SessionManager;
     public guilds: GuildManager;
@@ -38,7 +38,7 @@ class Client extends RequestEmitter {
 
     public async status() {
         const request = await this.getRequest(`/status`);
-    
+
         const response = request as {
             data: {
                 "status": "Beta" | "Live" | "Deprecated",
@@ -51,5 +51,5 @@ class Client extends RequestEmitter {
       }
 
 }
-  
+
 export default Client;

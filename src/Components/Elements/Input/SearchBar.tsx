@@ -49,7 +49,7 @@ const SearchBar: SectionProps = ({ style, placeholder, onChangeText, value = "",
                         value={value}
                         style={{
                             width: "75%",
-                            color: colors.text_normal
+                            color: colors.text_normal,
                         }}
                         keyboardType="web-search"
                         onSubmitEditing={onSearchPress}

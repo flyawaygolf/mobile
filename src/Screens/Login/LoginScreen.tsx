@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { Animated, View, ScrollView, SafeAreaView, StyleSheet, Easing } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Animated, View, StyleSheet, Easing } from 'react-native';
 import { HelperText, Icon, Text, TextInput } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useRealm } from '@realm/react';
 
-import { FlyAway, Logo } from '../../Components/Elements/Assets';
 import { convertFirstCharacterToUppercase, deviceInfo, LoginRootParamList, ScreenNavigationProps } from '../../Services';
 import { useClient, useTheme } from '../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../Components/Elements/Buttons';
@@ -31,11 +29,11 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
   const [loadingSendCode, setLoadingSendCode] = useState(false);
   const [error, setError] = useState({
     error: false,
-    response: ""
+    response: "",
   });
   const [users, setUsers] = useState({
     email: '',
-    code: ''
+    code: '',
   });
 
   const sendCode = async () => {
@@ -50,7 +48,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
 
     const response = await client.sessions.sendCode({
       email: users.email,
-      device_name: friendly_name
+      device_name: friendly_name,
     })
     setLoadingSendCode(false)
 
@@ -71,7 +69,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
     setLoading(true);
     const response = await client.sessions.create({
       email: users.email,
-      code: users.code
+      code: users.code,
     })
 
     if (response.error || !response.data) {
@@ -85,7 +83,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
       addUser(realm, data);
 
       const new_client = new Client({
-        token: data.token
+        token: data.token,
       })
 
       setValue({ ...allvalues, client: new_client, token: data.token, user: data, state: "loged" })
@@ -96,13 +94,12 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
   return (
     <LoginContainer>
       <LoaderBox loading={loading} />
-      <View style={style.section}>
-      </View>
+      <View style={style.section} />
       <Text style={{ color: error.error ? colors.warning_color : colors.color_green, textAlign: "center", marginBottom: 10 }}>{error.response}</Text>
       <View style={style.section}>
         <TextInput
-          mode='outlined'
-          placeholder='email@example.com'
+          mode="outlined"
+          placeholder="email@example.com"
           label={`${t("login.email")}`}
           autoCapitalize="none"
           keyboardType="email-address"
@@ -126,8 +123,8 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
           <Animated.View style={{ opacity: fadeAnim }}>
             <View style={style.section}>
               <TextInput
-                mode='outlined'
-                placeholder='Email code'
+                mode="outlined"
+                placeholder="Email code"
                 label={`${t("login.code")}`}
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -153,7 +150,7 @@ const style = StyleSheet.create({
   area: {
     flex: 1,
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
   section: {
     flexDirection: 'column',
@@ -162,7 +159,7 @@ const style = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     margin: 10,
-  }
+  },
 })
 
 export default LoginScreen;

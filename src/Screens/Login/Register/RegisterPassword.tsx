@@ -48,8 +48,7 @@ const RegisterPassword = ({
 
     return (
         <LoginContainer>
-            <View style={style.section}> 
-            </View>
+            <View style={style.section} />
             <View style={style.section}>
             <Text style={{ color: colors.warning_color, textAlign: 'center', marginBottom: 10 }}> {error.error && error.response} </Text>
                 <PaperTextInput

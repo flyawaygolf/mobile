@@ -16,7 +16,7 @@ function LinkButtonText({ text, onPress }: PropsType) {
             <Text style={{
                 paddingVertical: 10,
                 fontSize: 16,
-                textDecorationLine: "underline"
+                textDecorationLine: "underline",
             }}>{text}</Text>
         </TouchableOpacity>
     )

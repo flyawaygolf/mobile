@@ -63,6 +63,13 @@
         "no_trends_world_region": "Aucune Trends dans le monde aujourd'hui. Crée la première Trend de la journée !",
         "no_trends_world_region_all_time": "Aucune Trend dans le monde. Soit le premier à créer une Trend !"
     },
+    "map": {
+        "refresh": "Actualiser",
+        "players": "Joueurs",
+        "golfs": "Golfs",
+        "all": "Tout",
+        "no_results": "Pas de résultats pour {{query}}"
+    },
     "badges": {
         "TRENDER_EMPLOYEE": "Employé Trender",
         "TRENDER_PARTNER": "Trender Partenaire",

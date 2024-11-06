@@ -25,7 +25,7 @@ class UserManager extends RequestEmitter {
       username: options.username,
       password: options.password,
       birthday: dayjs(options.birthday).format(),
-      captcha_code: options?.captcha_code ?? ""
+      captcha_code: options?.captcha_code ?? "",
     });
 
     const response = request as successResponse;
@@ -34,7 +34,7 @@ class UserManager extends RequestEmitter {
 
   public async verifyEmail(email: string) {
     const request = await this.postRequest(`/users/register/email`, {
-      email: email
+      email: email,
     });
 
     const response = request as successResponse;
@@ -63,15 +63,15 @@ class UserManager extends RequestEmitter {
   }
 
   /**
-   * 
+   *
    * @param location [long, lat]
-   * @returns 
+   * @returns
    */
   public async editLocation(location: [number, number]) {
     const request = await this.patchRequest("/users/me", {
       "golf_info": {
-        "location": location
-      }
+        "location": location,
+      },
     });
 
     const response = request as myInformations;
@@ -82,7 +82,7 @@ class UserManager extends RequestEmitter {
   public async report(target_id: string, reason: number, description?: string) {
     const request = await this.postRequest(`/reports/users/${target_id}`, {
       reason: reason,
-      description: description
+      description: description,
     });
 
     const response = request as successResponse;
@@ -91,7 +91,7 @@ class UserManager extends RequestEmitter {
 
   public async delete(password: string) {
     const request = await this.deleteRequest(`/users/me`, {
-      "password": password
+      "password": password,
     });
 
     const response = request as successResponse;

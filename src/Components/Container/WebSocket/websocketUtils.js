@@ -32,12 +32,12 @@ export function useWebLocalsocket(onOpen, onMessage) {
   const sendMessage = (data = {
     code: 0,
     token: "",
-    data: {}
+    data: {},
   }) => {
     session.send(JSON.stringify({
       code: data.code,
       token: data?.token,
-      data: data?.data
+      data: data?.data,
     }));
   };
 

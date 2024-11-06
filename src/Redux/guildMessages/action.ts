@@ -23,10 +23,10 @@ export const initGuildMessages = (info: MessageType.Any[]) => ({
 
 export const deleteGuildMessages = (info: MessageType.Any) => ({
     type: DELETE_GUILD_MESSAGES,
-    info
+    info,
 })
 
 export const modifyGuildMessages = (info: MessageType.Any) => ({
     type: MODIFY_GUILD_MESSAGES,
-    info
+    info,
 })

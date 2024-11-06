@@ -15,9 +15,9 @@ class RequestEmitter {
     this.instance = axios.create({
       baseURL: params?.apiurl ?? apibaseurl,
       headers: {
-        flyawaytoken: params?.token ?? ''
+        flyawaytoken: params?.token ?? '',
       },
-      validateStatus: s => s < 501
+      validateStatus: s => s < 501,
     });
   }
 
@@ -25,7 +25,7 @@ class RequestEmitter {
     const request = await this.instance({
       method: 'POST',
       url: url,
-      data: data
+      data: data,
     });
 
     return request.data;
@@ -35,10 +35,10 @@ class RequestEmitter {
     const request = await this.instance({
       method: 'POST',
       headers: {
-        'content-type': 'multipart/form-data'
+        'content-type': 'multipart/form-data',
       },
       url: url,
-      data: data
+      data: data,
     });
 
     return request.data;
@@ -49,7 +49,7 @@ class RequestEmitter {
       method: 'PATCH',
       url: url,
       data: data,
-      params
+      params,
     });
 
     return request.data;
@@ -59,7 +59,7 @@ class RequestEmitter {
     const request = await this.instance({
       method: 'PUT',
       url: url,
-      data: data
+      data: data,
     });
 
     return request.data;
@@ -68,7 +68,7 @@ class RequestEmitter {
   protected async getRequest(url: string) {
     const request = await this.instance({
       method: 'GET',
-      url: url
+      url: url,
     });
 
     return request.data;
@@ -78,7 +78,7 @@ class RequestEmitter {
     const request = await this.instance({
       method: 'DELETE',
       url: url,
-      data: data
+      data: data,
     });
 
     return request.data;

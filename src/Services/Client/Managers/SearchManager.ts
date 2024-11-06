@@ -3,7 +3,7 @@ import { searchAll, searchUsers, searchGolfs } from './Interfaces/Search';
 import SearchMapManager, { LocationQuery } from './SearchMapManager';
 
 class SearchManager extends RequestEmitter {
-  
+
   public map: SearchMapManager;
   constructor(params: requestParams) {
     super(params);
@@ -45,7 +45,6 @@ class SearchManager extends RequestEmitter {
       if (location?.lat) parameters.push(`lat=${location.lat}`);
     }
     if (parameters.length > 0) _url = _url.concat("?");
-    if (parameters.length > 0) _url = _url.concat("?");
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as searchUsers;
@@ -66,7 +65,6 @@ class SearchManager extends RequestEmitter {
       if (location?.long) parameters.push(`long=${location.long}`);
       if (location?.lat) parameters.push(`lat=${location.lat}`);
     }
-    if (parameters.length > 0) _url = _url.concat("?");
     if (parameters.length > 0) _url = _url.concat("?");
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));

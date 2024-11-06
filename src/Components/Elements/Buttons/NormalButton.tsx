@@ -22,13 +22,13 @@ function NormalButton({ text, onPress }: PropsType) {
                 padding: 5,
                 marginTop: 20,
                 marginBottom: 25,
-                backgroundColor: colors.bg_secondary
+                backgroundColor: colors.bg_secondary,
             }}
             activeOpacity={0.5}
             onPress={() => onPress()}>
             <Text style={{
                 paddingVertical: 10,
-                fontSize: 16
+                fontSize: 16,
             }}>{text}</Text>
         </TouchableOpacity>
     )

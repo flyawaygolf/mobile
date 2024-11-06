@@ -1,20 +1,26 @@
 import React, { PropsWithChildren, useCallback } from 'react';
-import Animated, { 
-  useAnimatedStyle, 
-  useSharedValue, 
-  withTiming, 
-  Easing 
+import { ViewProps } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  Easing,
 } from 'react-native-reanimated';
 
-interface ShrinkEffectProps extends PropsWithChildren {
-  shrinkAmount?: number;
-  duration?: number;
+interface ShrinkEffectProps extends ViewProps {
+    children: React.ReactNode;
+    shrinkAmount?: number;
+    duration?: number;
+    delay?: number;
+    distance?: number;
 }
 
-function ShrinkEffect({ 
-  children, 
-  shrinkAmount = 0.95, 
-  duration = 100 
+function ShrinkEffect({
+  children,
+  shrinkAmount = 0.95,
+  duration = 100,
+  style,
+  ...props
 }: ShrinkEffectProps) {
     const scale = useSharedValue(1);
 
@@ -27,23 +33,24 @@ function ShrinkEffect({
     const handlePressIn = useCallback(() => {
         scale.value = withTiming(shrinkAmount, {
             duration: duration,
-            easing: Easing.inOut(Easing.quad)
+            easing: Easing.inOut(Easing.quad),
         });
     }, [shrinkAmount, duration]);
 
     const handlePressOut = useCallback(() => {
         scale.value = withTiming(1, {
             duration: duration,
-            easing: Easing.inOut(Easing.quad)
+            easing: Easing.inOut(Easing.quad),
         });
     }, [duration]);
 
     return (
         <Animated.View
-            style={animatedStyle}
+            style={[animatedStyle, style]}
             onTouchStart={handlePressIn}
             onTouchEnd={handlePressOut}
             onTouchCancel={handlePressOut}
+            {...props}
         >
             {children}
         </Animated.View>

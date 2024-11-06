@@ -10,7 +10,7 @@ class MessageManager extends RequestEmitter {
   public async create(channel_id: string, params: createParams) {
     const request = await this.postRequest(`/messages/${channel_id}`, {
       attachments: params?.attachments,
-      content: params.content
+      content: params.content,
     });
 
     const response = request as messageCreateResponse;
@@ -21,7 +21,7 @@ class MessageManager extends RequestEmitter {
 
     let _url = `/messages/${channel_id}`;
     const parameters = [];
-    
+
     if(params?.skip) parameters.push(`skip=${params.skip.toString()}`);
     if(params?.limit) parameters.push(`limit=${params.limit.toString()}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
@@ -59,7 +59,7 @@ class MessageManager extends RequestEmitter {
   public async report(target_id: string, reason: number, description?: string) {
     const request = await this.postRequest(`/messages/${target_id}/reports`, {
       reason: reason,
-      description: description
+      description: description,
     });
     const response = request as successResponse;
 

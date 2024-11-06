@@ -18,13 +18,13 @@ export default function BottomStack() {
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName='MapScreen'
+            initialRouteName="MapScreen"
             tabBar={({ navigation, state, descriptors, insets }) => (
                 <BottomNavigation.Bar
                     labeled={false}
                     style={{
                         borderTopColor: colors.bg_secondary,
-                        borderTopWidth: 1
+                        borderTopWidth: 1,
                     }}
                     navigationState={state}
                     safeAreaInsets={insets}
@@ -80,10 +80,10 @@ export default function BottomStack() {
                 name="Settings"
                 component={SettingsScreen}
                 options={{
-                    tabBarIcon: ({ size }) => {                        
+                    tabBarIcon: ({ size }) => {
                         return <Avatar.Image size={size} source={{
                             cache: "force-cache",
-                            uri: client.user.avatar(user.user_id, user.avatar)
+                            uri: client.user.avatar(user.user_id, user.avatar),
                         }} />;
                     },
                 }}

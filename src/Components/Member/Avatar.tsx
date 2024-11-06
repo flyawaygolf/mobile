@@ -25,10 +25,10 @@ export default function Avatar({ url, size = 33, marginRight = 5, marginLeft = 0
             marginRight: marginRight,
             marginLeft: marginLeft,
             resizeMode: "cover",
-            backgroundColor: colors.bg_secondary
+            backgroundColor: colors.bg_secondary,
         }, style]} source={{
             cache: "force-cache",
-            uri: url
+            uri: url,
         }} />
     )
 }

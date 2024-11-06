@@ -24,7 +24,7 @@ const Renderer: SectionProps = ({ content, noBr, onTextLayout }) => {
     const { colors } = useTheme();
 
     const enter = content.split("\n");
-    
+
     return (
         <Text onTextLayout={onTextLayout}>
             {

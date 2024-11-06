@@ -49,7 +49,7 @@ const UserStoreRealmSchema: Realm.ObjectSchema = {
     birthday: "date",
     session_id: "string",
     token: "string",
-  }
+  },
 };
 
 // Fonctions CRUD

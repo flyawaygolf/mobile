@@ -6,9 +6,9 @@ import { fetchSessionsResponseSchema } from "../../../Services/Client/Managers/I
 import { useTheme } from "../../Container";
 import { messageFormatDate } from "../../../Services";
 
-type sectionProps = { 
-    item: fetchSessionsResponseSchema, 
-    session_id: string, 
+type sectionProps = {
+    item: fetchSessionsResponseSchema,
+    session_id: string,
     onPress: () => any
 }
 
@@ -31,7 +31,7 @@ function SessionBox({ item, session_id, onPress }: sectionProps) {
             return "devices"
         }
     }
-    
+
     return (
         <View style={{ flexDirection: "row", alignItems: "center", padding: 10, justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", borderColor: colors.text_normal, borderWidth: 1, padding: 5, borderRadius: 60 / 2 }}>

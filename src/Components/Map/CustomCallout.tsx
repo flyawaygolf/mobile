@@ -26,7 +26,7 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
     setTimeout(() => {
       navigation.navigate("MessagesStack", {
         screen: "MessageScreen",
-        params: response.data
+        params: response.data,
       })
     }, 500)
   }
@@ -39,7 +39,7 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
   const report = async () => {
     Alert.alert(`Report ${user_info.username}`, "Are you sure you want to report this user ?", [{
       text: t("commons.no"),
-      style: "cancel"
+      style: "cancel",
   },
   {
       text: t("commons.yes"),
@@ -48,14 +48,14 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
         handleToast(t("commons.success"));
       },
-      style: "default"
+      style: "default",
   }])
 }
 
   const block = async () => {
     Alert.alert(`Block ${user_info.username}`, "Are you sure you want to block this user ?", [{
       text: t("commons.no"),
-      style: "cancel"
+      style: "cancel",
   },
   {
       text: t("commons.yes"),
@@ -64,7 +64,7 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
         handleToast(t("commons.success"))
       },
-      style: "default"
+      style: "default",
   }])
   }
 
@@ -78,7 +78,7 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
       <View style={{ height: 125, position: "relative" }}>
         <View style={[style.banner_image, { backgroundColor: user_info.accent_color }]} />
       </View>
-      <Card mode='contained' style={{ position: "absolute", zIndex: 99, right: 0, top: 5 }}>
+      <Card mode="contained" style={{ position: "absolute", zIndex: 99, right: 0, top: 5 }}>
         <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
           <Tooltip title={t("profile.copy_user_id")}>
             <IconButton style={{ margin: 0 }} icon={"content-copy"} onPress={() => copyUserID()} />
@@ -102,7 +102,7 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
               borderWidth: 3,
               marginTop: -40,
               marginLeft: 10,
-              backgroundColor: colors.bg_secondary
+              backgroundColor: colors.bg_secondary,
             }}
             url={`${client.user.avatar(user_info.user_id, user_info.avatar)}`}
           />
@@ -112,22 +112,22 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
           {user_info.user_id === user.user_id ? <Button icon="account-edit" onPress={() => navigation.navigate("ProfileEditScreen")}>Edit</Button> : <Button icon="message-text" onPress={() => createDM()}>Send DM</Button>}
         </View>
       </View>
-      <Card style={{ margin: 5 }} mode='contained'>
+      <Card style={{ margin: 5 }} mode="contained">
         <Card.Title
           titleStyle={{
-            fontWeight: 800
+            fontWeight: 800,
           }}
           subtitleStyle={{
-            fontWeight: 500
+            fontWeight: 500,
           }}
-          left={() => <IconButton mode='contained' icon="content-copy" onPress={() => copyNickname()} />}
-          titleVariant='titleLarge'
-          subtitleVariant='labelLarge'
+          left={() => <IconButton mode="contained" icon="content-copy" onPress={() => copyNickname()} />}
+          titleVariant="titleLarge"
+          subtitleVariant="labelLarge"
           title={user_info.username}
           subtitle={`@${user_info.nickname}`}
         />
       </Card>
-      <Card style={{ margin: 5 }} mode='contained'>
+      <Card style={{ margin: 5 }} mode="contained">
         <Card.Content>
           <View style={{ marginBottom: 5 }}>
             <Text style={{ fontWeight: '900' }}>Description</Text>
@@ -147,8 +147,8 @@ const style = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default CustomCallout;

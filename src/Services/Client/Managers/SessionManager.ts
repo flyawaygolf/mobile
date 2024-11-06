@@ -16,7 +16,7 @@ class SessionManager extends RequestEmitter {
 
   public async deleteOne(session_id: string, params: { password: string }) {
     const request = await this.deleteRequest(`/sessions/${session_id}`, {
-      password: params.password
+      password: params.password,
     });
 
     const response = request as successResponse;
@@ -25,7 +25,7 @@ class SessionManager extends RequestEmitter {
 
   public async deleteAll(password: string) {
     const request = await this.deleteRequest(`/sessions`, {
-      password: password
+      password: password,
     });
 
     const response = request as emptyResponse;
@@ -43,7 +43,7 @@ class SessionManager extends RequestEmitter {
   public async create(options: {
     email: string;
     code: string;
-}) {  
+}) {
     const request = await this.postRequest(`/sessions`, options);
 
     const response = request as createSessionFetchResponse;

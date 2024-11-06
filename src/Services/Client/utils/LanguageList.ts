@@ -176,7 +176,7 @@ const LanguageList = [
   { language: 'yi', name: 'Yiddish', local_language: { english: 'Yiddish', original: 'ייִדיש' } },
   { language: 'yo', name: 'Yoruba', local_language: { english: 'Yoruba', original: 'Yorùbá' } },
   { language: 'yue', name: 'Cantonese', local_language: { english: 'Cantonese', original: '粵語' } },
-  { language: 'zh', name: 'Chinese', local_language: { english: 'Chinese', original: '中文' } }
+  { language: 'zh', name: 'Chinese', local_language: { english: 'Chinese', original: '中文' } },
 ];
 
 export default LanguageList;

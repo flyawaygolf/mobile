@@ -33,8 +33,8 @@ export const handleToast = (text: string) => Toast.show({ text1: text });
 export const messageFormatDate = (date?: Date | string | number) => new formatDate(date);
 
 /**
- * 
- * @param distance 
+ *
+ * @param distance
  * @returns Distance en Km
  */
 export const formatDistance = (distance: number) => parseFloat((distance / 1000).toFixed(2));
@@ -74,7 +74,7 @@ export const changeElementPlaceArray = (arr: Array<any>, toIndex: number, fromIn
 export const getPermissions = async () => {
   /*const camera = await check(Platform.OS === "ios" ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA);
   if(camera !== RESULTS.GRANTED) await request(Platform.OS === "ios" ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA);*/
-    
+
   const library = await check(Platform.OS === "ios" ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION);
   if(library !== RESULTS.GRANTED) await request(Platform.OS === "ios" ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION);
 
@@ -84,12 +84,12 @@ export const getPermissions = async () => {
 }
 
 export const translateText = async (user_token: string, options: { content: string, to: string}) => {
-  const request = await axiosInstance.post('/translate', options, {
+  const response = await axiosInstance.post('/translate', options, {
     headers: {
       'flyawayftoken': user_token,
     },
   });
-  return request.data.data as string;
+  return response.data.data as string;
 };
 
 export const deviceInfo = async () => {
@@ -113,8 +113,8 @@ export const axiosInstance = axios.create({
 
 export const getAppInfo = async () => {
   const version = DeviceInfo.getBuildNumber();
-  const request = await axiosInstance.get('/status');
-  const response = request.data as {
+  const axios_request = await axiosInstance.get('/status');
+  const response = axios_request.data as {
     data: {
       status: 'Online',
       api_version: string,
@@ -124,8 +124,8 @@ export const getAppInfo = async () => {
   };
 
   if(!response.data?.ios_version || !response.data?.android_version) return false;
-  if(Platform.OS === 'ios') return response.data.ios_version > parseInt(version);
-  if(Platform.OS === 'android') return response.data.android_version > parseInt(version);
+  if(Platform.OS === 'ios') return response.data.ios_version > parseInt(version, 10);
+  if(Platform.OS === 'android') return response.data.android_version > parseInt(version, 10);
   return false;
 };
 

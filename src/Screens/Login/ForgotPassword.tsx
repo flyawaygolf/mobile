@@ -18,7 +18,7 @@ function ForgotPassword({ navigation }: ScreenNavigationProps<LoginRootParamList
     const [email, setEmail] = useState("")
     const [error, setError] = useState({
         error: false,
-        response: ""
+        response: "",
     });
     const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ function ForgotPassword({ navigation }: ScreenNavigationProps<LoginRootParamList
 
             setLoading(false)
             navigation.replace('RegisterVerification', {
-                email: email
+                email: email,
             });
         }
     };
@@ -72,7 +72,7 @@ const style = StyleSheet.create({
     area: {
         flex: 1,
         justifyContent: 'center',
-        alignContent: 'center'
+        alignContent: 'center',
     },
     section: {
         flexDirection: 'column',
@@ -81,7 +81,7 @@ const style = StyleSheet.create({
         marginLeft: 35,
         marginRight: 35,
         margin: 10,
-    }
+    },
 })
 
 export default ForgotPassword;

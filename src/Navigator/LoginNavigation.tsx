@@ -28,7 +28,7 @@ function LoginNavigator() {
         { name: "RegisterEmailUsername", component: RegisterEmailUsername },
         { name: "RegisterPassword", component: RegisterPassword },
         { name: "RegisterBirthdayAccept", component: RegisterBirthdayAccept },
-        { name: "RegisterVerification", component: RegisterVerification }
+        { name: "RegisterVerification", component: RegisterVerification },
     ])
 
     return (

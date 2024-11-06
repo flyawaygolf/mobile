@@ -25,16 +25,16 @@ function ClientProvider({ children }: SectionProps) {
 
         if(user_id) deleteUser(realm, user_id);
 
-        const users = getAllUsers(realm);        
+        const users = getAllUsers(realm);
 
         if (users.length < 1) return setValue({ ...value, state: "logout" });
         const user_info = users[0];
         setValue({
             ...value,
-            state: "loading"
+            state: "loading",
         })
         const new_client = new Client({
-            token: user_info.token
+            token: user_info.token,
         })
 
         const informations = await new_client.user.myinformations();
@@ -46,7 +46,7 @@ function ClientProvider({ children }: SectionProps) {
 
     const connectToToken = async (user_info: userStorageI) => {
         const client = new Client({
-            token: user_info?.token ?? ""
+            token: user_info?.token ?? "",
         });
 
         const user = await client.user.myinformations();
@@ -60,14 +60,14 @@ function ClientProvider({ children }: SectionProps) {
             client: client,
             token: user_info?.token ?? "",
             user: user_data,
-            state: "loged"
+            state: "loged",
         });
 
         return;
     }
 
     async function splash() {
-        const { settings, user_info } = await initStorage();        
+        const { settings, user_info } = await initStorage();
 
         if (settings) {
             if (settings?.theme) setTheme(settings.theme);
@@ -77,7 +77,7 @@ function ClientProvider({ children }: SectionProps) {
         if (Platform.OS === "ios") {
             const trackPermission = await check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
             if (trackPermission === RESULTS.DENIED || trackPermission === RESULTS.LIMITED) await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
-        }       
+        }
 
         if (!user_info) return await connectToNewUser();
 

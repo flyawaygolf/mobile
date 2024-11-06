@@ -7,7 +7,7 @@ const NotificationScreen = () => {
     <View style={{
       flex: 1,
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     }}>
       <Text variant="bodyLarge">Notification Screen</Text>
     </View>

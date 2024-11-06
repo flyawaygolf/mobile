@@ -3,24 +3,22 @@ import { Text } from "react-native-paper";
 import { Pressable, View } from "react-native";
 
 import styles from "../../Style/style";
-import { Avatar } from "./";
+import { GolfsAvatar } from ".";
 import { useClient, useTheme } from "../Container";
-import UserPermissions from "../../Services/Client/Permissions/UserPermissions";
 import { formatDistance } from "../../Services";
-import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { ShrinkEffect } from "../Effects";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
 
 type PropsType = {
-    informations: userInfo;
+    informations: golfInterface;
     onPress: () => any;
     full_width?: boolean;
 }
 
-function DisplayMember({ informations, onPress, full_width = false }: PropsType) {
+function DisplayGolfs({ informations, onPress, full_width = false }: PropsType) {
 
     const { client } = useClient();
     const { colors } = useTheme();
-    const flags = new UserPermissions(informations?.flags);
 
     return (
         <ShrinkEffect>
@@ -39,10 +37,10 @@ function DisplayMember({ informations, onPress, full_width = false }: PropsType)
                 ]}>
                 { /** typeof index !== "undefined" ? <View style={{ backgroundColor: colors.bg_primary, borderRadius: 60, marginRight: 5, width: 30, height: 30, flexDirection: "row", justifyContent: "center", alignItems: "center" }}><Text>{`${index+1}`}</Text></View> : null */}
                 <View style={styles.row}>
-                    <Avatar size={33} url={client.user.avatar(informations.user_id, informations.avatar)} />
+                    <GolfsAvatar size={33} label={informations.name} />
                     <View>
-                        <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{informations.username}</Text>
-                        <Text style={{ color: colors.text_muted, fontSize: 13 }}>@{informations.nickname}</Text>
+                        <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{informations.name}</Text>
+                        <Text style={{ color: colors.text_muted, fontSize: 13 }}>{informations.city} - {informations.country}</Text>
                     </View>
                 </View>
                 {informations?.distance && <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{`${formatDistance(informations.distance)}Km`}</Text>}
@@ -51,4 +49,4 @@ function DisplayMember({ informations, onPress, full_width = false }: PropsType)
     );
 }
 
-export default DisplayMember;
+export default DisplayGolfs;

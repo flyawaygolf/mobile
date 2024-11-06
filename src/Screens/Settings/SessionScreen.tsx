@@ -38,7 +38,7 @@ function SessionScreen() {
     }, [])
 
     const deleteOneSession = async (target_id?: string) => {
-        if (!target_id) return;        
+        if (!target_id) return;
         const response = await client.sessions.deleteOne(target_id, { password: password });
         if (response.error) return handleToast(t(`errors.${response.error.code}`));
         setInfo(info?.filter((u) => u.session_id !== target_id))
@@ -81,7 +81,7 @@ function SessionScreen() {
                             autoCapitalize="none"
                             secureTextEntry={showPass}
                             returnKeyType="next"
-                            mode='flat'
+                            mode="flat"
                             right={<TextInput.Icon onPress={() => setShowPass(!showPass)} icon={!showPass ? `eye` : "eye-off"} />}
                             value={password}
                             onChangeText={(text: string) => setPassword(text)}

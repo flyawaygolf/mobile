@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
     pdp33: {
         width: 33,
         height: 33,
-        borderRadius: 60 / 2
-    }
+        borderRadius: 60 / 2,
+    },
 });
 
 export default styles;

@@ -13,7 +13,7 @@ type SectionProps = PropsWithChildren<{
 
 const BottomModal = (props: SectionProps) => {
   const {children, isVisible, dismiss, scrollView} = props;
-  
+
   const { colors } = useTheme();
   const BOTTOM_INSET = getBottomSpace();
 
@@ -24,7 +24,7 @@ const BottomModal = (props: SectionProps) => {
       swipeDirection="down"
       style={{
         justifyContent: 'flex-end',
-        margin: 0
+        margin: 0,
       }}
       onBackButtonPress={dismiss}
       onBackdropPress={dismiss}
@@ -40,14 +40,14 @@ const BottomModal = (props: SectionProps) => {
                 backgroundColor: colors.bg_secondary,
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
-                height: '65%'
+                height: '65%',
               }
             : {
               backgroundColor: colors.bg_secondary,
               borderTopLeftRadius: 12,
               borderTopRightRadius: 12,
               padding: 5,
-              paddingTop: 0
+              paddingTop: 0,
             }
         }>
         <View style={{
@@ -62,7 +62,7 @@ const BottomModal = (props: SectionProps) => {
         <View style={{
           backgroundColor: colors.bg_secondary,
           width: "100%",
-          height: BOTTOM_INSET
+          height: BOTTOM_INSET,
         }} />
       </View>
     </Modal>

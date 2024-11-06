@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createDrawerNavigator, } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { MainNavigation } from '.';
 import DrawerContent from '../Components/Container/Drawer/Content';
@@ -13,7 +13,7 @@ const DrawerNavigation = () => {
   ])
 
   return (
-    <DrawerNavigator.Navigator initialRouteName='MainNavigation' screenOptions={{ headerShown: false }}
+    <DrawerNavigator.Navigator initialRouteName="MainNavigation" screenOptions={{ headerShown: false }}
       drawerContent={({ navigation }) => DrawerContent(navigation)}>
       {
         routes.map((r, index) => <DrawerNavigator.Screen key={index} name={r.name} component={r.screen} />)

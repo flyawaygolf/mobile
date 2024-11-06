@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View, StyleSheet } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Appbar, Chip, IconButton, Text, Tooltip } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
 import { full_width } from '../Style/style';
 import { useClient, useNavigation, useTheme } from '../Components/Container';
 import { getCurrentLocation, handleToast } from '../Services';
-import { useTranslation } from 'react-i18next';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
 import { SearchBar } from '../Components/Elements/Input';
-import { StyleSheet } from 'react-native';
-import { ShrinkEffect } from '../Components/Effects';
+import { FadeInFromTop, ShrinkEffect } from '../Components/Effects';
 import { golfInterface } from '../Services/Client/Managers/Interfaces/Search';
+import SearchMapModal from '../Components/Map/SearchMapModal';
 
 type LocationType = {
   latitude: number,
@@ -20,6 +20,14 @@ type LocationType = {
   longitudeDelta: number,
 }
 
+type searchChipsType = {
+  icon: string;
+  text: string;
+  value: FilterType;
+}[]
+
+type FilterType = "golfs" | "all" | "users" | "pro" | "events"
+
 const MapScreen = () => {
   const { theme, colors } = useTheme();
   const { client } = useClient();
@@ -27,15 +35,19 @@ const MapScreen = () => {
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
   const [location, setLocation] = useState<LocationType>({
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
+    latitude: 48.864716,
+    longitude: 2.349014,
+    latitudeDelta: 0.5,
+    longitudeDelta: 0.5,
   });
+  const [query, setQuery] = useState<string>("");
+  const [queryResult, setQueryResult] = useState<(userInfo | golfInterface)[]>([]);
+  const [queryFilter, setQueryFilter] = useState<FilterType>("all");
+  const [filter, setFilter] = useState<FilterType>("all");
   const [searchLocation, setSearchLocation] = useState<LocationType & { width?: number, heigth?: number } | undefined>(undefined);
-  const [searchUser, setSearchUser] = useState("");
-  const [users, setUsers] = useState<userInfo[] | undefined>(undefined);
-  const [golfs, setGolfs] = useState<golfInterface[] | undefined>(undefined);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [users, setUsers] = useState<userInfo[]>([]);
+  const [golfs, setGolfs] = useState<golfInterface[]>([]);
   const [mapType, setMapType] = useState<MapType>("standard");
 
   const changeMapType = () => mapType === "standard" ? setMapType("satellite") : setMapType("standard");
@@ -45,14 +57,18 @@ const MapScreen = () => {
       const position = await getCurrentLocation();
       if (position) {
         const crd = position.coords;
-        const location = {
+        const init_location = {
           latitude: crd.latitude,
           longitude: crd.longitude,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
         }
-        setLocation(location);
-        setSearchLocation(location);
+        centerMap({
+          go_to: init_location,
+          duration: 0
+        })
+        setLocation(init_location);
+        setSearchLocation(init_location);
         await updateMapUsers(crd.longitude, crd.latitude);
         await updateMapGolfs(crd.longitude, crd.latitude);
       }
@@ -63,8 +79,8 @@ const MapScreen = () => {
   }
 
   useEffect(() => {
-    start()
-  }, [])
+    if(mapRef.current?.state.isReady) start()
+  }, [mapRef.current])
 
   const updateUserLocation = async (long = location?.longitude, lat = location?.latitude) => {
     const request = await client.user.editLocation([long ?? 48.864716, lat ?? 2.349014]);
@@ -76,7 +92,7 @@ const MapScreen = () => {
     const request = await client.search.map.golfs({
       long: long ?? 48.864716,
       lat: lat ?? 2.349014,
-      max_distance: searchLocation?.width ?? 50000
+      max_distance: searchLocation?.width ?? 50000,
     })
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     return setGolfs(request.data.golfs.items);
@@ -86,7 +102,7 @@ const MapScreen = () => {
     const request = await client.search.map.users({
       long: long ?? 48.864716,
       lat: lat ?? 2.349014,
-      max_distance: searchLocation?.width ?? 50000
+      max_distance: searchLocation?.width ?? 50000,
     })
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     return setUsers(request.data.users.items);
@@ -109,7 +125,62 @@ const MapScreen = () => {
     return { widthMeters, heightMeters };
   }
 
-  const pressChip = async (type: "users" | "golfs" | string) => {
+  const searchAll = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+    const response = await client.search.all(query, {
+      location: {
+        long: long ?? 48.864716,
+        lat: lat ?? 2.349014,
+      }
+    })
+    if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+    setQueryResult(response.data.result.items);
+  }
+
+  const searchGolfs = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+    const response = await client.search.golfs(query, {
+      location: {
+        long: long ?? 48.864716,
+        lat: lat ?? 2.349014,
+      }
+    })
+    if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+    setQueryResult(response.data.golfs.items);
+  }
+
+  const searchUsers = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+    const response = await client.search.users(query, {
+      location: {
+        long: long ?? 48.864716,
+        lat: lat ?? 2.349014,
+      }
+    })
+    if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+    setQueryResult(response.data.users.items);
+  }
+
+  useEffect(() => {
+    if (query.length > 2) searchQuery(queryFilter);
+  }, [query])
+
+  const searchQuery = async (filter: FilterType) => {
+    setQueryFilter(filter);
+    switch (filter) {
+      case "golfs":
+        await searchGolfs();
+        break;
+      case 'users':
+        await searchUsers();
+        break;
+      case "all":
+        await searchAll();
+        break;
+      default:
+        break;
+    }
+  }
+
+  const pressChip = async (type: FilterType) => {
+    setFilter(type);
     switch (type) {
       case "golfs":
         await updateMapGolfs();
@@ -118,22 +189,31 @@ const MapScreen = () => {
       case 'users':
         await updateMapUsers();
         setGolfs([])
-      case 'events':
-        setGolfs([])
-        setUsers([])
+        break;
+      case "all":
+        await updateMapUsers();
+        await updateMapGolfs();
+        break;
       default:
         break;
     }
   }
 
-  const [searchChips] = useState([
+  const [searchChips] = useState<searchChipsType>([
     {
-      text: "Search users",
-      value: "users"
+      icon: "all-inclusive",
+      text: "all",
+      value: "all",
     },
     {
-      text: "Search golfs",
-      value: "golfs"
+      icon: "account-supervisor",
+      text: "players",
+      value: "users",
+    },
+    {
+      icon: "golf",
+      text: "golfs",
+      value: "golfs",
     },
     /*{
       text: "Search events",
@@ -141,9 +221,31 @@ const MapScreen = () => {
     },*/
   ])
 
-  const centerMap = () => {
+  const centerMap = (options?: {
+    go_to?: {
+      latitude: number;
+      longitude: number;
+    },
+    duration?: number
+  }) => {
+    pressChip(filter);
+    if (options?.go_to && mapRef.current) {
+      const new_location = {
+        ...options?.go_to,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5
+      }
+      setLocation(new_location)
+      return mapRef.current.animateToRegion(new_location, options?.duration ?? 1000);
+    }
     if (location && mapRef.current) {
-      mapRef.current.animateToRegion(location, 1000);
+      const new_location = {
+        ...location,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5
+      }
+      setLocation(new_location)
+      return mapRef.current.animateToRegion(new_location, options?.duration ?? 1000);
     }
   };
 
@@ -157,45 +259,68 @@ const MapScreen = () => {
         )
       }
       <View style={styles.globalView}>
+        <View style={{
+          position: "absolute",
+          top: 85,
+          left: 5,
+          zIndex: 3,
+          flexDirection: "column",
+        }}>
+          <Tooltip title="Change Map Type">
+            <IconButton icon={mapType === "standard" ? "map" : "satellite-variant"} onPress={() => changeMapType()} mode="contained" size={25} />
+          </Tooltip>
+          <Tooltip title="Update Your Location">
+            <IconButton icon="account-sync" onPress={() => updateUserLocation()} mode="contained" size={25} />
+          </Tooltip>
+          <Tooltip title="Center">
+            <IconButton icon="crosshairs-gps" onPress={() => centerMap()} mode="contained" size={25} />
+          </Tooltip>
+        </View>
+        <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
         <View style={styles.elements}>
-          <View style={{
-            top: 85,
-            right: 5,
-            flexDirection: "column"
-          }}>
-            <Tooltip title='Change Map Type'>
-              <IconButton icon={mapType === "standard" ? "map" : "satellite-variant"} onPress={() => changeMapType()} mode='contained' size={25} />
-            </Tooltip>
-            {
-              !searchLocation?.width || searchLocation.width && searchLocation.width < 100 * 1000 && (
-                <Tooltip title='Update Map'>
-                  <IconButton icon="sync" onPress={() => updateMapUsers()} mode='contained' size={25} />
-                </Tooltip>
-              )
-            }
-            <Tooltip title='Update Your Location'>
-              <IconButton icon="account-sync" onPress={() => updateUserLocation()} mode='contained' size={25} />
-            </Tooltip>
-            <Tooltip title='Center'>
-              <IconButton icon="crosshairs-gps" onPress={() => centerMap()} mode='contained' size={25} />
-            </Tooltip>
-          </View>
           <View style={styles.searchElements}>
-            <SearchBar
-              style={{
-                width: "100%"
-              }}
-              onClearPress={() => { }}
-              onSearchPress={() => { }}
-              value={searchUser}
-              onChangeText={(txt) => setSearchUser(txt)}
-              placeholder='Search...'
-            />
-            <ScrollView contentContainerStyle={styles.searchChips} style={{ width: "100%" }}>
+            <FadeInFromTop>
+              <SearchBar
+                inputProps={{
+                  onPress: () => setIsInputFocused(true),
+                  onFocus: () => setIsInputFocused(true),
+                }}
+                style={{
+                  width: "95%",
+                }}
+                onClearPress={() => {
+                  setIsInputFocused(false);
+                  setQuery("");
+                }}
+                onSearchPress={() => searchQuery(queryFilter)}
+                value={query}
+                onChangeText={(txt) => setQuery(txt)}
+                placeholder="Search..."
+              />
+            </FadeInFromTop>
+            <ScrollView horizontal={true} contentContainerStyle={styles.searchChips}>
               {
-                searchChips.map((c, idx) => <ShrinkEffect key={idx} shrinkAmount={0.90}><Chip style={{ borderRadius: 60 }} onPress={() => pressChip(c.value)}>{c.text}</Chip></ShrinkEffect>)
+                searchChips.map((c, idx) => (
+                  <ShrinkEffect key={idx} shrinkAmount={0.90}>
+                    <Chip
+                      selected={isInputFocused ? queryFilter === c.value : c.value === filter}
+                      disabled={isInputFocused ? queryFilter === c.value : c.value === filter}
+                      icon={isInputFocused ? queryFilter === c.value ? "check-bold" : c.icon : c.value === filter ? "check-bold" : c.icon}
+                      style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }}
+                      onPress={() => isInputFocused ? searchQuery(c.value) : pressChip(c.value)}>
+                      {t(`map.${c.text}`)}
+                    </Chip>
+                  </ShrinkEffect>
+                ))
               }
             </ScrollView>
+            {
+              !searchLocation?.width || searchLocation.width && searchLocation.width < 150 * 1000 && !isInputFocused && (
+                <View style={{ marginTop: 5 }}>
+                  <ShrinkEffect shrinkAmount={0.90}><Chip icon={"refresh"} style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }} onPress={() => pressChip(filter)}>{t("map.refresh")}</Chip></ShrinkEffect>
+                </View>
+              )
+            }
           </View>
         </View>
         <MapView
@@ -207,13 +332,13 @@ const MapScreen = () => {
             setSearchLocation({
               ...region,
               heigth: heightMeters,
-              width: widthMeters
+              width: widthMeters,
             })
           }}
           onUserLocationChange={(event) => setLocation({
             ...location,
             latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
-            longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude
+            longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude,
           })}
           loadingIndicatorColor={colors.fa_primary}
           loadingBackgroundColor={colors.bg_primary}
@@ -230,23 +355,23 @@ const MapScreen = () => {
           userInterfaceStyle={theme === "dark" ? "dark" : "light"}
           style={{
             width: full_width,
-            height: "100%"
+            height: "100%",
           }}
         >
           {
-            users && users.length > 0 && users.map((u, idx) => {
+            users.length > 0 && users.map((u, idx) => {
               return (
                 <Marker
                   key={idx}
                   onPress={() => navigation.push("ProfileStack", {
                     screen: "ProfileScreen",
                     params: {
-                      user_info: u
-                    }
+                      user_info: u,
+                    },
                   })}
                   coordinate={{
                     longitude: u.golf_info.location.longitude,
-                    latitude: u.golf_info.location.latitude
+                    latitude: u.golf_info.location.latitude,
                   }}
                 // calloutOffset={{ x: -8, y: 28 }}
                 // calloutAnchor={{ x: 0.5, y: -0.2 }}
@@ -258,15 +383,14 @@ const MapScreen = () => {
             })
           }
           {
-            golfs && golfs.length > 0 && golfs.map((g, idx) => {
+            golfs.length > 0 && golfs.map((g, idx) => {
               return (
                 <Marker
                   key={idx}
                   coordinate={{
                     longitude: g.location.longitude,
-                    latitude: g.location.latitude
-                  }}
-                />
+                    latitude: g.location.latitude,
+                  }} />
               )
             })
           }
@@ -282,7 +406,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: full_width,
-    height: "100%"
+    height: "100%",
   },
   elements: {
     position: "absolute",
@@ -291,21 +415,22 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   searchElements: {
-    width: "90%",
+    width: full_width,
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   searchChips: {
     marginTop: 5,
+    paddingLeft: "5%",
+    paddingRight: "5%",
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    gap: 5
-  }
+    gap: 5,
+  },
 })
 
 export default MapScreen;

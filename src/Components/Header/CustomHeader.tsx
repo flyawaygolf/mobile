@@ -37,7 +37,7 @@ const CustomHeader: SectionProps = ({ title, isHome, leftComponent, children }) 
                 leftComponent ? leftComponent : (
                     <View style={[styles.row, { justifyContent: "flex-end" }]}>
                         {
-                            // <Appbar.Action icon="qrcode-scan" /> 
+                            // <Appbar.Action icon="qrcode-scan" />
                         }
 
                     </View>

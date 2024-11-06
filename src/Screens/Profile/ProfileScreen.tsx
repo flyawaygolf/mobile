@@ -33,7 +33,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
     setTimeout(() => {
       navigation.navigate("MessagesStack", {
         screen: "MessageScreen",
-        params: response.data
+        params: response.data,
       })
     }, 500)
   }
@@ -41,7 +41,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
   const report = async () => {
     Alert.alert(t("profile.report_alert_title", { username: user_info.username }), t("profile.report_alert_description"), [{
       text: t("commons.no"),
-      style: "cancel"
+      style: "cancel",
   },
   {
       text: t("commons.yes"),
@@ -50,14 +50,14 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
         handleToast(t("commons.success"));
       },
-      style: "default"
+      style: "default",
   }])
 }
 
   const block = async () => {
     Alert.alert(t("profile.block_alert_title", { username: user_info.username }), t("profile.block_alert_description"), [{
       text: t("commons.no"),
-      style: "cancel"
+      style: "cancel",
   },
   {
       text: t("commons.yes"),
@@ -66,7 +66,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
         handleToast(t("commons.success"))
       },
-      style: "default"
+      style: "default",
   }])
   }
 
@@ -105,7 +105,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
                 borderWidth: 3,
                 marginTop: -40,
                 marginLeft: 10,
-                backgroundColor: colors.bg_secondary
+                backgroundColor: colors.bg_secondary,
               }}
               url={`${client.user.avatar(user_info.user_id, user_info.avatar)}`}
             />
@@ -115,22 +115,22 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
           {user.user_id === user_info.user_id ? <Button icon="account-edit" onPress={() => navigation.navigate("ProfileEditScreen")}>{t("profile.edit")}</Button> : <Button icon="message-text" onPress={() => createDM()}>{t("profile.send_message")}</Button>}
         </View>
         </View>
-        <Card style={{ margin: 5 }} mode='contained'>
+        <Card style={{ margin: 5 }} mode="contained">
           <Card.Title
             titleStyle={{
-              fontWeight: 800
+              fontWeight: 800,
             }}
             subtitleStyle={{
-              fontWeight: 500
+              fontWeight: 500,
             }}
-            left={() => <IconButton mode='contained' icon="content-copy" onPress={() => copyNickname()} />}
-            titleVariant='titleLarge'
-            subtitleVariant='labelLarge'
+            left={() => <IconButton mode="contained" icon="content-copy" onPress={() => copyNickname()} />}
+            titleVariant="titleLarge"
+            subtitleVariant="labelLarge"
             title={user_info.username}
             subtitle={`@${user_info.nickname}`}
           />
         </Card>
-        <Card style={{ margin: 5 }} mode='contained'>
+        <Card style={{ margin: 5 }} mode="contained">
           <Card.Content>
             <View style={{ marginBottom: 5 }}>
               <Text style={{ fontWeight: '900' }}>Description</Text>
@@ -151,8 +151,8 @@ const style = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default ProfileScreen;

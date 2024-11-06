@@ -26,22 +26,22 @@ function MessageTextInput({ onSubmit, channel_id, onAttachment, displaySend = fa
             borderTopColor: colors.bg_secondary,
             borderTopWidth: 1,
             padding: 5,
-            paddingTop: 0
+            paddingTop: 0,
         }}>
             <View style={{
                 flexDirection: "row",
-                alignItems: "center"
+                alignItems: "center",
             }}>
                 { /** <IconButton onPress={() => onAttachment()} mode="outlined" iconColor={colors.text_normal} icon={"plus-circle"} /> */}
                 <TextInput
-                    mode='outlined'
+                    mode="outlined"
                     onEndEditing={() => {
                         setEditing(false);
                         sendMessage({
                             code: webSocketRoutes.STOP_TYPING,
                             data: {
-                                channel_id: channel_id
-                            }
+                                channel_id: channel_id,
+                            },
                         })
                     }}
                     onBlur={() => Keyboard.dismiss()}
@@ -55,8 +55,8 @@ function MessageTextInput({ onSubmit, channel_id, onAttachment, displaySend = fa
                             sendMessage({
                                 code: webSocketRoutes.START_TYPING,
                                 data: {
-                                    channel_id: channel_id
-                                }
+                                    channel_id: channel_id,
+                                },
                             })
                         }
                     }}

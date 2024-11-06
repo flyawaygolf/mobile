@@ -59,8 +59,8 @@ const CreateGuildScreen = () => {
         const request = await client.search.users(text, {
             location: location && {
                 lat: location.latitude,
-                long: location.longitude
-            }
+                long: location.longitude,
+            },
         })
         if (request.error) return handleToast(t(`errors.${request.error.code}`));
         if (request.data) return setList(request.data.users.items);
@@ -112,7 +112,7 @@ const CreateGuildScreen = () => {
                 <Text style={{ marginBottom: 5 }}>{t("messages.with")}</Text>
                 <FlatList
                     style={{
-                        maxHeight: selected.length > 3 ? undefined : 40
+                        maxHeight: selected.length > 3 ? undefined : 40,
                     }}
                     data={selected}
                     keyExtractor={item => item.user_id}
@@ -126,14 +126,14 @@ const CreateGuildScreen = () => {
                 />
                 <Divider style={{
                     marginTop: selected.length > 0 ? 5 : 25,
-                    borderWidth: 0.5
+                    borderWidth: 0.5,
                 }} />
                 <SearchBar
                     onSearchPress={() => { }}
                     style={{
                         backgroundColor: colors.bg_secondary,
                         width: full_width - 10,
-                        margin: 5
+                        margin: 5,
                     }}
                     placeholder={t("commons.search") + " ..."}
                     onChangeText={(txt) => setText(txt)}
@@ -157,7 +157,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-    addGuildList
+    addGuildList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateGuildScreen);

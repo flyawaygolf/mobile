@@ -39,11 +39,11 @@ function GuildList() {
     ), []);
 
     const memoizedValue = useMemo(() => renderItem, [groups]);
-    
+
     return (
         <FlatList
             style={{
-                height: "100%"
+                height: "100%",
             }}
             data={groups}
             ListEmptyComponent={<Text style={{ padding: 5 }}>{t("messages.no_guilds")}</Text>}
@@ -62,7 +62,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
     initGuildList,
-    setUnreadGuildList
+    setUnreadGuildList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuildList);

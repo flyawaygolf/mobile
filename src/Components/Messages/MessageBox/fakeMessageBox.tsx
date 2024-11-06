@@ -20,13 +20,13 @@ function FakeMessageBox({ content }: {
             margin: 5,
             position: "relative",
             paddingBottom: 20,
-            backgroundColor: colors.bg_secondary
+            backgroundColor: colors.bg_secondary,
         }}>
             <Avatar url={client.user.avatar(user.user_id, user.avatar)} />
             <View style={{
                 width: "89%",
                 marginRight: 10,
-                marginBottom: 2
+                marginBottom: 2,
             }}>
                 <Text style={{ fontWeight:'700' }}>{user.username}</Text>
                 <Markdown content={content} />
@@ -35,7 +35,7 @@ function FakeMessageBox({ content }: {
                     fontSize: 12,
                     position: "absolute",
                     right: 5,
-                    bottom: 5
+                    bottom: 5,
                 }}>{messageFormatDate(new Date()).fromNow()}</Text>
         </View>
     )

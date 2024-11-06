@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Paragraph, Portal, Text } from 'react-native-paper';
 import { full_height, full_width } from '../Style/style';
-import { Loader } from '../Other';
 import { useTheme } from '../Components/Container';
 import { deviceInfo, openURL, storeLink } from '../Services';
 import { useTranslation } from 'react-i18next';

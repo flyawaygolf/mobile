@@ -25,7 +25,7 @@ const ExploreHeader = () => {
                 placeholder="Search"
             />
             <View style={[styles.row, { justifyContent: "flex-end" }]}>
-                <Appbar.Action icon="filter-variant" /> 
+                <Appbar.Action icon="filter-variant" />
             </View>
         </Appbar.Header>
     )

@@ -22,7 +22,7 @@ export type premium_type = 0 | 1 | 2 | 3;
 export type player_status = 0 | 1;
 
 /**
- * 0 = male | 1 = female 
+ * 0 = male | 1 = female
  */
 export type gender = 0 | 1;
 
@@ -71,7 +71,7 @@ export interface userInfo {
 }
 
 export interface embeds {
-    /**0 = text only | 1 = image (include gif) | 2 = video 
+    /**0 = text only | 1 = image (include gif) | 2 = video
      * @default 0
     */
     type?: 0 | 1 | 2 | 3,

@@ -23,7 +23,7 @@ const WebSocketContextProvider = ({ children }) => {
     useEffect(() => {
         if(notification.code === webSocketRoutes.CONNECT) return sendMessage({
             code: webSocketRoutes.CHECK_CONNECTION,
-            token: client.token
+            token: client.token,
         })
     }, [notification])
 

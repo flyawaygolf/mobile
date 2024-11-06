@@ -11,7 +11,7 @@ export const resetFcmToken = async (user_info: userStorageI, refresh: boolean = 
     if (fcmToken) {
       setStorage("user_info", {
         ...user_info,
-        fcm_token: fcmToken
+        fcm_token: fcmToken,
       });
       return fcmToken
     }
@@ -22,7 +22,7 @@ export const resetFcmToken = async (user_info: userStorageI, refresh: boolean = 
 }
 
 export const initNotificationToken = async (refresh: boolean = false) => {
-  const user_info = getStorageInfo("user_info") as userStorageI;  
+  const user_info = getStorageInfo("user_info") as userStorageI;
   if(refresh) {
     const fcmToken = await resetFcmToken(user_info, refresh);
     return fcmToken;
@@ -33,7 +33,7 @@ export const initNotificationToken = async (refresh: boolean = false) => {
 }
 
 export async function requestNotificationPermission(refresh: boolean = false) {
-  const notificationPermission = await checkNotifications();  
+  const notificationPermission = await checkNotifications();
   if(notificationPermission.status === RESULTS.GRANTED || notificationPermission.status === RESULTS.LIMITED) return await initNotificationToken(refresh);
 
   const requestPermissions = await requestNotifications(["alert", "badge", "sound"]);
@@ -44,7 +44,7 @@ export async function requestNotificationPermission(refresh: boolean = false) {
 
 export const notificationListener = async () => {
   // Assume a message-notification contains a "type" property in the data payload of the screen to open
-  
+
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log('Notification caused app to open from background state:', remoteMessage.notification);
     // navigation.navigate(remoteMessage.data.type);

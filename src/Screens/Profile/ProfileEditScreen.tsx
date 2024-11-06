@@ -59,18 +59,18 @@ function ProfileEditScreen() {
         golf_info: {
             handicap: user.golf_info?.handicap ?? 540,
             player_status: user.golf_info?.player_status ?? 0,
-            location: user.golf_info?.location ?? [0, 0]
-        }
+            location: user.golf_info?.location ?? [0, 0],
+        },
     });
     const [profilePictures, setProfilePicture] = useState<{
         avatar: string
     }>({
-        avatar: `${client.user.avatar(user.user_id, user.avatar)}`
+        avatar: `${client.user.avatar(user.user_id, user.avatar)}`,
     });
 
     const [sending, setSending] = useState({
         send: false,
-        progress: 0
+        progress: 0,
     })
 
     useEffect(() => {
@@ -84,14 +84,14 @@ function ProfileEditScreen() {
             height: target === "avatar" ? 500 : undefined,
             cropping: true,
             multiple: false,
-            mediaType: "photo"
+            mediaType: "photo",
         })
 
         const file: fileI = {
             size: res.size,
             name: res.path.split('/')[res.path.split('/').length - 1],
             type: res.mime,
-            uri: res.path
+            uri: res.path,
         }
 
         setModif({ ...modif, avatar: file })
@@ -109,7 +109,7 @@ function ProfileEditScreen() {
             description: modif.description ? modif.description.substring(0, 120) : "",
             nickname: modif.nickname,
             username: modif.username,
-            golf_info: modif.golf_info
+            golf_info: modif.golf_info,
         }
 
         setSending({ send: true, progress: 10 })
@@ -123,13 +123,13 @@ function ProfileEditScreen() {
             var config: AxiosRequestConfig = {
                 headers: {
                     'content-type': 'multipart/form-data',
-                    "flyawaytoken": token
+                    "flyawaytoken": token,
                 },
                 onUploadProgress: function (progressEvent) {
                     const total = progressEvent?.total ?? 1;
                     let percentCompleted = Math.round((progressEvent.loaded * 100) / total);
                     setSending({ send: true, progress: percentCompleted })
-                }
+                },
             }
 
             const request = await axiosInstance.post(`/files/upload?type=avatar`, formdata, config);
@@ -137,7 +137,7 @@ function ProfileEditScreen() {
             if (response?.error) {
                 setSending({ send: false, progress: 0 });
                 return handleToast(t(`errors.${response.error.code}`));
-            };
+            }
 
             data = { ...data, avatar: response.data };
         }
@@ -207,12 +207,12 @@ function ProfileEditScreen() {
                                     buttons={[
                                         {
                                             label: t("profile.player_status_amateur"),
-                                            value: "0"
+                                            value: "0",
                                         },
                                         {
                                             label: t("profile.player_status_pro"),
-                                            value: "1"
-                                        }
+                                            value: "1",
+                                        },
                                     ]}
                                 />
                             </View>
@@ -254,13 +254,13 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: "row",
-        alignItems: 'center'
+        alignItems: 'center',
     },
     inputStyle: {
         minHeight: 60,
         marginTop: 5,
-        margin: 10
-    }
+        margin: 10,
+    },
 })
 
 export default ProfileEditScreen;

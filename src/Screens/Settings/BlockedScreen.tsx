@@ -68,7 +68,7 @@ function BlockedScreen() {
                         <Button
                             style={{
                                 right: 10,
-                                position: "absolute"
+                                position: "absolute",
                             }}
                             uppercase={false}
                             onPress={() => {

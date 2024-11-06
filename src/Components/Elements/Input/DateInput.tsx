@@ -29,8 +29,8 @@ function InputDate({ onChange, maximumDate, minimumDate, label, value }: Section
     return (
         <>
             {
-                Platform.OS === "ios" ? 
-                    <TextInput onTouchStart={() => setShow(!show)} editable={false} label={label} value={messageFormatDate(date).date()} /> 
+                Platform.OS === "ios" ?
+                    <TextInput onTouchStart={() => setShow(!show)} editable={false} label={label} value={messageFormatDate(date).date()} />
                     : <Pressable onPress={() => setShow(!show)}><TextInput editable={false} label={label} value={messageFormatDate(date).date()} /></Pressable>
             }
             {

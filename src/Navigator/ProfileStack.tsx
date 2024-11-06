@@ -12,13 +12,13 @@ const ProfileStack = () => {
 
   return (
     <Stack.Navigator initialRouteName="ProfileScreen">
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen as any} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
       <Stack.Screen name="ProfileEditScreen" component={ProfileEditScreen} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
     </Stack.Navigator>
   );

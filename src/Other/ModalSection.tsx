@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { PropsWithChildren } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Divider } from "react-native-paper";
 import { useTheme } from "../Components/Container";
 
 type SectionProps = PropsWithChildren<{
-    noDivider?: boolean, 
+    noDivider?: boolean,
     onPress?: () => any
 }>
 
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: 'center',
-        padding: 10
-    }
+        padding: 10,
+    },
 })
 
 export default ModalSection;

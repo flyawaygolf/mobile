@@ -18,7 +18,7 @@ function RegisterVerification({ navigation, route }: ScreenNavigationProps<Login
     return (
         <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
             <Text>{t("login.email_verif_link_send", {
-                email: email
+                email: email,
             })}</Text>
             <Button onPress={() => navigation.replace("LoginScreen")}>{t("commons.next")}</Button>
         </SafeAreaView>
@@ -30,7 +30,7 @@ const style = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
   })
 

@@ -26,10 +26,10 @@ export default function MainNavigation({ navigation }: { navigation: NavigationC
       <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{ headerShown: false }}>
         {
           routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }} />)
         }
       </Stack.Navigator>
     </NavigationProvider>
   );
-};
+}

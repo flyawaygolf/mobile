@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, ScrollView, SafeAreaView, StyleSheet, } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, Checkbox } from 'react-native-paper';
 import dayjs from 'dayjs';
 
 import styles from '../../../Style/style';
 import { useClient, useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
-import { Logo } from '../../../Components/Elements/Assets';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DateInput } from '../../../Components/Elements/Input';
 import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
 import { LoaderBox } from '../../../Other';
@@ -25,13 +23,13 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
 
     const [error, setError] = useState({
         error: false,
-        response: ""
+        response: "",
     });
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState({
         ...params,
         birthday: dayjs().subtract(13, "years").subtract(1, 'day').toDate(),
-        accept_tas: false
+        accept_tas: false,
     });
 
     const handleSubmit = async () => {
@@ -50,7 +48,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
             email: users.email.toLowerCase().trim(),
             username: users.username,
             password: users.password,
-            birthday: users.birthday
+            birthday: users.birthday,
         });
 
         if (response.error) {
@@ -61,7 +59,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
 
             setLoading(false)
             navigation.replace('RegisterVerification', {
-                email: users.email
+                email: users.email,
             });
         }
     };
@@ -89,7 +87,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    justifyContent: "space-between"
+                    justifyContent: "space-between",
                 }}>
                     <LinkButtonText text={t("login.go_back")} onPress={() => navigation.goBack()} />
                 </View>
@@ -102,7 +100,7 @@ const style = StyleSheet.create({
     area: {
         flex: 1,
         justifyContent: 'center',
-        alignContent: 'center'
+        alignContent: 'center',
     },
     section: {
         flexDirection: 'column',
@@ -111,7 +109,7 @@ const style = StyleSheet.create({
         marginLeft: 35,
         marginRight: 35,
         margin: 10,
-    }
+    },
 })
 
 export default RegisterBirthdayAccept;

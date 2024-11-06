@@ -5,3 +5,5 @@ export { default as RotateEffect } from "./RotateEffect";
 export { default as ShakeEffect } from "./ShakeEffect";
 export { default as SlideEffect } from "./SlideEffect";
 export { default as ShrinkEffect } from "./ShrinkEffect";
+export { default as FadeInFromTop } from "./FadeInFromTop";
+export { default as FadeInFromBottom } from "./FadeInFromBottom";

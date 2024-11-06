@@ -1838,7 +1838,7 @@ export const emojies_defs: {
     zimbabwe: "🇿🇼",
     england: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     scotland: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-    wales: "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+    wales: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
 };
 
 // Emoticons -> Emoji mapping.
@@ -1869,5 +1869,5 @@ var shortcuts = {
   sweat:            [ ',:(', ',:-(' ],
   sweat_smile:      [ ',:)', ',:-)' ],
   unamused:         [ ':s', ':-S', ':z', ':-Z', ':$', ':-$' ],
-  wink:             [ ';)', ';-)' ]
+  wink:             [ ';)', ';-)' ],
 };

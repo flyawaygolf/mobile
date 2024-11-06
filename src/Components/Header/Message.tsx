@@ -26,7 +26,7 @@ const MessageHeader = () => {
             <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>Messages</Text>
             <View style={[styles.row, { justifyContent: "flex-end" }]}>
                 <Appbar.Action onPress={() => navigation?.navigate("MessagesStack", {
-                    screen: "CreateGroupScreen"
+                    screen: "CreateGroupScreen",
                 })} icon="plus-circle" />
             </View>
         </Appbar.Header>

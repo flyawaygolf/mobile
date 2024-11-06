@@ -17,15 +17,15 @@ const SettingsStack = () => {
     <Stack.Navigator initialRouteName="BlockScreen">
       <Stack.Screen name="BlockScreen" component={BlockedScreen} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
       <Stack.Screen name="SessionScreen" component={SessionScreen} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
       <Stack.Screen name="SecurityScreen" component={SecurityScreen} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
     </Stack.Navigator>
   );

@@ -35,8 +35,8 @@ export const clientContextPlaceholder: ClientContextI = {
         golf_info: {
             handicap: 0,
             player_status: 0,
-            location: [0, 0]
-        }
+            location: [0, 0],
+        },
     },
     state: 'loading',
     setValue: () => {},

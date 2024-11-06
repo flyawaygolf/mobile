@@ -5,7 +5,7 @@ export const WebSocketRoutes = {
   READ_MESSAGE: 3,
   START_TYPING: 4,
   STOP_TYPING: 5,
-  RECEIVE_NOTIFICATION: 6
+  RECEIVE_NOTIFICATION: 6,
 };
 
 export default WebSocketRoutes;

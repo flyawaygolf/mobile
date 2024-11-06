@@ -64,12 +64,12 @@ function GuildInfo({ info }: sectionProps) {
             <Card mode="contained" style={{
                 margin: 10,
                 backgroundColor: info.unread ? colors.bg_third : colors.bg_secondary,
-                padding: 5, borderRadius: 5, marginBottom: 5
+                padding: 5, borderRadius: 5, marginBottom: 5,
             }}>
                 <TouchableOpacity
                     onPress={() => navigation?.navigate("MessagesStack", {
                         screen: "MessageScreen",
-                        params: info
+                        params: info,
                     })}
                     onLongPress={() => setModalVisible(true)}>
                     <View style={{ flexDirection: "row", alignItems: "center", width: full_width, position: "relative" }}>
@@ -81,7 +81,7 @@ function GuildInfo({ info }: sectionProps) {
                                 info.last_message && (
                                     <Text
                                         style={{
-                                            color: colors.text_muted
+                                            color: colors.text_muted,
                                         }}
                                         numberOfLines={1}
                                         textBreakStrategy="balanced">{info?.last_message?.content.substring(0, 100)}</Text>

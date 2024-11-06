@@ -23,14 +23,14 @@ export interface userStorageI {
 
 export interface storageI {
     user_info?: userStorageI,
-    settings?: settingsStorageI 
+    settings?: settingsStorageI
 }
 
 type localeStorageKeysT = 'user_info' | 'settings';
 
 export const initStorage = async () => {
     let to_return: storageI = {};
-    const alreadyInit = localeStorage.getAllKeys().find((k: string) => k === "user_info");  
+    const alreadyInit = localeStorage.getAllKeys().find((k: string) => k === "user_info");
 
     if(alreadyInit) {
         const user_info_storage = localeStorage.getString("user_info");

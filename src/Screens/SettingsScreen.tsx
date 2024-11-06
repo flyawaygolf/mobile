@@ -31,14 +31,14 @@ const SettingsScreen = () => {
       case "theme":
         setStorage("settings", {
           theme: txt,
-          locale: settings?.locale
+          locale: settings?.locale,
         })
         setTheme(txt as Ithemes)
         break;
       case "language":
         setStorage("settings", {
           theme: settings?.theme,
-          locale: txt
+          locale: txt,
         })
         break;
       default:
@@ -55,7 +55,7 @@ const SettingsScreen = () => {
     Alert.alert(t("settings.logout"), t("settings.sure_logout"), [
       {
         text: t("commons.no"),
-        style: "cancel"
+        style: "cancel",
       },
       {
         text: t("commons.yes"),
@@ -64,8 +64,8 @@ const SettingsScreen = () => {
           deleteUser(realm, user.user_id)
           setValue({ ...client, client: client, token: user.token, user: user, state: "switch_user" })
         },
-        style: "default"
-      }
+        style: "default",
+      },
     ])
   }
 
@@ -96,7 +96,7 @@ const SettingsScreen = () => {
                 borderWidth: 3,
                 marginTop: -40,
                 marginLeft: 10,
-                backgroundColor: colors.bg_secondary
+                backgroundColor: colors.bg_secondary,
               }}
               url={`${client.user.avatar(user.user_id, user.avatar)}`}
             />
@@ -106,16 +106,16 @@ const SettingsScreen = () => {
             <Button icon="account-edit" onPress={() => navigation.push("ProfileStack", { screen: "ProfileEditScreen" })}>{t("profile.edit")}</Button>
           </View>
         </View>
-        <Card style={{ margin: 5 }} mode='contained'>
+        <Card style={{ margin: 5 }} mode="contained">
           <Card.Title titleStyle={{ fontWeight: 800 }} subtitleStyle={{ fontWeight: 500 }}
-            left={() => <IconButton mode='contained' icon="content-copy" onPress={() => copyNickname()} />}
-            titleVariant='titleLarge'
-            subtitleVariant='labelLarge'
+            left={() => <IconButton mode="contained" icon="content-copy" onPress={() => copyNickname()} />}
+            titleVariant="titleLarge"
+            subtitleVariant="labelLarge"
             title={user.username}
             subtitle={`@${user.nickname}`}
           />
         </Card>
-        <Card style={{ margin: 5 }} mode='contained'>
+        <Card style={{ margin: 5 }} mode="contained">
           <Card.Content>
             <View style={{ marginBottom: 5 }}>
               <Text style={{ fontWeight: '900' }}>{t("profile.description")}</Text>
@@ -152,8 +152,8 @@ const style = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default SettingsScreen;

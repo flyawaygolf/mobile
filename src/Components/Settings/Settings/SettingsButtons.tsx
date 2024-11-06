@@ -5,9 +5,9 @@ import { Text } from "react-native-paper";
 import { useTheme } from "../../Container";
 import { full_width } from "../../../Style/style";
 
-type SectionProps = { 
-    t?: string | any, 
-    onPress?: Function, 
+type SectionProps = {
+    t?: string | any,
+    onPress?: Function,
     icon?: string;
     disable?: boolean;
 }
@@ -15,7 +15,7 @@ type SectionProps = {
 function SettingsButtons({ t, onPress, icon, disable }: SectionProps) {
 
     const { colors } = useTheme();
-    
+
     return (
         <TouchableOpacity style={{
             width: full_width,

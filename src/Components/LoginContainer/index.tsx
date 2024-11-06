@@ -19,9 +19,9 @@ function LoginContainer({ children }: PropsWithChildren) {
                     <View>
                         <View style={{ alignItems: 'center' }}>
                             <Logo size={65} style={{
-                                marginBottom: 20
+                                marginBottom: 20,
                             }} />
-                            <Text variant='headlineMedium' style={{ fontFamily: "Lobster-Regular" }}>FlyAway</Text>
+                            <Text variant="headlineMedium" style={{ fontFamily: "Lobster-Regular" }}>FlyAway</Text>
                         </View>
                         {children}
                     </View>
@@ -35,8 +35,8 @@ const style = StyleSheet.create({
     area: {
       flex: 1,
       justifyContent: 'center',
-      alignContent: 'center'
-    }
+      alignContent: 'center',
+    },
   })
 
 export default LoginContainer;

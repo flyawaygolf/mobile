@@ -15,11 +15,11 @@ const MessageStack = () => {
     <Stack.Navigator initialRouteName="MessageScreen">
       <Stack.Screen name="MessageScreen" component={MessageScreen} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
       <Stack.Screen name="CreateGroupScreen" component={CreateGuildScreen} options={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        headerShown: false
+        headerShown: false,
       }} />
     </Stack.Navigator>
   );

@@ -98,7 +98,7 @@ function Routes() {
                                 <>
                                     {
                                         routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
-                                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                                         }} />)
                                     }
                                 </>
@@ -117,7 +117,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
     initGuildList,
     modifyGuildList,
-    setUnreadGuildList
+    setUnreadGuildList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Routes);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { full_height, full_width } from '../Style/style';
 import { Loader } from '../Other';

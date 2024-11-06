@@ -19,25 +19,25 @@ export const initGuildList = (info: fetchGuildResponseSchema[]) => ({
 
 export const deleteGuildList = (info: string) => ({
     type: DELETE_GUILDS,
-    info
+    info,
 })
 
 export const modifyGuildList = (info: { guild_id: string, content: string, created_at: string, message_id: string, unread?: boolean }) => ({
     type: MODIFY_GUILDS,
-    info
+    info,
 })
 
 export const setUnreadGuildList = (info: unreadFetchResponseInterface[]) => ({
     type: UNREAD_GUILDS,
-    info
+    info,
 })
 
-export interface IchangeLastMessageGuildList { 
+export interface IchangeLastMessageGuildList {
     guild_id: string;
     data: fetchMessageResponseInterface
 }
 
 export const changeLastMessageGuildList = (info: IchangeLastMessageGuildList) => ({
     type: CHANGE_MESSAGE_UNREAD_GUILDS,
-    info
+    info,
 })

@@ -9,7 +9,7 @@ class GuildManager extends RequestEmitter {
 
   public async create(users: Array<string>) {
     const request = await this.postRequest(`/guilds`, {
-      users: users
+      users: users,
     });
 
     const response = request as guildCreateResponse;

@@ -28,7 +28,7 @@ export const WhiteTheme = {
         color_male: "#4D9EE0",
         color_female: "#E72983",
         hover_overlay: "rgba(255, 255, 255, 0.1)",
-        bg_secondary_rgba: "rgba(234, 234, 234, 1)"
+        bg_secondary_rgba: "rgba(234, 234, 234, 1)",
     },
 };
 
@@ -58,7 +58,7 @@ export const DarkTheme = {
         color_male: "#4D9EE0",
         color_female: "#E72983",
         hover_overlay: "rgba(255, 255, 255, 0.1)",
-        bg_secondary_rgba: "rgba(20, 20, 24, 1)"
-    }
+        bg_secondary_rgba: "rgba(20, 20, 24, 1)",
+    },
 };
 
