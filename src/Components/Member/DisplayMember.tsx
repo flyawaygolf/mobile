@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "react-native-paper";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import styles from "../../Style/style";
 import { Avatar } from "./";
@@ -23,9 +23,9 @@ function DisplayMember({ informations, onPress, full_width = false }: PropsType)
     const flags = new UserPermissions(informations?.flags);
 
     return (
-        <ShrinkEffect>
-            <Pressable
-                onPress={() => onPress()}
+        <ShrinkEffect onPress={() => onPress()}>
+            <View
+                
                 style={[
                     styles.row,
                     {
@@ -46,7 +46,7 @@ function DisplayMember({ informations, onPress, full_width = false }: PropsType)
                     </View>
                 </View>
                 {informations?.distance && <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{`${formatDistance(informations.distance)}Km`}</Text>}
-            </Pressable>
+            </View>
         </ShrinkEffect>
     );
 }

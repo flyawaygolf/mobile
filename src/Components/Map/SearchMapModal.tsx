@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { FlatList } from "react-native";
+import { FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
@@ -17,11 +17,11 @@ type PropsType = {
     visible: boolean;
     centerMap: (options: {
         go_to?: {
-          latitude: number;
-          longitude: number;
+            latitude: number;
+            longitude: number;
         },
         duration?: number
-      }) => void;
+    }) => void;
     setIsInputFocused: React.Dispatch<React.SetStateAction<boolean>>
 }
 

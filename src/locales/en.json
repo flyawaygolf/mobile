@@ -65,10 +65,13 @@
     },
     "map": {
         "refresh": "Refresh",
-        "players": "Joueurs",
+        "players": "Players",
         "golfs": "Golfs",
         "all": "All",
-        "no_results": "No results for {{query}}"
+        "no_results": "No results for {{query}}",
+        "change_type": "Change map type",
+        "account_sync": "Update account location",
+        "center": "Center on user"
     },
     "badges": {
         "TRENDER_EMPLOYEE": "Trender employee",

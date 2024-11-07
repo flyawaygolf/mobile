@@ -1,4 +1,4 @@
-import React from "react";
+import React, { LegacyRef } from "react";
 import { IconButton } from "react-native-paper";
 import { TextInputProps, TextInput, View, ViewStyle } from "react-native";
 
@@ -14,10 +14,11 @@ type SectionProps = React.FC<{
     label?: string;
     onClearPress: () => void;
     onSearchPress: () => void;
-    inputProps?: TextInputProps
+    inputProps?: TextInputProps,
+    ref?: LegacyRef<TextInput>
 }>
 
-const SearchBar: SectionProps = ({ style, placeholder, onChangeText, value = "", onClearPress, onSearchPress, inputProps }) => {
+const SearchBar: SectionProps = ({ style, placeholder, onChangeText, value = "", onClearPress, onSearchPress, inputProps, ref }) => {
 
     const { colors } = useTheme();
 
@@ -42,6 +43,7 @@ const SearchBar: SectionProps = ({ style, placeholder, onChangeText, value = "",
                 <View style={[styles.row]}>
                     <IconButton size={18} onPress={onSearchPress} icon="magnify" />
                     <TextInput
+                        ref={ref}
                         {...inputProps}
                         placeholderTextColor={colors.text_normal}
                         placeholder={placeholder}

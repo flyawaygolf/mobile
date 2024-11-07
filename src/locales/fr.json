@@ -68,7 +68,10 @@
         "players": "Joueurs",
         "golfs": "Golfs",
         "all": "Tout",
-        "no_results": "Pas de résultats pour {{query}}"
+        "no_results": "Pas de résultats pour {{query}}",
+        "change_type": "Changer de type de carte",
+        "account_sync": "Actualiser la localisation du compte",
+        "center": "Centrer sur l'utilisateur"
     },
     "badges": {
         "TRENDER_EMPLOYEE": "Employé Trender",

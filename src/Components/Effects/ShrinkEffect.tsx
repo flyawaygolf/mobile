@@ -1,10 +1,10 @@
 import React, { PropsWithChildren, useCallback } from 'react';
-import { ViewProps } from 'react-native';
+import { Pressable, ViewProps } from 'react-native';
 import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+    Easing,
 } from 'react-native-reanimated';
 
 interface ShrinkEffectProps extends ViewProps {
@@ -13,14 +13,16 @@ interface ShrinkEffectProps extends ViewProps {
     duration?: number;
     delay?: number;
     distance?: number;
+    onPress?: () => void;
 }
 
 function ShrinkEffect({
-  children,
-  shrinkAmount = 0.95,
-  duration = 100,
-  style,
-  ...props
+    children,
+    shrinkAmount = 0.95,
+    duration = 100,
+    style,
+    onPress,
+    ...props
 }: ShrinkEffectProps) {
     const scale = useSharedValue(1);
 
@@ -47,8 +49,11 @@ function ShrinkEffect({
     return (
         <Animated.View
             style={[animatedStyle, style]}
-            onTouchStart={handlePressIn}
-            onTouchEnd={handlePressOut}
+            onTouchStart={() => handlePressIn()}
+            onTouchEnd={() => {
+                handlePressOut()
+                onPress && onPress()
+            }}
             onTouchCancel={handlePressOut}
             {...props}
         >
