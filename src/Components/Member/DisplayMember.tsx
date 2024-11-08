@@ -25,7 +25,6 @@ function DisplayMember({ informations, onPress, full_width = false }: PropsType)
     return (
         <ShrinkEffect onPress={() => onPress()}>
             <View
-                
                 style={[
                     styles.row,
                     {

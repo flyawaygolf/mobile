@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, ScrollView, View, StyleSheet, Keyboard } from 'react-native';
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, ScrollView, View, StyleSheet, Keyboard, SafeAreaView } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Appbar, Chip, FAB, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { full_width } from '../Style/style';
-import { useClient, useNavigation, useTheme } from '../Components/Container';
+import { IOSContainer, useClient, useNavigation, useTheme } from '../Components/Container';
 import { getCurrentLocation, handleToast } from '../Services';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
@@ -289,14 +289,7 @@ const MapScreen = () => {
   ], [mapType])
 
   return (
-    <>
-      {
-        Platform.OS === "ios" && (
-          <Appbar.Header>
-            <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>Find users</Text>
-          </Appbar.Header>
-        )
-      }
+    <IOSContainer>
       <View style={styles.globalView}>
         <View style={{
           position: "absolute",
@@ -438,13 +431,13 @@ const MapScreen = () => {
           }
         </MapView>
       </View>
-    </>
+    </IOSContainer>
   );
 };
 
 const styles = StyleSheet.create({
   globalView: {
-    flex: 1,
+    //    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     width: full_width,

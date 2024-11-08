@@ -9,5 +9,4 @@ export { default as ScreenWrapper } from './ScreenWrapper';
 export { default as useWebSocket } from "./WebSocket/useWebSocket";
 export { default as WebsocketProvider } from "./WebSocket/WebsocketProvider";
 export { default as ScreenContainer } from "./ScreenContainer";
-
-
+export { default as IOSContainer } from "./IOSContainer";
