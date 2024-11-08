@@ -49,11 +49,13 @@ const MapScreen = () => {
   const [users, setUsers] = useState<userInfo[]>([]);
   const [golfs, setGolfs] = useState<golfInterface[]>([]);
   const [mapType, setMapType] = useState<MapType>("standard");
+  const [loadingCenter, setLoadingCenter] = useState(false);
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
   const start = async () => {
     try {
+      setLoadingCenter(true)
       const position = await getCurrentLocation();
       if (position) {
         const crd = position.coords;
@@ -74,7 +76,7 @@ const MapScreen = () => {
         await updateMapUsers(crd.longitude, crd.latitude);
         await updateMapGolfs(crd.longitude, crd.latitude);
       }
-      return;
+      return setLoadingCenter(false);
     } catch (error) {
       handleToast(JSON.stringify(error))
     }
@@ -131,7 +133,7 @@ const MapScreen = () => {
     return { widthMeters, heightMeters };
   }
 
-  const searchAll = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+  const searchAll = async (long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.all(query, {
       location: {
         long: long ?? 48.864716,
@@ -142,7 +144,7 @@ const MapScreen = () => {
     setQueryResult(response.data.result.items);
   }
 
-  const searchGolfs = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+  const searchGolfs = async (long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.golfs(query, {
       location: {
         long: long ?? 48.864716,
@@ -153,7 +155,7 @@ const MapScreen = () => {
     setQueryResult(response.data.golfs.items);
   }
 
-  const searchUsers = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+  const searchUsers = async (long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.users(query, {
       location: {
         long: long ?? 48.864716,
@@ -253,16 +255,21 @@ const MapScreen = () => {
       });
     }
     if (location && mapRef.current) {
+      setLoadingCenter(true)
+      const position = await getCurrentLocation();
+      if (!position) return mapRef.current.animateToRegion(location, options?.duration ?? 1000);
+      const crd = position.coords;
       const new_location = {
-        ...location,
+        latitude: crd.latitude,
+        longitude: crd.longitude,
         latitudeDelta: 0.5,
-        longitudeDelta: 0.5
+        longitudeDelta: 0.5,
       }
-      setSearchLocation(new_location);
       await pressChip(filter, {
         latitude: new_location.latitude,
         longitude: new_location.longitude
       });
+      setLoadingCenter(false)
       return mapRef.current.animateToRegion(new_location, options?.duration ?? 1000);
     }
   };
@@ -272,7 +279,8 @@ const MapScreen = () => {
       icon: mapType === "standard" ? "map" : "satellite-variant",
       label: t("map.change_type"),
       onPress: () => changeMapType(),
-      main: false
+      main: false,
+      loading: false
     },
     /*{
       icon: "account-sync",
@@ -284,9 +292,10 @@ const MapScreen = () => {
       icon: "crosshairs-gps",
       label: t("map.center"),
       onPress: () => centerMap({}),
-      main: true
+      main: true,
+      loading: loadingCenter
     },
-  ], [mapType])
+  ], [mapType, loadingCenter])
 
   return (
     <IOSContainer>
@@ -301,10 +310,14 @@ const MapScreen = () => {
         }}>
           {
             !isInputFocused && iconActions.map((i, idx) => (
-              <FAB key={idx} color={i.main ? undefined : colors.fa_primary} style={!i.main && {
-                backgroundColor: colors.bg_primary,
-                borderRadius: 60 / 2
-              }} icon={i.icon} onPress={i.onPress} />
+              <FAB
+                loading={i.loading}
+                key={idx}
+                color={i.main ? undefined : colors.fa_primary}
+                style={!i.main && {
+                  backgroundColor: colors.bg_primary,
+                  borderRadius: 60 / 2
+                }} icon={i.icon} onPress={i.onPress} />
             ))
           }
         </View>
@@ -372,10 +385,10 @@ const MapScreen = () => {
             latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
             longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude,
           })}
+          userLocationUpdateInterval={30000} // 30sec
           loadingIndicatorColor={colors.fa_primary}
           loadingBackgroundColor={colors.bg_primary}
           showsUserLocation={true}
-          userLocationUpdateInterval={30000} // 30sec
           followsUserLocation={true}
           toolbarEnabled={false}
           showsCompass={false}
