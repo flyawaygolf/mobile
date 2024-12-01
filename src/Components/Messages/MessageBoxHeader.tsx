@@ -25,7 +25,7 @@ export default function MessageBoxHeader({ params }: sectionProps) {
         <Appbar.Header style={{ width: full_width, flexDirection: "row", alignContent: "center", borderBottomColor: colors.bg_secondary, borderBottomWidth: 1 }}>
             <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
             <View
-                // onPress={() => params.type === 0 && navigation.navigate('ProfileStack', { screen: "ProfileScreen", params: { nickname: users[0].nickname } })}
+                // onPress={() => params.type === 0 && navigation.navigate('ProfileStack', { screen: "ProfileScreen", params: { user_id: users[0].user_id } })}
                 style={{ flexDirection: "row", alignItems: "center" }}>
                 <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} />
                 <View>

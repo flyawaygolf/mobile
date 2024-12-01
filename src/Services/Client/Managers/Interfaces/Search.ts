@@ -19,12 +19,19 @@ export interface golfInterface {
     country: string,
     city: string,
     continent: string,
+    banner?: string,
     location: {
         latitude: number;
         longitude: number
     },
+    linked?: boolean,
     distance?: number
 }
+
+export interface fetchGolfResponse extends requestResponseInterface<golfInterface> {}
+
+
+export interface fetchMultipleGolfResponse extends requestResponseInterface<golfInterface[]> {}
 
 export interface searchAllMap extends requestResponseInterface<{
     query: searchResponseQuery;

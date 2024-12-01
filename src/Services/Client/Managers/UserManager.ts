@@ -4,6 +4,8 @@ import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { successResponse } from './Interfaces/Global';
 import { myInformations } from './Interfaces/Me';
 import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
+import { fetchUserResponse } from './Interfaces/User';
+import { LocationQuery } from './SearchMapManager';
 
 class UserManager extends RequestEmitter {
   private cdnurl: string;
@@ -95,6 +97,25 @@ class UserManager extends RequestEmitter {
     });
 
     const response = request as successResponse;
+    return response;
+  }
+
+  public async fetch(user_id: string, options?: {
+    location?: LocationQuery
+  }) {
+    let _url = `/users/${user_id}`;
+    const parameters = []
+
+    if(options?.location) {
+      const location = options.location;
+      if (location?.max_distance) parameters.push(`max_distance=${location.max_distance}`);
+      if (location?.long) parameters.push(`long=${location.long}`);
+      if (location?.lat) parameters.push(`lat=${location.lat}`);
+    }
+    if (parameters.length > 0) _url = _url.concat("?");
+
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
+    const response = request as fetchUserResponse;
     return response;
   }
 

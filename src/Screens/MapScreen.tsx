@@ -412,7 +412,7 @@ const MapScreen = () => {
                   onPress={() => navigation.push("ProfileStack", {
                     screen: "ProfileScreen",
                     params: {
-                      user_info: u,
+                      user_id: u.user_id,
                     },
                   })}
                   coordinate={{
@@ -433,6 +433,12 @@ const MapScreen = () => {
               return (
                 <Marker
                   key={idx}
+                  onPress={() => navigation.push("GolfsStack", {
+                    screen: "GolfsProfileScreen",
+                    params: {
+                      golf_id: g.golf_id,
+                    }
+                  })}
                   coordinate={{
                     longitude: g.location.longitude,
                     latitude: g.location.latitude,

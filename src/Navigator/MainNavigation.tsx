@@ -7,6 +7,7 @@ import { NavigationContextI } from "../Components/Container/Navigation/Navigatio
 import MessageStack from "./MessageStack";
 import SettingsStack from "./SettingsStack";
 import ProfileStack from "./ProfileStack";
+import GolfsStack from "./GolfsStack";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function MainNavigation({ navigation }: { navigation: NavigationC
     { name: "ProfileStack", screen: ProfileStack },
     { name: "MessagesStack", screen: MessageStack },
     { name: "SettingsStack", screen: SettingsStack },
+    { name: "GolfsStack", screen: GolfsStack },
   ])
 
   return (

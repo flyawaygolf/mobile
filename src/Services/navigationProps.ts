@@ -5,6 +5,9 @@ import { ParamListBase } from '@react-navigation/native';
 import { MessageStackScreens } from '../Navigator/MessageStack';
 import { SettingsStackScreens } from '../Navigator/SettingsStack';
 import { userInfo } from './Client/Managers/Interfaces/Global';
+import { golfInterface } from './Client/Managers/Interfaces/Search';
+import { ProfileStackScreens } from '../Navigator/ProfileStack';
+import { GolfStackScreens } from '../Navigator/GolfsStack';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -27,16 +30,27 @@ export type LoginRootParamList = {
 
 export type ProfileStackParams = {
     ProfileScreen: {
-        user_info: userInfo;
+        user_id: string;
     };
     ProfileEditScreen: undefined;
 }
+
+export type GolfsStackParams = {
+    GolfsProfileScreen: {
+        golf_id: string;
+    };
+}
+
 
 export type RootStackParamList = {
     MapScreen: undefined;
     DrawerNavigation: undefined;
     ProfileStack: {
-        screen: string,
+        screen: ProfileStackScreens,
+        params?: object;
+    };
+    Golfstack: {
+        screen: GolfStackScreens,
         params?: object;
     };
     Splash: undefined;

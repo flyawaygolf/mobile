@@ -63,6 +63,15 @@
         "no_trends_world_region": "Aucune Trends dans le monde aujourd'hui. Crée la première Trend de la journée !",
         "no_trends_world_region_all_time": "Aucune Trend dans le monde. Soit le premier à créer une Trend !"
     },
+    "golf": {
+        "link": "Lié",
+        "unlink": "Délié",
+        "no_linked_users": "Aucun utilisateur lié",
+        "name": "Nom",
+        "location": "Localisation",
+        "users": "Utilisateurs",
+        "distance": "Distance"
+    },
     "map": {
         "refresh": "Actualiser",
         "players": "Joueurs",
@@ -211,6 +220,9 @@
         "player_status_pro": "Pro",
         "player_status_amateur": "Amateur",
         "edit_hcp": "Modifier le handicap",
+
+        "golf_linked": "Golf lié",
+        "no_linked_golfs": "Aucun golf lié",
 
         "block_alert_title": "Bloquer {{username}}",
         "block_alert_description": "Êtes-vous sur de vouloir bloquer cet utilisateur ?",
