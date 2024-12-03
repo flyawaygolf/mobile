@@ -9,7 +9,7 @@ import { useClient, useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
 import { DateInput } from '../../../Components/Elements/Input';
 import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
-import { LoaderBox } from '../../../Other';
+import { Loader } from '../../../Other';
 import LoginContainer from '../../../Components/LoginContainer';
 
 const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterBirthdayAccept">) => {
@@ -67,7 +67,6 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
     return (
         <LoginContainer>
             <View style={style.section}>
-                <LoaderBox loading={loading} />
             </View>
             <View style={style.section}>
                 <Text style={{ color: colors.warning_color, textAlign: "center", marginBottom: 10 }}>{error.error && error.response}</Text>
@@ -80,7 +79,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
                     }} />
                 </View>
             </View>
-            <NormalButton onPress={() => handleSubmit()} text={t("login.register")} />
+            {loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t("login.register")} />}
             <View style={{
                 alignSelf: 'center',
             }}>

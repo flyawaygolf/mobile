@@ -1,26 +1,26 @@
-import { useNavigation } from '@react-navigation/native';
+
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, FlatList } from 'react-native';
 import { Appbar, Button, Chip, Divider, Text } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import { useClient, useTheme } from '../../Components/Container';
 import styles, { full_width } from '../../Style/style';
 import { Avatar, DisplayMember } from '../../Components/Member';
 import { SearchBar } from '../../Components/Elements/Input';
-import { NavigationContextI } from '../../Components/Container/Navigation/NavigationContext';
 import { addGuildList } from '../../Redux/guildList/action';
 import { RootState } from '../../Redux';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
-import { getCurrentLocation, handleToast } from '../../Services';
+import { getCurrentLocation, handleToast, navigationProps } from '../../Services';
 
 const CreateGuildScreen = () => {
 
     const { colors } = useTheme();
     const { client } = useClient();
     const { t } = useTranslation();
-    const navigation = useNavigation<NavigationContextI>()
+    const navigation = useNavigation<navigationProps>()
     const [selected, setSelected] = useState<userInfo[]>([]);
     const dispatch = useDispatch();
     const [list, setList] = useState<userInfo[]>([]);
@@ -80,7 +80,7 @@ const CreateGuildScreen = () => {
         if (request.data) dispatch(addGuildList([request.data as any]));
 
         setTimeout(() => {
-            navigation?.replace("MessagesStack", {
+            navigation.navigate("MessagesStack", {
                 screen: "MessageScreen",
                 params: request.data,
             })

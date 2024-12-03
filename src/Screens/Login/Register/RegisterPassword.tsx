@@ -39,7 +39,7 @@ const RegisterPassword = ({
         if (users.password.length < 8)
             return setError({ error: true, response: t(`errors.password_security`) });
 
-        navigation.push('RegisterBirthdayAccept', {
+        navigation.navigate('RegisterBirthdayAccept', {
             email: users.email,
             username: users.username,
             password: users.password,

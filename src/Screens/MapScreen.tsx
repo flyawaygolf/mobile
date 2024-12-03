@@ -1,17 +1,18 @@
-import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, ScrollView, View, StyleSheet, Keyboard, SafeAreaView } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ScrollView, View, StyleSheet, Keyboard } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Appbar, Chip, FAB, Text } from 'react-native-paper';
+import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { full_width } from '../Style/style';
-import { IOSContainer, useClient, useNavigation, useTheme } from '../Components/Container';
-import { getCurrentLocation, handleToast } from '../Services';
+import { IOSContainer, useClient, useTheme } from '../Components/Container';
+import { getCurrentLocation, handleToast, navigationProps } from '../Services';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
 import { SearchBar } from '../Components/Elements/Input';
 import { FadeInFromTop, ShrinkEffect } from '../Components/Effects';
 import { golfInterface } from '../Services/Client/Managers/Interfaces/Search';
 import SearchMapModal from '../Components/Map/SearchMapModal';
+import { useNavigation } from '@react-navigation/native';
 
 type LocationType = {
   latitude: number,
@@ -31,7 +32,7 @@ type FilterType = "golfs" | "all" | "users" | "pro" | "events"
 const MapScreen = () => {
   const { theme, colors } = useTheme();
   const { client } = useClient();
-  const navigation = useNavigation();
+  const navigation = useNavigation<navigationProps>();
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
   const [location, setLocation] = useState<LocationType>({
@@ -409,7 +410,7 @@ const MapScreen = () => {
               return (
                 <Marker
                   key={idx}
-                  onPress={() => navigation.push("ProfileStack", {
+                  onPress={() => navigation.navigate("ProfileStack", {
                     screen: "ProfileScreen",
                     params: {
                       user_id: u.user_id,
@@ -433,7 +434,7 @@ const MapScreen = () => {
               return (
                 <Marker
                   key={idx}
-                  onPress={() => navigation.push("GolfsStack", {
+                  onPress={() => navigation.navigate("GolfsStack", {
                     screen: "GolfsProfileScreen",
                     params: {
                       golf_id: g.golf_id,

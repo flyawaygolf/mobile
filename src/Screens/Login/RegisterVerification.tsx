@@ -28,6 +28,7 @@ function RegisterVerification({ navigation, route }: ScreenNavigationProps<Login
 const style = StyleSheet.create({
     area: {
       flex: 1,
+      padding: 10,
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',

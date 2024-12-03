@@ -17,7 +17,7 @@ function LoginContainer({ children }: PropsWithChildren) {
                 contentContainerStyle={style.area}>
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
                     <View>
-                        <View style={{ alignItems: 'center' }}>
+                        <View style={{ alignItems: 'center', marginTop: 20 }}>
                             <Logo size={65} style={{
                                 marginBottom: 20,
                             }} />

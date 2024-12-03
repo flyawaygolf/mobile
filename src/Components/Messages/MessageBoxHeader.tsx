@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { Appbar, Text } from "react-native-paper";
 import { Avatar } from "../Member";
 import { full_width } from "../../Style/style";
-import { useClient, useNavigation, useTheme } from "../Container";
+import { useClient, useTheme } from "../Container";
 import { guildI } from "../../Redux/guildList";
+import { useNavigation } from "@react-navigation/native";
+import { navigationProps } from "../../Services";
 
 type sectionProps = {
     params: guildI;
@@ -15,7 +17,7 @@ export default function MessageBoxHeader({ params }: sectionProps) {
     const [users, setUsers] = useState(params.users)
     const { colors } = useTheme();
     const { client, user } = useClient();
-    const navigation = useNavigation();
+    const navigation = useNavigation<navigationProps>();
 
     useEffect(() => {
         setUsers(users.filter(u => u.user_id !== user.user_id))

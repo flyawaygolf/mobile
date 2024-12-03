@@ -49,7 +49,7 @@ export type RootStackParamList = {
         screen: ProfileStackScreens,
         params?: object;
     };
-    Golfstack: {
+    GolfsStack: {
         screen: GolfStackScreens,
         params?: object;
     };

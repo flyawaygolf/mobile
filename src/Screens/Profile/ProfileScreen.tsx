@@ -3,12 +3,13 @@ import { Alert, FlatList, StyleSheet, View } from 'react-native';
 import { Appbar, Badge, Button, Card, IconButton, Text, Tooltip } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useNavigation } from '@react-navigation/native';
 
-import { SafeBottomContainer, ScreenContainer, useClient, useNavigation, useTheme } from '../../Components/Container';
+import { SafeBottomContainer, ScreenContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { Avatar } from '../../Components/Member';
 import { displayHCP } from '../../Services/handicapNumbers';
-import { handleToast } from '../../Services';
+import { handleToast, navigationProps } from '../../Services';
 import { ProfileStackParams, ScreenNavigationProps } from '../../Services';
 import { useDispatch } from 'react-redux';
 import { addGuildList } from '../../Redux/guildList/action';
@@ -22,10 +23,11 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
   const { user, client } = useClient();
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<navigationProps>();
   const dispatch = useDispatch();
   const [user_info, setUserInfo] = React.useState<userInfo>({} as userInfo);
   const [golfs, setGolfs] = React.useState<golfInterface[]>([]);
+  const [paginationKey, setPaginationKey] = React.useState<string | undefined>(undefined);
 
   const copyNickname = () => {
     Clipboard.setString(user_info.nickname);
@@ -45,9 +47,12 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
   };
 
   const getGolfs = async () => {
-    const response = await client.golfs.link.golfs(user_id);
+    const response = await client.golfs.link.golfs(user_id, { pagination: { pagination_key: paginationKey } });
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
     if (!response.data) return;
+    if(response.data.length < 1) return;
+    if(response.pagination_key) setPaginationKey(response.pagination_key);
+    if(golfs.length > 0) setGolfs([...golfs, ...response.data]);
     setGolfs(response.data);
   };
 
@@ -102,7 +107,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
 
   const renderItem = useCallback(({ item }: { item: golfInterface }) => (
     <DisplayGolfs
-        onPress={() => navigation.push("GolfsStack", {
+        onPress={() => navigation.navigate("GolfsStack", {
           screen: "GolfsProfileScreen",
           params: {
             golf_id: item.golf_id,
@@ -192,6 +197,7 @@ const memoizedValue = useMemo(() => renderItem, [golfs]);
               data={golfs}
               keyExtractor={(item) => item.golf_id}
               renderItem={memoizedValue}
+              onScrollEndDrag={() => getGolfs()}
               ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("profile.no_linked_golfs")}</Text>}
             />
           ) : <Loader />

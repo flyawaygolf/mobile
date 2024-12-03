@@ -5,7 +5,9 @@ import { FlatList } from "react-native";
 import { Loader } from "../../Other";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global.js";
 import DisplayMember from "../../Components/Member/DisplayMember";
-import { useNavigation, useTheme } from "../../Components/Container/index";
+import { useTheme } from "../../Components/Container/index";
+import { navigationProps } from "../../Services/navigationProps.js";
+import { useNavigation } from "@react-navigation/native";
 
 type SectionProps = React.FC<{
     users: userInfo[];
@@ -14,17 +16,17 @@ type SectionProps = React.FC<{
 const GolfLinkedUsersScreen: SectionProps = ({ users }): JSX.Element => {
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const navigation = useNavigation();
+    const navigation = useNavigation<navigationProps>();
 
     const renderItem = useCallback(({ item }: { item: userInfo }) => (
-        <DisplayMember onPress={() => navigation.navigate("ProfileScreen", { user_id: item.user_id })} informations={item} />
+        <DisplayMember onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { user_id: item.user_id } })} informations={item} />
     ), []);
 
-    const memoizedValue = useMemo(() => renderItem, [users]);    
+    const memoizedValue = useMemo(() => renderItem, [users]);
 
     return (
         <FlatList
-            
+
             data={users}
             keyExtractor={(item) => item.user_id}
             renderItem={memoizedValue}

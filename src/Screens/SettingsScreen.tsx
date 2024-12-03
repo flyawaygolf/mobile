@@ -4,7 +4,7 @@ import { Appbar, Badge, Button, Card, IconButton, Text } from 'react-native-pape
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { SafeBottomContainer, useClient, useNavigation, useTheme } from '../Components/Container';
+import { SafeBottomContainer, useClient, useTheme } from '../Components/Container';
 import { full_width } from '../Style/style';
 import { Avatar } from '../Components/Member';
 import { getStorageInfo, setStorage, settingsStorageI } from '../Services/storage';
@@ -12,15 +12,16 @@ import { Ithemes } from '../Components/Container/Theme/Themes';
 import SettingsModifyProfile from '../Components/Settings/Settings';
 import { displayHCP } from '../Services/handicapNumbers';
 import { BottomModal } from '../Other';
-import { handleToast } from '../Services';
+import { handleToast, navigationProps } from '../Services';
 import { deleteUser } from '../Services/Realm/userDatabase';
 import { useRealm } from '@realm/react';
+import { useNavigation } from '@react-navigation/native';
 
 const SettingsScreen = () => {
   const { user, client, setValue } = useClient();
   const { t } = useTranslation();
   const { colors, setTheme, theme } = useTheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation<navigationProps>();
   const realm = useRealm();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -103,7 +104,7 @@ const SettingsScreen = () => {
             <Badge size={20} style={{ marginLeft: -30 }}>{displayHCP(user.golf_info.handicap)}</Badge>
           </View>
           <View style={{ position: "absolute", right: 5 }}>
-            <Button icon="account-edit" onPress={() => navigation.push("ProfileStack", { screen: "ProfileEditScreen" })}>{t("profile.edit")}</Button>
+            <Button icon="account-edit" onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileEditScreen" })}>{t("profile.edit")}</Button>
           </View>
         </View>
         <Card style={{ margin: 5 }} mode="contained">

@@ -10,6 +10,7 @@ const LoaderBox = ({ loading }: {
       transparent={true}
       animationType={'none'}
       visible={loading}
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center', position: 'absolute' }}
       >
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>

@@ -31,7 +31,14 @@ export interface golfInterface {
 export interface fetchGolfResponse extends requestResponseInterface<golfInterface> {}
 
 
-export interface fetchMultipleGolfResponse extends requestResponseInterface<golfInterface[]> {}
+export interface fetchMultipleGolfResponse {
+    error?: {
+        message: string,
+        code: number
+    },
+    data?: golfInterface[],
+    pagination_key?: string
+}
 
 export interface searchAllMap extends requestResponseInterface<{
     query: searchResponseQuery;

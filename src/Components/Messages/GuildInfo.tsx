@@ -12,10 +12,9 @@ import { MultipleAvatar } from "../Guilds";
 import { connect, useDispatch } from "react-redux";
 import { RootState } from "../../Redux";
 import { deleteGuildList } from "../../Redux/guildList/action";
-import { NavigationContextI } from "../Container/Navigation/NavigationContext";
 import { guildI } from "../../Redux/guildList";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Guild";
-import { handleToast } from "../../Services";
+import { handleToast, navigationProps } from "../../Services";
 
 type sectionProps = {
     info: guildI;
@@ -28,7 +27,7 @@ function GuildInfo({ info }: sectionProps) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
-    const navigation = useNavigation<NavigationContextI>();
+    const navigation = useNavigation<navigationProps>();
     const [users, setUsers] = useState<userInfo[]>(info.users)
 
     const leaveDm = async () => {
@@ -67,7 +66,7 @@ function GuildInfo({ info }: sectionProps) {
                 padding: 5, borderRadius: 5, marginBottom: 5,
             }}>
                 <TouchableOpacity
-                    onPress={() => navigation?.navigate("MessagesStack", {
+                    onPress={() => navigation.navigate("MessagesStack", {
                         screen: "MessageScreen",
                         params: info,
                     })}

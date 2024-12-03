@@ -6,12 +6,10 @@ import { TextInput as PaperTextInput, Text } from 'react-native-paper';
 import { useClient, useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
 import { EmailValidator, LoginRootParamList, ScreenNavigationProps } from '../../../Services';
-import { LoaderBox } from '../../../Other';
+import { Loader } from '../../../Other';
 import LoginContainer from '../../../Components/LoginContainer';
 
-const RegisterEmailUsername = ({
-  navigation,
-}: ScreenNavigationProps<LoginRootParamList, 'RegisterEmailUsername'>) => {
+const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootParamList, 'RegisterEmailUsername'>) => {
   const { t } = useTranslation('');
   const { colors } = useTheme();
   const { client } = useClient();
@@ -27,11 +25,9 @@ const RegisterEmailUsername = ({
   });
 
   const handleSubmit = async () => {
-    if (loading)
-      return setError({ error: true, response: t(`errors.sending_form`) });
+    if (loading) return setError({ error: true, response: t(`errors.sending_form`) });
 
-    if (!users.email || !users.username)
-      return setError({ error: true, response: t(`errors.verify_fields`) });
+    if (!users.email || !users.username) return setError({ error: true, response: t(`errors.verify_fields`) });
 
     if (
       !EmailValidator(users.email) ||
@@ -52,7 +48,7 @@ const RegisterEmailUsername = ({
       });
     } else {
       setLoading(false);
-      navigation.push('RegisterPassword', {
+      navigation.navigate('RegisterPassword', {
         email: users.email,
         username: users.username,
       });
@@ -62,7 +58,6 @@ const RegisterEmailUsername = ({
   return (
     <LoginContainer>
       <View style={style.section}>
-        <LoaderBox loading={loading} />
       </View>
       <View style={style.section}>
         <Text style={{ color: colors.warning_color, textAlign: 'center', marginBottom: 10 }}> {error.error && error.response} </Text>
@@ -86,7 +81,7 @@ const RegisterEmailUsername = ({
           onChangeText={text => setUsers({ ...users, username: text })}
         />
       </View>
-      <NormalButton onPress={() => handleSubmit()} text={t('commons.next')} />
+      { loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t('commons.next')} /> }
       <View
         style={{
           alignSelf: 'center',

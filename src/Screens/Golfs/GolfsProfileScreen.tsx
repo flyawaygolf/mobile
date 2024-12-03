@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { Appbar, Avatar, Button, Card, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
-import { SafeBottomContainer, ScreenContainer, useClient, useNavigation, useTheme } from '../../Components/Container';
+import { SafeBottomContainer, ScreenContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
-import { formatDistance, GolfsStackParams, handleToast } from '../../Services';
+import { formatDistance, GolfsStackParams, handleToast, navigationProps } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';
 import { cdnbaseurl } from '../../Services/constante';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
@@ -17,10 +18,11 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     const { golf_id } = route.params;
     const [golfInfo, setGolfInfo] = React.useState<golfInterface | null>(null);
     const [users, setUsers] = React.useState<userInfo[]>([]);
+    const [paginationKey, setPaginationKey] = React.useState<string | undefined>(undefined);
     const { client, user } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const navigation = useNavigation();
+    const navigation = useNavigation<navigationProps>();
 
     const fetchGolf = async () => {
         const response = await client.golfs.fetch(golf_id);
@@ -57,9 +59,12 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     };
 
     const getGolfUsers = async () => {
-        const response = await client.golfs.link.users(golf_id);
+        const response = await client.golfs.link.users(golf_id, { pagination: { pagination_key: paginationKey } });
         if (response.error) return handleToast(t(`errors.${response.error.code}`));
         if (!response.data) return;
+        if(response.data.length < 1) return;
+        if (response.pagination_key) setPaginationKey(response.pagination_key);
+        if(users.length > 0) setUsers([...users, ...response.data]);
         setUsers(response.data);
     };
 
@@ -135,6 +140,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                     <Text style={{ fontWeight: '900', padding: 5 }}>{t("golf.users")} :</Text>
                                 </>
                             )}
+                            onScrollEndDrag={() => getGolfUsers()}
                             data={users}
                             keyExtractor={(item) => item.user_id}
                             renderItem={memoizedValue}

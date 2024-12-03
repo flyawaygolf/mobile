@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from 'react-native';
 import { Text, Button, Dialog, Paragraph, Portal, TextInput as PaperTextInput, Appbar, TextInput } from 'react-native-paper';
+import { useRealm } from '@realm/react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { useClient, useTheme } from '../../Components/Container';
 import { cguLink, cgvLink, navigationProps, openURL, privacyLink } from '../../Services';
 import { deleteUser } from '../../Services/Realm/userDatabase';
-import { useRealm } from '@realm/react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { full_width } from '../../Style/style';
-import { useNavigation } from '@react-navigation/native';
 import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
 
 function SecurityScreen() {

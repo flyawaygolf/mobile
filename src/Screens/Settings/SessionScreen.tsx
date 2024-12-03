@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { FlatList, View } from 'react-native';
 import { Text, Button, Dialog, Portal, Appbar, TextInput } from 'react-native-paper';
-import { useClient, useTheme } from '../../Components/Container';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { handleToast, navigationProps } from '../../Services';
-import { useNavigation } from '@react-navigation/native';
 import { fetchSessionsResponseSchema } from '../../Services/Client/Managers/Interfaces/Session';
 import SessionBox from '../../Components/Settings/Session/SessionBox';
 

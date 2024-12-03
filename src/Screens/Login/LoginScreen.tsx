@@ -7,7 +7,7 @@ import { useRealm } from '@realm/react';
 import { convertFirstCharacterToUppercase, deviceInfo, LoginRootParamList, ScreenNavigationProps } from '../../Services';
 import { useClient, useTheme } from '../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../Components/Elements/Buttons';
-import { LoaderBox } from '../../Other';
+import { Loader } from '../../Other';
 import Client from '../../Services/Client';
 import { setStorage } from '../../Services/storage';
 import { addUser } from '../../Services/Realm/userDatabase';
@@ -93,7 +93,6 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
 
   return (
     <LoginContainer>
-      <LoaderBox loading={loading} />
       <View style={style.section} />
       <Text style={{ color: error.error ? colors.warning_color : colors.color_green, textAlign: "center", marginBottom: 10 }}>{error.response}</Text>
       <View style={style.section}>
@@ -132,7 +131,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
                 onChangeText={(code) => setUsers({ ...users, code: code })}
               />
             </View>
-            <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} />
+            { loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} /> }
           </Animated.View>
         )
       }

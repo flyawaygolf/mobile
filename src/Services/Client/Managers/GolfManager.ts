@@ -23,8 +23,8 @@ class GolfManager extends RequestEmitter {
       if (location?.long) parameters.push(`long=${location.long}`);
       if (location?.lat) parameters.push(`lat=${location.lat}`);
     }
+    
     if (parameters.length > 0) _url = _url.concat("?");
-
     const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as fetchGolfResponse;
 

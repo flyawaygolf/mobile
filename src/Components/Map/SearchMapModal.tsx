@@ -7,9 +7,11 @@ import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
 import { FadeInFromBottom } from "../Effects";
 import { full_width } from "../../Style/style";
-import { useNavigation, useTheme } from "../Container";
+import { useTheme } from "../Container";
 import { DisplayMember } from "../Member";
 import { DisplayGolfs } from "../Golfs";
+import { useNavigation } from "@react-navigation/native";
+import { navigationProps } from "../../Services";
 
 type PropsType = {
     query: string;
@@ -28,13 +30,13 @@ type PropsType = {
 const SearchMapModal: React.FC<PropsType> = ({ query, queryResult, visible, centerMap, setIsInputFocused }) => {
     const { colors } = useTheme();
     const { t } = useTranslation();
-    const navigation = useNavigation();
+    const navigation = useNavigation<navigationProps>();
 
     const renderItem = useCallback(({ item }: { item: userInfo | golfInterface }) => {
         if ('user_id' in item) {
             return (
                 <DisplayMember
-                    onPress={() => navigation.push("ProfileStack", {
+                    onPress={() => navigation.navigate("ProfileStack", {
                         screen: "ProfileScreen",
                         params: { user_id: item.user_id },
                     })}

@@ -34,15 +34,15 @@ const SettingsModifyProfile = ({ setModalVisible }: PropsType) => {
                 {appInfo && <SettingsButtons onPress={() => copyText()} t={`${t("settings.app_version")} : ${appInfo.version} (${appInfo.build_number})`} icon={"content-copy"} />}
                 <SettingsButtons onPress={() => {
                     setModalVisible(false)
-                    navigation?.navigate("SettingsStack", { screen: "SessionScreen" })
+                    navigation.navigate("SettingsStack", { screen: "SessionScreen" })
                 }} t={t("settings.sessions")} />
                 <SettingsButtons onPress={() => {
                     setModalVisible(false)
-                    navigation?.navigate("SettingsStack", { screen: "BlockScreen" })
+                    navigation.navigate("SettingsStack", { screen: "BlockScreen" })
                 }} t={t("settings.blocked")} />
                 <SettingsButtons onPress={() => {
                     setModalVisible(false)
-                    navigation?.navigate("SettingsStack", { screen: "SecurityScreen" })
+                    navigation.navigate("SettingsStack", { screen: "SecurityScreen" })
                 }} t={t("settings.security")} />
             </ScrollView>
         </View>

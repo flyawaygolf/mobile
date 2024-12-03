@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 
-import { NavigationProvider } from "../Components/Container";
 import { BottomNavigation } from "./";
-import { NavigationContextI } from "../Components/Container/Navigation/NavigationContext";
 import MessageStack from "./MessageStack";
 import SettingsStack from "./SettingsStack";
 import ProfileStack from "./ProfileStack";
@@ -11,7 +9,7 @@ import GolfsStack from "./GolfsStack";
 
 const Stack = createStackNavigator();
 
-export default function MainNavigation({ navigation }: { navigation: NavigationContextI }) {
+export default function MainNavigation(): JSX.Element {
 
   const [routes] = useState([
     { name: "BottomNavigation", screen: BottomNavigation },
@@ -22,14 +20,12 @@ export default function MainNavigation({ navigation }: { navigation: NavigationC
   ])
 
   return (
-    <NavigationProvider value={navigation}>
-      <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{ headerShown: false }}>
-        {
-          routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          }} />)
-        }
-      </Stack.Navigator>
-    </NavigationProvider>
+    <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{ headerShown: false }}>
+      {
+        routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }} />)
+      }
+    </Stack.Navigator>
   );
 }
