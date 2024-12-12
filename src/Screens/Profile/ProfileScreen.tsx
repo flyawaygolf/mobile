@@ -35,13 +35,14 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
   }
 
   useEffect(() => {
+    console.log(user_id)
     getUserInfo();
     getGolfs();
-  }, []);
+  }, [user_id]);
 
   const getUserInfo = async () => {
     const response = await client.user.fetch(user_id);
-    if (response.error) return handleToast(t(`errors.${response.error.code}`))
+    if (response.error) return handleToast(t(`errors.${response.error.code}`));
     if (!response.data) return;
     setUserInfo(response.data);
   };
@@ -50,9 +51,9 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
     const response = await client.golfs.link.golfs(user_id, { pagination: { pagination_key: paginationKey } });
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
     if (!response.data) return;
-    if(response.data.length < 1) return;
-    if(response.pagination_key) setPaginationKey(response.pagination_key);
-    if(golfs.length > 0) setGolfs([...golfs, ...response.data]);
+    if (response.data.length < 1) return;
+    if (response.pagination_key) setPaginationKey(response.pagination_key);
+    if (golfs.length > 0) setGolfs([...golfs, ...response.data]);
     setGolfs(response.data);
   };
 
@@ -107,16 +108,16 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
 
   const renderItem = useCallback(({ item }: { item: golfInterface }) => (
     <DisplayGolfs
-        onPress={() => navigation.navigate("GolfsStack", {
-          screen: "GolfsProfileScreen",
-          params: {
-            golf_id: item.golf_id,
-          }
-        })}
-        informations={item} />
-), []);
+      onPress={() => navigation.navigate("GolfsStack", {
+        screen: "GolfsProfileScreen",
+        params: {
+          golf_id: item.golf_id,
+        }
+      })}
+      informations={item} />
+  ), []);
 
-const memoizedValue = useMemo(() => renderItem, [golfs]);
+  const memoizedValue = useMemo(() => renderItem, [golfs]);
 
   return (
     <SafeBottomContainer padding={0}>
@@ -129,12 +130,18 @@ const memoizedValue = useMemo(() => renderItem, [golfs]);
                 <Tooltip title={t("profile.copy_user_id")}>
                   <IconButton style={{ margin: 0 }} icon={"content-copy"} onPress={() => copyUserID()} />
                 </Tooltip>
-                <Tooltip title={t("profile.block")}>
-                  <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
-                </Tooltip>
-                <Tooltip title={t("profile.report")}>
-                  <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => report()} />
-                </Tooltip>
+                {
+                  user.user_id !== user_info.user_id && (
+                    <>
+                      <Tooltip title={t("profile.block")}>
+                        <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
+                      </Tooltip>
+                      <Tooltip title={t("profile.report")}>
+                        <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => report()} />
+                      </Tooltip>
+                    </>
+                  )
+                }
               </View>
             )
           }

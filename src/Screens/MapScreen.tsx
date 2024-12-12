@@ -141,6 +141,7 @@ const MapScreen = () => {
         lat: lat ?? 2.349014,
       }
     })
+
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     setQueryResult(response.data.result.items);
   }
@@ -152,6 +153,7 @@ const MapScreen = () => {
         lat: lat ?? 2.349014,
       }
     })
+    
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     setQueryResult(response.data.golfs.items);
   }

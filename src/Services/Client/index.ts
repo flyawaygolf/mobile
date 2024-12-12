@@ -10,6 +10,7 @@ import MessageManager from './Managers/MessageManager';
 import PushNoficationManager from './Managers/PushNoficationManager';
 import SearchManager from './Managers/SearchManager';
 import GolfManager from './Managers/GolfManager';
+import FollowManager from './Managers/FollowManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -25,6 +26,7 @@ class Client extends RequestEmitter {
     public search: SearchManager;
     public pushNotification: PushNoficationManager;
     public golfs: GolfManager;
+    public follows: FollowManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -37,6 +39,7 @@ class Client extends RequestEmitter {
         this.search = new SearchManager(params);
         this.pushNotification = new PushNoficationManager(params);
         this.golfs = new GolfManager(params);
+        this.follows = new FollowManager(params);
     }
 
     public async status() {
