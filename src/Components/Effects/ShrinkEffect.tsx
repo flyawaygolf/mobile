@@ -55,8 +55,7 @@ function ShrinkEffect({
                 onPress && onPress()
             }}
             onTouchCancel={handlePressOut}
-            {...props}
-        >
+            {...props}>
             {children}
         </Animated.View>
     );

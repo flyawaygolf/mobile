@@ -32,7 +32,7 @@ const App = () => {
       <BaseToast {...props} />
     ),
   };
-
+  
   return (
     <Providers>
       <ThemeContainer>

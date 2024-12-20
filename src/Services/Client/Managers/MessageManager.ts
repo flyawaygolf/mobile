@@ -22,7 +22,6 @@ class MessageManager extends RequestEmitter {
     let _url = `/messages/${channel_id}`;
     const parameters = [];
 
-    if(params?.skip) parameters.push(`skip=${params.skip.toString()}`);
     if(params?.limit) parameters.push(`limit=${params.limit.toString()}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")

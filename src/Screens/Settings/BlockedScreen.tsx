@@ -64,7 +64,7 @@ function BlockedScreen() {
                 keyExtractor={item => item.user_id}
                 renderItem={({ item, index }) => (
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <DisplayMember full_width informations={item} />
+                        <DisplayMember onPress={() => {}} full_width informations={item} />
                         <Button
                             style={{
                                 right: 10,

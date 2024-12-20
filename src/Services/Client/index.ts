@@ -11,12 +11,17 @@ import PushNoficationManager from './Managers/PushNoficationManager';
 import SearchManager from './Managers/SearchManager';
 import GolfManager from './Managers/GolfManager';
 import FollowManager from './Managers/FollowManager';
+import PostManager from './Managers/PostManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
 export const languageList = LanguageList;
 
 class Client extends RequestEmitter {
+
+    public static userFlags = UserFlags;
+    public static webSocketRoutes = WebSocketRoutes;
+    public static languageList = LanguageList;
 
     public user: UserManager;
     public sessions: SessionManager;
@@ -27,6 +32,7 @@ class Client extends RequestEmitter {
     public pushNotification: PushNoficationManager;
     public golfs: GolfManager;
     public follows: FollowManager;
+    public posts: PostManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -40,6 +46,7 @@ class Client extends RequestEmitter {
         this.pushNotification = new PushNoficationManager(params);
         this.golfs = new GolfManager(params);
         this.follows = new FollowManager(params);
+        this.posts = new PostManager(params);
     }
 
     public async status() {

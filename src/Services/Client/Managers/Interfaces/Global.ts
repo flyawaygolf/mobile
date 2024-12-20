@@ -53,7 +53,6 @@ export interface userInfo {
     banner: string,
     accent_color: string,
     allow_dm: boolean,
-    created_at: string,
     link: string;
     pined_post?: string;
     locale: ISO_639_CODE_LIST;

@@ -33,7 +33,7 @@ export const guildMessagesReducer = (state: IguildMessages = {}, action: {
           // Crée une nouvelle copie du tableau de messages pour guild_id et ajoute le nouveau message
           newMessages[guildId] = [message, ...newMessages[guildId]];
         });
-
+    
         return newMessages; // Retourne la nouvelle copie de l'état
     } else if (type === ADD_SCROLL_GUILD_MESSAGES) {
         const newMessages = { ...state }; // Crée une copie de l'état actuel

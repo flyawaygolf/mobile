@@ -1,5 +1,6 @@
 import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, userInfo } from "./Global"
+import { myInformationInterface } from "./Me";
 
 /**0 = text only | 1 = image (include gif) | 2 = video | 3 = audio | 4 = others */
 export type postTypes = 0 | 1 | 2 | 3 | 4;
@@ -54,7 +55,7 @@ export interface postResponseSchema {
   attached_post_id?: string;
   shared_post_id?: string;
   embeds: Array<embeds> | [];
-  poll: pollInterface;
+  poll?: pollInterface;
   giveway?: givewayInterface;
   mentions: Array<userInfo> | [];
   categories: number[] | [];

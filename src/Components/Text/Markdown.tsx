@@ -7,6 +7,7 @@ type SectionProps = React.FC<{
     content: string,
     noBr?: boolean,
     style?: StyleProp<TextStyle>
+    token?: string;
 }>
 
 const Markdown: SectionProps = ({ content, noBr, style }) => {

@@ -8,6 +8,7 @@ export type SettingsStackScreens =
     "BlockScreen" |
     "SessionScreen" |
     "SecurityScreen"
+    // "SubscriptionScreen";
 
 const Stack = createStackNavigator();
 

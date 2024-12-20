@@ -52,7 +52,7 @@ function Routes() {
         return;
     }
 
-    async function start() {
+    async function start() {        
         const update_require = await getAppInfo();
         if (update_require) return setUpdateRequire(true);
         else {
@@ -66,7 +66,7 @@ function Routes() {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {        
         start()
     }, [state])
 

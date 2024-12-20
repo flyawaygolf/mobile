@@ -4,10 +4,11 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { ParamListBase } from '@react-navigation/native';
 import { MessageStackScreens } from '../Navigator/MessageStack';
 import { SettingsStackScreens } from '../Navigator/SettingsStack';
-import { userInfo } from './Client/Managers/Interfaces/Global';
-import { golfInterface } from './Client/Managers/Interfaces/Search';
 import { ProfileStackScreens } from '../Navigator/ProfileStack';
 import { GolfStackScreens } from '../Navigator/GolfsStack';
+import { PostsStackScreens } from '../Navigator/PostsStack';
+import { CreateStackScreens } from '../Navigator/CreateStack';
+import { SinglePostInfoType } from '../Components/Posts/PostContext';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -57,7 +58,6 @@ export type RootStackParamList = {
     LoginNavigator?: {
         screen: loginRoutesNames
     };
-    ProfileEditScreen: undefined;
     MessagesStack: {
         screen?: MessageStackScreens
         params?: object;
@@ -73,6 +73,31 @@ export type RootStackParamList = {
         code: string[] | false;
         [x: string]: any;
     };
+    PostsStack: {
+        screen?: PostsStackScreens;
+        params: {
+            post_id?: string,
+            query?: string;
+        }
+    };
+    CreateStack: {
+        screen: CreateStackScreens;
+        params: {
+            post_id?: string;
+            shared_post?: SinglePostInfoType;
+            attached_post?: SinglePostInfoType;
+            attached_post_id?: string;
+            initFiles?: string[];
+            initContent?: string;
+            type?: "photo" | "video",
+            info?: {
+                name: string;
+                type: string;
+                uri: string;
+              }
+        }
+    };
+    SelfProfileScreen: undefined;
 };
 
 export type ScreenNavigationProps<T extends ParamListBase, V extends keyof T> = StackScreenProps<T, V>

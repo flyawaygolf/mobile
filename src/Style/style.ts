@@ -30,6 +30,12 @@ export const styles = StyleSheet.create({
         height: 33,
         borderRadius: 60 / 2,
     },
+    pined: {
+        display: "flex",
+        flexDirection: "row",
+        alignContent: "center",
+        justifyContent: "flex-start"
+    }
 });
 
 export default styles;

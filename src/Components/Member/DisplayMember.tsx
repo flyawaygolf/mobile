@@ -5,22 +5,21 @@ import { View } from "react-native";
 import styles from "../../Style/style";
 import { Avatar } from "./";
 import { useClient, useTheme } from "../Container";
-import UserPermissions from "../../Services/Client/Permissions/UserPermissions";
 import { formatDistance } from "../../Services";
-import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { ShrinkEffect } from "../Effects";
+import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 
 type PropsType = {
     informations: userInfo;
     onPress: () => any;
     full_width?: boolean;
+    noDescription?: boolean;
 }
 
 function DisplayMember({ informations, onPress, full_width = false }: PropsType) {
 
     const { client } = useClient();
     const { colors } = useTheme();
-    const flags = new UserPermissions(informations?.flags);
 
     return (
         <ShrinkEffect onPress={() => onPress()}>

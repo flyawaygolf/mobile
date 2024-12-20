@@ -225,6 +225,11 @@
         "golf_linked": "Golf linked",
         "no_linked_golfs": "No linked golf",
 
+        "no_posts": "No posts to display",
+
+        "golfs": "Golfs",
+        "posts": "Posts",
+
         "block_alert_title": "Block {{username}}",
         "block_alert_description": "Are you sure you want to block this user?",
 

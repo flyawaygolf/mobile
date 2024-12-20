@@ -1,24 +1,24 @@
 import React from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, Avatar, TouchableRipple, Icon } from 'react-native-paper';
+import { BottomNavigation, TouchableRipple, Icon } from 'react-native-paper';
 
-import { GuildListSreen, MapScreen, SettingsScreen } from '../Screens';
-import { useClient, useTheme } from '../Components/Container';
+import { GuildListSreen, MapScreen } from '../Screens';
+import { useTheme } from '../Components/Container';
+import HomeNavigator from '../Screens/Home/HomeNavigator';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomStack() {
 
     const { colors } = useTheme();
-    const { user, client } = useClient();
 
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName="MapScreen"
+            initialRouteName="Home"
             tabBar={({ navigation, state, descriptors, insets }) => (
                 <BottomNavigation.Bar
                     labeled={false}
@@ -60,10 +60,10 @@ export default function BottomStack() {
         >
             <Tab.Screen
                 name="Home"
-                component={GuildListSreen}
+                component={HomeNavigator}
                 options={{
                     tabBarIcon: ({ color, size, focused }) => {
-                        return <Icon source={focused ? "message-text" : "message-text-outline"} size={size} color={color} />;
+                        return <Icon source={focused ? "home" : "home-outline"} size={size} color={color} />;
                     },
                 }}
             />
@@ -77,6 +77,17 @@ export default function BottomStack() {
                 }}
             />
             <Tab.Screen
+                name="Messages"
+                component={GuildListSreen}
+                options={{
+                    tabBarIcon: ({ color, size, focused }) => {
+                        return <Icon source={focused ? "message-text" : "message-text-outline"} size={size} color={color} />;
+                    },
+                }}
+            />
+{
+    /**
+     *             <Tab.Screen
                 name="Settings"
                 component={SettingsScreen}
                 options={{
@@ -88,6 +99,8 @@ export default function BottomStack() {
                     },
                 }}
             />
+     */
+}
         </Tab.Navigator>
     );
 }

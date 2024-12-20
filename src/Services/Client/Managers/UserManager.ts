@@ -6,6 +6,7 @@ import { myInformations } from './Interfaces/Me';
 import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
 import { fetchUserResponse } from './Interfaces/User';
 import { LocationQuery } from './SearchMapManager';
+import UserPermissions from '../Permissions/UserPermissions';
 
 class UserManager extends RequestEmitter {
   private cdnurl: string;
@@ -13,6 +14,10 @@ class UserManager extends RequestEmitter {
   constructor(params: requestParams) {
     super(params);
     this.cdnurl = params?.cdnurl ?? cdnbaseurl;
+  }
+
+  public flags(bits?: string) {
+    return new UserPermissions(bits);
   }
 
   public async register(options: {

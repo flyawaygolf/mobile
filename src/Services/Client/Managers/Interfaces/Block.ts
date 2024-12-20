@@ -1,12 +1,6 @@
-import type { error } from "./Global"
+import type { error, userInfo } from "./Global"
 
-export interface blockUserInformations {
-    user_id: string,
-    avatar: string,
-    username: string,
-    nickname: string,
-    created_at: Date
-}
+export interface blockUserInformations extends userInfo {}
 
 export interface blockUserReponse {
     error?: error,
