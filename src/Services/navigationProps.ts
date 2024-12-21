@@ -31,7 +31,7 @@ export type LoginRootParamList = {
 
 export type ProfileStackParams = {
     ProfileScreen: {
-        user_id: string;
+        nickname: string;
     };
     ProfileEditScreen: undefined;
 }
@@ -48,7 +48,9 @@ export type RootStackParamList = {
     DrawerNavigation: undefined;
     ProfileStack: {
         screen: ProfileStackScreens,
-        params?: object;
+        params?: {
+            nickname?: string;
+        };
     };
     GolfsStack: {
         screen: GolfStackScreens,
@@ -97,7 +99,6 @@ export type RootStackParamList = {
               }
         }
     };
-    SelfProfileScreen: undefined;
 };
 
 export type ScreenNavigationProps<T extends ParamListBase, V extends keyof T> = StackScreenProps<T, V>

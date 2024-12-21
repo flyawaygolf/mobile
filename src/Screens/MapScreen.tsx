@@ -415,7 +415,7 @@ const MapScreen = () => {
                   onPress={() => navigation.navigate("ProfileStack", {
                     screen: "ProfileScreen",
                     params: {
-                      user_id: u.user_id,
+                      nickname: u.nickname,
                     },
                   })}
                   coordinate={{
@@ -433,15 +433,18 @@ const MapScreen = () => {
           }
           {
             golfs.length > 0 && golfs.map((g, idx) => {
+              const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.location.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.location.longitude.toFixed(2));
+              
               return (
                 <Marker
-                  key={idx}
+                key={`${idx}-${isActive ? 'active' : 'inactive'}`}
                   onPress={() => navigation.navigate("GolfsStack", {
                     screen: "GolfsProfileScreen",
                     params: {
                       golf_id: g.golf_id,
                     }
                   })}
+                  pinColor={isActive ? 'yellow' : 'red'}
                   coordinate={{
                     longitude: g.location.longitude,
                     latitude: g.location.latitude,

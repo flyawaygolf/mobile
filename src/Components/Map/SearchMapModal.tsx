@@ -38,7 +38,7 @@ const SearchMapModal: React.FC<PropsType> = ({ query, queryResult, visible, cent
                 <DisplayMember
                     onPress={() => navigation.navigate("ProfileStack", {
                         screen: "ProfileScreen",
-                        params: { user_id: item.user_id },
+                        params: { nickname: item.nickname },
                     })}
                     informations={item}
                 />

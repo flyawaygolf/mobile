@@ -109,7 +109,7 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
           <Badge size={20} style={{ marginLeft: -30 }}>{displayHCP(user_info.golf_info.handicap)}</Badge>
         </View>
         <View style={{ position: "absolute", right: 5 }}>
-          {user_info.user_id === user.user_id ? <Button icon="account-edit" onPress={() => navigation.navigate("ProfileEditScreen")}>Edit</Button> : <Button icon="message-text" onPress={() => createDM()}>Send DM</Button>}
+          {user_info.user_id === user.user_id ? <Button icon="account-edit" onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: user_info.nickname } })}>Edit</Button> : <Button icon="message-text" onPress={() => createDM()}>Send DM</Button>}
         </View>
       </View>
       <Card style={{ margin: 5 }} mode="contained">

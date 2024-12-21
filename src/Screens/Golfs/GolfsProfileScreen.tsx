@@ -73,7 +73,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
             onPress={() => navigation.navigate("ProfileStack", {
                 screen: "ProfileScreen",
                 params: {
-                    user_id: item.user_id
+                    nickname: item.nickname
                 }
             })}
             informations={item} />

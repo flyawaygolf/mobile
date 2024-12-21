@@ -4,7 +4,7 @@ import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { successResponse } from './Interfaces/Global';
 import { myInformations } from './Interfaces/Me';
 import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
-import { fetchUserResponse } from './Interfaces/User';
+import { fetchUserResponse, profileInformations } from './Interfaces/User';
 import { LocationQuery } from './SearchMapManager';
 import UserPermissions from '../Permissions/UserPermissions';
 
@@ -121,6 +121,12 @@ class UserManager extends RequestEmitter {
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as fetchUserResponse;
+    return response;
+  }
+
+  public async profile(nickname: string) {
+    const request = await this.getRequest(`/users/${nickname}/profile`);
+    const response = request as profileInformations;
     return response;
   }
 

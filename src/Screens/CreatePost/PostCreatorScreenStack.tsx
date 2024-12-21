@@ -72,7 +72,8 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
           "flyawaytoken": token
         },
         onUploadProgress: function (progressEvent) {
-          setSending({ send: true, progress: progressEvent.loaded / (progressEvent?.total ?? 100) })
+          const total = progressEvent.total ?? progressEvent.loaded;
+          setSending({ send: true, progress: progressEvent.loaded / total })
         },
         validateStatus: s => s < 501
       };

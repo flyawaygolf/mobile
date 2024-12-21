@@ -18,32 +18,29 @@ type SectionProps = {
     lefComponent?: JSX.Element;
 }
 
-function Postheader({ info, created_at, post_id, lefComponent }: SectionProps) { 
-    
+function Postheader({ info, created_at, post_id, lefComponent }: SectionProps) {
+
     const { client, user } = useClient();
     const navigation = useNavigation<navigationProps>();
     const [showModal, setShowModal] = useState(false);
 
-    console.log(info);
-    
-    
     return (
-        <View style={{ 
-                padding: 10,
-                flexDirection: "row",
-                justifyContent: "space-between"
-            }}>
-            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate("ProfileStack" , {
+        <View style={{
+            padding: 10,
+            flexDirection: "row",
+            justifyContent: "space-between"
+        }}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate("ProfileStack", {
                 screen: "ProfileScreen",
                 params: {
-                  user_id: info.user_id
+                    nickname: info.nickname
                 }
-              })} >
-                <View style={[ styles.row, {
+            })} >
+                <View style={[styles.row, {
                     justifyContent: "flex-start",
                     alignItems: "flex-start"
-                } ]}>
-                    <Avatar size={40} url={client.user.avatar(info?.user_id, info?.avatar)} />
+                }]}>
+                    <Avatar size={40} marginRight={10} url={client.user.avatar(info?.user_id, info?.avatar)} />
                     <Username user={info} created_at={created_at} lefComponent={lefComponent} />
                 </View>
             </TouchableOpacity>

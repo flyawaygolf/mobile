@@ -15,7 +15,7 @@ const GolfLinkedUsersScreen: SectionProps = ({ users }): JSX.Element => {
     const navigation = useNavigation<navigationProps>();
 
     const renderItem = useCallback(({ item }: { item: userInfo }) => (
-        <DisplayMember onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { user_id: item.user_id } })} informations={item} />
+        <DisplayMember onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: item.nickname } })} informations={item} />
     ), []);
 
     const memoizedValue = useMemo(() => renderItem, [users]);

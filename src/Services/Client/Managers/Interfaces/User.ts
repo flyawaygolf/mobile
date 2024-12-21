@@ -8,6 +8,7 @@ export interface profileInformationsInterface extends userInfo {
     custom_subscription: string | false;
     pay_custom_subscription: boolean;
     total_posts: number;
+    followed: boolean;
 }
 
 export interface profileInformations {

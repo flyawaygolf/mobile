@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useRef, useState, useCallback, useMemo } from 'react'
 import { StyleSheet, View, Platform } from 'react-native'
 import { Gesture, GestureDetector, TapGestureHandler, } from 'react-native-gesture-handler'
-import { Camera, CameraRuntimeError, PhotoFile, useCameraDevice, useCameraFormat, VideoFile, useLocationPermission, useMicrophonePermission, } from 'react-native-vision-camera'
+import { Camera, CameraRuntimeError, PhotoFile, useCameraDevice, useCameraFormat, VideoFile, useLocationPermission, useMicrophonePermission, useCameraPermission, } from 'react-native-vision-camera'
 import { MAX_ZOOM_FACTOR, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../Components/Camera/Constants'
 import Reanimated, { Extrapolation, interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useEffect } from 'react'
@@ -31,7 +31,8 @@ export default function CameraScre({ route: { params } }: any): React.ReactEleme
   const isPressingButton = useSharedValue(false)
 
   const microphone = useMicrophonePermission()
-  const location = useLocationPermission()
+  const location = useLocationPermission();
+  const cameraPerms = useCameraPermission();
 
   // check if camera page is active
   const isFocussed = useIsFocused()
@@ -84,6 +85,10 @@ export default function CameraScre({ route: { params } }: any): React.ReactEleme
   useEffect(() => {
     microphone.requestPermission()
   }, [microphone])
+
+  useEffect(() => {
+     cameraPerms.requestPermission()
+  }, [cameraPerms])
 
   //#region Callbacks
   const setIsPressingButton = useCallback(

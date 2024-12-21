@@ -7,8 +7,6 @@ import { navigationProps } from "../../Services";
 import useClient from "../Container/Client/useClient";
 import useTheme from "../Container/Theme/useTheme";
 import { ShrinkEffect } from "../Effects";
-import { SearchBar } from "../Elements/Input";
-import { Logo } from "../Elements/Assets";
 
 type SectionProps = React.FC<{
     isHome?: boolean;
@@ -25,7 +23,7 @@ const CustomHomeHeader: SectionProps = ({ leftComponent }) => {
 
     return (
         <Appbar.Header style={{ width: full_width, flexDirection: "row", alignContent: "center", justifyContent: "space-between", borderBottomColor: colors.bg_secondary, borderBottomWidth: 1 }}>
-            <ShrinkEffect shrinkAmount={0.90} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { user_id: user.user_id } })}>
+            <ShrinkEffect shrinkAmount={0.90} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: user.nickname } })}>
                 <Avatar marginLeft={5} url={client.user.avatar(user?.user_id, user?.avatar)} />
             </ShrinkEffect>
             {leftComponent && leftComponent}

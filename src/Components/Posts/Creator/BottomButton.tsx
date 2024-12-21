@@ -90,12 +90,12 @@ function BottomButtonPostCreator({ setFiles, addFiles, setCameraVisible, content
     }
 
     const buttons = [
-        {
+        /*{
             icon: "camera",
             onPress: () => setCameraVisible(true),
             text: "commons.images",
             disable: false
-        },
+        },*/
         {
             icon: "folder-multiple-image",
             onPress: async () => await getPhotos("Photos"),

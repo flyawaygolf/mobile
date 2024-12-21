@@ -1,13 +1,12 @@
-import React, { act, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Animated, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
-import { SafeBottomContainer, ScreenContainer, useClient, useTheme } from '../../Components/Container';
+import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { handleToast, navigationProps } from '../../Services';
 import { ProfileStackParams, ScreenNavigationProps } from '../../Services';
-import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { DisplayGolfs } from '../../Components/Golfs';
 import ProfileHeader from '../../Components/Profile/ProfileHeader';
@@ -15,15 +14,16 @@ import ProfileInfo from '../../Components/Profile/ProfileInfo';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import DisplayPost from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
+import { profileInformationsInterface } from '../../Services/Client/Managers/Interfaces/User';
 
 const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "ProfileScreen">) => {
   const [scrollY] = useState(new Animated.Value(0));
-  const { user_id } = route.params;
+  const { nickname } = route.params;
   const { client } = useClient();
   const { t } = useTranslation();
   const { colors } = useTheme();
   const navigation = useNavigation<navigationProps>();
-  const [user_info, setUserInfo] = React.useState<userInfo>({} as userInfo);
+  const [user_info, setUserInfo] = React.useState<profileInformationsInterface>({} as profileInformationsInterface);
   const [activeTab, setActiveTab] = useState<'posts' | 'golfs'>('posts');
 
   const [loading, setLoading] = useState(false);
@@ -42,18 +42,23 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
 
   const fetchData = async () => {
     if (!user_info.user_id) return await getUserInfo();
-    if(user_info.user_id) {
+  };
+
+  const fetchTabData = async () => {
       if (activeTab === 'posts' && posts.length < 1) return await getPosts();
       if (activeTab === 'golfs' && golfs.length < 1) return await getGolfs();
-    }
   };
 
   useEffect(() => {
     fetchData();
-  }, [user_id, activeTab, user_info]);
+  }, [user_info]);
+
+  useEffect(() => {
+    fetchTabData();
+  }, [nickname, activeTab]);
 
   const getUserInfo = async () => {
-    const response = await client.user.fetch(user_id);
+    const response = await client.user.profile(nickname);
     if (response.error) return handleToast(t(`errors.${response.error.code}`));
     if (!response.data) return;
     setUserInfo(response.data);
@@ -62,7 +67,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
   const getPosts = async () => {
     if(loading) return;
     setLoading(true);
-    const response = await client.posts.user.fetch(user_info.nickname, { pagination_key: postsPaginationKey });
+    const response = await client.posts.user.fetch(nickname, { pagination_key: postsPaginationKey });
     setLoading(false);
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
     if (!response.data) return;
@@ -72,7 +77,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
 
   const getGolfs = async () => {    if(loading) return;
     setLoading(true);
-    const response = await client.golfs.link.golfs(user_id, { pagination: { pagination_key: golfPaginationKey } });
+    const response = await client.golfs.link.golfs(user_info.user_id, { pagination: { pagination_key: golfPaginationKey } });
     setLoading(false);
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
     if (!response.data) return;
@@ -111,7 +116,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
 
   const renderProfileInfo = () => (
     <>
-      <ProfileInfo navigation={navigation} user_info={user_info} />
+      <ProfileInfo setUserInfo={setUserInfo} navigation={navigation} user_info={user_info} />
       {(
         <View style={[styles.tabs, { borderColor: colors.bg_secondary }]}>
           {

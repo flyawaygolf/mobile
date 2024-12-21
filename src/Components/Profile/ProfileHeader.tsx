@@ -1,3 +1,4 @@
+import React from 'react';
 import { Alert, Animated, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, Text, Tooltip } from "react-native-paper";
 import { useTranslation } from "react-i18next";
