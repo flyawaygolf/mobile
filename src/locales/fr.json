@@ -70,7 +70,8 @@
         "name": "Nom",
         "location": "Localisation",
         "users": "Utilisateurs",
-        "distance": "Distance"
+        "distance": "Distance",
+        "search": "Rechercher un golf"
     },
     "map": {
         "refresh": "Actualiser",
@@ -390,6 +391,7 @@
         "9": "ID de demande non valide ou déjà utilisé",
         "10": "Taille de champ non valide",
         "11": "Nom de requête non valide",
+        "12": "Violation de la politique de contenu",
         "100": "Un email de vérification a été envoyé",
         "200": "succès",
         "204": "Supprimé avec succès",

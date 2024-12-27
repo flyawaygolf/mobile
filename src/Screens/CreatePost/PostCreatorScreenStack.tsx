@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, View, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
-import { ProgressBar } from 'react-native-paper';
+import { Chip, ProgressBar, Text } from 'react-native-paper';
 import dayjs from 'dayjs';
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { useClient, PostCreatorContainer, useTheme } from '../../Components/Container';
-import { axiosInstance, handleToast, navigationProps } from '../../Services';
+import { axiosInstance, formatDistance, handleToast, navigationProps } from '../../Services';
 import BottomButtonPostCreator from '../../Components/Posts/Creator/BottomButton';
 import { addMainCreatedTrends } from '../../Redux/mainFeed/action';
 import styles, { full_width } from '../../Style/style';
@@ -21,13 +21,19 @@ import { useNavigation } from '@react-navigation/native';
 import { RootState } from '../../Redux';
 import { AxiosRequestConfig } from 'axios';
 import TextAreaAutoComplete from '../../Components/Posts/Creator/TextAreaAutoComplete';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+
+export type postOptions = {
+  paid: boolean;
+  golf?: golfInterface;
+}
 
 const PostCreatorScreenStack = ({ route: { params } }: any) => {
 
   const { attached_post, shared_post, initFiles, initContent } = params;
   const [content, SetContent] = useState(initContent ?? "");
   const [files, setFiles] = useState<Array<{ size: number, name: string, type: string, uri: string }>>([]);
-  const [options, setOptions] = useState({
+  const [options, setOptions] = useState<postOptions>({
     paid: false
   })
   const [modalVisible, setModalVisible] = useState(false);
@@ -58,25 +64,30 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
 
     let data = {
       content: content ?? "",
-      ...options
+      paid: options.paid,
+      golf_id: options.golf?.golf_id
     };
 
     if (files.length > 0) {
       var formdata = new FormData();
 
-      files.forEach(a => formdata.append("posts", a))
+      files.forEach(file => formdata.append("posts", {
+        uri: file.uri,
+        type: file.type,
+        name: file.name
+      }));
 
       var config: AxiosRequestConfig = {
         headers: {
-          'content-type': 'multipart/form-data',
-          "flyawaytoken": token
+          'Content-type': 'multipart/form-data',
+          "flyawaytoken": token,
         },
         onUploadProgress: function (progressEvent) {
-          const total = progressEvent.total ?? progressEvent.loaded;
-          setSending({ send: true, progress: progressEvent.loaded / total })
+          const total = progressEvent?.total ?? 1;
+          let percentCompleted = Math.round((progressEvent.loaded * 100) / total);
+          setSending({ send: true, progress: percentCompleted })
         },
-        validateStatus: s => s < 501
-      };
+      }
 
       const request = await axiosInstance.post("/files/upload?type=posts", formdata, config);
       const req_data = request.data;
@@ -95,7 +106,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
     }
     if (response.data) {
       const post_info = await client.posts.fetchOne(response.data.post_id);
-      if(post_info.data) dispatch(addMainCreatedTrends(post_info.data));
+      if (post_info.data) dispatch(addMainCreatedTrends(post_info.data));
     }
     setFiles([])
     SetContent("")
@@ -165,6 +176,12 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
                 user={user} />
             </View>
           </View>
+          <View style={styles.row}>{options.golf && <Chip icon="golf" onPress={() => navigation.navigate("GolfsStack", {
+                    screen: "GolfsProfileScreen",
+                    params: {
+                      golf_id: options.golf?.golf_id,
+                    }
+                  })}>{options.golf.name} {options.golf.distance && `· ${formatDistance(options.golf.distance)}Km`}</Chip> }</View>
           <TextAreaAutoComplete autoFocus={true} value={content} maxLength={512} setValue={(text) => SetContent(text)} />
           {shared_post && <DisplaySharedPost shared_post={shared_post} />}
         </ScrollView>
@@ -180,13 +197,13 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
             scrollsToTop={true}
             renderItem={({ item, index }) => item?.type.startsWith("video") ? <CreatorVideoDisplay deleteImage={(i) => deleteImage(i)} index={index} uri={item.uri} /> : <CreatorImageDisplay deleteImage={(i) => deleteImage(i)} index={index} uri={item.uri} />}
           />
-          <BottomButtonPostCreator setModalVisible={setModalVisible} content={content} maxLength={512} setFiles={(info) => setFiles([...files, info])} setCameraVisible={() => navigation.navigate("CreateStack", {
+          <BottomButtonPostCreator options={options} setOptions={setOptions} content={content} maxLength={512} setCameraVisible={() => navigation.navigate("CreateStack", {
             screen: "CameraScreen",
             params: {
-            ...params,
-            initContent: content,
-            initFiles: files
-          }
+              ...params,
+              initContent: content,
+              initFiles: files
+            }
           })} addFiles={addFiles} />
         </View>
       </KeyboardAvoidingView>

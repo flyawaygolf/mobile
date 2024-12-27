@@ -1,171 +1,164 @@
-import React, { useState } from "react";
-import { View, FlatList, Image, Pressable, Platform } from "react-native";
-import { IconButton, Text, Button } from "react-native-paper";
-import { CameraRoll, AssetType, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
+import { useEffect, useState } from "react";
+import { View, Platform, FlatList } from "react-native";
+import { IconButton, Text } from "react-native-paper";
 
-import styles, { full_width } from "../../../Style/style";
-import { useTheme } from "../../Container";
+import styles from "../../../Style/style";
+import { useClient, useTheme } from "../../Container";
+import { postOptions } from "../../../Screens/CreatePost/PostCreatorScreenStack";
+import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Search";
+import { BottomModal } from "../../../Other";
+import { SearchBar } from "../../Elements/Input";
+import { DisplayGolfs } from "../../Golfs";
+import { use } from "i18next";
+import { getCurrentLocation, handleToast } from "../../../Services";
+import { useTranslation } from "react-i18next";
 
 type PropsType = {
-    setFiles: (params: {
-        size: number;
-        name: string;
-        type: string;
-        uri: string;
-    }) => any,
     addFiles: (target: "photo" | "video") => any,
     setCameraVisible: (bool: boolean) => any,
-    setModalVisible: (bool: boolean) => any,
+    setOptions: React.Dispatch<React.SetStateAction<postOptions>>;
+    options: postOptions;
     content: string;
     maxLength: number;
 }
 
-function BottomButtonPostCreator({ setFiles, addFiles, setCameraVisible, content, maxLength, setModalVisible }: PropsType) {
+type LocationType = {
+    latitude: number,
+    longitude: number,
+    latitudeDelta: number,
+    longitudeDelta: number,
+}
 
+function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLength, setOptions, options }: PropsType) {
+
+    const { client } = useClient();
     const { colors } = useTheme();
-    const [filter, setFilter] = useState<{ assetType: AssetType }>({
-        assetType: "All"
-    })
-    const [photos, setPhotos] = useState<{
-        selected: boolean,
-        edges: PhotoIdentifier[],
-        page_info: {
-            has_next_page: boolean;
-            start_cursor?: string;
-            end_cursor?: string;
-        };
-        limited?: boolean;
-    }>({
-        selected: false,
-        page_info: {
-            has_next_page: false,
-            start_cursor: "",
-            end_cursor: ""
-        },
-        edges: []
-    });
+    const { t } = useTranslation();
+    const [golfs, setGolfs] = useState<golfInterface[]>([]);
+    const [golfModalVisible, setGolfModalVisible] = useState(false);
+    const [searchGolf, setSearchGolf] = useState("");
+    const [location, setLocation] = useState<LocationType | undefined>(undefined);
 
-    const getPhotos = async (assetType: AssetType = "All") => {
-        if (photos.selected && filter.assetType === assetType) return setPhotos({ ...photos, edges: [], selected: false })
-        const gallery = await CameraRoll.getPhotos({
-            first: 25,
-            assetType: assetType
-        });
-        setPhotos({
-            ...gallery,
-            selected: true
-        })
-        setFilter({
-            assetType: assetType
-        })
-    }
+    const start = async () => {
+        try {
+            const position = await getCurrentLocation();
+            console.log(position);
+            
+            if (position) {
+                const crd = position.coords;
+                const init_location = {
+                    latitude: crd.latitude,
+                    longitude: crd.longitude,
+                    latitudeDelta: 0.5,
+                    longitudeDelta: 0.5,
+                }
+                setLocation(init_location);
+                const response = await client.search.map.golfs({
+                    lat: init_location.latitude,
+                    long: init_location.longitude,
+                    max_distance: 50000
+                });
 
-    const onBottom = async (assetType: AssetType = "All") => {
-        if (!photos.page_info.has_next_page) return;
-        const gallery = await CameraRoll.getPhotos({
-            first: 50,
-            after: photos.page_info?.end_cursor,
-            assetType: assetType
-        });
-        setPhotos({
-            ...gallery,
-            selected: true,
-            edges: photos.edges.concat(gallery.edges)
-        })
-    }
-
-    const fileInfo = ({ node }: PhotoIdentifier) => {
-        const uri = node.image.uri;
-        const type = node.type;
-        const split = uri.split("/");
-        const size = node.image?.fileSize ?? 1;
-
-        const to_return = {
-            size: size,
-            name: split[split.length - 1],
-            type: type,
-            uri: uri
+                if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+                setGolfs(response.data.golfs.items);
+            }
+        } catch (error) {
+            handleToast(JSON.stringify(error))
         }
-        return to_return;
+    }
+
+    useEffect(() => {
+        golfModalVisible && start();
+    }, [golfModalVisible]);
+
+    const linkGolf = (golf: golfInterface) => {
+        setOptions({ ...options, golf: golf });
+        setGolfModalVisible(false);
+    }
+
+    const searchGolfModal = async () => {
+        // searchGolf
+        const response = await client.search.golfs(searchGolf, {
+            location: location ? {
+                lat: location.latitude,
+                long: location.longitude,
+            } : undefined
+        });
+
+        if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+        setGolfs(response.data.golfs.items);
     }
 
     const buttons = [
-        /*{
+        {
             icon: "camera",
             onPress: () => setCameraVisible(true),
             text: "commons.images",
-            disable: false
-        },*/
+            disable: true
+        },
         {
             icon: "folder-multiple-image",
-            onPress: async () => await getPhotos("Photos"),
+            onPress: async () => await addFiles("photo"),
             text: "commons.images",
-            disable: photos.selected && filter.assetType === "Photos"
+            disable: false
         },
         {
             icon: "video-box",
-            onPress: async () => await getPhotos("Videos"),
+            onPress: async () => await addFiles("video"),
             text: "commons.videos",
-            disable: photos.selected && filter.assetType === "Videos"
+            disable: false
         },
-        /*{
-            icon: "dots-horizontal",
-            onPress: async () => setModalVisible(true),
+        {
+            icon: "golf",
+            onPress: async () => setGolfModalVisible(true),
             text: "commons.categories",
             disable: false
-        }*/
+        }
     ]
 
-    const HeaderFooterButton = () => (
-        <View style={{
-            padding: 10
-        }}>
-            {photos.selected && <Button icon="magnify-plus" mode="outlined" onPress={() => {
-                if (filter.assetType === "Videos") return addFiles("video");
-                else return addFiles("photo")
-            }}>Other</Button>}
-        </View>
-    )
-
     return (
-        <View style={{
-            backgroundColor: colors.bg_secondary,
-            marginBottom: Platform.OS === "android" ? -5 : 0
-        }}>
-            <View style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                borderColor: colors.bg_secondary,
-                borderTopWidth: 1
-            }}>
-                <View style={styles.row}>
-                    {buttons.map((b, idx) => <IconButton iconColor={b.disable ? colors.fa_secondary : colors.fa_primary} key={idx} onPress={b.onPress} icon={b.icon} />)}
+        <>
+
+            <BottomModal isVisible={golfModalVisible} dismiss={() => setGolfModalVisible(false)}>
+                <View style={{
+                    height: 500
+                }}>
+                    <SearchBar
+                        style={{ backgroundColor: colors.bg_primary }}
+                        value={searchGolf}
+                        onChangeText={setSearchGolf}
+                        placeholder="golf.search"
+                        onSearchPress={() => searchGolfModal()}
+                        onClearPress={() => setSearchGolf("")}
+                    />
+                    <FlatList
+                        data={golfs}
+                        renderItem={({ item }) => (
+                            <DisplayGolfs informations={item} onPress={() => linkGolf(item)} />
+                        )}
+                        keyExtractor={(item) => item.golf_id}
+                    />
                 </View>
-                <Text style={{ marginRight: 10 }}>{content.length} / {maxLength}</Text>
+            </BottomModal>
+
+            <View style={{
+                backgroundColor: colors.bg_secondary,
+                marginBottom: Platform.OS === "android" ? -5 : 0
+            }}>
+                <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    borderColor: colors.bg_secondary,
+                    borderTopWidth: 1
+                }}>
+                    <View style={styles.row}>
+                        {buttons.map((b, idx) => !b.disable && <IconButton iconColor={b.disable ? colors.fa_secondary : colors.fa_primary} key={idx} onPress={b.onPress} icon={b.icon} />)}
+                    </View>
+                    <Text style={{ marginRight: 10 }}>{content.length} / {maxLength}</Text>
+                </View>
             </View>
-            {
-                photos.selected && <FlatList
-                    onEndReached={() => onBottom(filter.assetType)}
-                    ListHeaderComponent={() => <HeaderFooterButton />}
-                    ListFooterComponent={() => photos.edges.length > 20 ? <HeaderFooterButton /> : null}
-                    style={{ maxHeight: full_width / 1.25 }}
-                    data={photos.edges}
-                    keyExtractor={(item, index) => `${item.node.type}${index}`}
-                    renderItem={({ item }) => <Pressable onPress={() => setFiles(fileInfo(item))}>
-                        <Image
-                            style={{
-                                resizeMode: "cover",
-                                width: full_width / 3,
-                                height: full_width / 3
-                            }}
-                            source={{
-                                uri: item.node.image.uri
-                            }} />
-                    </Pressable>}
-                    horizontal={true} />
-            }
-        </View>
+        </>
     )
 }
 

@@ -70,7 +70,8 @@
         "name": "Name",
         "location": "Location",
         "users": "Users",
-        "distance": "Distance"
+        "distance": "Distance",
+        "search": "Search a golf"
     },
     "map": {
         "refresh": "Refresh",
@@ -387,6 +388,7 @@
         "9": "Invalid request ID or already used",
         "10": "Invalid field size",
         "11": "Invalid query name",
+        "12": "Violation of the terms of use",
         "100": "A verification email has been sent",
         "200": "Success",
         "204": "Successfully deleted",

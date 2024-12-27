@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
-import { Button, Divider, Text, Card, Icon } from "react-native-paper";
+import { Button, Divider, Text, Card, Icon, Chip } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { connect } from 'react-redux';
 import { PostInterface } from "../../Services/Client/Managers/Interfaces";
@@ -17,6 +17,7 @@ import { Loader } from "../../Other";
 import Postheader from "./Views/Components/Postheader";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "../../Services/navigationProps";
+import { formatDistance } from "../../Services";
 
 type SectionProps = React.FC<{
     informations: PostInterface.postResponseSchema;
@@ -119,6 +120,16 @@ const DisplayPosts: SectionProps = ({
                     {pined && <PinnedView />}
 
                     <Postheader lefComponent={<LeftComponent />} info={informations.from} post_id={informations.post_id} created_at={informations.created_at} />
+                    {
+                        informations.golf_info && (
+                            <View style={styles.row}><Chip elevated icon="golf" onPress={() => navigation.navigate("GolfsStack", {
+                                screen: "GolfsProfileScreen",
+                                params: {
+                                    golf_id: informations?.golf_info?.golf_id,
+                                }
+                            })}>{informations.golf_info.name} {informations.golf_info.distance && `· ${formatDistance(informations.golf_info.distance)}Km`}</Chip></View>
+                        )
+                    }
                     {informations.categories && informations.categories.length > 0 && <View style={[styles.row, { marginTop: -5, marginLeft: 5 }]}>{informations.categories.map((c, idx) => <CategoriesBox key={idx} c={c} />)}</View>}
                     <PostNormal maxLines={comments ? undefined : 5} />
                 </TouchableOpacity>

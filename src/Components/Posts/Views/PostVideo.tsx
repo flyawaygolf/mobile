@@ -7,13 +7,11 @@ import { Markdown } from "../../Text";
 import VideoPlayer from "./Components/VideoPlayer";
 import Postbottom from "./Components/Postbottom";
 
-
-
 function PostVideo() {
 
     const { info } = useContext(SinglePostContext)
     const { client } = useClient()
-
+    
     return (
         <View>
             <Postheader info={info.from} post_id={info.post_id} created_at={info.created_at} />
