@@ -63,6 +63,9 @@
         "no_trends_world_region": "No Trends in the world today. Create the first Trend of the day!",
         "no_trends_world_region_all_time": "No Trends in the world. Create the first Trend ever !"
     },
+    "home": {
+        "no_posts": "No posts to display, browse the app to find users to follow and posts to discover."
+    },
     "golf": {
         "link": "Link",
         "unlink": "Unlink",

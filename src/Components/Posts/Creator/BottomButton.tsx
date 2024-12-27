@@ -9,7 +9,6 @@ import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Sear
 import { BottomModal } from "../../../Other";
 import { SearchBar } from "../../Elements/Input";
 import { DisplayGolfs } from "../../Golfs";
-import { use } from "i18next";
 import { getCurrentLocation, handleToast } from "../../../Services";
 import { useTranslation } from "react-i18next";
 
@@ -127,7 +126,7 @@ function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLengt
                         style={{ backgroundColor: colors.bg_primary }}
                         value={searchGolf}
                         onChangeText={setSearchGolf}
-                        placeholder="golf.search"
+                        placeholder={t("golf.search")}
                         onSearchPress={() => searchGolfModal()}
                         onClearPress={() => setSearchGolf("")}
                     />
