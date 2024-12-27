@@ -31,7 +31,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
   const [golfPaginationKey, setGolfsPaginationKey] = React.useState<string | undefined>(undefined);
   const [golfs, setGolfs] = React.useState<golfInterface[]>([]);
 
-  const [postsPaginationKey, setPostslfPaginationKey] = React.useState<string | undefined>(undefined);
+  const [postsPaginationKey, setPostsPaginationKey] = React.useState<string | undefined>(undefined);
   const [posts, setPosts] = useState<PostInterface.postInterface[]>([])
 
   const headerOpacity = scrollY.interpolate({
@@ -71,7 +71,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
     setLoading(false);
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
     if (!response.data) return;
-    if (response.pagination_key) setPostslfPaginationKey(response.pagination_key);
+    if (response.pagination_key) setPostsPaginationKey(response.pagination_key);
     setPosts([...posts, ...response.data]);
   };
 
@@ -169,7 +169,7 @@ const ProfileScreen = ({ route }: ScreenNavigationProps<ProfileStackParams, "Pro
                 data={posts}
                 keyExtractor={(item) => item.post_id}
                 renderItem={memoizedPosts}
-                onScrollEndDrag={() => getGolfs()}
+                onScrollEndDrag={() => getPosts()}
                 ListEmptyComponent={loading ? <Loader /> : <Text style={{ textAlign: "center" }}>{t("profile.no_posts")}</Text>}
                 ListHeaderComponent={renderProfileInfo()}
                 scrollIndicatorInsets={Platform.OS === "ios" ? {

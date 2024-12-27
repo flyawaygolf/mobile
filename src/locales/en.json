@@ -71,7 +71,9 @@
         "location": "Location",
         "users": "Users",
         "distance": "Distance",
-        "search": "Search a golf"
+        "search": "Search a golf",
+        "community_posts": "Community posts",
+        "no_posts": "No posts to display"
     },
     "map": {
         "refresh": "Refresh",
