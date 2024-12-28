@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, Platform, FlatList } from "react-native";
+import { View, Platform, FlatList, KeyboardAvoidingView, Keyboard } from "react-native";
 import { IconButton, Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 import styles from "../../../Style/style";
 import { useClient, useTheme } from "../../Container";
@@ -10,7 +11,6 @@ import { BottomModal } from "../../../Other";
 import { SearchBar } from "../../Elements/Input";
 import { DisplayGolfs } from "../../Golfs";
 import { getCurrentLocation, handleToast } from "../../../Services";
-import { useTranslation } from "react-i18next";
 
 type PropsType = {
     addFiles: (target: "photo" | "video") => any,
@@ -37,12 +37,21 @@ function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLengt
     const [golfModalVisible, setGolfModalVisible] = useState(false);
     const [searchGolf, setSearchGolf] = useState("");
     const [location, setLocation] = useState<LocationType | undefined>(undefined);
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
 
+    const searchMap = async (latitude: number, longitude: number) => {
+        const response = await client.search.map.golfs({
+            lat: latitude,
+            long: longitude,
+            max_distance: 50000
+        });
+
+        if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+        setGolfs(response.data.golfs.items);
+    }
     const start = async () => {
         try {
             const position = await getCurrentLocation();
-            console.log(position);
-            
             if (position) {
                 const crd = position.coords;
                 const init_location = {
@@ -52,14 +61,7 @@ function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLengt
                     longitudeDelta: 0.5,
                 }
                 setLocation(init_location);
-                const response = await client.search.map.golfs({
-                    lat: init_location.latitude,
-                    long: init_location.longitude,
-                    max_distance: 50000
-                });
-
-                if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
-                setGolfs(response.data.golfs.items);
+                await searchMap(crd.latitude, crd.longitude);
             }
         } catch (error) {
             handleToast(JSON.stringify(error))
@@ -75,9 +77,9 @@ function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLengt
         setGolfModalVisible(false);
     }
 
-    const searchGolfModal = async () => {
+    const searchGolfModal = async (text?: string) => {
         // searchGolf
-        const response = await client.search.golfs(searchGolf, {
+        const response = await client.search.golfs(text ?? searchGolf, {
             location: location ? {
                 lat: location.latitude,
                 long: location.longitude,
@@ -115,20 +117,39 @@ function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLengt
         }
     ]
 
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
+            setKeyboardHeight(event.endCoordinates.height);
+        });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
         <>
-
             <BottomModal isVisible={golfModalVisible} dismiss={() => setGolfModalVisible(false)}>
                 <View style={{
-                    height: 500
+                    height: 500 - keyboardHeight
                 }}>
                     <SearchBar
                         style={{ backgroundColor: colors.bg_primary }}
                         value={searchGolf}
-                        onChangeText={setSearchGolf}
+                        onChangeText={(txt) => {
+                            setSearchGolf(txt)
+                            searchGolfModal(txt)
+                        }}
                         placeholder={t("golf.search")}
                         onSearchPress={() => searchGolfModal()}
-                        onClearPress={() => setSearchGolf("")}
+                        onClearPress={() => {
+                            setSearchGolf("")
+                            start()
+                        }}
                     />
                     <FlatList
                         data={golfs}

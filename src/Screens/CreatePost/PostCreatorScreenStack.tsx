@@ -163,9 +163,9 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
   }
 
   return (
-    <PostCreatorContainer dontSend={content.length > 512} onSave={() => sendInfo()} changeVisibilty={() => navigation.goBack()} >
-      {sending.progress > 0 && <ProgressBar progress={sending.progress} />}
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <PostCreatorContainer dontSend={content.length > 512} onSave={() => sendInfo()} changeVisibilty={() => navigation.goBack()} >
+        {sending.progress > 0 && <ProgressBar progress={sending.progress} />}
         <ScrollView>
           {attached_post && <DisplayAttachedPost attached_post={attached_post} />}
           <View style={[styles.row, { width: full_width, padding: 10 }]}>
@@ -176,12 +176,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
                 user={user} />
             </View>
           </View>
-          <View style={styles.row}>{options.golf && <Chip icon="golf" onPress={() => navigation.navigate("GolfsStack", {
-                    screen: "GolfsProfileScreen",
-                    params: {
-                      golf_id: options.golf?.golf_id,
-                    }
-                  })}>{options.golf.name} {options.golf.distance && `· ${formatDistance(options.golf.distance)}Km`}</Chip> }</View>
+          <View style={styles.row}>{options.golf && <Chip icon="golf" onPress={() => setOptions({ ...options, golf: undefined })}>{options.golf.name} {options.golf.distance && `· ${formatDistance(options.golf.distance)}Km`}</Chip>}</View>
           <TextAreaAutoComplete autoFocus={true} value={content} maxLength={512} setValue={(text) => SetContent(text)} />
           {shared_post && <DisplaySharedPost shared_post={shared_post} />}
         </ScrollView>
@@ -206,8 +201,8 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
             }
           })} addFiles={addFiles} />
         </View>
-      </KeyboardAvoidingView>
-    </PostCreatorContainer>
+      </PostCreatorContainer>
+    </KeyboardAvoidingView>
   );
 };
 

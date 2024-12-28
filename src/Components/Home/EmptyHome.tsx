@@ -9,7 +9,7 @@ const EmptyHome = () => {
     
     return (
         <View>
-            <Text style={{ padding: 5 }}>{t("commons.nothing_display")}</Text>
+            <Text style={{ padding: 5 }}>{t("home.no_posts")}</Text>
         </View>
     )
 }
