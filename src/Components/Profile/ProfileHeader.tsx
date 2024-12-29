@@ -107,7 +107,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
 
 
     return (
-        <View style={{ position: "absolute", zIndex: 100, width: "100%" }}>
+        <View>
             {
                 user_info.user_id ? (
                     <>
@@ -162,7 +162,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                     </Appbar.Header>
                 )
             }
-        </View>
+        </>
     )
 };
 
