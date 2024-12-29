@@ -154,10 +154,6 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                     <Appbar.Header style={[styles.header]}>
                         <View style={{ flexDirection: "row", alignItems: 'center' }}>
                             <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
-                            <Animated.View style={{ opacity: headerOpacity, flexDirection: 'column', alignItems: 'flex-start', }}>
-                                <Text style={styles.headerName}>{user_info.username}</Text>
-                                <Text variant="labelSmall" style={{ fontWeight: '700', color: colors.text_muted }}>@{user_info.nickname}</Text>
-                            </Animated.View>
                         </View>
                     </Appbar.Header>
                 )
