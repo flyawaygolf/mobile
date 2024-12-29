@@ -5,25 +5,24 @@ import { useTranslation } from "react-i18next";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useRealm } from "@realm/react";
 
-import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { handleToast, navigationProps } from "../../Services";
-import { useClient, useTheme } from "../Container";
+import { useClient, useProfile, useTheme } from "../Container";
 import { deleteUser } from "../../Services/Realm/userDatabase";
 import { getStorageInfo, setStorage, settingsStorageI } from "../../Services/storage";
 import { Ithemes } from "../Container/Theme/Themes";
 import { useState } from "react";
-import { BottomModal } from "../../Other";
+import { BottomModal, Loader } from "../../Other";
 import SettingsModifyProfile from "../Settings/Settings";
 
 type ProfileHeaderProps = {
-    user_info: userInfo;
     navigation: navigationProps;
     headerOpacity: Animated.AnimatedInterpolation<string | number>;
 }
 
-const ProfileHeader = ({ user_info, navigation, headerOpacity }: ProfileHeaderProps) => {
+const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
 
     const { user, client, setValue } = useClient();
+    const { user_info } = useProfile();
     const { colors, theme, setTheme } = useTheme();
     const { t } = useTranslation();
     const realm = useRealm();
@@ -108,46 +107,62 @@ const ProfileHeader = ({ user_info, navigation, headerOpacity }: ProfileHeaderPr
 
 
     return (
-        <>
-            <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
-                <SettingsModifyProfile setModalVisible={setModalVisible} />
-            </BottomModal>
-            <Appbar.Header style={[styles.header]}>
-                <View style={{ flexDirection: "row", alignItems: 'center' }}>
-                    <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
-                    <Animated.View style={{ opacity: headerOpacity, flexDirection: 'column', alignItems: 'flex-start', }}>
-                        <Text style={styles.headerName}>{user_info.username}</Text>
-                        <Text variant="labelSmall" style={{ fontWeight: '700', color: colors.text_muted }}>@{user_info.nickname}</Text>
-                    </Animated.View>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: 'center' }}>
-                    {
-                        user_info.user_id && (
-                            <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
+        <View style={{ position: "absolute", zIndex: 100, width: "100%" }}>
+            {
+                user_info.user_id ? (
+                    <>
+                        <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
+                            <SettingsModifyProfile setModalVisible={setModalVisible} />
+                        </BottomModal>
+                        <Appbar.Header style={[styles.header]}>
+                            <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                                <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
+                                <Animated.View style={{ opacity: headerOpacity, flexDirection: 'column', alignItems: 'flex-start', }}>
+                                    <Text style={styles.headerName}>{user_info.username}</Text>
+                                    <Text variant="labelSmall" style={{ fontWeight: '700', color: colors.text_muted }}>@{user_info.nickname}</Text>
+                                </Animated.View>
+                            </View>
+                            <View style={{ flexDirection: "row", alignItems: 'center' }}>
                                 {
-                                    user.user_id !== user_info.user_id ? (
-                                        <>
-                                            <Tooltip title={t("profile.block")}>
-                                                <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
-                                            </Tooltip>
-                                            <Tooltip title={t("profile.report")}>
-                                                <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => report()} />
-                                            </Tooltip>
-                                        </>
-                                    ) : (
+                                    user_info.user_id && (
                                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
-                                            <IconButton style={{ margin: 0 }} icon={"theme-light-dark"} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
-                                            <IconButton style={{ margin: 0 }} icon={"cog"} onPress={() => setModalVisible(true)} />
-                                            <IconButton style={{ margin: 0 }} icon={"exit-to-app"} onPress={() => Disconnect()} />
+                                            {
+                                                user.user_id !== user_info.user_id ? (
+                                                    <>
+                                                        <Tooltip title={t("profile.block")}>
+                                                            <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
+                                                        </Tooltip>
+                                                        <Tooltip title={t("profile.report")}>
+                                                            <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => report()} />
+                                                        </Tooltip>
+                                                    </>
+                                                ) : (
+                                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
+                                                        <IconButton style={{ margin: 0 }} icon={"theme-light-dark"} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
+                                                        <IconButton style={{ margin: 0 }} icon={"cog"} onPress={() => setModalVisible(true)} />
+                                                        <IconButton style={{ margin: 0 }} icon={"exit-to-app"} onPress={() => Disconnect()} />
+                                                    </View>
+                                                )
+                                            }
                                         </View>
                                     )
                                 }
                             </View>
-                        )
-                    }
-                </View>
-            </Appbar.Header>
-        </>
+                        </Appbar.Header>
+                    </>
+                ) : (
+                    <Appbar.Header style={[styles.header]}>
+                        <View style={{ flexDirection: "row", alignItems: 'center' }}>
+                            <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
+                            <Animated.View style={{ opacity: headerOpacity, flexDirection: 'column', alignItems: 'flex-start', }}>
+                                <Text style={styles.headerName}>{user_info.username}</Text>
+                                <Text variant="labelSmall" style={{ fontWeight: '700', color: colors.text_muted }}>@{user_info.nickname}</Text>
+                            </Animated.View>
+                        </View>
+                    </Appbar.Header>
+                )
+            }
+        </View>
     )
 };
 

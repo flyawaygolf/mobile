@@ -34,6 +34,10 @@ export type ProfileStackParams = {
         nickname: string;
     };
     ProfileEditScreen: undefined;
+    ProfileFollower: {
+        nickname: string;
+        type: "subscribers" | "subscriptions";
+    };
 }
 
 export type GolfsStackParams = {
@@ -50,6 +54,7 @@ export type RootStackParamList = {
         screen: ProfileStackScreens,
         params?: {
             nickname?: string;
+            type?: "subscribers" | "subscriptions";
         };
     };
     GolfsStack: {

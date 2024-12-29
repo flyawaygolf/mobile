@@ -11,3 +11,6 @@ export { default as ScreenContainer } from "./ScreenContainer";
 export { default as IOSContainer } from "./IOSContainer";
 export { default as PostCreatorContainer } from "./PostCreatorContainer";
 export { default as PostContainer } from "./PostContainer";
+
+export { default as ProfileProvider } from "./Profile/ProfileProvider";
+export { default as useProfile } from "./Profile/useProfile";

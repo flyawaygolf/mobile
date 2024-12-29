@@ -1,10 +1,12 @@
 import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { ProfileScreen, ProfileEditScreen } from "../Screens/Profile";
+import FollowScreen from "../Screens/Profile/FollowScreen";
 
 export type ProfileStackScreens =
     "ProfileScreen" |
-    "ProfileEditScreen"
+    "ProfileEditScreen" |
+    "ProfileFollower"
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,10 @@ const ProfileStack = () => {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         headerShown: false,
       }} />
+      <Stack.Screen name="ProfileFollower" component={FollowScreen} options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            headerShown: false
+          }} />
     </Stack.Navigator>
   );
 };

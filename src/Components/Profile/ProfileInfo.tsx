@@ -1,11 +1,11 @@
 import React from 'react';
-import { Animated, StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Badge, Button, Card, IconButton, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { handleToast, navigationProps } from "../../Services";
 import { Avatar } from "../Member";
-import { useClient, useTheme } from "../Container";
+import { useClient, useProfile, useTheme } from "../Container";
 import { displayHCP } from "../../Services/handicapNumbers";
 import { full_width } from "../../Style/style";
 import { addGuildList } from "../../Redux/guildList/action";
@@ -13,14 +13,14 @@ import Clipboard from "@react-native-clipboard/clipboard";
 import { profileInformationsInterface } from "../../Services/Client/Managers/Interfaces/User";
 
 type ProfileInfoProps = {
-    user_info: profileInformationsInterface;
     navigation: navigationProps;
     setUserInfo: React.Dispatch<React.SetStateAction<profileInformationsInterface>>;
 }
 
-const ProfileInfo = ({ user_info, navigation, setUserInfo }: ProfileInfoProps) => {
+const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
 
     const { client, user } = useClient();
+    const { user_info } = useProfile();
     const { colors } = useTheme();
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -105,6 +105,20 @@ const ProfileInfo = ({ user_info, navigation, setUserInfo }: ProfileInfoProps) =
                     </View>
                 </Card.Content>
             </Card>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingBottom: 10 }}>
+                <TouchableOpacity style={[styles.column, { alignItems: "center" }]} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileFollower", params: { type: "subscriptions", nickname: user_info.nickname } })}>
+                    <Text variant="bodyLarge" style={{ fontWeight: "900" }}>{user_info.subscriptions}</Text>
+                    <Text variant="bodySmall" style={{ color: colors.text_normal_hover }}>{t("profile.subscriptions")}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.column, { alignItems: "center" }]} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileFollower", params: { type: "subscribers", nickname: user_info.nickname } })}>
+                    <Text variant="bodyLarge" style={{ fontWeight: "900" }}>{user_info.subscribers}</Text>
+                    <Text variant="bodySmall" style={{ color: colors.text_normal_hover }}>{t("profile.subscribers")}</Text>
+                </TouchableOpacity>
+                <View style={[styles.column, { alignItems: "center" }]}>
+                    <Text variant="bodyMedium" style={{ textTransform: "capitalize", fontWeight: "900" }}>{user_info.total_posts}</Text>
+                    <Text variant="bodySmall" style={{ color: colors.text_normal_hover }}>{t("profile.posts")}</Text>
+                </View>
+            </View>
             <View style={{ margin: 5 }}>
                 {user.user_id !== user_info.user_id && <Button mode="contained" icon={user_info.followed ? "account-heart" : "account"} onPress={() => user_info.followed ? unfollow() : follow()} >{t(`profile.${user_info.followed ? "unfollow" : "follow"}`)}</Button>}
             </View>
@@ -117,6 +131,11 @@ const styles = StyleSheet.create({
         width: full_width,
         height: "100%",
         ...StyleSheet.absoluteFillObject,
+    },
+    column: {
+        flex: 1,
+        flexDirection: "column",
+        alignItems: 'center'
     },
 });
 

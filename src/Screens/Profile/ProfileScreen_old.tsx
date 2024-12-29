@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Animated, Platform } from 'react-native';
-import { Icon, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
 import { SafeBottomContainer, useClient, useProfile, useTheme } from '../../Components/Container';
 import { handleToast, navigationProps } from '../../Services';
+import { ProfileStackParams, ScreenNavigationProps } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { DisplayGolfs } from '../../Components/Golfs';
 import ProfileHeader from '../../Components/Profile/ProfileHeader';
@@ -13,6 +14,7 @@ import ProfileInfo from '../../Components/Profile/ProfileInfo';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import DisplayPost from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
+import { profileInformationsInterface } from '../../Services/Client/Managers/Interfaces/User';
 
 type SectionProps = {
   nickname: string;
@@ -47,8 +49,8 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   };
 
   const fetchTabData = async () => {
-    if (activeTab === 'posts' && posts.length < 1) return await getPosts();
-    if (activeTab === 'golfs' && golfs.length < 1) return await getGolfs();
+      if (activeTab === 'posts' && posts.length < 1) return await getPosts();
+      if (activeTab === 'golfs' && golfs.length < 1) return await getGolfs();
   };
 
   useEffect(() => {
@@ -68,7 +70,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   }, [nickname, activeTab]);
 
   const getPosts = async () => {
-    if (loading) return;
+    if(loading) return;
     setLoading(true);
     const response = await client.posts.user.fetch(nickname, { pagination_key: postsPaginationKey });
     setLoading(false);
@@ -78,8 +80,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
     setPosts([...posts, ...response.data]);
   };
 
-  const getGolfs = async () => {
-    if (loading) return;
+  const getGolfs = async () => {    if(loading) return;
     setLoading(true);
     const response = await client.golfs.link.golfs(user_info.user_id, { pagination: { pagination_key: golfPaginationKey } });
     setLoading(false);
@@ -113,11 +114,9 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   const tabs = [{
     name: 'posts',
     active: activeTab === 'posts',
-    icon: "card-text-outline"
   }, {
     name: 'golfs',
-    active: activeTab === 'golfs',
-    icon: "golf-cart"
+    active: activeTab === 'golfs'
   }]
 
   const renderProfileInfo = () => (
@@ -133,8 +132,8 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
                   borderBottomColor: colors.fa_primary,
                   borderBottomWidth: 2,
                 }]}
-                onPress={() => setActiveTab(tab.name as 'posts' | 'golfs')}>
-                <Icon source={tab.icon} size={20} color={tab.active ? colors.fa_primary : colors.text_normal} />
+                onPress={() => setActiveTab(tab.name as 'posts' | 'golfs')}
+              >
                 <Text>{t(`profile.${tab.name}`)}</Text>
               </TouchableOpacity>
             ))
@@ -145,46 +144,46 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   )
 
   return (
-    <SafeBottomContainer padding={0}>
-      <ProfileHeader headerOpacity={headerOpacity} navigation={navigation} />
-      {
-        user_info.user_id ? activeTab === "golfs" ? (
-          <Animated.FlatList
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
-            )}
-            scrollEventThrottle={16}
-            data={golfs}
-            keyExtractor={(item) => item.golf_id}
-            renderItem={memoizedGolfs}
-            onScrollEndDrag={() => getGolfs()}
-            ListEmptyComponent={loading ? <Loader /> : <Text style={{ textAlign: "center" }}>{t("profile.no_linked_golfs")}</Text>}
-            ListHeaderComponent={renderProfileInfo()}
-            scrollIndicatorInsets={Platform.OS === "ios" ? {
-              right: 1
-            } : undefined}
-          />
-        ) : (
-          <Animated.FlatList
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
-            )}
-            scrollEventThrottle={16}
-            data={posts}
-            keyExtractor={(item) => item.post_id}
-            renderItem={memoizedPosts}
-            onScrollEndDrag={() => getPosts()}
-            ListEmptyComponent={loading ? <Loader /> : <Text style={{ textAlign: "center" }}>{t("profile.no_posts")}</Text>}
-            ListHeaderComponent={renderProfileInfo()}
-            scrollIndicatorInsets={Platform.OS === "ios" ? {
-              right: 1
-            } : undefined}
-          />
-        ) : <Loader />
-      }
-    </SafeBottomContainer >
+      <SafeBottomContainer padding={0}>
+          <ProfileHeader headerOpacity={headerOpacity} navigation={navigation} />
+          {
+            user_info.user_id ? activeTab === "golfs" ? (
+              <Animated.FlatList
+                onScroll={Animated.event(
+                  [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                  { useNativeDriver: true }
+                )}
+                scrollEventThrottle={16}
+                data={golfs}
+                keyExtractor={(item) => item.golf_id}
+                renderItem={memoizedGolfs}
+                onScrollEndDrag={() => getGolfs()}
+                ListEmptyComponent={loading ? <Loader /> : <Text style={{ textAlign: "center" }}>{t("profile.no_linked_golfs")}</Text>}
+                ListHeaderComponent={renderProfileInfo()}
+                scrollIndicatorInsets={Platform.OS === "ios" ? {
+                  right: 1
+              } : undefined}
+              />
+            ) : (
+              <Animated.FlatList
+                onScroll={Animated.event(
+                  [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                  { useNativeDriver: true }
+                )}
+                scrollEventThrottle={16}
+                data={posts}
+                keyExtractor={(item) => item.post_id}
+                renderItem={memoizedPosts}
+                onScrollEndDrag={() => getPosts()}
+                ListEmptyComponent={loading ? <Loader /> : <Text style={{ textAlign: "center" }}>{t("profile.no_posts")}</Text>}
+                ListHeaderComponent={renderProfileInfo()}
+                scrollIndicatorInsets={Platform.OS === "ios" ? {
+                  right: 1
+              } : undefined}
+              />
+            ) : <Loader />
+          }
+      </SafeBottomContainer >
   );
 };
 
@@ -198,9 +197,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 15,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 5
   },
   activeTab: {
     borderBottomWidth: 2,
