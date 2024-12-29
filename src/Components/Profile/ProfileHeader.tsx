@@ -158,7 +158,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                     </Appbar.Header>
                 )
             }
-        </>
+        </View>
     )
 };
 

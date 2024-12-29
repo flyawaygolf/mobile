@@ -1,5 +1,6 @@
+import React from "react"
 import { useEffect, useState } from "react";
-import { View, Platform, FlatList, KeyboardAvoidingView, Keyboard } from "react-native";
+import { View, Platform, FlatList, Keyboard } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
