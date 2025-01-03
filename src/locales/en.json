@@ -84,6 +84,7 @@
         "no_posts": "No posts to display"
     },
     "map": {
+        "title": "Golfs Map",
         "refresh": "Refresh",
         "players": "Players",
         "golfs": "Golfs",

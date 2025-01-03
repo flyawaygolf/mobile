@@ -66,7 +66,10 @@ function FavoritesScreen() {
                 keyExtractor={item => item.user_id}
                 renderItem={({ item, index }) => (
                     <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
-                        <DisplayMember onPress={() => {}} full_width style={{
+                        <DisplayMember onPress={() => navigation.navigate("ProfileStack", {
+                            screen: "ProfileScreen",
+                            params: { nickname: item.user_info.nickname },
+                        })} full_width style={{
                             width: full_width - 10,
                         }} informations={item.user_info} />
                         <Button

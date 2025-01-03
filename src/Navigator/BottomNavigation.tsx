@@ -7,6 +7,8 @@ import { GuildListSreen, MapScreen } from '../Screens';
 import { useTheme } from '../Components/Container';
 import HomeNavigator from '../Screens/Home/HomeNavigator';
 
+export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages";
+
 const Tab = createBottomTabNavigator();
 
 export default function BottomStack() {
@@ -18,7 +20,7 @@ export default function BottomStack() {
             screenOptions={{
                 headerShown: false,
             }}
-            initialRouteName="Home"
+            initialRouteName="HomeScreen"
             tabBar={({ navigation, state, descriptors, insets }) => (
                 <BottomNavigation.Bar
                     labeled={false}
@@ -59,7 +61,7 @@ export default function BottomStack() {
             )}
         >
             <Tab.Screen
-                name="Home"
+                name="HomeScreen"
                 component={HomeNavigator}
                 options={{
                     tabBarIcon: ({ color, size, focused }) => {

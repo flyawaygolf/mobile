@@ -87,7 +87,7 @@ const MapScreen = () => {
     if (!isInputFocused) Keyboard.dismiss();
   }, [isInputFocused]);
 
-  useEffect(() => {
+  useEffect(() => {    
     if (mapRef.current?.state.isReady) start()
   }, [mapRef.current?.state])
 

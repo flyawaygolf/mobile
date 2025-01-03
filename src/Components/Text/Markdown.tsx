@@ -26,9 +26,7 @@ const Markdown: SectionProps = ({ content, noBr, maxLine, translate, token, styl
         const txt = await translateText(token, {
             content: content,
             to: to
-        });
-        console.log(txt);
-        
+        });        
         return setNewText(txt);
     }
 

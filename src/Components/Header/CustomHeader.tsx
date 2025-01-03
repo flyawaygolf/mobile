@@ -18,7 +18,7 @@ type SectionProps = React.FC<{
 const CustomHeader: SectionProps = ({ title, isHome, leftComponent, children }) => {
 
     const navigation = useNavigation<navigationProps>();
-    const { user, client } = useClient();
+    const { user, client } = useClient();    
 
     const DisplayAvatar = () => (
         <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.openDrawer()}>

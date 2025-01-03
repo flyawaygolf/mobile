@@ -9,6 +9,7 @@ import { GolfStackScreens } from '../Navigator/GolfsStack';
 import { PostsStackScreens } from '../Navigator/PostsStack';
 import { CreateStackScreens } from '../Navigator/CreateStack';
 import { SinglePostInfoType } from '../Components/Posts/PostContext';
+import { BottomStackScreens } from '../Navigator/BottomNavigation';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -47,7 +48,6 @@ export type GolfsStackParams = {
 }
 
 export type RootStackParamList = {
-    MapScreen: undefined;
     DrawerNavigation: undefined;
     ProfileStack: {
         screen: ProfileStackScreens,
@@ -102,6 +102,15 @@ export type RootStackParamList = {
                 type: string;
                 uri: string;
               }
+        }
+    };
+    BottomNavigation: {
+        screen: BottomStackScreens;
+        params?: {
+            initial_location: {
+                longitude: number;
+                latitude: number;
+            }
         }
     };
 };

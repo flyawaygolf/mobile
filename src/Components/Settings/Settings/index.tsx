@@ -38,7 +38,7 @@ const SettingsModifyProfile = ({ setModalVisible }: PropsType) => {
                 }} t={t("settings.sessions")} />
                 <SettingsButtons onPress={() => {
                     setModalVisible(false)
-                    navigation.navigate("SettingsStack", { screen: "BlockScreen" })
+                    navigation.navigate("SettingsStack", { screen: "BlockedScreen" })
                 }} t={t("settings.blocked")} />
                 <SettingsButtons onPress={() => {
                     setModalVisible(false)

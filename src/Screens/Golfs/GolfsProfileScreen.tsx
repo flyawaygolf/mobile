@@ -207,6 +207,18 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                     <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
                     <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{golfInfo ? golfInfo.name : "..."}</Text>
                 </View>
+                {
+                    /**
+                     *                 <View style={{ flexDirection: "row" }}>
+                    <Appbar.Action icon="map-marker" onPress={() => navigation.navigate("GolfsStack", {
+                        screen: "LittleMapScreen",
+                        params: {
+                            initial_location: golfInfo.location
+                        }
+                    })} />
+                </View>
+                     */
+                }
             </Appbar.Header>
             {
                 golfInfo.golf_id ? activeTab === "users" ? (

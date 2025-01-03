@@ -84,6 +84,7 @@
         "no_posts": "Aucun post pour le moment"
     },
     "map": {
+        "title": "Carte des golfs",
         "refresh": "Actualiser",
         "players": "Joueurs",
         "golfs": "Golfs",

@@ -97,7 +97,9 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
               }
             })} />
           </Drawer.Section>
-          <Drawer.Section title={t('drawer.preferences')}>
+          {
+            /**
+             *           <Drawer.Section title={t('drawer.preferences')}>
             <Drawer.Item icon="theme-light-dark" label={t('drawer.change_theme')} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
             <Drawer.Item icon="translate" label={t('drawer.language')} onPress={() => navigation.navigate("MainNavigation", {
               screen: "SettingsStack",
@@ -106,6 +108,8 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
               }
             })} />
           </Drawer.Section>
+             */
+          }
         </View>
       </View>
     </DrawerContentScrollView>

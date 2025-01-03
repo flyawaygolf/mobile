@@ -14,7 +14,7 @@ type PropsType = {
     onPress: () => any;
     full_width?: boolean;
     noDescription?: boolean;
-    style: StyleProp<ViewStyle>;
+    style?: StyleProp<ViewStyle>;
 }
 
 function DisplayMember({ informations, onPress, full_width = false, style }: PropsType) {

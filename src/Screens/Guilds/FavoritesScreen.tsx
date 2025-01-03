@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl } from "react-native";
 import { Text } from "react-native-paper";
@@ -36,9 +36,7 @@ function FavoritesScreen() {
 
     const renderItem = useCallback(({ item }: { item: guildI }) => (
         <GroupInfo info={item} />
-    ), []);
-
-    const memoizedValue = useMemo(() => renderItem, [groups]);
+    ), [groups]);
 
     return (
         <FlatList
@@ -47,7 +45,7 @@ function FavoritesScreen() {
             }}
             data={groups}
             ListEmptyComponent={<Text style={{ padding: 5 }}>{t("guilds.no_favorite_guilds")}</Text>}
-            renderItem={memoizedValue}
+            renderItem={renderItem}
             keyExtractor={item => item.guild_id}
             refreshControl={<RefreshControl refreshing={loading} progressBackgroundColor={colors.bg_primary} tintColor={colors.fa_primary} colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]} onRefresh={() => getData()} />}
         />
