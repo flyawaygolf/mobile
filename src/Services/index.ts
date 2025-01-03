@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import axios from 'axios';
-import { apibaseurl } from './constante';
+import { apibaseurl, usertokenkey } from './constante';
 import DeviceInfo from 'react-native-device-info';
 import { formatDate } from './dayjs';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
@@ -86,7 +86,7 @@ export const getPermissions = async () => {
 export const translateText = async (user_token: string, options: { content: string, to: string}) => {
   const response = await axiosInstance.post('/translate', options, {
     headers: {
-      'flyawayftoken': user_token,
+      [usertokenkey]: user_token,
     },
   });
   return response.data.data as string;

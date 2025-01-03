@@ -35,7 +35,24 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         alignContent: "center",
         justifyContent: "flex-start"
-    }
+    },
+    banner_image_drawer: {
+        width: "100%",
+        height: "100%",
+        ...StyleSheet.absoluteFillObject,
+    },
+    banner_image: {
+        width: full_height,
+        height: "100%",
+        ...StyleSheet.absoluteFillObject,
+    },
+    pdp50: {
+        width: 50,
+        height: 50,
+        borderRadius: 60 / 2,
+        marginRight: 5,
+        resizeMode: "cover"
+    },
 });
 
 export default styles;

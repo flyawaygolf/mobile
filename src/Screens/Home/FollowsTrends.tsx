@@ -111,7 +111,7 @@ const FollowsTrends = () => {
 
   return (
     <>
-        <CustomHomeHeader leftComponent={<CustomLeftComponent />} />
+      <CustomHomeHeader leftComponent={<CustomLeftComponent />} />
       <FlatList
         ref={flatListRef}
         removeClippedSubviews={true}

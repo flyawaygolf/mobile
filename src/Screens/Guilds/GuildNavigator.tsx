@@ -3,22 +3,23 @@ import { useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import ProfileGolfs from './ProfileGolfs';
-import ProfilePosts from './ProfilePosts';
+
+import FavoritesScreen from './FavoritesScreen';
+import OthersScreen from './OthersScreen';
 
 const renderScene = SceneMap({
-    posts: ProfilePosts,
-    golfs: ProfileGolfs,
+    favorites: FavoritesScreen,
+    others: OthersScreen,
 });
 
-const ProfileNavigator = () => {
+const GuildNavigator = () => {
     const { colors } = useTheme();
     const { t } = useTranslation();
 
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'posts', title: t("profile.posts") },
-        { key: 'golfs', title: t("profile.golfs") }
+        { key: 'favorites', title: t("guilds.favorites") },
+        { key: 'others', title: t("guilds.others") }
     ]);
 
     const renderTabBar = (props: any) => (
@@ -52,4 +53,4 @@ const ProfileNavigator = () => {
     );
 };
 
-export default ProfileNavigator;
+export default GuildNavigator;

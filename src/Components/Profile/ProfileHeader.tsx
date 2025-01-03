@@ -10,9 +10,6 @@ import { useClient, useProfile, useTheme } from "../Container";
 import { deleteUser } from "../../Services/Realm/userDatabase";
 import { getStorageInfo, setStorage, settingsStorageI } from "../../Services/storage";
 import { Ithemes } from "../Container/Theme/Themes";
-import { useState } from "react";
-import { BottomModal, Loader } from "../../Other";
-import SettingsModifyProfile from "../Settings/Settings";
 
 type ProfileHeaderProps = {
     navigation: navigationProps;
@@ -26,7 +23,6 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
     const { colors, theme, setTheme } = useTheme();
     const { t } = useTranslation();
     const realm = useRealm();
-    const [modalVisible, setModalVisible] = useState(false);
 
     const Disconnect = () => {
         Alert.alert(t("settings.logout"), t("settings.sure_logout"), [
@@ -83,6 +79,18 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
         }])
     }
 
+    const addFavorite = async () => {
+        const response = await client.favorites.create(user_info.user_id);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`))
+        handleToast(t("commons.success"))
+    };
+
+    const deleteFavorite = async () => {
+        const response = await client.favorites.delete(user_info.user_id);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`))
+        handleToast(t("commons.success"))
+    }
+
     const changeStorage = (type: "theme" | "language", txt: Ithemes | string) => {
         const settings = getStorageInfo("settings") as settingsStorageI;
 
@@ -111,9 +119,6 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
             {
                 user_info.user_id ? (
                     <>
-                        <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
-                            <SettingsModifyProfile setModalVisible={setModalVisible} />
-                        </BottomModal>
                         <Appbar.Header style={[styles.header]}>
                             <View style={{ flexDirection: "row", alignItems: 'center' }}>
                                 <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
@@ -127,7 +132,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                                     user_info.user_id && (
                                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
                                             {
-                                                user.user_id !== user_info.user_id ? (
+                                                user.user_id !== user_info.user_id && (
                                                     <>
                                                         <Tooltip title={t("profile.block")}>
                                                             <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
@@ -136,12 +141,6 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                                                             <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => report()} />
                                                         </Tooltip>
                                                     </>
-                                                ) : (
-                                                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
-                                                        <IconButton style={{ margin: 0 }} icon={"theme-light-dark"} onPress={() => changeStorage("theme", theme === "auto" || theme === "white" ? "dark" : "white")} />
-                                                        <IconButton style={{ margin: 0 }} icon={"cog"} onPress={() => setModalVisible(true)} />
-                                                        <IconButton style={{ margin: 0 }} icon={"exit-to-app"} onPress={() => Disconnect()} />
-                                                    </View>
                                                 )
                                             }
                                         </View>

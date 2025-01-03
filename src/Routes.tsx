@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import messaging from "@react-native-firebase/messaging";
 
 import { SplashScreen } from './Screens';
-import { LoginNavigation, MainNavigation } from './Navigator';
+import { DrawerNavigation, LoginNavigation } from './Navigator';
 
 import 'dayjs/locale/fr';
 import 'dayjs/locale/en';
@@ -30,7 +30,7 @@ function Routes() {
     const [updateRequire, setUpdateRequire] = useState<boolean>(false);
 
     const [routes] = useState([
-        { name: "MainNavigation", screen: MainNavigation },
+        { name: "DrawerNavigation", screen: DrawerNavigation },
     ])
 
     async function getUnreads() {

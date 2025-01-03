@@ -12,3 +12,4 @@ export * as SessionInterface from "./Session";
 export * as UserInterface from "./User";
 export * as SubscriptionInterface from "./Subscription";
 export * as CustomSubscriptionInterface from "./CustomSubscription";
+export * as FavoritesInterface from "./Favorites";

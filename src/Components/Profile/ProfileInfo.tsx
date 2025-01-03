@@ -28,14 +28,14 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
     const follow = async () => {
         const response = await client.follows.create(user_info.user_id);
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
-        setUserInfo({ ...user_info, followed: true })
+        setUserInfo({ ...user_info, followed: true, subscribers: user_info.subscribers + 1 })
         handleToast(t("commons.success"))
     }
 
     const unfollow = async () => {
         const response = await client.follows.delete(user_info.user_id);
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
-        setUserInfo({ ...user_info, followed: false })
+        setUserInfo({ ...user_info, followed: false, subscribers: user_info.subscribers - 1 })
         handleToast(t("commons.success"))
     }
 

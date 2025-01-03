@@ -2,6 +2,8 @@ import Config from "react-native-config";
 
 export const environment = Config?.ENV ?? 'production';
 
+export const usertokenkey = "flyawaytoken";
+
 export const apibaseurl = Config?.API_BASE_URL ?? 'https://api.flyawaygolf.com/v2';
 export const websocketurl = Config?.WEBSOCKET_URL ?? 'wss://api.flyawaygolf.com/v2';
 export const cdnbaseurl = Config?.CDN_BASE_URL ?? 'https://cdn.flyawaygolf.com';

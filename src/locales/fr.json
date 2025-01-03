@@ -45,6 +45,11 @@
         "top_world_trends_day": "Tendances mondial",
         "last_word_trends": "Dernière Trends mondial"
     },
+    "drawer": {
+        "change_theme": "Changer de thème",
+        "preferences": "Préférences",
+        "language": "Langue"
+    },
     "update": {
         "update": "Mettre à jour",
         "title": "Nouvelle mise à jour disponible",
@@ -188,6 +193,7 @@
         "renew_subscription": "Renouveler l'abonnement",
         "theme": "Thème",
         "language": "Langue",
+        "language_theme": "Langue & Thème",
 
         "dark_grey": "Gris foncé",
         "dark_green": "Foncé / vert",
@@ -240,6 +246,11 @@
 
         "report_alert_title": "Signaler {{username}}",
         "report_alert_description": "Êtes-vous sur de vouloir signaler cet utilisateur ?"
+    },
+    "guilds": {
+        "favorite": "Favoris",
+        "others": "Autres",
+        "no_favorite_guilds": "Aucun utilisateur favori, ajoutez des utilisateurs à vos favoris pour les retrouver plus facilement."
     },
     "messages": {
         "no_guilds": "Aucun message à afficher pour le moment. Créez un groupe ou trouvez des utilisateurs avec qui échanger en explorant la page de la carte du monde.",

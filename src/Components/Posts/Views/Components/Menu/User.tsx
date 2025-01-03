@@ -60,10 +60,10 @@ function User({ modalVisible, setModalVisible }: SectionProps) {
                 /**
                  * <Button uppercase onPress={() => download()} icon="download">{t("commons.download")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-                 */
-            }
             <Button uppercase onPress={() => onShare()} icon="share-variant">{t("posts.share")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+                 */
+            }
             <Button uppercase onPress={() => copyPostID()} icon="content-copy">{t("posts.copy_post_id")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
             <Button uppercase onPress={() => report()} icon="shield-alert-outline">{t("commons.report")}</Button>

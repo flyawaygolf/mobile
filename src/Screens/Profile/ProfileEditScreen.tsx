@@ -17,6 +17,7 @@ import { displayHCP } from "../../Services/handicapNumbers";
 import { addUser } from "../../Services/Realm/userDatabase";
 import { gender } from "../../Services/Client/Managers/Interfaces/Global";
 import HandicapModal from "../../Components/Profile/HandicapModal";
+import { usertokenkey } from "../../Services/constante";
 
 export interface fileI {
     size: number;
@@ -123,7 +124,7 @@ function ProfileEditScreen() {
             var config: AxiosRequestConfig = {
                 headers: {
                     'content-type': 'multipart/form-data',
-                    "flyawaytoken": token,
+                    [usertokenkey]: token,
                 },
                 onUploadProgress: function (progressEvent) {
                     const total = progressEvent?.total ?? 1;

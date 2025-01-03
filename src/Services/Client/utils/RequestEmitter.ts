@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { apibaseurl } from '../../constante';
+import { apibaseurl, usertokenkey } from '../../constante';
 
 export type requestParams = {
   token: string;
@@ -15,7 +15,7 @@ class RequestEmitter {
     this.instance = axios.create({
       baseURL: params?.apiurl ?? apibaseurl,
       headers: {
-        flyawaytoken: params?.token ?? '',
+        [usertokenkey]: params?.token ?? '',
       },
       validateStatus: s => s < 501,
     });

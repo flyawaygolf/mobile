@@ -23,7 +23,7 @@ const CustomHomeHeader: SectionProps = ({ leftComponent }) => {
 
     return (
         <Appbar.Header style={{ width: full_width, flexDirection: "row", alignContent: "center", justifyContent: "space-between", borderBottomColor: colors.bg_secondary, borderBottomWidth: 1 }}>
-            <ShrinkEffect shrinkAmount={0.90} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: user.nickname } })}>
+            <ShrinkEffect shrinkAmount={0.90} onPress={() => navigation.openDrawer()}>
                 <Avatar marginLeft={5} url={client.user.avatar(user?.user_id, user?.avatar)} />
             </ShrinkEffect>
             {leftComponent && leftComponent}

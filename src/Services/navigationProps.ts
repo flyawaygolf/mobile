@@ -46,7 +46,6 @@ export type GolfsStackParams = {
     };
 }
 
-
 export type RootStackParamList = {
     MapScreen: undefined;
     DrawerNavigation: undefined;
@@ -85,6 +84,7 @@ export type RootStackParamList = {
         params: {
             post_id?: string,
             query?: string;
+            target_id?: string;
         }
     };
     CreateStack: {

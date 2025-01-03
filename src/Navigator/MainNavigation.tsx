@@ -28,8 +28,10 @@ export default function MainNavigation(): JSX.Element {
       {
         routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          headerShown: false
         }} />)
       }
     </Stack.Navigator>
+
   );
 }

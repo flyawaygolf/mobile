@@ -22,6 +22,7 @@ import { RootState } from '../../Redux';
 import { AxiosRequestConfig } from 'axios';
 import TextAreaAutoComplete from '../../Components/Posts/Creator/TextAreaAutoComplete';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { usertokenkey } from '../../Services/constante';
 
 export type postOptions = {
   paid: boolean;
@@ -80,7 +81,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
       var config: AxiosRequestConfig = {
         headers: {
           'Content-type': 'multipart/form-data',
-          "flyawaytoken": token,
+          [usertokenkey]: token,
         },
         onUploadProgress: function (progressEvent) {
           const total = progressEvent?.total ?? 1;

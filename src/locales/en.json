@@ -45,6 +45,11 @@
         "top_world_trends_day": "World Trends",
         "last_word_trends": "Last World Trends"
     },
+    "drawer": {
+        "change_theme": "Change theme",
+        "preferences": "Preferences",
+        "language": "Language"
+    },
     "update": {
         "update": "Update",
         "title": "New update available",
@@ -189,6 +194,7 @@
         "renew_subscription": "Renew the subscription",
         "theme": "Theme",
         "language": "Language",
+        "language_theme": "Language & Theme",
         
         "dark_grey": "Dark grey",
         "dark_green": "Dark / green",
@@ -241,6 +247,11 @@
 
         "report_alert_title": "Report {{username}}",
         "report_alert_description": "Are you sure you want to report this user?"
+    },
+    "guilds": {
+        "favorites": "Favorites",
+        "others": "Others",
+        "no_favorite_guilds": "No favorite users, add users to your favorites to find them more easily."
     },
     "messages": {
         "no_guilds": "No messages to display at the moment. Create a group or find users to connect with by exploring the world map page.",

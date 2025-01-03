@@ -25,8 +25,8 @@ function PostNormal({ maxLines }: { maxLines?: number }) {
     const { client, token } = useClient();
     const { t, i18n } = useTranslation();
     const { colors } = useTheme();
-
-    const enableTranslation = (text_lang: string) => {
+    
+    const enableTranslation = (text_lang: string) => {        
         if (i18n.language.startsWith(text_lang.toLocaleLowerCase())) return undefined;
         return i18n.language;
     }
@@ -39,7 +39,7 @@ function PostNormal({ maxLines }: { maxLines?: number }) {
                 {
                     info.display_not_allowed ?
                         <Button onPress={() => { }}>{t("posts.subscribe_to", { username: info.from.username })}</Button>
-                        : <View style={{ marginTop: -15 }}><Markdown content={info.content} /></View>
+                        : <View style={{ marginTop: -15 }}><Markdown translate={info.content_language ? enableTranslation(info.content_language) : undefined} maxLine={maxLines} token={token} content={info.content} /></View>
                 }
             </View>
             <View style={{
