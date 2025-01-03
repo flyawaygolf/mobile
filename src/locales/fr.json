@@ -247,8 +247,14 @@
         "report_alert_title": "Signaler {{username}}",
         "report_alert_description": "Êtes-vous sur de vouloir signaler cet utilisateur ?"
     },
+    "favorites": {
+        "title": "Favoris",
+        "no_favorites": "Aucun favoris pour le moment",
+        "sure_delete": "Êtes-vous sûr de vouloir supprimer cet utilisateur de vos favoris ?",
+        "delete": "Supprimer"
+    },
     "guilds": {
-        "favorite": "Favoris",
+        "favorites": "Favoris",
         "others": "Autres",
         "no_favorite_guilds": "Aucun utilisateur favori, ajoutez des utilisateurs à vos favoris pour les retrouver plus facilement."
     },
@@ -435,6 +441,9 @@
         "3005": "Ce compte n'est pas encore vérifié",
         "4000": "Utilisateur déjà suivi",
         "4001": "Abonnement déjà accepté",
+        "4002": "You cannot follow yourself",
+        "4003": "This user is not following you",
+        "4004": "This user is not in your followers",
         "5000": "Cet utilisateur est déjà bloqué",
         "5001": "Cet utilisateur n'est pas bloqué",
         "6000": "Signalement déjà existant",
@@ -459,6 +468,7 @@
         "14001": "Identifiant du coupon non trouvé",
         "14002": "Create custom Subscription before starting",
         "14003": "Active custom Subscription before starting",
+        "15000": "Favorites already exist",
 
         "verify_fields": "Verifier que tout les champs sont bien remplis",
         "sending_form": "Envoi en cours ...",

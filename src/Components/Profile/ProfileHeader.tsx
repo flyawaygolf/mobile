@@ -19,7 +19,7 @@ type ProfileHeaderProps = {
 const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
 
     const { user, client, setValue } = useClient();
-    const { user_info } = useProfile();
+    const { user_info, setUserInfo } = useProfile();
     const { colors, theme, setTheme } = useTheme();
     const { t } = useTranslation();
     const realm = useRealm();
@@ -82,12 +82,14 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
     const addFavorite = async () => {
         const response = await client.favorites.create(user_info.user_id);
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
+        setUserInfo({ ...user_info, is_favorite: true })
         handleToast(t("commons.success"))
     };
 
     const deleteFavorite = async () => {
         const response = await client.favorites.delete(user_info.user_id);
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
+        setUserInfo({ ...user_info, is_favorite: false })
         handleToast(t("commons.success"))
     }
 
@@ -134,6 +136,18 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                                             {
                                                 user.user_id !== user_info.user_id && (
                                                     <>
+                                                        <Tooltip title={t("profile.favorite")}>
+                                                            {
+                                                                user_info.is_favorite ? (
+                                                                    <IconButton style={{ margin: 0 }} iconColor={colors.color_yellow} icon={"star"} onPress={() => deleteFavorite()} />
+                                                                ) : (
+                                                                    <IconButton style={{ margin: 0 }} icon={"star-outline"} onPress={() => addFavorite()} />
+                                                                )
+                                                            }
+                                                        </Tooltip>
+                                                        <Tooltip title={t("profile.copy_id")}>
+                                                            <IconButton style={{ margin: 0 }} icon={"content-copy"} onPress={() => copyUserID()} />
+                                                        </Tooltip>
                                                         <Tooltip title={t("profile.block")}>
                                                             <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
                                                         </Tooltip>

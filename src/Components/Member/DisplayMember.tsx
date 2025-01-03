@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "react-native-paper";
-import { View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 
 import styles from "../../Style/style";
 import { Avatar } from "./";
@@ -14,9 +14,10 @@ type PropsType = {
     onPress: () => any;
     full_width?: boolean;
     noDescription?: boolean;
+    style: StyleProp<ViewStyle>;
 }
 
-function DisplayMember({ informations, onPress, full_width = false }: PropsType) {
+function DisplayMember({ informations, onPress, full_width = false, style }: PropsType) {
 
     const { client } = useClient();
     const { colors } = useTheme();
@@ -34,6 +35,7 @@ function DisplayMember({ informations, onPress, full_width = false }: PropsType)
                         width: full_width ? "100%" : undefined,
                         justifyContent: "space-between",
                     },
+                    style
                 ]}>
                 { /** typeof index !== "undefined" ? <View style={{ backgroundColor: colors.bg_primary, borderRadius: 60, marginRight: 5, width: 30, height: 30, flexDirection: "row", justifyContent: "center", alignItems: "center" }}><Text>{`${index+1}`}</Text></View> : null */}
                 <View style={styles.row}>

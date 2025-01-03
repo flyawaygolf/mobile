@@ -78,6 +78,9 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
                 },
               }
             })} />
+            <Drawer.Item icon="star" label={t('guilds.favorites')} onPress={() => navigation.navigate('MainNavigation', {
+              screen: 'FavoritesScreen'
+            })} />
             <Drawer.Item icon="bookmark" label={t('posts.bookmarks')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'PostsStack',
               params: {

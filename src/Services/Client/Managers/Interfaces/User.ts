@@ -9,6 +9,7 @@ export interface profileInformationsInterface extends userInfo {
     pay_custom_subscription: boolean;
     total_posts: number;
     followed: boolean;
+    is_favorite: boolean;
 }
 
 export interface profileInformations {

@@ -248,6 +248,12 @@
         "report_alert_title": "Report {{username}}",
         "report_alert_description": "Are you sure you want to report this user?"
     },
+    "favorites": {
+        "title": "Favorites",
+        "no_favorites": "No favorites at the moment",
+        "sure_delete": "Are you sure you want to remove this user from your favorites?",
+        "delete": "Delete"
+    },
     "guilds": {
         "favorites": "Favorites",
         "others": "Others",
@@ -432,6 +438,9 @@
         "3005": "This account is not verified yet",
         "4000": "User already following",
         "4001": "Follow already accepted",
+        "4002": "You cannot follow yourself",
+        "4003": "This user is not following you",
+        "4004": "This user is not in your followers",
         "5000": "This user is already blocked",
         "5001": "This user is not blocked",
         "6000": "Report already exists",
@@ -456,6 +465,8 @@
         "14001": "Coupon ID not found",
         "14002": "Create custom Subscription before starting",
         "14003": "Active custom Subscription before starting",
+        "15000": "Favorites already exist",
+        
         "verify_fields": "Please verify that all fields are correctly filled",
         "sending_form": "Sending ...",
         "different_password": "Passwords are different",
