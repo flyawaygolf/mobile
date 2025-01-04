@@ -5,7 +5,7 @@ import { Text, Button, Dialog, Paragraph, Portal, TextInput as PaperTextInput, A
 import { useRealm } from '@realm/react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useClient, useTheme } from '../../Components/Container';
+import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { cguLink, cgvLink, navigationProps, openURL, privacyLink } from '../../Services';
 import { deleteUser } from '../../Services/Realm/userDatabase';
 import { full_width } from '../../Style/style';
@@ -42,11 +42,7 @@ function SecurityScreen() {
 
 
     return (
-        <SafeAreaView style={{ backgroundColor: colors.bg_primary, height: "100%" }}>
-            <Appbar.Header style={{ width: full_width, backgroundColor: colors.bg_primary, flexDirection: "row", alignItems: "center" }}>
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Text variant="titleSmall">{t("settings.security")}</Text>
-            </Appbar.Header>
+        <SettingsContainer title={t("settings.security")}>
             <View style={{ padding: 5 }}>
                 <SettingsButtons onPress={() => openURL(cguLink(i18n.language))} t={t("settings.terms_of_use")} />
                 <SettingsButtons onPress={() => openURL(cgvLink(i18n.language))} t={t("settings.terms_of_sales")} />
@@ -81,7 +77,7 @@ function SecurityScreen() {
                     </Dialog>
                 </Portal>
             </View>
-        </SafeAreaView>
+        </SettingsContainer>
     )
 }
 

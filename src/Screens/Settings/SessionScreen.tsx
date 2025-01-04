@@ -4,7 +4,7 @@ import { FlatList, View } from 'react-native';
 import { Text, Button, Dialog, Portal, Appbar, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useClient, useTheme } from '../../Components/Container';
+import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { handleToast, navigationProps } from '../../Services';
 import { fetchSessionsResponseSchema } from '../../Services/Client/Managers/Interfaces/Session';
@@ -64,11 +64,7 @@ function SessionScreen() {
     const memoizedValue = useMemo(() => renderItem, [info?.filter(i => i.session_id !== user.session_id)]);
 
     return (
-        <SafeAreaView style={{ backgroundColor: colors.bg_primary, height: "100%" }}>
-            <Appbar.Header style={{ width: full_width, backgroundColor: colors.bg_primary, flexDirection: "row", alignItems: "center" }}>
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Text variant="titleSmall">{t("settings.blocked")}</Text>
-            </Appbar.Header>
+        <SettingsContainer title={t("settings.sessions")}>
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
                     <Dialog.Title>{t(all ? "settings.close_all_session" : "settings.close_session")}</Dialog.Title>
@@ -103,7 +99,7 @@ function SessionScreen() {
                 }}>{t("commons.delete_all")}</Button> : undefined}
                 ListEmptyComponent={<Text style={{ padding: 10 }}>{t("commons.nothing_display")}</Text>}
             />
-        </SafeAreaView>
+        </SettingsContainer>
     )
 }
 

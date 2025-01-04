@@ -6,7 +6,7 @@ import { Appbar, Button, Dialog, Paragraph, Portal, Text } from 'react-native-pa
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { favoritesInterface } from '../Services/Client/Managers/Interfaces/Favorites';
-import { useClient, useTheme } from '../Components/Container';
+import { ScreenContainer, useClient, useTheme } from '../Components/Container';
 import { handleToast, navigationProps } from '../Services';
 import { full_width } from '../Style/style';
 import { DisplayMember } from '../Components/Member';
@@ -42,7 +42,7 @@ function FavoritesScreen() {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: colors.bg_primary, height: "100%" }}>
+        <ScreenContainer>
             <Appbar.Header style={{ width: full_width, backgroundColor: colors.bg_primary, flexDirection: "row", alignItems: "center" }}>
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
                 <Text variant="titleSmall">{t("favorites.title")}</Text>
@@ -86,7 +86,7 @@ function FavoritesScreen() {
                     </View>
                 )}
             />
-        </SafeAreaView>
+        </ScreenContainer>
     )
 }
 

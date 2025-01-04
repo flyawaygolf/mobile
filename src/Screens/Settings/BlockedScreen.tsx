@@ -6,7 +6,7 @@ import { Appbar, Button, Dialog, Paragraph, Portal, Text } from 'react-native-pa
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { full_width } from '../../Style/style';
 import { navigationProps } from '../../Services';
-import { useClient, useTheme } from '../../Components/Container';
+import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { blockUserInformations } from '../../Services/Client/Managers/Interfaces/Block';
 import { DisplayMember } from '../../Components/Member';
 
@@ -40,11 +40,7 @@ function BlockedScreen() {
     }
 
     return (
-        <SafeAreaView style={{ backgroundColor: colors.bg_primary, height: "100%" }}>
-            <Appbar.Header style={{ width: full_width, backgroundColor: colors.bg_primary, flexDirection: "row", alignItems: "center" }}>
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Text variant="titleSmall">{t("settings.blocked")}</Text>
-            </Appbar.Header>
+        <SettingsContainer title={t("settings.blocked")}>
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
                     <Dialog.Title>
@@ -82,7 +78,7 @@ function BlockedScreen() {
                     </View>
                 )}
             />
-        </SafeAreaView>
+        </SettingsContainer>
     )
 }
 
