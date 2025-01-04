@@ -525,7 +525,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.flyawaygolf;
 				PRODUCT_NAME = flyawaygolf;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "FlyAway Golf App";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "FlyAway Provisioning 2025";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -561,7 +561,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.flyawaygolf;
 				PRODUCT_NAME = flyawaygolf;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "FlyAway Golf App";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "FlyAway Provisioning 2025";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
