@@ -43,6 +43,8 @@
 	<string>Copyright © 2021-2024, Trender Inc.,All Rights Reserved.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>FlyAway need your location to provide personalized content based on your current location like user maps or posts location if you want to activate it.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>FlyAway need it for QR code during the connexion process or to create posts.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>FlyAway need your location to provide personalized content based on your current location like user maps or posts location if you want to activate it.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
