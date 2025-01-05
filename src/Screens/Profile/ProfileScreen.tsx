@@ -26,6 +26,8 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   const { colors } = useTheme();
   const navigation = useNavigation<navigationProps>();
 
+  const [pinedPost, setPinedPost] = useState<PostInterface.postInterface | undefined>(undefined);
+
   const [activeTab, setActiveTab] = useState<'posts' | 'golfs'>('posts');
 
   const [loading, setLoading] = useState(false);
@@ -55,11 +57,19 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
     fetchData();
   }, [user_info]);
 
+  const getPinedPost = async (post_id: string) => {
+    const response = await client.posts.getPinPost(post_id);
+    if (response.error) return handleToast(t(`errors.${response.error.code}`));
+    if (!response.data) return;
+    setPinedPost(response.data);
+  };
+
   const getUserInfo = async () => {
     const response = await client.user.profile(nickname);
     if (response.error) return handleToast(t(`errors.${response.error.code}`));
     if (!response.data) return;
     setUserInfo(response.data);
+    if(response.data.pined_post) await getPinedPost(response.data.pined_post);
   };
 
   useEffect(() => {
@@ -123,6 +133,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   const renderProfileInfo = () => (
     <>
       <ProfileInfo setUserInfo={setUserInfo} navigation={navigation} />
+      { pinedPost && <DisplayPost pined={true} comments={false} informations={pinedPost} /> }
       {(
         <View style={[styles.tabs, { borderColor: colors.bg_secondary }]}>
           {

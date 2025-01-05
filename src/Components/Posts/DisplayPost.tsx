@@ -68,11 +68,11 @@ const DisplayPosts: SectionProps = ({
     }, [informations]);
 
     const PinnedView = () => (
-        <View style={{ marginLeft: 5 }}>
-            <Text style={styles.pined}>
-                <Icon source="pin" size={12} color={colors.color_green} />{" "}
-                {t("posts.pin")}
-            </Text>
+        <View style={styles.pined}>
+            <Icon source="pin" size={12} color={colors.color_green} />
+            {
+                /**<Text> {t("posts.pined")}</Text> */
+            }
         </View>
     )
 

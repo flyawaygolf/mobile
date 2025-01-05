@@ -1,8 +1,8 @@
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { useTheme } from '../../Components/Container';
-import { full_width } from '../../Style/style';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { useTheme } from '../../Components/Container';
+import { full_width } from '../../Style/style';
 
 import FavoritesScreen from './FavoritesScreen';
 import OthersScreen from './OthersScreen';

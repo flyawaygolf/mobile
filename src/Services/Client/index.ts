@@ -13,6 +13,7 @@ import GolfManager from './Managers/GolfManager';
 import FollowManager from './Managers/FollowManager';
 import PostManager from './Managers/PostManager';
 import FavoritesManager from './Managers/FavoritesManager';
+import ExploreManager from './Managers/ExploreManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -35,6 +36,7 @@ class Client extends RequestEmitter {
     public follows: FollowManager;
     public posts: PostManager;
     public favorites: FavoritesManager;
+    public explore: ExploreManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -50,6 +52,7 @@ class Client extends RequestEmitter {
         this.follows = new FollowManager(params);
         this.posts = new PostManager(params);
         this.favorites = new FavoritesManager(params);
+        this.explore = new ExploreManager(params);
     }
 
     public async status() {

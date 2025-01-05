@@ -31,6 +31,8 @@ export const styles = StyleSheet.create({
         borderRadius: 60 / 2,
     },
     pined: {
+        marginLeft: 5,
+        marginTop: 5,
         display: "flex",
         flexDirection: "row",
         alignContent: "center",

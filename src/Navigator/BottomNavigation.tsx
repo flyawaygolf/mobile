@@ -5,7 +5,7 @@ import { BottomNavigation, TouchableRipple, Icon } from 'react-native-paper';
 
 import { GuildListSreen, MapScreen } from '../Screens';
 import { useTheme } from '../Components/Container';
-import HomeNavigator from '../Screens/Home/HomeNavigator';
+import HomeScreen from '../Screens/Home/HomeScreen';
 
 export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages";
 
@@ -58,11 +58,10 @@ export default function BottomStack() {
                         return <TouchableRipple key={key} {...restProps} />;
                     }}
                 />
-            )}
-        >
+            )}>
             <Tab.Screen
                 name="HomeScreen"
-                component={HomeNavigator}
+                component={HomeScreen}
                 options={{
                     tabBarIcon: ({ color, size, focused }) => {
                         return <Icon source={focused ? "home" : "home-outline"} size={size} color={color} />;

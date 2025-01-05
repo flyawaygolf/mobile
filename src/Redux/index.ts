@@ -17,11 +17,13 @@ import { notificationFeedReducer } from './NotificationFeed';
 import { postSharesReducer } from './PostShares';
 import { postBookmarksReducer } from './Bookmarks';
 import { exploreTopUsersReducer } from './exploreTopUsers';
+import { recentMainFeedReducer } from './recentMainFeed';
 
 // Combine les réducteurs en un seul objet de réducteur
 const rootReducer = combineReducers({
   // Associe chaque réducteur à une clé dans l'état de l'application
   mainFeed: mainFeedReducer,
+  recentMainFeed: recentMainFeedReducer,
   postSearch: postSearchReducer,
   postShares: postSharesReducer,
   postBookmarks: postBookmarksReducer,
