@@ -1,4 +1,5 @@
 import messaging from "@react-native-firebase/messaging";
+import notifee, { AndroidImportance } from "@notifee/react-native";
 import { checkNotifications, requestNotifications, RESULTS } from 'react-native-permissions';
 import { getStorageInfo, setStorage, userStorageI } from "../storage";
 
@@ -64,4 +65,38 @@ export const notificationListener = async () => {
       }
       // setLoading(false);
     });
+}
+
+export const messagesNotificationsChannel = async () => {
+  // await notifee.deleteChannel("sound")
+  const channels = await notifee.getChannels();
+  if(channels.some(c => c.name === "messages_channel")) return;
+  await notifee.createChannel({
+    id: "messages_channel",
+    name: "Messages notifications",
+    description: "Messages notifications channel",
+    lights: false,
+    vibration: true,
+    importance: AndroidImportance.HIGH,
+    sound: "notification",
+    vibrationPattern: [200, 100, 200, 75, 300, 150]
+  })
+  /*await notifee.setNotificationCategories([
+    {
+      id: "messages",
+      actions: [
+        {
+          id: "read",
+          title: "mark as read",
+        },
+        {
+          id: "reply",
+          title: "Reply",
+          input: {
+            placeholderText: "Aa ..."
+          }
+        }
+      ]
+    }
+  ])*/
 }
