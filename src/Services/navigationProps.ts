@@ -56,6 +56,8 @@ export type RootStackParamList = {
             type?: "subscribers" | "subscriptions";
         };
     };
+    NotificationsScreen: undefined;
+    FavoritesScreen: undefined;
     GolfsStack: {
         screen: GolfStackScreens,
         params?: object;

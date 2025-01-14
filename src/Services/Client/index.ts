@@ -14,6 +14,7 @@ import FollowManager from './Managers/FollowManager';
 import PostManager from './Managers/PostManager';
 import FavoritesManager from './Managers/FavoritesManager';
 import ExploreManager from './Managers/ExploreManager';
+import NotificationManager from './Managers/NotificationManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -37,6 +38,7 @@ class Client extends RequestEmitter {
     public posts: PostManager;
     public favorites: FavoritesManager;
     public explore: ExploreManager;
+    public notifications: NotificationManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -53,6 +55,7 @@ class Client extends RequestEmitter {
         this.posts = new PostManager(params);
         this.favorites = new FavoritesManager(params);
         this.explore = new ExploreManager(params);
+        this.notifications = new NotificationManager(params);
     }
 
     public async status() {

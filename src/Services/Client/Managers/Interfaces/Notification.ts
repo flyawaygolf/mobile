@@ -1,17 +1,20 @@
+import { enventsInterface } from "./Events";
 import type { error, notificationTypeInterface, userInfo } from "./Global";
 import type { postResponseSchema } from "./Post";
 
 export interface notificationFetchResponseSchema {
     user_id: string,
     target_id: string,
-    post_id: string,
+    post_id?: string,
+    event_id?: string,
     notification_type: notificationTypeInterface,
     notification_id: string,
     created_at: Date,
-    readed?: boolean,
-    post: postResponseSchema,
+    read: boolean,
+    post?: postResponseSchema,
     from: userInfo,
-    mentions: userInfo[] | []
+    mentions?: userInfo[] | [];
+    event?: enventsInterface;
 }
 
 export interface notificationFetchResponse {

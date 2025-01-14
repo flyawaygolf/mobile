@@ -1,19 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, TouchableRipple, Icon } from 'react-native-paper';
 
 import { GuildListSreen, MapScreen } from '../Screens';
-import { useTheme } from '../Components/Container';
+import { useClient, useTheme } from '../Components/Container';
 import HomeScreen from '../Screens/Home/HomeScreen';
+import { RootState, useAppDispatch, useAppSelector } from '../Redux';
+import { initNotificationFeed } from '../Redux/NotificationFeed/action';
+import { connect } from 'react-redux';
 
 export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages";
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomStack() {
+function BottomStack() {
 
     const { colors } = useTheme();
+    const { client } = useClient();
+    const dispatch = useAppDispatch();
+    const notifications = useAppSelector((state) => state.notificationFeed);
+    const guilds = useAppSelector((state) => state.guildListFeed);
+
+    const notificationList = async () => {
+        const request = await client.notifications.fetch();
+        if (!request.data) return;
+        if (request.data.length < 1) return;
+        dispatch(initNotificationFeed(request.data));
+    }
+
+    const countNotifications = () => notifications.filter(n => n.read === false).length;
+    const countUnreadsDM = () => guilds.filter(g => g.unread === true).length;
+
+    useEffect(() => {
+        notificationList()
+    }, [])
 
     return (
         <Tab.Navigator
@@ -53,6 +74,14 @@ export default function BottomStack() {
                         }
                         return null;
                     }}
+                    getBadge={({ route }) => {
+                        const { options } = descriptors[route.key];
+                        if (options.tabBarBadge) {
+                            const count = Number(options.tabBarBadge);
+                            return count > 9 ? "+9" : count;
+                        }
+                        return undefined;
+                    }}
                     renderTouchable={(props) => {
                         const { key, ...restProps } = props;
                         return <TouchableRipple key={key} {...restProps} />;
@@ -66,6 +95,11 @@ export default function BottomStack() {
                     tabBarIcon: ({ color, size, focused }) => {
                         return <Icon source={focused ? "home" : "home-outline"} size={size} color={color} />;
                     },
+                    tabBarBadgeStyle: {
+                        color: colors.text_normal,
+                        backgroundColor: colors.badge_color,
+                    },
+                    tabBarBadge: countNotifications()
                 }}
             />
             <Tab.Screen
@@ -84,24 +118,37 @@ export default function BottomStack() {
                     tabBarIcon: ({ color, size, focused }) => {
                         return <Icon source={focused ? "message-text" : "message-text-outline"} size={size} color={color} />;
                     },
-                }}
-            />
-{
-    /**
-     *             <Tab.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{
-                    tabBarIcon: ({ size }) => {
-                        return <Avatar.Image size={size} source={{
-                            cache: "force-cache",
-                            uri: client.user.avatar(user.user_id, user.avatar),
-                        }} />;
+                    tabBarBadgeStyle: {
+                        color: colors.text_normal,
+                        backgroundColor: colors.badge_color
                     },
+                    tabBarBadge: countUnreadsDM()
                 }}
             />
-     */
-}
+            {
+                /**
+                 *             <Tab.Screen
+                            name="Settings"
+                            component={SettingsScreen}
+                            options={{
+                                tabBarIcon: ({ size }) => {
+                                    return <Avatar.Image size={size} source={{
+                                        cache: "force-cache",
+                                        uri: client.user.avatar(user.user_id, user.avatar),
+                                    }} />;
+                                },
+                            }}
+                        />
+                 */
+            }
         </Tab.Navigator>
     );
 }
+
+const mapStateToProps = (state: RootState) => {
+    return {
+        notificationFeed: state.notificationFeed,
+    };
+};
+
+export default connect(mapStateToProps)(BottomStack);

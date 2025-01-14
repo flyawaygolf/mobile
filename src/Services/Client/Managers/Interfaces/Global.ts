@@ -2,7 +2,8 @@ import { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 
 export interface requestResponseInterface<T extends Record<string, any>> {
     error?: error,
-    data?: T
+    data?: T,
+    pagination_key?: string;
 }
 
 export interface error {
@@ -10,7 +11,7 @@ export interface error {
     code: number
 }
 
-export type notificationTypeInterface = "likes" | "mentions" | "follows" | "shares" | "comments";
+export type notificationTypeInterface = "likes" | "mentions" | "follows" | "shares" | "comments" | "events";
 
 /**
 *  0 = none | 1 = normal (2.99€) | 2 = shared with others projects (5.99€) | 3 = premium 1 + 2 (9.99€)

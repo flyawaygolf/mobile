@@ -14,10 +14,11 @@ type PropsType = {
     onPress: () => any;
     full_width?: boolean;
     noDescription?: boolean;
+    LeftComponent?: React.ReactNode;
     style?: StyleProp<ViewStyle>;
 }
 
-function DisplayMember({ informations, onPress, full_width = false, style }: PropsType) {
+function DisplayMember({ informations, onPress, full_width = false, style, LeftComponent }: PropsType) {
 
     const { client } = useClient();
     const { colors } = useTheme();
@@ -47,6 +48,13 @@ function DisplayMember({ informations, onPress, full_width = false, style }: Pro
                 </View>
                 {informations?.distance && <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{`${formatDistance(informations.distance)}Km`}</Text>}
             </View>
+            {
+                LeftComponent && (
+                    <View style={{ width: "100%", padding: 5, backgroundColor: colors.bg_secondary, borderRadius: 12, margin: 5 }}>
+                        {LeftComponent}
+                    </View>
+                )
+            }
         </ShrinkEffect>
     );
 }

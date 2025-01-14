@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Appbar, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
@@ -9,6 +9,7 @@ import { navigationProps } from "../../Services";
 import HomeNavigator from "./HomeNavigator";
 import { RootState, useAppSelector } from "../../Redux";
 import { userFlags } from "../../Services/Client";
+import { ShrinkEffect } from "../../Components/Effects";
 
 const HomeScreen = () => {
 
@@ -24,7 +25,7 @@ const HomeScreen = () => {
         if (flags.has(userFlags.PREMIUM_2_USER)) return false;
         if (flags.has(userFlags.FLYAWAY_PARTNER)) return false;
         return true;
-      }
+      }      
 
     const CustomLeftComponent = () => {
         return (
@@ -32,19 +33,19 @@ const HomeScreen = () => {
             {
               /*Platform.OS !== "ios" && displayPremiumUpgrade() && <Appbar.Action color={colors.text_normal} icon="account-arrow-up" onPress={() => navigation.navigate("SettingsStack", {
                 screen: "SubscriptionScreen"
-              })} />
-            <ShrinkEffect onPress={() => navigation.navigate("NotificationScreen")} style={{ position: "relative" }}>
-              <Appbar.Action color={colors.text_normal} icon="bell" onPress={() => navigation.navigate("NotificationScreen")} />
-              {notifications.filter(n => n.readed === false || typeof n.readed === "undefined").length > 0 && (
+              })} />*/
+            <ShrinkEffect onPress={() => navigation.navigate("NotificationsScreen")} style={{ position: "relative" }}>
+              <Appbar.Action color={colors.text_normal} icon="bell" onPress={() => navigation.navigate("NotificationsScreen")} />
+              {notifications.filter(n => n.read === false).length > 0 && (
                 <View style={{
                   bottom: 5, right: 10, width: 20, height: 20, position: "absolute", backgroundColor: colors.badge_color, borderRadius: 60 / 2, flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center"
                 }}>
-                  <Text>{notifications.filter(n => n.readed === false || typeof n.readed === "undefined").length}</Text>
+                  <Text>{notifications.filter(n => n.read === false || typeof n.read === "undefined").length}</Text>
                 </View>
               )}
-            </ShrinkEffect>*/
+            </ShrinkEffect>
             }
             <Appbar.Action color={colors.text_normal} icon="pencil" onPress={() => navigation.navigate("CreateStack", {
               screen: "PostCreatorScreen",

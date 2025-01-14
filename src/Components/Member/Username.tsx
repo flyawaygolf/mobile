@@ -16,7 +16,7 @@ dayjs.extend(relativeTime)
 
 type SectionProps = {
     user: userInfo|myInformationInterface,
-    created_at?: string,
+    created_at?: Date | string,
     lefComponent?: React.ReactNode,
 }
 
@@ -29,8 +29,8 @@ export default function Username({ user, created_at, lefComponent }: SectionProp
     return (
         <View>
             <View>
-                <View style={[styles.row]}>
-                    <Text numberOfLines={1}>{user?.username}</Text>
+                <View style={[styles.row, { marginBottom: 5 }]}>
+                    <Text numberOfLines={1} style={{ marginRight: 5 }}>{user?.username}</Text>
                     { user?.is_private && <Icon size={15} source="lock" color={colors.text_normal} /> }
                     { flags.has(userFlags.VERIFIED_USER) && <Icon source="check-decagram" size={15} /> }
                 </View>

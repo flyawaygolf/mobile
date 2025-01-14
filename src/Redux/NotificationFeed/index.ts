@@ -11,12 +11,12 @@ export const notificationFeedReducer = (state: NotificationInterface.notificatio
     case INIT_NOTIFICATION_FEED:
         return action.info;
     case ADD_NOTIFICATION_FEED:        
-        return [...state, ...action.info];
+        return [...action.info, ...state];
     case MARK_READ_NOTIFICATION_FEED:
         return state.map((n) => {
             return {
                 ...n,
-                readed: true
+                read: true
             }
         });
     case MARK_READ_ONE_NOTIFICATION_FEED:
@@ -24,7 +24,7 @@ export const notificationFeedReducer = (state: NotificationInterface.notificatio
         if (index !== -1) {
           const newState = [
             ...state.slice(0, index), // Les éléments avant l'élément modifié
-            { ...state[index], readed: true }, // Élément modifié avec readed à true
+            { ...state[index], read: true }, // Élément modifié avec read à true
             ...state.slice(index + 1), // Les éléments après l'élément modifié
           ];
         

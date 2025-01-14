@@ -1,4 +1,4 @@
-import i18n, { Module, Newable, NewableModule } from 'i18next';
+import i18n, { Module, Newable, NewableModule, InitOptions } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import english from './en.json';
 import french from './fr.json';
@@ -30,8 +30,8 @@ const languageDetector: Module | NewableModule<Module> | Newable<Module> | any =
     detect: (callback: any) => {
         return callback(RNLocalize.getLocales()[0].languageCode);
     },
-    init: () => {},
-    cacheUserLanguage: () => {},
+    init: () => { },
+    cacheUserLanguage: () => { },
 };
 
 i18n
@@ -41,4 +41,7 @@ i18n
         resources,
         compatibilityJSON: 'v4',
         fallbackLng: 'en',
-    });
+        interpolation: {
+            escapeValue: false,
+        },
+    } as InitOptions);

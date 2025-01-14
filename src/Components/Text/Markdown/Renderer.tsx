@@ -27,6 +27,8 @@ const RE_BR = /\n/g;
 export const RE_MENTIONS = /@[A-z0-9]{1,33}/gi;
 export const RE_LINKS = /(https?:\/\/[^\s]+)/gi;
 
+export const RE_STRONG = /\*\*(.*)\*\*/gi;
+
 const Renderer: SectionProps = ({ content, noBr, onTextLayout }) => {
 
     const ctx = useContext(SinglePostContext);
@@ -74,6 +76,7 @@ const Renderer: SectionProps = ({ content, noBr, onTextLayout }) => {
                             if (!sub) return <Text key={idx} >{text} </Text>
                             return <Text key={idx} >{emojies_defs[sub]} </Text>
                         }
+                        if(RE_STRONG.test(text)) return <Text key={idx} style={{ fontWeight: "bold" }}>{text.replace(/\*\*/g, "")} </Text>
                         return <Text key={idx}>{text} </Text>
                     })}</Text>
                 )

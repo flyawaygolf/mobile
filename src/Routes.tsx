@@ -17,6 +17,7 @@ import { webSocketRoutes } from './Services/Client';
 import { changeElementPlaceArray, getAppInfo } from './Services';
 import UpdateScreen from './Screens/UpdateScreen';
 import { requestNotificationPermission } from './Services/notifications';
+import { addNotificationFeed } from './Redux/NotificationFeed/action';
 
 const Stack = createStackNavigator();
 
@@ -77,11 +78,11 @@ function Routes() {
             if (idx < 0) return;
             dispatch(initGuildList(changeElementPlaceArray(DmGroupList, 0, idx)));
             dispatch(modifyGuildList({ guild_id: data.channel_id, content: data.content, created_at: data.created_at, message_id: data.message_id, unread: true }))
-        } /*else if(notification.code === webSocketRoutes.RECEIVE_NOTIFICATION) {
+        } else if(notification.code === webSocketRoutes.RECEIVE_NOTIFICATION) {
             const data: any = notification.data;
             if(!data) return;
             dispatch(addNotificationFeed([data]))
-        }*/
+        }
     }, [notification])
 
     useEffect(() => {

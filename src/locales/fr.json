@@ -59,7 +59,13 @@
     },
     "notification": {
         "no_new_followers": "Aucun nouvel abonné.",
-        "no_trends_interactions": "Aucune interaction avec vos Trends."
+        "no_trends_interactions": "Aucune interaction avec vos posts.",
+        "follows": "{{username}} vous suit",
+        "like": "{{username}} a aimé votre post : {{post}}",
+        "comment": "{{username}} a commenté votre post : {{post}}",
+        "mention": "{{username}} vous a mentionné dans un post : {{post}}",
+        "share": "{{username}} a partagé votre post : {{post}}",
+        "event": "{{username}} vient de vous inviter à un événement au golf {{event}}"
     },
     "explore": {
         "no_trends_selected_region": "Aucune Trends dans ton pays aujourd'hui. Crée la première Trend de la journée !",

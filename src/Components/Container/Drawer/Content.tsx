@@ -13,7 +13,7 @@ import { Ithemes } from '../Theme/Themes';
 export default function DrawerContent({ navigation }: DrawerContentComponentProps) {
 
   const { user, client } = useClient();
-  const { colors, setTheme, theme } = useTheme();
+  const { colors, setTheme } = useTheme();
   const { t } = useTranslation();
 
   const changeStorage = (type: "theme" | "language", txt: Ithemes | string) => {
