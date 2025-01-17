@@ -37,7 +37,7 @@ export default function EventCard({ event, full_width }: SectionProps) {
                 </Paragraph>
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <Paragraph>
-                        {t("events.participants")} : {event.participants}
+                        {t("events.participants")}: {event.participants} /{event?.max_participants ?? 2}
                     </Paragraph>
                     <Card.Actions>
                         <Button>

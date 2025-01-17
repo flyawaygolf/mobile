@@ -124,7 +124,7 @@ export default function DisplayEventScreen({ route }: any) {
                     <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
                   </View>
                   <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants}</Chip>
+                    <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
                   </View>
                   <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>

@@ -30,7 +30,7 @@ export default function CreateEventScreen() {
     const [golf, setGolf] = useState<golfInterface | undefined>(undefined);
     /*const [minHandicap, setMinHandicap] = useState<number | undefined>(undefined);
     const [maxHandicap, setMaxHandicap] = useState<number | undefined>(undefined);*/
-    const [maxParticipants, setMaxParticipants] = useState<number>(2);
+    const [maxParticipantsString, setMaxParticipants] = useState<string>("2");
     const [loading, setLoading] = useState(false);
 
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
@@ -114,8 +114,9 @@ export default function CreateEventScreen() {
 
     const handleCreateEvent = async () => {
         if (loading) return;
+        const maxParticipants = parseInt(maxParticipantsString);
         if (!title.trim().substring(0, 512) || !description.trim().substring(0, 512) || !endDate || !startDate || !golf || !maxParticipants) return handleToast(t(`errors.verify_fields`));
-        if(maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
+        if(isNaN(maxParticipants) || maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
 
         setLoading(true);
         const request = await client.events.create({
@@ -193,8 +194,8 @@ export default function CreateEventScreen() {
                     />
                     <TextInput
                         label={t('events.max_participants')}
-                        value={maxParticipants.toString()}
-                        onChangeText={(txt) => setMaxParticipants(parseInt(txt))}
+                        value={maxParticipantsString}
+                        onChangeText={(txt) => setMaxParticipants(txt)}
                         mode="outlined"
                         keyboardType="number-pad"
                         style={styles.input}
