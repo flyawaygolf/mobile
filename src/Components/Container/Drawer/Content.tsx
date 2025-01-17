@@ -78,6 +78,12 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
                 },
               }
             })} />
+            <Drawer.Item icon="calendar-month" label={t('events.create_event')} onPress={() => navigation.navigate('MainNavigation', {
+              screen: 'EventStack',
+              params: {
+                screen: 'CreateEventScreen',
+              }
+            })} />
             <Drawer.Item icon="star" label={t('guilds.favorites')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'FavoritesScreen'
             })} />

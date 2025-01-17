@@ -34,19 +34,19 @@ const HomeScreen = () => {
               /*Platform.OS !== "ios" && displayPremiumUpgrade() && <Appbar.Action color={colors.text_normal} icon="account-arrow-up" onPress={() => navigation.navigate("SettingsStack", {
                 screen: "SubscriptionScreen"
               })} />*/
+            }
             <ShrinkEffect onPress={() => navigation.navigate("NotificationsScreen")} style={{ position: "relative" }}>
               <Appbar.Action color={colors.text_normal} icon="bell" onPress={() => navigation.navigate("NotificationsScreen")} />
-              {notifications.filter(n => n.read === false).length > 0 && (
+              {notifications.filter(n => (n?.read ?? true) === false).length > 0 && (
                 <View style={{
                   bottom: 5, right: 10, width: 20, height: 20, position: "absolute", backgroundColor: colors.badge_color, borderRadius: 60 / 2, flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center"
                 }}>
-                  <Text>{notifications.filter(n => n.read === false || typeof n.read === "undefined").length}</Text>
+                  <Text>{notifications.filter(n => (n?.read ?? true) === false || typeof n.read === "undefined").length}</Text>
                 </View>
               )}
             </ShrinkEffect>
-            }
             <Appbar.Action color={colors.text_normal} icon="pencil" onPress={() => navigation.navigate("CreateStack", {
               screen: "PostCreatorScreen",
               params: {

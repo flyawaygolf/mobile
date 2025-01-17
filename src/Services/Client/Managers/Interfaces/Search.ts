@@ -1,3 +1,4 @@
+import { eventsInterface } from "./Events";
 import type { requestResponseInterface, userInfo } from "./Global";
 
 export interface itemsInterface<T extends Record<string, any>> {
@@ -30,7 +31,6 @@ export interface golfInterface {
 
 export interface fetchGolfResponse extends requestResponseInterface<golfInterface> {}
 
-
 export interface fetchMultipleGolfResponse {
     error?: {
         message: string,
@@ -44,6 +44,7 @@ export interface searchAllMap extends requestResponseInterface<{
     query: searchResponseQuery;
     users: itemsInterface<userInfo>;
     golfs: itemsInterface<golfInterface>;
+    // events: itemsInterface<eventsInterface>;
 }> {}
 
 export interface searchUsersMap extends requestResponseInterface<{
@@ -54,6 +55,11 @@ export interface searchUsersMap extends requestResponseInterface<{
 export interface searchGolfsMap extends requestResponseInterface<{
     query: searchResponseQuery;
     golfs: itemsInterface<golfInterface>;
+}> {}
+
+export interface searchEventsMap extends requestResponseInterface<{
+    query: searchResponseQuery;
+    events: itemsInterface<eventsInterface>;
 }> {}
 
 export interface searchAll extends requestResponseInterface<{
@@ -69,4 +75,9 @@ export interface searchUsers extends requestResponseInterface<{
 export interface searchGolfs extends requestResponseInterface<{
     query: searchResponseQuery;
     golfs: itemsInterface<golfInterface>;
+}> {}
+
+export interface searchEvents extends requestResponseInterface<{
+    query: searchResponseQuery;
+    events: itemsInterface<eventsInterface>;
 }> {}

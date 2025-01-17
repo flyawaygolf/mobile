@@ -8,6 +8,7 @@ import { useClient, useTheme } from '.';
 import { useDispatch } from 'react-redux';
 import { readNotificationFeed } from '../../Redux/NotificationFeed/action';
 import CustomHeader from '../Header/CustomHeader';
+import SafeBottomContainer from './SafeBottomContainer';
 
 const NotificationContainer = ({ children }: React.PropsWithChildren) => {
     
@@ -23,10 +24,10 @@ const NotificationContainer = ({ children }: React.PropsWithChildren) => {
     }
 
     return (  
-        <View style={{ flex: 1, backgroundColor: colors.bg_primary }}>
+        <SafeBottomContainer>
             <CustomHeader title={t("commons.notifications") as string} leftComponent={<IconButton icon="delete-sweep" onPress={() => ReadAll()}/>} />
             { children }
-        </View>
+        </SafeBottomContainer>
     )
 };
 

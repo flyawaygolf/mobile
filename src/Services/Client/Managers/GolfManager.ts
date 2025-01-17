@@ -1,6 +1,6 @@
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import GolfLinkManager from './GolfLinkManager';
-import { PostInterface } from './Interfaces';
+import { EventInterface, PostInterface } from './Interfaces';
 import { paginationParams } from './Interfaces/Global';
 import { fetchGolfResponse } from './Interfaces/Search';
 import { LocationQuery } from './SearchMapManager';
@@ -47,6 +47,13 @@ class GolfManager extends RequestEmitter {
     if (parameters.length > 0) _url = _url.concat("?");
     const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as PostInterface.postResponse;
+
+    return response;
+  }
+
+  public async events(golf_id: string) {
+    const request = await this.getRequest(`/golfs/${golf_id}/events`);
+    const response = request as EventInterface.golfEventsResponse;
 
     return response;
   }

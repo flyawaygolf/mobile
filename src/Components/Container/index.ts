@@ -12,6 +12,7 @@ export { default as PostCreatorContainer } from "./PostCreatorContainer";
 export { default as PostContainer } from "./PostContainer";
 export { default as SettingsContainer } from "./SettingsContainer";
 export { default as NotificationContainer } from "./NotificationContainer";
+export { default as EventsContainer } from "./EventsContainer";
 
 export { default as ProfileProvider } from "./Profile/ProfileProvider";
 export { default as useProfile } from "./Profile/useProfile";

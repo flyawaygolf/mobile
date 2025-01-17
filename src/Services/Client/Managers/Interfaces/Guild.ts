@@ -17,9 +17,9 @@ export interface userInfo {
 export interface fetchGuildResponseSchema {
     guild_id: string,
     created_at: string,
-    type: 0 | 1,
+    type: 0 | 1 | 2,
     users: Array<userInfo>,
-    title: string,
+    title?: string,
     favorite: boolean,
     unread?: boolean;
     last_message?: fetchMessageResponseInterface

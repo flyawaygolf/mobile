@@ -6,10 +6,12 @@ import { full_width } from '../../Style/style';
 
 import FavoritesScreen from './FavoritesScreen';
 import OthersScreen from './OthersScreen';
+import EventsScreen from './EventsScreen';
 
 const renderScene = SceneMap({
     favorites: FavoritesScreen,
-    others: OthersScreen,
+    events: EventsScreen,
+    others: OthersScreen
 });
 
 const GuildNavigator = () => {
@@ -19,6 +21,7 @@ const GuildNavigator = () => {
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'favorites', title: t("guilds.favorites") },
+        { key: 'events', title: t("guilds.events") },
         { key: 'others', title: t("guilds.others") }
     ]);
 

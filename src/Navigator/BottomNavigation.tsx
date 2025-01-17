@@ -9,8 +9,9 @@ import HomeScreen from '../Screens/Home/HomeScreen';
 import { RootState, useAppDispatch, useAppSelector } from '../Redux';
 import { initNotificationFeed } from '../Redux/NotificationFeed/action';
 import { connect } from 'react-redux';
+import { EventsScreen } from '../Screens/Events';
 
-export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages";
+export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -29,8 +30,8 @@ function BottomStack() {
         dispatch(initNotificationFeed(request.data));
     }
 
-    const countNotifications = () => notifications.filter(n => n.read === false).length;
-    const countUnreadsDM = () => guilds.filter(g => g.unread === true).length;
+    const countNotifications = () => notifications.length > 0 ? notifications.filter(n => (n?.read ?? true) === false).length : undefined;
+    const countUnreadsDM = () => guilds.length > 0 ? guilds.filter(g => (g?.unread ?? false) === true).length : undefined;
 
     useEffect(() => {
         notificationList()
@@ -100,6 +101,15 @@ function BottomStack() {
                         backgroundColor: colors.badge_color,
                     },
                     tabBarBadge: countNotifications()
+                }}
+            />
+            <Tab.Screen
+                name="EventsScreen"
+                component={EventsScreen}
+                options={{
+                    tabBarIcon: ({ color, size, focused }) => {
+                        return <Icon source={focused ? "calendar-month" : "calendar-month-outline"} size={size} color={color} />;
+                    },
                 }}
             />
             <Tab.Screen

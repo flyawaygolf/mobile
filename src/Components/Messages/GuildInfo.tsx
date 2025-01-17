@@ -73,9 +73,9 @@ function GuildInfo({ info }: sectionProps) {
                     onLongPress={() => setModalVisible(true)}>
                     <View style={{ flexDirection: "row", alignItems: "center", width: full_width, position: "relative" }}>
                         {info.unread && <Badge style={{ position: "absolute", top: 2, left: -2, zIndex: 2 }} size={10} />}
-                        {users.length > 1 ? <MultipleAvatar /> : <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} />}
+                        {info.type === 2 ? <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} /> : users.length > 1 ? <MultipleAvatar /> : <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} />}
                         <View style={{ width: "70%", position: "relative" }}>
-                            <Text numberOfLines={1} textBreakStrategy="balanced">{users.map(u => u.username).join(", ")}</Text>
+                            { info.title ? <Text numberOfLines={1} textBreakStrategy="balanced">{info.title}</Text> : <Text numberOfLines={1} textBreakStrategy="balanced">{users.map(u => u.username).join(", ")}</Text> }
                             {
                                 info.last_message && (
                                     <Text

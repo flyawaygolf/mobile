@@ -10,10 +10,10 @@ import { initGuildList, setUnreadGuildList } from "../../Redux/guildList/action"
 import { guildI } from "../../Redux/guildList";
 import { handleToast } from "../../Services";
 
-function OthersScreen() {
+function EventsScreen() {
 
     const { client } = useClient();
-    const groups = useAppSelector((state) => state.guildListFeed.filter((item) => !item.favorite && item.type !== 2));
+    const groups = useAppSelector((state) => state.guildListFeed.filter((item) => item.type === 2));
     const dispatch = useAppDispatch();
     const { colors } = useTheme();
     const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ function OthersScreen() {
                 height: "100%",
             }}
             data={groups}
-            ListEmptyComponent={<Text style={{ padding: 5 }}>{t("messages.no_guilds")}</Text>}
+            ListEmptyComponent={<Text style={{ padding: 5 }}>{t("messages.no_events_guilds")}</Text>}
             renderItem={memoizedValue}
             keyExtractor={item => item.guild_id}
             refreshControl={<RefreshControl refreshing={loading} progressBackgroundColor={colors.bg_primary} tintColor={colors.fa_primary} colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]} onRefresh={() => getData()} />}
@@ -65,4 +65,4 @@ const mapDispatchToProps = {
     setUnreadGuildList,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OthersScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EventsScreen);

@@ -11,7 +11,7 @@ export interface error {
     code: number
 }
 
-export type notificationTypeInterface = "likes" | "mentions" | "follows" | "shares" | "comments" | "events";
+export type notificationTypeInterface = "likes" | "mentions" | "follows" | "shares" | "comments" | "events"| "events_modifications" | "events_deleted";
 
 /**
 *  0 = none | 1 = normal (2.99€) | 2 = shared with others projects (5.99€) | 3 = premium 1 + 2 (9.99€)

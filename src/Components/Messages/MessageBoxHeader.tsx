@@ -31,7 +31,7 @@ export default function MessageBoxHeader({ params }: sectionProps) {
                 style={{ flexDirection: "row", alignItems: "center" }}>
                 <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} />
                 <View>
-                    <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{`${users.map(u => u.username).join(", ")}`}</Text>
+                    { params.title ? <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{`${params.title}`}</Text> : <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{`${users.map(u => u.username).join(", ")}`}</Text> }
                     {params.type === 0 && <Text style={{ fontSize: 12, fontWeight: '700', marginLeft: 5 }}>{`@${users[0].nickname}`}</Text>}
                 </View>
             </View>

@@ -10,6 +10,10 @@ export class formatDate {
         this.current_date = date;
     }
 
+    custom(format) {
+        return dayjs(this.current_date).format(format);
+    }
+
     time() {
         return dayjs(this.current_date).format('LT');
     }

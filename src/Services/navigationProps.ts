@@ -10,6 +10,7 @@ import { PostsStackScreens } from '../Navigator/PostsStack';
 import { CreateStackScreens } from '../Navigator/CreateStack';
 import { SinglePostInfoType } from '../Components/Posts/PostContext';
 import { BottomStackScreens } from '../Navigator/BottomNavigation';
+import { EventStackScreens } from '../Navigator/EventStack';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -104,6 +105,12 @@ export type RootStackParamList = {
                 type: string;
                 uri: string;
               }
+        }
+    };
+    EventStack: {
+        screen: EventStackScreens;
+        params?: {
+            event_id?: string;
         }
     };
     BottomNavigation: {

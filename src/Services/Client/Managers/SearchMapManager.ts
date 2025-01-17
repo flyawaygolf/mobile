@@ -1,5 +1,5 @@
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
-import { searchAllMap, searchGolfsMap, searchUsersMap } from './Interfaces/Search';
+import { searchAllMap, searchEventsMap, searchGolfsMap, searchUsersMap } from './Interfaces/Search';
 
 export interface LocationQuery {
   long: number,
@@ -53,6 +53,21 @@ class SearchMapManager extends RequestEmitter {
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as searchUsersMap;
+
+    return response;
+  }
+
+  public async events(location: LocationQuery) {
+    let _url = `/search/map/events`;
+    const parameters = []
+
+    if (location?.max_distance) parameters.push(`max_distance=${location.max_distance}`);
+    if (location?.long) parameters.push(`long=${location.long}`);
+    if (location?.lat) parameters.push(`lat=${location.lat}`);
+    if (parameters.length > 0) _url = _url.concat("?");
+
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
+    const response = request as searchEventsMap;
 
     return response;
   }

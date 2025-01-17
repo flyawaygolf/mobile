@@ -10,6 +10,7 @@ import PostStack from "./PostsStack";
 import CreateStack from "./CreateStack";
 import FavoritesScreen from "../Screens/FavoritesScreen";
 import { NotificationScreen } from "../Screens/Notifications";
+import EventStack from "./EventStack";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function MainNavigation(): JSX.Element {
     { name: "GolfsStack", screen: GolfsStack },
     { name: "PostsStack", screen: PostStack },
     { name: "CreateStack", screen: CreateStack },
+    { name: "EventStack", screen: EventStack },
     { name: "FavoritesScreen", screen: FavoritesScreen },
     { name: "NotificationsScreen", screen: NotificationScreen }
   ])

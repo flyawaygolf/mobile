@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { FlatList, View } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { Appbar, Button, Dialog, Paragraph, Portal, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { favoritesInterface } from '../Services/Client/Managers/Interfaces/Favorites';
 import { ScreenContainer, useClient, useTheme } from '../Components/Container';

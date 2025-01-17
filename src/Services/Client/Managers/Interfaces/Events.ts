@@ -1,17 +1,46 @@
 import type { requestResponseInterface, userInfo } from "./Global";
 import { golfInterface } from "./Search";
 
-export interface enventsInterface {
+export interface eventsInterface {
     event_id: string;
     owner_info: userInfo;
     golf_info: golfInterface;
+    participants: number;
+    joined: boolean;
     title: string;
     description: string;
-    expire_at: string;
-    favorites: number;
-    handicap: number;
+    start_date: string;
+    end_date: string;
+    favorites: boolean;
+    max_participants: number;
+    min_hancicap?: number;
+    max_handicap?: number;
     guild_id: string;
     deleted: boolean;
+    created_at: string;
 }
 
-export interface eventsResponse extends requestResponseInterface<enventsInterface[]> {}
+export interface eventResponse extends requestResponseInterface<eventsInterface> {}
+
+export interface multipleEventsResponse extends requestResponseInterface<eventsInterface[]> {}
+
+export interface eventsCreatorResponse extends requestResponseInterface<{
+    event_id: string;
+}> {}
+
+export interface eventsCreatorParams {
+    title: string;
+    description: string;
+    start_date: string | Date;
+    end_date: string | Date;
+    golf_id: string;
+    max_participants: number;
+    min_handicap?: number;
+    max_handicap?: number;
+    favorites?: boolean;
+}
+
+export interface eventsUpdateParams {
+    favorites?: boolean;
+    deleted?: boolean;
+}
