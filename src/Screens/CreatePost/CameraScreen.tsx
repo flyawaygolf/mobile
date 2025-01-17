@@ -1,16 +1,14 @@
 import * as React from 'react'
-import { useRef, useState, useCallback, useMemo } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, Platform } from 'react-native'
 import { Gesture, GestureDetector, TapGestureHandler, } from 'react-native-gesture-handler'
-import { Camera, CameraRuntimeError, PhotoFile, useCameraDevice, useCameraFormat, VideoFile, useLocationPermission, useMicrophonePermission, useCameraPermission, } from 'react-native-vision-camera'
-import { MAX_ZOOM_FACTOR, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../Components/Camera/Constants'
 import Reanimated, { Extrapolation, interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { useEffect } from 'react'
-import { useIsForeground } from '../../Components/Camera/useIsForeground'
-import { CaptureButton } from '../../Components/Camera/CaptureButton'
 import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { IconButton } from 'react-native-paper'
-import { useTheme } from '../../Components/Container';
+import { Camera, CameraRuntimeError, PhotoFile, useCameraDevice, useCameraFormat, VideoFile, useLocationPermission, useMicrophonePermission, useCameraPermission, } from 'react-native-vision-camera'
+import { MAX_ZOOM_FACTOR, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../Components/Camera/Constants'
+import { useIsForeground } from '../../Components/Camera/useIsForeground'
+import { CaptureButton } from '../../Components/Camera/CaptureButton'
 import { navigationProps } from '../../Services'
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera)
@@ -18,12 +16,10 @@ Reanimated.addWhitelistedNativeProps({
   zoom: true,
 })
 
-const SCALE_FULL_ZOOM = 3
 
 export default function CameraScre({ route: { params } }: any): React.ReactElement {
 
   const camera = useRef<Camera>(null)
-  const { colors } = useTheme();
   const navigation = useNavigation<navigationProps>();
 
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
@@ -46,7 +42,7 @@ export default function CameraScre({ route: { params } }: any): React.ReactEleme
 
   const device = useCameraDevice(cameraPosition)
 
-  const [targetFps, setTargetFps] = useState(60)
+  const [targetFps] = useState(60)
 
   const screenAspectRatio = SCREEN_HEIGHT / SCREEN_WIDTH
   const format = useCameraFormat(device, [
@@ -59,9 +55,8 @@ export default function CameraScre({ route: { params } }: any): React.ReactEleme
 
   const fps = Math.min(format?.maxFps ?? 1, targetFps)
 
-  const supportsFlash = device?.hasFlash ?? false
-  const supportsHdr = format?.supportsPhotoHdr
-  const supports60Fps = useMemo(() => device?.formats.some((f) => f.maxFps >= 60), [device?.formats])
+  const supportsFlash = device?.hasFlash ?? false;
+  const supportsHdr = format?.supportsPhotoHdr;
   const canToggleNightMode = device?.supportsLowLightBoost ?? false
 
   //#region Animated Zoom

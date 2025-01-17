@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useTheme } from "../Container";
-import { StyleProp, Image, ImageStyle, View } from "react-native";
+import { StyleProp, Image, ImageStyle } from "react-native";
 
 type PropsType = {
     url: string;

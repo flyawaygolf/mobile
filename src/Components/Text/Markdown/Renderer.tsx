@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Text } from "react-native-paper";
 
 import { emojies_defs } from "./emojis";
-import Br from "../Br";
 
 import { NativeSyntheticEvent, TextLayoutEventData } from "react-native";
 import { SinglePostContext } from "../../Posts/PostContext";
@@ -20,8 +19,8 @@ type SectionProps = React.FC<{
 const RE_TWEMOJI = /:(\w+):/gi;
 
 // ! FIXME: Move to library
-const RE_HASHTAG = /#(.*)/gi;
-const RE_BR = /\n/g;
+// const RE_HASHTAG = /#(.*)/gi;
+// const RE_BR = /\n/g;
 
 // export const RE_MENTIONS = /<@([A-z0-9]{26})>/g;
 export const RE_MENTIONS = /@[A-z0-9]{1,33}/gi;

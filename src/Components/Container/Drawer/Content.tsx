@@ -7,36 +7,12 @@ import { useTranslation } from 'react-i18next';
 import globalStyles from '../../../Style/style';
 import useClient from '../Client/useClient';
 import useTheme from '../Theme/useTheme';
-import { getStorageInfo, setStorage, settingsStorageI } from '../../../Services/storage';
-import { Ithemes } from '../Theme/Themes';
 
 export default function DrawerContent({ navigation }: DrawerContentComponentProps) {
 
   const { user, client } = useClient();
-  const { colors, setTheme } = useTheme();
+  const { colors } = useTheme();
   const { t } = useTranslation();
-
-  const changeStorage = (type: "theme" | "language", txt: Ithemes | string) => {
-    const settings = getStorageInfo("settings") as settingsStorageI;
-
-    switch (type) {
-      case "theme":
-        setStorage("settings", {
-          theme: txt,
-          locale: settings?.locale,
-        })
-        setTheme(txt as Ithemes)
-        break;
-      case "language":
-        setStorage("settings", {
-          theme: settings?.theme,
-          locale: txt,
-        })
-        break;
-      default:
-        break;
-    }
-  }
 
   return (
     <DrawerContentScrollView

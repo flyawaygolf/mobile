@@ -1,18 +1,12 @@
 import React from "react";
 import { Appbar } from 'react-native-paper';
 import { Image, View } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
 
-import { navigationProps } from '../../Services';
 import { useTheme } from "../Container";
 
 const ProfileHeader = () => {
 
-    const navigation = useNavigation<navigationProps>();
-
     const { theme } = useTheme();
-
-    const pressAvatar = () => {};
 
     return (
         <Appbar.Header style={{ flexDirection: "row", justifyContent: "center" }}>

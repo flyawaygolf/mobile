@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
-import { Share } from 'react-native';
 import Clipboard from "@react-native-clipboard/clipboard";
 import { Button, Dialog, Divider, Portal } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -11,8 +10,6 @@ import { BottomModal } from "../../../../../Other";
 import { useClient, useTheme } from "../../../../Container";
 import { deleteProfileTrends } from "../../../../../Redux/profileFeed/action";
 import { deleteMainTrends } from "../../../../../Redux/mainFeed/action";
-import { SinglePostContext } from "../../../PostContext";
-import { posturl } from "../../../../../Services/constante";
 import { navigationProps } from "../../../../../Services/navigationProps";
 
 type SectionProps = {
@@ -30,7 +27,6 @@ function Owner({ modalVisible, setModalVisible, pined, post_id }: SectionProps) 
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const { colors } = useTheme();
-    const { info } = useContext(SinglePostContext)
     const navigation = useNavigation<navigationProps>();
 
     const deletePost = async () => {
@@ -69,14 +65,6 @@ function Owner({ modalVisible, setModalVisible, pined, post_id }: SectionProps) 
         Toast.show({ text1: t("commons.success") as string })
         setModalVisible(false)
     }
-
-    const onShare = async () => {
-        await Share.share({
-            message: `${posturl}/${info.post_id}`,
-            url: `${posturl}/${info.post_id}`
-        });
-    }
-
 
     return (
         <>

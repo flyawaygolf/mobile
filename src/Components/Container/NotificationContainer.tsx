@@ -1,10 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 
-import { useClient, useTheme } from '.';
+import { useClient } from '.';
 import { useDispatch } from 'react-redux';
 import { readNotificationFeed } from '../../Redux/NotificationFeed/action';
 import CustomHeader from '../Header/CustomHeader';
@@ -12,7 +11,6 @@ import SafeBottomContainer from './SafeBottomContainer';
 
 const NotificationContainer = ({ children }: React.PropsWithChildren) => {
     
-    const { colors } = useTheme();
     const { t } = useTranslation();
     const { client } = useClient();
     const dispatch = useDispatch();

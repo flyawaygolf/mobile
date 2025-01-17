@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useColorScheme, View } from 'react-native';
+import { useColorScheme } from 'react-native';
 
 import ThemeContext from './ThemeContext';
 import { WhiteTheme, DarkTheme, Ithemes } from './Themes';

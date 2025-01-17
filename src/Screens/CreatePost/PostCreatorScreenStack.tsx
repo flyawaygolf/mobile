@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, View, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
-import { Chip, ProgressBar, Text } from 'react-native-paper';
+import { Chip, ProgressBar } from 'react-native-paper';
 import dayjs from 'dayjs';
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
-import { useClient, PostCreatorContainer, useTheme } from '../../Components/Container';
+import { useClient, PostCreatorContainer } from '../../Components/Container';
 import { axiosInstance, formatDistance, handleToast, navigationProps } from '../../Services';
 import BottomButtonPostCreator from '../../Components/Posts/Creator/BottomButton';
 import { addMainCreatedTrends } from '../../Redux/mainFeed/action';
@@ -37,13 +36,11 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
   const [options, setOptions] = useState<postOptions>({
     paid: false
   })
-  const [modalVisible, setModalVisible] = useState(false);
   const [sending, setSending] = useState({
     send: false,
     progress: 0
   });
   const { client, token, user } = useClient();
-  const { colors } = useTheme();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation<navigationProps>();

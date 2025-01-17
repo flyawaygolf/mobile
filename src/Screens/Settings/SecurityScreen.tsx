@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from 'react-native';
-import { Text, Button, Dialog, Paragraph, Portal, TextInput as PaperTextInput, Appbar, TextInput } from 'react-native-paper';
+import { Text, Button, Dialog, Paragraph, Portal, TextInput as PaperTextInput, TextInput } from 'react-native-paper';
 import { useRealm } from '@realm/react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
-import { cguLink, cgvLink, navigationProps, openURL, privacyLink } from '../../Services';
+import { cguLink, cgvLink, openURL, privacyLink } from '../../Services';
 import { deleteUser } from '../../Services/Realm/userDatabase';
-import { full_width } from '../../Style/style';
 import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
 
 function SecurityScreen() {
 
-    const navigation = useNavigation<navigationProps>();
     const { t, i18n } = useTranslation();
     const [visible, setVisible] = useState(false);
     const [password, setPassword] = useState("");

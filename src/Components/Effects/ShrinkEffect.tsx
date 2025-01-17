@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, useCallback } from 'react';
-import { Pressable, ViewProps } from 'react-native';
+import React, { useCallback } from 'react';
+import { ViewProps } from 'react-native';
 import Animated, {
     useAnimatedStyle,
     useSharedValue,

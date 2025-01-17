@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Image, Platform, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar, Button, Card, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
-import { SafeBottomContainer, ScreenContainer, useClient, useTheme } from '../../Components/Container';
+import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { formatDistance, GolfsStackParams, handleToast, navigationProps } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';

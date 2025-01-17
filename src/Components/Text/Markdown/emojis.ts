@@ -1843,7 +1843,7 @@ export const emojies_defs: {
 
 // Emoticons -> Emoji mapping.
 
-var shortcuts = {
+/*var shortcuts = {
   angry:            [ '>:(', '>:-(' ],
   blush:            [ ':")', ':-")' ],
   broken_heart:     [ '</3', '<\\3' ],
@@ -1870,4 +1870,4 @@ var shortcuts = {
   sweat_smile:      [ ',:)', ',:-)' ],
   unamused:         [ ':s', ':-S', ':z', ':-Z', ':$', ':-$' ],
   wink:             [ ';)', ';-)' ],
-};
+};*/

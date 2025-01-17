@@ -1,6 +1,5 @@
 import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, userInfo } from "./Global"
-import { myInformationInterface } from "./Me";
 import { golfInterface } from "./Search";
 
 /**0 = text only | 1 = image (include gif) | 2 = video | 3 = audio | 4 = others */

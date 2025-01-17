@@ -8,7 +8,7 @@ import { full_height, full_width } from '../../Style/style';
 import { useTranslation } from 'react-i18next';
 import { handleToast, navigationProps } from '../../Services';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 
 
 export default function DisplayRenderScreen({ route: { params }}: any) {
@@ -17,7 +17,6 @@ export default function DisplayRenderScreen({ route: { params }}: any) {
   const { t } = useTranslation();
   const navigation = useNavigation<navigationProps>();
   const videoPlayer = useRef<any | null>(null);
-  const [currentTime, setCurrentTime] = useState(0)
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(false);
   const [file, setFile] = useState(info);
@@ -72,9 +71,6 @@ export default function DisplayRenderScreen({ route: { params }}: any) {
                             }}
                             paused={paused}
                             repeat={true}
-                            onProgress={(d) => {
-                              setCurrentTime(d.currentTime)
-                            }}
                             muted={muted}
                             ref={(ref) => (videoPlayer.current = ref)}
                           />
@@ -90,7 +86,6 @@ export default function DisplayRenderScreen({ route: { params }}: any) {
                         </View>
                         <View style={{ marginBottom: 10 }}>
                           <IconButton onPress={() => {
-                            setCurrentTime(0)
                             setPaused(false)
                           }} size={22} icon={"repeat"} />
                         </View>

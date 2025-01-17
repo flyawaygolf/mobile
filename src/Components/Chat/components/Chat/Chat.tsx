@@ -34,7 +34,6 @@ import { CircularActivityIndicator } from '../CircularActivityIndicator';
 import { Input, InputAdditionalProps, InputTopLevelProps } from '../Input';
 import { Message, MessageTopLevelProps } from '../Message';
 import styles from './styles';
-import { useTranslation } from 'react-i18next';
 
 // Untestable
 /* istanbul ignore next */
@@ -100,7 +99,6 @@ export interface ChatProps extends ChatTopLevelProps {
 export const Chat = ({
   customBottomComponent,
   customDateHeaderText,
-  dateFormat,
   disableImageGallery,
   emptyState,
   enableAnimation,

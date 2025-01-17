@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react";
-import { FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { FlatList } from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Share } from 'react-native';
 import { useTranslation } from "react-i18next";
 import Toast from 'react-native-toast-message';
 import Clipboard from "@react-native-clipboard/clipboard";
@@ -8,7 +7,6 @@ import { BottomModal } from "../../../../../Other";
 import { useClient, useTheme } from "../../../../Container";
 import { Button, Divider } from "react-native-paper";
 import { SinglePostContext } from "../../../PostContext";
-import { posturl } from "../../../../../Services/constante";
 
 type SectionProps = {
     modalVisible: boolean,
@@ -40,18 +38,6 @@ function User({ modalVisible, setModalVisible }: SectionProps) {
         Clipboard.setString(info.post_id);
         Toast.show({ text1: t("commons.success") as string })
         setModalVisible()
-    }
-
-    const onShare = async () => {
-        await Share.share({
-            message: `${posturl}/${info.post_id}`,
-            url: `${posturl}/${info.post_id}`
-        });
-    }
-
-    const download = async () => {
-        console.log(info);
-
     }
 
     return (

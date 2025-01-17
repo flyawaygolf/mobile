@@ -62,7 +62,7 @@ export default function Carroussel({ pictures }: carrousselType) {
             }
             <View style={sectionStyle.circleDiv}>
                 {
-                    pictures.length > 1 && pictures.map((image, i) => <View style={[sectionStyle.whiteCircle, { backgroundColor: colors.fa_primary, opacity: i === Index ? 1 : 0.25 }]} key={i} />)
+                    pictures.length > 1 && pictures.map((_image, i) => <View style={[sectionStyle.whiteCircle, { backgroundColor: colors.fa_primary, opacity: i === Index ? 1 : 0.25 }]} key={i} />)
                 }
             </View>
         </View>

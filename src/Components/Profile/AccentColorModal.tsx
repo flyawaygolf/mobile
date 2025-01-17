@@ -5,7 +5,6 @@ import {
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    SafeAreaView,
 } from 'react-native';
 import { BottomModal } from '../../Other';
 

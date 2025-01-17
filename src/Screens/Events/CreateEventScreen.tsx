@@ -28,8 +28,8 @@ export default function CreateEventScreen() {
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [golf, setGolf] = useState<golfInterface | undefined>(undefined);
-    const [minHandicap, setMinHandicap] = useState<number | undefined>(undefined);
-    const [maxHandicap, setMaxHandicap] = useState<number | undefined>(undefined);
+    /*const [minHandicap, setMinHandicap] = useState<number | undefined>(undefined);
+    const [maxHandicap, setMaxHandicap] = useState<number | undefined>(undefined);*/
     const [maxParticipants, setMaxParticipants] = useState<number>(2);
     const [loading, setLoading] = useState(false);
 
@@ -126,8 +126,8 @@ export default function CreateEventScreen() {
             favorites: isFavorite,
             golf_id: golf.golf_id,
             max_participants: maxParticipants,
-            min_handicap: minHandicap,
-            max_handicap: maxHandicap,
+            /*min_handicap: minHandicap,
+            max_handicap: maxHandicap,*/
         })
         setLoading(false);
         if (request.error) return handleToast(t(`errors.${request.error.code}`));

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
-import { useClient, useTheme, useWebSocket } from "../Container";
+import { useTheme, useWebSocket } from "../Container";
 import { webSocketRoutes } from "../../Services/Client";
 
 type sectionProps = {
@@ -12,11 +12,9 @@ type sectionProps = {
     maxLength?: number;
 }
 
-function MessageTextInput({ onSubmit, channel_id, onAttachment, displaySend = false, maxLength = 500 }: sectionProps) {
+function MessageTextInput({ onSubmit, channel_id, displaySend = false, maxLength = 500 }: sectionProps) {
 
-    const [state, setState] = useState({ type: "none" });
     const { colors } = useTheme();
-    const { client } = useClient();
     const { sendMessage } = useWebSocket();
     const [editing, setEditing] = useState(false);
     const [content, setContent] = useState("");

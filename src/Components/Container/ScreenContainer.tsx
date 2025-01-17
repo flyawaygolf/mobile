@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { View } from 'react-native';
 import useTheme from './Theme/useTheme';
-import { full_height, full_width } from '../../Style/style';
+import { full_width } from '../../Style/style';
 
 function ScreenContainer({ children }: PropsWithChildren) {
 

@@ -2,30 +2,19 @@ import { View } from "react-native";
 import { Appbar, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
+import { ScreenContainer, useTheme } from "../../Components/Container";
 import CustomHomeHeader from "../../Components/Home/CustomHomeHeader";
 import styles from "../../Style/style";
 import { navigationProps } from "../../Services";
 import HomeNavigator from "./HomeNavigator";
 import { RootState, useAppSelector } from "../../Redux";
-import { userFlags } from "../../Services/Client";
 import { ShrinkEffect } from "../../Components/Effects";
 
 const HomeScreen = () => {
 
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
-    const { client, user } = useClient();
-    const notifications = useAppSelector((state) => state.notificationFeed);
-
-    const displayPremiumUpgrade = () => {
-        const flags = client.user.flags(user.flags.toString());
-        if (flags.has(userFlags.FLYAWAY_EMPLOYEE)) return false;
-        if (flags.has(userFlags.PREMIUM_USER)) return false;
-        if (flags.has(userFlags.PREMIUM_2_USER)) return false;
-        if (flags.has(userFlags.FLYAWAY_PARTNER)) return false;
-        return true;
-      }      
+    const notifications = useAppSelector((state) => state.notificationFeed);  
 
     const CustomLeftComponent = () => {
         return (

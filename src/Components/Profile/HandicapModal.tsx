@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Button, Dialog, Portal, RadioButton, Text, TouchableRipple } from "react-native-paper";
+
 import { handicapNumbersFloat, handicapNumbersInt } from "../../Services/handicapNumbers";
 import styles from "../../Style/style";
-import { useTheme } from "../Container";
 import { modifI } from "../../Screens/Profile/ProfileEditScreen";
 
 type PropsType = {
@@ -22,7 +22,6 @@ const HandicapModal = ({ handicap, visible, hideModal, setModif, modif }: PropsT
         int: Math.floor(parseFloat(((handicap) / 10).toFixed(1))),
         float: parseFloat(((handicap - Math.floor(handicap)) / 10).toFixed(1)),
     });
-    const { colors } = useTheme();
 
     const displayHCP = () => {
         if (hcp.int < 0) return `+${(hcp.float - hcp.int)}`;

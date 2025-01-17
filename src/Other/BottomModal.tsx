@@ -35,7 +35,7 @@ const BottomModal = (props: SectionProps) => {
       <View
         style={
           scrollView
-            ? // eslint-disable-next-line react-native/no-inline-styles
+            ?
               {
                 backgroundColor: colors.bg_secondary,
                 borderTopLeftRadius: 12,

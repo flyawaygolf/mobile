@@ -70,6 +70,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/eslint-parser@npm:^7.26.5":
+  version: 7.26.5
+  resolution: "@babel/eslint-parser@npm:7.26.5"
+  dependencies:
+    "@nicolo-ribaudo/eslint-scope-5-internals": 5.1.1-v1
+    eslint-visitor-keys: ^2.1.0
+    semver: ^6.3.1
+  peerDependencies:
+    "@babel/core": ^7.11.0
+    eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
+  checksum: 3ed969eabc940aa29a2e5bef525674b47ebccb8dfe686737e84fed2b09fbf4bd23c2503936ed340bde2a870fc1917668ec7ab357b97bab504aceb84e9608d213
+  languageName: node
+  linkType: hard
+
 "@babel/generator@npm:^7.25.0, @babel/generator@npm:^7.25.9, @babel/generator@npm:^7.26.0, @babel/generator@npm:^7.7.2":
   version: 7.26.2
   resolution: "@babel/generator@npm:7.26.2"
@@ -6314,6 +6328,7 @@ __metadata:
   resolution: "flyawaygolf@workspace:."
   dependencies:
     "@babel/core": ^7.26.0
+    "@babel/eslint-parser": ^7.26.5
     "@babel/preset-env": ^7.26.0
     "@babel/runtime": ^7.26.0
     "@flyerhq/react-native-keyboard-accessory-view": ^2.4.0
