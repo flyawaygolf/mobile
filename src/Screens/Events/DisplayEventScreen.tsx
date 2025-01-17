@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, ScrollView, View } from 'react-native';
-import { useClient, useTheme } from '../../Components/Container';
+import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Chip, IconButton, Text } from 'react-native-paper';
@@ -10,6 +10,8 @@ import { full_height, full_width } from '../../Style/style';
 import { Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
 import dayjs from 'dayjs';
+import { cdnbaseurl } from '../../Services/constante';
+import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
 
 export default function DisplayEventScreen({ route }: any) {
   const { event_id } = route.params;
@@ -17,7 +19,9 @@ export default function DisplayEventScreen({ route }: any) {
   const { colors } = useTheme();
   const { t } = useTranslation()
   const navigation = useNavigation<navigationProps>()
+
   const [eventInfo, setEventInfo] = useState<eventsInterface | undefined>(undefined);
+  const [displayParcitipants, setDisplayParticipants] = useState<boolean>(false);
 
   const getInfo = async () => {
     if (!event_id) return;
@@ -49,22 +53,15 @@ export default function DisplayEventScreen({ route }: any) {
     navigation.goBack();
   }
 
-  const changeFavorite = async (eventInfo: eventsInterface) => {
-    const response = await client.events.update(eventInfo.event_id, {
-      favorites: !eventInfo.favorites
-    });
-    if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
-    handleToast(t(`errors.200`));
-    setEventInfo({ ...eventInfo, favorites: !eventInfo.favorites });
-  }
-
   useEffect(() => {
     getInfo()
   }, [event_id])
 
+  const isOwner = (eventInfo: eventsInterface) => eventInfo.owner_info.user_id === user.user_id;
+
   const displayJointButton = () => {
     if (eventInfo) {
-      if(eventInfo.owner_info.user_id === user.user_id) {
+      if (isOwner(eventInfo)) {
         return (
           <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="delete" onPress={() => deleteEvent(eventInfo)}>
             {t('events.delete')}
@@ -98,44 +95,47 @@ export default function DisplayEventScreen({ route }: any) {
     }
   }
 
-  const isOwner = () => eventInfo?.owner_info.user_id === user.user_id;
-
   return (
-    <ImageBackground style={{ height: full_height, width: full_width, flex: 1 }} source={{ uri: `https://cdn.flyawaygolf.com/assets/background/events.jpg`, cache: "force-cache" }}>
-      <View style={{ position: "absolute", padding: 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-        <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
-        <Button mode='contained'>{t("events.event")}</Button>
-        {eventInfo ? <IconButton onPress={() => isOwner() ? changeFavorite(eventInfo) : undefined} mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} /> : <Loader />}
-      </View>
-      <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-        {displayJointButton()}
-      </View>
-      <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30 }}>
-        {
-          eventInfo ? (
-            <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
-              <View>
-                <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
-                  </ShrinkEffect>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants}</Chip>
-                </View>
-                <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
-                  <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
-                  <Text>{eventInfo.description}</Text>
+    <SafeBottomContainer padding={0}>
+      <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }}>
+      <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+        {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
+        </View>
+        <View style={{ position: "absolute", padding: 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
+          <Button mode='contained'>{t("events.event")}</Button>
+          {eventInfo ? <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} /> : <Loader />}
+        </View>
+        <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+          {displayJointButton()}
+        </View>
+        <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30 }}>
+          {
+            eventInfo ? (
+              <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
+                <View>
+                  <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
+                    </ShrinkEffect>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants}</Chip>
+                  </View>
+                  <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
+                    <Text>{eventInfo.description}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          ) : <Loader />
-        }
-      </ScrollView>
-    </ImageBackground>
+            ) : <Loader />
+          }
+        </ScrollView>
+      </ImageBackground>
+    </SafeBottomContainer>
   );
 }

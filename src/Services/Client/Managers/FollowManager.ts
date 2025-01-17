@@ -1,5 +1,5 @@
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
-import { followInformations, followListInformations } from './Interfaces/Follow';
+import { FollowInterface } from './Interfaces';
 import { paginationParams } from './Interfaces/Global';
 
 class FollowManager extends RequestEmitter {
@@ -9,14 +9,14 @@ class FollowManager extends RequestEmitter {
 
   public async delete(target_id: string) {
     const request = await this.deleteRequest(`/follows/${target_id}`);
-    const response = request as followInformations;
+    const response = request as FollowInterface.followInformations;
 
     return response;
   }
 
   public async create(target_id: string) {
     const request = await this.postRequest(`/follows/${target_id}`, {});
-    const response = request as followInformations;
+    const response = request as FollowInterface.followInformations;
 
     return response;
   }
@@ -26,7 +26,7 @@ class FollowManager extends RequestEmitter {
       follow_id: follow_id
     });
 
-    const response = request as followInformations;
+    const response = request as FollowInterface.followInformations;
 
     return response;
   }
@@ -34,7 +34,7 @@ class FollowManager extends RequestEmitter {
   public async unacceptedList() {
     const request = await this.getRequest('/follows');
 
-    const response = request as followListInformations;
+    const response = request as FollowInterface.notificationFollowResponse;
 
     return response;
   }
@@ -49,7 +49,7 @@ class FollowManager extends RequestEmitter {
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));
 
-    const response = request as followListInformations;
+    const response = request as FollowInterface.profileFollowResponse;
 
     return response;
   }
@@ -64,7 +64,7 @@ class FollowManager extends RequestEmitter {
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));
 
-    const response = request as followListInformations;
+    const response = request as FollowInterface.profileFollowResponse;
 
     return response;
   }

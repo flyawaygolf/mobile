@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Appbar, Text } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { ScreenContainer, useTheme } from "../../Components/Container";
 import { getCurrentLocation, handleToast, navigationProps } from "../../Services";
 import { useTranslation } from "react-i18next";
@@ -7,8 +7,9 @@ import CustomHeader from "../../Components/Header/CustomHeader";
 import { useNavigation } from "@react-navigation/native";
 import NearbyEventList from "../../Components/Events/NearbyEventList";
 import { Loader } from "../../Other";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import RecentEventsList from "../../Components/Events/RecentEventsList";
+import PrivateEvents from "../../Components/Events/PrivateEvents";
 
 type LocationType = {
     latitude: number,
@@ -50,6 +51,7 @@ export default function EventsScreen() {
         <ScreenContainer>
             <CustomHeader title={t("events.header_title")} isHome leftComponent={<Appbar.Action color={colors.text_normal} icon="calendar-edit" onPress={() => navigation.navigate("EventStack", { screen: "CreateEventScreen" })} />} />
             <ScrollView style={{ padding: 10 }}>
+                <PrivateEvents />
                 <RecentEventsList />
                 {
                     location ? <NearbyEventList {...location} /> : <Loader />

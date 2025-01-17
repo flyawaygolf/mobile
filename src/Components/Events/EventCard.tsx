@@ -10,9 +10,10 @@ import { useNavigation } from "@react-navigation/native";
 
 type SectionProps = {
     event: eventsInterface;
+    full_width?: boolean;
 }
 
-export default function EventCard({ event }: SectionProps) {
+export default function EventCard({ event, full_width }: SectionProps) {
 
     const { t } = useTranslation();
     const { colors } = useTheme();
@@ -20,7 +21,7 @@ export default function EventCard({ event }: SectionProps) {
 
     return (
         <ShrinkEffect onPress={() => navigation.navigate("EventStack", { screen: "DisplayEventScreen", params: { event_id: event.event_id } })}>
-            <Card style={{ padding: 10, backgroundColor: colors.bg_secondary, margin: 5, width: 300 }}>
+            <Card style={{ padding: 10, backgroundColor: colors.bg_secondary, margin: 5, width: full_width ? "auto" : 300 }}>
                 <Card.Cover style={{ backgroundColor: colors.fa_third, marginBottom: 5 }} source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }} />
                 <View style={{ position: 'absolute', top: 10, right: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     {

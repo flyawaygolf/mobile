@@ -8,7 +8,7 @@ function ScreenContainer({ children }: PropsWithChildren) {
     const { colors } = useTheme();
 
     return (
-        <View style={{ backgroundColor: colors.bg_primary, width: full_width, height: full_height }}>
+        <View style={{ backgroundColor: colors.bg_primary, width: full_width, height: "100%" }}>
             { children }
         </View>
     );

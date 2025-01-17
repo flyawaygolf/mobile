@@ -15,7 +15,7 @@ const FollowListScreen = () => {
   const { client } = useClient();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [list, setList] = useState<FollowInterface.followInformationsResponse[]>([]);
+  const [list, setList] = useState<FollowInterface.notificationFollowInterface[]>([]);
   const navigation = useNavigation<navigationProps>();
 
   const followList = async () => {

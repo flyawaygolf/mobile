@@ -1,10 +1,10 @@
-import type { error, userInfo } from "./Global";
+import type { error, requestResponseInterface, userInfo } from "./Global";
 
 export interface followInformations {
     error?: error;
 }
 
-export interface followNotificationReponse {
+export interface notificationFollowInterface {
     follow_id: string;
     user_id: string;
     target_id: string;
@@ -13,7 +13,9 @@ export interface followNotificationReponse {
     user_info: userInfo;
 }
 
-export interface followInformationsResponse {
+export interface notificationFollowResponse extends requestResponseInterface<notificationFollowInterface[]> {}
+
+export interface profileFollowInterface {
     user_id: string;
     username: string;
     nickname: string;
@@ -26,8 +28,5 @@ export interface followInformationsResponse {
     certified: boolean;
 }
 
-export interface followListInformations {
-    error?: error;
-    data?: Array<followInformationsResponse>;
-    pagination_key?: string;
-}
+
+export interface profileFollowResponse extends requestResponseInterface<profileFollowInterface[]> {}

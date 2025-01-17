@@ -9,37 +9,27 @@ import { RefreshControl, View } from "react-native";
 import { Loader } from "../../Other";
 import { Text } from "react-native-paper";
 
-type SectionProps = {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number,
-}
-
-export default function NearbyEventList({ latitude, longitude }: SectionProps) {
+export default function PrivateEvents() {
     const { client } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const [loading, setLoading] = useState(true);
     const [loaderF, setLoaderF] = useState(false);
     const [events, setEvents] = useState<eventsInterface[]>([]);
+    const [paginationKey, setPaginationKey] = useState<string | undefined>(undefined);
 
-    async function getData(refresh: boolean = false) {
-        setLoading(true)
-        if (refresh) {
-            setLoaderF(true)
-            if (loaderF) return;
-        }
-        const response = await client.search.map.events({
-            lat: latitude,
-            long: longitude,
-            max_distance: 100000
-        });
-        if (refresh) setLoaderF(false)
-        setLoading(false)
-        if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
-        setEvents(response.data.events.items);
-    }
+    const getData = async (refresh: boolean = false) => {
+        if (loaderF) return;
+        if (refresh) setLoaderF(true)
+        const response = await client.events.favorites({ pagination: { pagination_key: refresh ? undefined : paginationKey } });
+        setLoading(false);
+        if (refresh) setLoaderF(false);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
+        if (!response.data) return;
+        if (response.pagination_key) setPaginationKey(response.pagination_key);
+        if (refresh) setEvents(response.data);
+        else setEvents([...events, ...response.data]);
+    };
 
     async function start() {
         getData()
@@ -56,7 +46,7 @@ export default function NearbyEventList({ latitude, longitude }: SectionProps) {
     return (
         <View>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <Text variant="headlineSmall">{t("events.nearby_you")}</Text>
+                <Text variant="headlineSmall">{t("events.private_joinable")}</Text>
             </View>
             <FlatList
                 horizontal
@@ -67,7 +57,7 @@ export default function NearbyEventList({ latitude, longitude }: SectionProps) {
                     tintColor={colors.fa_primary}
                     colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
                     onRefresh={() => getData(true)} />}
-                ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_events_nearby_you")}</Text>}
+                ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_friends_event")}</Text>}
                 initialNumToRender={20}
                 data={events}
                 renderItem={renderItem}

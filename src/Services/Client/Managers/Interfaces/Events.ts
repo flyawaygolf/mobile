@@ -44,3 +44,5 @@ export interface eventsUpdateParams {
     favorites?: boolean;
     deleted?: boolean;
 }
+
+export interface participantsResponse extends requestResponseInterface<userInfo[]> {}

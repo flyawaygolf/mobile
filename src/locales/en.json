@@ -99,7 +99,9 @@
         "join": "Join",
         "leave": "Leave",
         "nearby_you": "Near you",
+        "private_joinable": "Joinable private events",
         "no_events_nearby_you": "No events near you",
+        "no_friends_event": "No events from your friends",
         "recents": "Recents",
         "no_events": "No events, be the first to create one",
         "about_event": "About the Event",
@@ -121,7 +123,8 @@
         "distance": "Distance",
         "search": "Search a golf",
         "community_posts": "Community posts",
-        "no_posts": "No posts to display"
+        "no_posts": "No posts to display",
+        "events": "Events"
     },
     "map": {
         "title": "Golfs Map",

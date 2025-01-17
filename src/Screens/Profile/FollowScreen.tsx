@@ -12,7 +12,7 @@ import { navigationProps } from "../../Services";
 
 function FollowScreen({ route }: any) {
 
-    const [info, setInfo] = useState<Array<FollowInterface.followInformationsResponse>>([]);
+    const [info, setInfo] = useState<FollowInterface.profileFollowInterface[]>([]);
     const [loader, setLoader] = useState(true);
     const { client } = useClient();
     const { colors } = useTheme();
@@ -48,7 +48,7 @@ function FollowScreen({ route }: any) {
         setInfo([...info, ...response.data])
     }
 
-    const renderItem = useCallback(({ item }: { item: FollowInterface.followInformationsResponse, index?: number }) => {
+    const renderItem = useCallback(({ item }: { item: FollowInterface.profileFollowInterface, index?: number }) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.5}

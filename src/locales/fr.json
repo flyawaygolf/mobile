@@ -99,7 +99,9 @@
         "join": "Rejoindre",
         "leave": "Quitter",
         "nearby_you": "A proximité de chez vous",
+        "private_joinable": "Événements privés accessible",
         "no_events_nearby_you": "Pas d'événement à proximité de chez vous",
+        "no_friends_event": "Pas d'événement d'amis",
         "recents": "Récents",
         "no_events": "Pas d'événement, soyez le premier à en créer un",
         "about_event": "A propos de l'événement",
@@ -121,7 +123,8 @@
         "distance": "Distance",
         "search": "Rechercher un golf",
         "community_posts": "Posts de la communauté",
-        "no_posts": "Aucun post pour le moment"
+        "no_posts": "Aucun post pour le moment",
+        "events": "Événements"
     },
     "map": {
         "title": "Carte des golfs",

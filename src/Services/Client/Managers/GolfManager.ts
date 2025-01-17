@@ -35,6 +35,7 @@ class GolfManager extends RequestEmitter {
 
   public async communityPosts(golf_id: string, options?: {
     pagination?: paginationParams,
+    limit?: number;
   }) {
     let _url = `/golfs/${golf_id}/posts/community`;
     const parameters = []
@@ -51,9 +52,21 @@ class GolfManager extends RequestEmitter {
     return response;
   }
 
-  public async events(golf_id: string) {
-    const request = await this.getRequest(`/golfs/${golf_id}/events`);
-    const response = request as EventInterface.golfEventsResponse;
+  public async events(golf_id: string, options?: {
+    pagination?: paginationParams;
+    limit?: number;
+  }) {
+    let _url = `/golfs/${golf_id}/events`;
+    const parameters = []
+
+    if (options?.pagination) {
+      const { pagination_key, limit } = options.pagination;
+      if (pagination_key) parameters.push(`pagination_key=${pagination_key}`);
+      if (limit) parameters.push(`limit=${limit}`);
+    }
+    if (parameters.length > 0) _url = _url.concat("?");
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
+    const response = request as EventInterface.multipleEventsResponse;
 
     return response;
   }

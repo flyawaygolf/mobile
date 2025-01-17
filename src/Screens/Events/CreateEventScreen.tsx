@@ -146,7 +146,7 @@ export default function CreateEventScreen() {
     return (
         <EventsContainer navigation={navigation} title={t('events.create_event')}>
             <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <BottomModal isVisible={golfModalVisible} dismiss={() => setGolfModalVisible(false)}>
+                <BottomModal isVisible={golfModalVisible} onSwipeComplete={() => setGolfModalVisible(false)} dismiss={() => setGolfModalVisible(false)}>
                     <View style={{
                         height: 500 - keyboardHeight
                     }}>
