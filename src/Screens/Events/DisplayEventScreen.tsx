@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, View } from 'react-native';
-import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
+import { ImageBackground, ScrollView, View, SafeAreaView } from 'react-native';
+import { useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Chip, IconButton, Text } from 'react-native-paper';
@@ -96,10 +96,10 @@ export default function DisplayEventScreen({ route }: any) {
   }
 
   return (
-    <SafeBottomContainer padding={0}>
+    <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }}>
-      <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-        {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
+        <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+          {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
         </View>
         <View style={{ position: "absolute", padding: 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
           <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
@@ -136,6 +136,6 @@ export default function DisplayEventScreen({ route }: any) {
           }
         </ScrollView>
       </ImageBackground>
-    </SafeBottomContainer>
+    </SafeAreaView>
   );
 }
