@@ -2,6 +2,8 @@ import React, { useCallback, useMemo } from "react";
 import { FlatList } from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
+import { useNavigation } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
@@ -10,7 +12,6 @@ import { full_width } from "../../Style/style";
 import { useTheme } from "../Container";
 import { DisplayMember } from "../Member";
 import { DisplayGolfs } from "../Golfs";
-import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "../../Services";
 
 type PropsType = {
@@ -30,6 +31,7 @@ type PropsType = {
 const SearchMapModal: React.FC<PropsType> = ({ query, queryResult, visible, centerMap, setIsInputFocused }) => {
     const { colors } = useTheme();
     const { t } = useTranslation();
+    const { top } = useSafeAreaInsets();
     const navigation = useNavigation<navigationProps>();
 
     const renderItem = useCallback(({ item }: { item: userInfo | golfInterface }) => {
@@ -75,7 +77,7 @@ const SearchMapModal: React.FC<PropsType> = ({ query, queryResult, visible, cent
                     width: full_width,
                     height: "100%",
                     padding: 10,
-                    paddingTop: 85,
+                    paddingTop: top + 85,
                     backgroundColor: colors.bg_primary
                 }}
             >
