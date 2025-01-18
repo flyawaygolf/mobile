@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, View, SafeAreaView } from 'react-native';
-import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
+import { ImageBackground, ScrollView, View } from 'react-native';
+import { useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import { handleToast, messageFormatDate, navigationProps } from '../../Services';
 import { full_height, full_width } from '../../Style/style';
@@ -18,6 +19,7 @@ export default function DisplayEventScreen({ route }: any) {
   const { client, user } = useClient();
   const { colors } = useTheme();
   const { t } = useTranslation()
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation<navigationProps>()
 
   const [eventInfo, setEventInfo] = useState<eventsInterface | undefined>(undefined);
@@ -96,48 +98,44 @@ export default function DisplayEventScreen({ route }: any) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SafeBottomContainer padding={0}>
-      <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }}>
-        <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-          {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
-        </View>
-        <View style={{ position: "absolute", padding: 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-          <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
-          <Button mode='contained'>{t("events.event")}</Button>
-          {eventInfo ? <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} /> : <Loader />}
-        </View>
-        <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-          {displayJointButton()}
-        </View>
-        <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30 }}>
-          {
-            eventInfo ? (
-              <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
-                <View>
-                  <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
-                      <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
-                    </ShrinkEffect>
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
-                  </View>
-                  <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
-                    <Text>{eventInfo.description}</Text>
-                  </View>
+    <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }}>
+      <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+        {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
+      </View>
+      <View style={{ position: "absolute", padding: 10, paddingTop: top + 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+        <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
+        <Button mode='contained'>{t("events.event")}</Button>
+        {eventInfo ? <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} /> : <Loader />}
+      </View>
+      <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+        {displayJointButton()}
+      </View>
+      <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30 }}>
+        {
+          eventInfo ? (
+            <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
+              <View>
+                <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                  <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
+                  </ShrinkEffect>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                  <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                  <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
+                </View>
+                <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
+                  <Text>{eventInfo.description}</Text>
                 </View>
               </View>
-            ) : <Loader />
-          }
-        </ScrollView>
-      </ImageBackground>
-      </SafeBottomContainer>
-    </SafeAreaView>
+            </View>
+          ) : <Loader />
+        }
+      </ScrollView>
+    </ImageBackground>
   );
 }

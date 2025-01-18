@@ -3,8 +3,10 @@ import { ScrollView, View, StyleSheet, Keyboard } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { full_width } from '../Style/style';
-import { IOSContainer, useClient, useTheme } from '../Components/Container';
+import { useClient, useTheme } from '../Components/Container';
 import { getCurrentLocation, handleToast, navigationProps } from '../Services';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
@@ -12,7 +14,6 @@ import { SearchBar } from '../Components/Elements/Input';
 import { FadeInFromTop, ShrinkEffect } from '../Components/Effects';
 import { golfInterface } from '../Services/Client/Managers/Interfaces/Search';
 import SearchMapModal from '../Components/Map/SearchMapModal';
-import { useNavigation } from '@react-navigation/native';
 
 type LocationType = {
   latitude: number,
@@ -41,6 +42,7 @@ const MapScreen = () => {
     latitudeDelta: 0.5,
     longitudeDelta: 0.5,
   });
+  const { top } = useSafeAreaInsets();
   const [query, setQuery] = useState<string>("");
   const [queryResult, setQueryResult] = useState<(userInfo | golfInterface)[]>([]);
   const [queryFilter, setQueryFilter] = useState<FilterType>("all");
@@ -301,8 +303,7 @@ const MapScreen = () => {
   ], [mapType, loadingCenter])
 
   return (
-    <IOSContainer>
-      <View style={styles.globalView}>
+      <View style={[styles.globalView]}>
         <View style={{
           position: "absolute",
           bottom: 5,
@@ -325,7 +326,7 @@ const MapScreen = () => {
           }
         </View>
         <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
-        <View style={styles.elements}>
+        <View style={[styles.elements, { top: top + 5  }]}>
           <View style={styles.searchElements}>
             <FadeInFromTop>
               <SearchBar
@@ -456,7 +457,6 @@ const MapScreen = () => {
           }
         </MapView>
       </View>
-    </IOSContainer>
   );
 };
 
@@ -471,7 +471,6 @@ const styles = StyleSheet.create({
   elements: {
     position: "absolute",
     zIndex: 3,
-    top: 5,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
