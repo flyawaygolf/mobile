@@ -26,7 +26,7 @@ export default function DisplayAttachedPost({ attached_post }: SectionProps) {
             <View style={{ padding: 5 }}>
                 <Markdown token={token} content={attached_post.content} />
             </View>
-            <Divider bold={true} />
+            <Divider horizontalInset bold={true} />
         </View>
     )
 }

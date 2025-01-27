@@ -17,7 +17,7 @@ export default function DisplaySharedPost({ shared_post }: SectionProps) {
 
     return (
         <>
-            <Divider bold={true} />
+            <Divider horizontalInset bold={true} />
             <View style={{
                 marginLeft: 40
             }}>

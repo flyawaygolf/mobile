@@ -20,6 +20,7 @@ export interface fetchGuildResponseSchema {
     type: 0 | 1 | 2,
     users: Array<userInfo>,
     title?: string,
+    event_id?: string,
     favorite: boolean,
     unread?: boolean;
     last_message?: fetchMessageResponseInterface

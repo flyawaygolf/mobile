@@ -174,7 +174,7 @@ export default function DisplayEventScreen({ route }: any) {
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
                   <Chip style={{ borderRadius: 100, marginRight: 5 }} icon="cash-marker">{t("events.greenfee")} {eventInfo?.greenfee ?? 0}</Chip>
-                  <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {displayHCP(eventInfo?.min_hancicap ?? 520)} - {eventInfo?.max_handicap ?? -100}</Chip>
+                  <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {displayHCP(eventInfo?.min_hancicap ?? 520)} - {displayHCP(eventInfo?.max_handicap ?? -100)}</Chip>
                 </View>
                 <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
