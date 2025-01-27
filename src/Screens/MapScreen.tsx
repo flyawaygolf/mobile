@@ -32,13 +32,13 @@ type FilterType = "golfs" | "all" | "users" | "pro" | "events"
 
 const MapScreen = () => {
   const { theme, colors } = useTheme();
-  const { client } = useClient();
+  const { client, user } = useClient();
   const navigation = useNavigation<navigationProps>();
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
   const [location, setLocation] = useState<LocationType>({
-    latitude: 48.864716,
-    longitude: 2.349014,
+    latitude: user.golf_info.location[1] ?? 48.864716,
+    longitude: user.golf_info.location[0] ?? 2.349014,
     latitudeDelta: 0.5,
     longitudeDelta: 0.5,
   });
@@ -75,13 +75,31 @@ const MapScreen = () => {
         })
         setLocation(init_location);
         setSearchLocation(init_location);
-        await updateUserLocation(crd.longitude, crd.latitude, false);
-        await updateMapUsers(crd.longitude, crd.latitude);
-        await updateMapGolfs(crd.longitude, crd.latitude);
+        await Promise.all([
+          updateUserLocation(crd.longitude, crd.latitude, false),
+          updateMapUsers(crd.longitude, crd.latitude),
+          updateMapGolfs(crd.longitude, crd.latitude)
+        ])
       }
       return setLoadingCenter(false);
     } catch (error) {
-      handleToast(JSON.stringify(error))
+      const init_location = {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5,
+      }
+      centerMap({
+        init: true,
+        go_to: init_location,
+        duration: 0
+      })
+      setLocation(init_location);
+      setSearchLocation(init_location);
+      await Promise.all([
+        updateMapUsers(location.longitude, location.latitude),
+        updateMapGolfs(location.longitude, location.latitude)
+      ])
     }
   }
 
@@ -351,7 +369,7 @@ const MapScreen = () => {
             </FadeInFromTop>
             <ScrollView horizontal={true} contentContainerStyle={styles.searchChips}>
               {
-                !searchLocation?.width || searchLocation.width && searchLocation.width < 150 * 1000 && !isInputFocused && (
+                !isInputFocused && (
                   <ShrinkEffect shrinkAmount={0.90}><Chip icon={"refresh"} style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }} onPress={() => pressChip(filter)}>{t("map.refresh")}</Chip></ShrinkEffect>
                 )
               }
@@ -376,6 +394,7 @@ const MapScreen = () => {
           provider={PROVIDER_GOOGLE}
           ref={mapRef}
           initialRegion={location}
+          // onTouchEnd={() => pressChip(filter)}
           onRegionChange={(region) => {
             const { widthMeters, heightMeters } = calculateMapSize(region);
             setSearchLocation({

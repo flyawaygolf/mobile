@@ -15,6 +15,9 @@ export interface eventsInterface {
     max_participants: number;
     min_hancicap?: number;
     max_handicap?: number;
+    greenfee: number;
+    is_private: boolean;
+    players: string[];
     guild_id: string;
     deleted: boolean;
     created_at: string;
@@ -37,6 +40,9 @@ export interface eventsCreatorParams {
     max_participants: number;
     min_handicap?: number;
     max_handicap?: number;
+    players?: string[];
+    greenfee: number;
+    is_private: boolean;
     favorites?: boolean;
 }
 

@@ -39,6 +39,9 @@
         "switch_account": "Switch account",
         "add_account": "Add an account",
 
+        "required_fields": "Required fields",
+
+
         "top_of_day": "Trends",
         "top_users_of_day": "Top Users",
         "last_trends": "Last Trends",
@@ -111,7 +114,18 @@
         "join_success": "You have successfully joined the event",
         "leave_success": "You have successfully left the event",
         "owner": "Owner",
-        "delete": "Delete"
+        "delete": "Delete",
+
+        "dates": "Dates",
+        "general_info": "General Information",
+        "handicap": "Handicap",
+        "visibility": "Visibility",
+        "select_min_handicap": "Minimum handicap : {{hcp}}",
+        "select_max_handicap": "Maximum handicap : {{hcp}}",
+        "greenfee": "Green fee",
+        "private": "Private",
+        "select_players": "Select players",
+        "search_players": "Search players"
     },
     "golf": {
         "link": "Link",

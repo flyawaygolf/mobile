@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { TextInput, Button, Switch, Text } from 'react-native-paper';
+import { TextInput, Button, Switch, Text, Icon, Chip } from 'react-native-paper';
 import DatePicker from 'react-native-date-picker';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+
 import { EventsContainer, useClient, useTheme } from '../../Components/Container';
 import { getCurrentLocation, handleToast, navigationProps } from '../../Services';
 import { BottomModal } from '../../Other';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { DisplayGolfs } from '../../Components/Golfs';
 import { SearchBar } from '../../Components/Elements/Input';
-import { useNavigation } from '@react-navigation/native';
+import HandicapModal from '../../Components/Events/HandicapModal';
+import { displayHCP } from '../../Services/handicapNumbers';
+import { Br } from '../../Components/Text';
+import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
+import { Avatar, DisplayMember } from '../../Components/Member';
 
 type LocationType = {
     latitude: number,
@@ -19,7 +25,7 @@ type LocationType = {
 }
 
 export default function CreateEventScreen() {
-    const { client } = useClient();
+    const { client, user } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
@@ -28,15 +34,25 @@ export default function CreateEventScreen() {
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [golf, setGolf] = useState<golfInterface | undefined>(undefined);
-    /*const [minHandicap, setMinHandicap] = useState<number | undefined>(undefined);
-    const [maxHandicap, setMaxHandicap] = useState<number | undefined>(undefined);*/
+    const [is_private, setIsPrivate] = useState(false);
+    const [greenFee, setGreenFee] = useState<string>("0");
     const [maxParticipantsString, setMaxParticipants] = useState<string>("2");
     const [loading, setLoading] = useState(false);
+
+    const [players, setPlayers] = useState<userInfo[]>([]);
+    const [searchPlayersList, setSearchPlayersList] = useState<userInfo[]>([]);
+    const [searchPlayers, setSearchPlayers] = useState("");
+    const [playersModalVisible, setPlayersModalVisible] = useState(false);
 
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
     const [golfModalVisible, setGolfModalVisible] = useState(false);
     const [searchGolf, setSearchGolf] = useState("");
-    const [location, setLocation] = useState<LocationType | undefined>(undefined);
+    const [location, setLocation] = useState<LocationType>({
+        latitude: user.golf_info.location[1] ?? 48.864716,
+        longitude: user.golf_info.location[0] ?? 2.349014,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5,
+    });
     const [keyboardHeight, setKeyboardHeight] = useState(0);
 
     const [startDate, setStartDate] = useState<Date>(new Date());
@@ -45,8 +61,31 @@ export default function CreateEventScreen() {
     const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
 
+    const [minHandicapModalVisible, setMinHandicapModalVisible] = useState(false);
+    const [minHandicap, setMinHandicap] = useState<number>(520);
 
-    const searchMap = async (latitude: number, longitude: number) => {
+    const [maxHandicapModalVisible, setMaxHandicapModalVisible] = useState(false);
+    const [maxHandicap, setMaxHandicap] = useState<number>(-100);
+
+    const changePrivateMode = (newMode: boolean) => {
+        if (newMode) {
+            setIsFavorite(false);
+            setIsPrivate(true);
+        } else {
+            setIsPrivate(false);
+        }
+    };
+
+    const changeFavoriteMode = (newMode: boolean) => {
+        if (newMode) {
+            setIsPrivate(false);
+            setIsFavorite(true);
+        } else {
+            setIsFavorite(false);
+        }
+    };
+
+    const searchGolfsMap = async (latitude: number, longitude: number) => {
         const response = await client.search.map.golfs({
             lat: latitude,
             long: longitude,
@@ -55,6 +94,17 @@ export default function CreateEventScreen() {
 
         if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
         setGolfs(response.data.golfs.items);
+    }
+
+    const searchPlayersMap = async (latitude: number, longitude: number) => {
+        const response = await client.search.map.users({
+            lat: latitude,
+            long: longitude,
+            max_distance: 50000
+        });
+
+        if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+        setSearchPlayersList(response.data.users.items);
     }
 
     const start = async () => {
@@ -69,7 +119,8 @@ export default function CreateEventScreen() {
                     longitudeDelta: 0.5,
                 }
                 setLocation(init_location);
-                await searchMap(crd.latitude, crd.longitude);
+                await searchGolfsMap(crd.latitude, crd.longitude);
+                await searchPlayersMap(crd.latitude, crd.longitude);
             }
         } catch (error) {
             handleToast(JSON.stringify(error))
@@ -77,8 +128,12 @@ export default function CreateEventScreen() {
     }
 
     useEffect(() => {
-        golfModalVisible && start();
-    }, [golfModalVisible]);
+        if (maxHandicap > minHandicap) setMaxHandicap(minHandicap);
+    }, [minHandicap, maxHandicap]);
+
+    useEffect(() => {
+        start();
+    }, []);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (event) => {
@@ -112,11 +167,22 @@ export default function CreateEventScreen() {
         setGolfs(response.data.golfs.items);
     }
 
+    const searchPlayersModal = async (text?: string) => {
+        const response = await client.search.users(text ?? searchPlayers, {
+            location: location ? {
+                lat: location.latitude,
+                long: location.longitude,
+            } : undefined
+        });
+        if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
+        setSearchPlayersList(response.data.users.items);
+    }
+
     const handleCreateEvent = async () => {
         if (loading) return;
         const maxParticipants = parseInt(maxParticipantsString);
         if (!title.trim().substring(0, 512) || !description.trim().substring(0, 512) || !endDate || !startDate || !golf || !maxParticipants) return handleToast(t(`errors.verify_fields`));
-        if(isNaN(maxParticipants) || maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
+        if (isNaN(maxParticipants) || maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
 
         setLoading(true);
         const request = await client.events.create({
@@ -127,8 +193,11 @@ export default function CreateEventScreen() {
             favorites: isFavorite,
             golf_id: golf.golf_id,
             max_participants: maxParticipants,
-            /*min_handicap: minHandicap,
-            max_handicap: maxHandicap,*/
+            is_private: is_private,
+            players: !is_private ? undefined : players.map((player: userInfo) => player.user_id),
+            greenfee: parseInt(greenFee),
+            min_handicap: minHandicap,
+            max_handicap: maxHandicap,
         })
         setLoading(false);
         if (request.error) return handleToast(t(`errors.${request.error.code}`));
@@ -159,24 +228,61 @@ export default function CreateEventScreen() {
                                 searchGolfModal(txt)
                             }}
                             placeholder={t("golf.search")}
-                            onSearchPress={() => searchGolfModal()}
-                            onClearPress={() => {
-                                setSearchGolf("")
-                                start()
-                            }}
+                            onSearchPress={() => searchGolfModal(searchGolf)}
+                            onClearPress={() => setSearchGolf("")}
                         />
                         <FlatList
                             data={golfs}
-                            renderItem={({ item }) => (
-                                <DisplayGolfs informations={item} onPress={() => linkGolf(item)} />
-                            )}
+                            renderItem={({ item }) => <DisplayGolfs informations={item} onPress={() => linkGolf(item)} />}
                             keyExtractor={(item) => item.golf_id}
                         />
                     </View>
                 </BottomModal>
+
+                <BottomModal isVisible={playersModalVisible} onSwipeComplete={() => setPlayersModalVisible(false)} dismiss={() => setPlayersModalVisible(false)}>
+                    <View style={{
+                        height: 500 - keyboardHeight
+                    }}>
+                        <SearchBar
+                            style={{ backgroundColor: colors.bg_primary }}
+                            value={searchPlayers}
+                            onChangeText={(txt) => {
+                                setSearchPlayers(txt);
+                                searchPlayersModal(txt);
+                            }}
+                            placeholder={t("events.search_players")}
+                            onSearchPress={() => searchPlayersModal(searchPlayers)}
+                            onClearPress={() => setSearchPlayers("")}
+                        />
+                        <FlatList
+                            data={searchPlayersList}
+                            renderItem={({ item }) => (
+                                <DisplayMember style={{ backgroundColor: players.some(p => p.user_id === item.user_id) ? colors.bg_third : colors.bg_secondary }} informations={item} onPress={() => setPlayers([item, ...players])} />
+                            )}
+                            keyExtractor={(item) => item.user_id}
+                        />
+                    </View>
+                </BottomModal>
+
+                <HandicapModal
+                    visible={minHandicapModalVisible}
+                    hideModal={() => setMinHandicapModalVisible(false)}
+                    setModif={(value) => setMinHandicap(value)}
+                    handicap={minHandicap}
+                />
+                <HandicapModal
+                    visible={maxHandicapModalVisible}
+                    hideModal={() => setMaxHandicapModalVisible(false)}
+                    min={minHandicap}
+                    setModif={(value) => setMaxHandicap(value)}
+                    handicap={maxHandicap}
+                />
                 <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <Text>* {t('commons.required_fields')}</Text>
+                    <Br />
+                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.general_info")}:</Text>
                     <TextInput
-                        label={t('events.title')}
+                        label={t('events.title') + ' *'}
                         value={title}
                         onChangeText={setTitle}
                         mode="outlined"
@@ -184,7 +290,7 @@ export default function CreateEventScreen() {
                         style={styles.input}
                     />
                     <TextInput
-                        label={t('events.description')}
+                        label={t('events.description') + ' *'}
                         value={description}
                         onChangeText={setDescription}
                         mode="outlined"
@@ -200,13 +306,30 @@ export default function CreateEventScreen() {
                         keyboardType="number-pad"
                         style={styles.input}
                     />
-                    
+
+                    <Br />
+                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.location")}:</Text>
+                    <TextInput
+                        label={t('events.greenfee')}
+                        value={greenFee}
+                        onChangeText={setGreenFee}
+                        mode="outlined"
+                        keyboardType="number-pad"
+                        style={styles.input}
+                    />
                     <Button
                         mode="outlined"
-                        onPress={() => setStartDatePickerVisibility(true)}
-                        style={styles.input}
-                    >
-                        {startDate ? startDate.toLocaleString() : t('events.select_start_date')}
+                        onPress={() => setGolfModalVisible(true)}
+                        style={styles.input}>
+                        {(golf ? golf.name : t('events.select_golf')) + ' *'}
+                    </Button>
+
+                    <Br />
+                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.dates")}:</Text>
+                    <Button
+                        mode="outlined"
+                        onPress={() => setStartDatePickerVisibility(true)}>
+                        {(startDate ? startDate.toLocaleString() : t('events.select_start_date'))}
                     </Button>
                     <DatePicker
                         modal
@@ -221,12 +344,15 @@ export default function CreateEventScreen() {
                             setStartDatePickerVisibility(false)
                         }}
                     />
+                    <View style={{ display: "flex", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 5 }}>
+                        <Icon source={"arrow-down"} size={30} />
+                    </View>
                     <Button
                         mode="outlined"
                         onPress={() => setEndDatePickerVisibility(true)}
                         style={styles.input}
                     >
-                        {endDate ? endDate.toLocaleString() : t('events.select_end_date')}
+                        {(endDate ? endDate.toLocaleString() : t('events.select_end_date')) + " *"}
                     </Button>
                     <DatePicker
                         modal
@@ -242,20 +368,74 @@ export default function CreateEventScreen() {
                         }}
                     />
 
+                    <Br />
+                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.handicap")}:</Text>
                     <Button
                         mode="outlined"
-                        onPress={() => setGolfModalVisible(true)}
-                        style={styles.input}
-                    >
-                        {golf ? golf.name : t('events.select_golf')}
+                        onPress={() => setMinHandicapModalVisible(true)}
+                        style={styles.input}>
+                        {t('events.select_min_handicap', {
+                            hcp: displayHCP(minHandicap)
+                        })}
                     </Button>
+                    <Button
+                        mode="outlined"
+                        onPress={() => setMaxHandicapModalVisible(true)}
+                        style={styles.input}>
+                        {t('events.select_max_handicap', {
+                            hcp: displayHCP(maxHandicap)
+                        })}
+                    </Button>
+
+
+                    <Br />
+                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.visibility")}:</Text>
                     <View style={styles.switchContainer}>
                         <Text>{t("events.favorites")}</Text>
                         <Switch
                             value={isFavorite}
-                            onValueChange={setIsFavorite}
+                            onValueChange={changeFavoriteMode}
                         />
                     </View>
+                    <View style={styles.switchContainer}>
+                        <Text>{t("events.private")}</Text>
+                        <Switch
+                            value={is_private}
+                            onValueChange={changePrivateMode}
+                        />
+                    </View>
+                    {
+                        is_private && (
+                            <View>
+                                <Button
+                                    mode="outlined"
+                                    onPress={() => setPlayersModalVisible(true)}
+                                    style={styles.input}
+                                >
+                                    {t('events.select_players')}
+                                </Button>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    flexWrap: 'wrap',
+                                    gap: 8
+                                }}>
+                                    {players.map((item) => (
+                                        <Chip
+                                            key={item.user_id}
+                                            compact={false}
+                                            style={{ backgroundColor: colors.bg_secondary }}
+                                            avatar={<Avatar size={25} url={client.user.avatar(item.user_id, item.avatar)} />}
+                                            onPress={() => setPlayers(players.filter(p => p.user_id !== item.user_id))}
+                                        >
+                                            {item.username}
+                                        </Chip>
+                                    ))}
+                                </View>
+                            </View>
+                        )
+                    }
+
+                    <Br />
                     <Button
                         mode="contained"
                         onPress={handleCreateEvent}

@@ -23,9 +23,11 @@ export default function EventsScreen() {
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [location, setLocation] = useState<LocationType | undefined>(undefined);
 
     const start = async () => {
+        setLoading(true);
         try {
             const position = await getCurrentLocation();
             if (position) {
@@ -36,9 +38,11 @@ export default function EventsScreen() {
                     latitudeDelta: 0.5,
                     longitudeDelta: 0.5,
                 }
+                setLoading(false);
                 setLocation(init_location);
             }
         } catch (error) {
+            setLoading(false);
             handleToast(JSON.stringify(error))
         }
     }
@@ -54,7 +58,7 @@ export default function EventsScreen() {
                 <PrivateEvents />
                 <RecentEventsList />
                 {
-                    location ? <NearbyEventList {...location} /> : <Loader />
+                    loading ? <Loader /> : location && <NearbyEventList {...location} />
                 }
             </ScrollView>
         </ScreenContainer>

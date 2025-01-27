@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, ScrollView, View } from 'react-native';
+import { ImageBackground, Platform, ScrollView, View } from 'react-native';
 import { useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Chip, IconButton, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import dayjs from 'dayjs';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import { handleToast, messageFormatDate, navigationProps } from '../../Services';
 import { full_height, full_width } from '../../Style/style';
 import { Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
-import dayjs from 'dayjs';
 import { cdnbaseurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
+import { check, PERMISSIONS, request } from 'react-native-permissions';
 
 export default function DisplayEventScreen({ route }: any) {
   const { event_id } = route.params;
@@ -58,6 +61,26 @@ export default function DisplayEventScreen({ route }: any) {
   useEffect(() => {
     getInfo()
   }, [event_id])
+
+
+  const addEvent = async () => {
+    if (eventInfo) {
+      const eventConfig = {
+        title: eventInfo.title,
+        startDate: eventInfo.start_date,
+        endDate: eventInfo.end_date,
+        location: eventInfo.golf_info.name,
+        notes: eventInfo.description,
+      };
+
+      const check_perm = await check(Platform.OS === 'ios' ? PERMISSIONS.IOS.CALENDARS : PERMISSIONS.ANDROID.WRITE_CALENDAR);
+      if (check_perm === 'granted') AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+      else {
+        const perm = Platform.OS === 'ios' ? await request(PERMISSIONS.IOS.CALENDARS) : await request(PERMISSIONS.ANDROID.WRITE_CALENDAR)
+        if (perm === 'granted') return AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+      }
+    }
+  };
 
   const isOwner = (eventInfo: eventsInterface) => eventInfo.owner_info.user_id === user.user_id;
 
@@ -105,7 +128,16 @@ export default function DisplayEventScreen({ route }: any) {
       <View style={{ position: "absolute", padding: 10, paddingTop: top + 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
         <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
         <Button mode='contained'>{t("events.event")}</Button>
-        {eventInfo ? <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} /> : <Loader />}
+        {eventInfo ? (
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
+            {
+              eventInfo.joined && (
+                <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
+              )
+            }
+          </View>
+        ) : <Loader />}
       </View>
       <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
         {displayJointButton()}
@@ -126,6 +158,11 @@ export default function DisplayEventScreen({ route }: any) {
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
                   <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
+                  <Chip style={{ borderRadius: 100 }} icon={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)}>{t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}</Chip>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                  <Chip style={{ borderRadius: 100 }} icon="cash-marker">{t("events.greenfee")} {eventInfo.greenfee}</Chip>
+                  <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {eventInfo.min_hancicap} - {eventInfo.max_handicap}</Chip>
                 </View>
                 <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>

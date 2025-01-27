@@ -131,7 +131,7 @@ function ClientProvider({ children }: SectionProps) {
                     'onTertiary': 'rgba(255, 255, 255, 1)',
                     'onTertiaryContainer': 'rgba(49, 17, 29, 1)',
                     'outline': 'rgba(121, 116, 126, 1)',
-                    'outlineVariant': colors.bg_primary,
+                    'outlineVariant': colors.fa_primary,
                     'primary': colors.fa_primary,
                     'primaryContainer': colors.fa_primary,
                     'secondary': 'rgba(98, 91, 113, 1)',
