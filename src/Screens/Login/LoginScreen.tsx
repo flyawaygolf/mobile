@@ -68,8 +68,8 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
 
     setLoading(true);
     const response = await client.sessions.create({
-      email: users.email,
-      code: users.code,
+      email: users.email.trim(),
+      code: users.code.trim()
     })
 
     if (response.error || !response.data) {

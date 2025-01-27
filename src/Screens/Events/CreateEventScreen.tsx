@@ -183,6 +183,7 @@ export default function CreateEventScreen() {
         const maxParticipants = parseInt(maxParticipantsString);
         if (!title.trim().substring(0, 512) || !description.trim().substring(0, 512) || !endDate || !startDate || !golf || !maxParticipants) return handleToast(t(`errors.verify_fields`));
         if (isNaN(maxParticipants) || maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
+        if(is_private && players.length < 1) return handleToast(t(`errors.verify_fields`));
 
         setLoading(true);
         const request = await client.events.create({
@@ -255,9 +256,15 @@ export default function CreateEventScreen() {
                             onClearPress={() => setSearchPlayers("")}
                         />
                         <FlatList
-                            data={searchPlayersList}
+                            data={searchPlayersList.filter(p => p.user_id !== user.user_id)}
                             renderItem={({ item }) => (
-                                <DisplayMember style={{ backgroundColor: players.some(p => p.user_id === item.user_id) ? colors.bg_third : colors.bg_secondary }} informations={item} onPress={() => setPlayers([item, ...players])} />
+                                <DisplayMember style={{ backgroundColor: players.some(p => p.user_id === item.user_id) ? colors.bg_third : colors.bg_secondary }} informations={item} onPress={() => {
+                                    if (players.some(p => p.user_id === item.user_id)) {
+                                        setPlayers(players.filter(p => p.user_id !== item.user_id));
+                                    } else {
+                                        setPlayers([...players, item]);
+                                    }
+                                }} />
                             )}
                             keyExtractor={(item) => item.user_id}
                         />

@@ -7,6 +7,7 @@ import { Button, Chip, IconButton, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import dayjs from 'dayjs';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import { check, PERMISSIONS, request } from 'react-native-permissions';
 
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import { handleToast, messageFormatDate, navigationProps } from '../../Services';
@@ -15,7 +16,8 @@ import { Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
 import { cdnbaseurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
-import { check, PERMISSIONS, request } from 'react-native-permissions';
+import { Avatar } from '../../Components/Member';
+import { displayHCP } from '../../Services/handicapNumbers';
 
 export default function DisplayEventScreen({ route }: any) {
   const { event_id } = route.params;
@@ -64,6 +66,9 @@ export default function DisplayEventScreen({ route }: any) {
 
 
   const addEvent = async () => {
+    /**
+     * Modify for https://www.npmjs.com/package/expo-calendar
+     */
     if (eventInfo) {
       const eventConfig = {
         title: eventInfo.title,
@@ -74,10 +79,12 @@ export default function DisplayEventScreen({ route }: any) {
       };
 
       const check_perm = await check(Platform.OS === 'ios' ? PERMISSIONS.IOS.CALENDARS : PERMISSIONS.ANDROID.WRITE_CALENDAR);
-      if (check_perm === 'granted') AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+      if (check_perm === 'granted') AddCalendarEvent.presentEventCreatingDialog(eventConfig);
       else {
         const perm = Platform.OS === 'ios' ? await request(PERMISSIONS.IOS.CALENDARS) : await request(PERMISSIONS.ANDROID.WRITE_CALENDAR)
-        if (perm === 'granted') return AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+        if (perm === 'granted') {
+          AddCalendarEvent.presentEventCreatingDialog(eventConfig);
+        }
       }
     }
   };
@@ -142,7 +149,7 @@ export default function DisplayEventScreen({ route }: any) {
       <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
         {displayJointButton()}
       </View>
-      <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30 }}>
+      <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30, }}>
         {
           eventInfo ? (
             <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
@@ -157,12 +164,17 @@ export default function DisplayEventScreen({ route }: any) {
                   <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
-                  <Chip style={{ borderRadius: 100 }} icon={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)}>{t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}</Chip>
+                  <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100, marginRight: 5 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
+                  <Chip style={{ borderRadius: 100 }} onPress={() => navigation.navigate("ProfileStack", {
+                    screen: "ProfileScreen",
+                    params: {
+                      nickname: eventInfo.owner_info.nickname
+                    }
+                  })} avatar={<Avatar size={25} url={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)} />}>{t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}</Chip>
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip style={{ borderRadius: 100 }} icon="cash-marker">{t("events.greenfee")} {eventInfo.greenfee}</Chip>
-                  <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {eventInfo.min_hancicap} - {eventInfo.max_handicap}</Chip>
+                  <Chip style={{ borderRadius: 100, marginRight: 5 }} icon="cash-marker">{t("events.greenfee")} {eventInfo?.greenfee ?? 0}</Chip>
+                  <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {displayHCP(eventInfo?.min_hancicap ?? 520)} - {eventInfo?.max_handicap ?? -100}</Chip>
                 </View>
                 <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
                   <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
