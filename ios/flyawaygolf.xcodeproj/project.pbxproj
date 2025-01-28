@@ -504,19 +504,19 @@
 				CODE_SIGN_ENTITLEMENTS = flyawaygolf/flyawaygolf.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VU55U8U5HR;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = flyawaygolf/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyAway;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.13.3;
+				MARKETING_VERSION = 2.14.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -541,18 +541,18 @@
 				CODE_SIGN_ENTITLEMENTS = flyawaygolf/flyawaygolf.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VU55U8U5HR;
 				INFOPLIST_FILE = flyawaygolf/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FlyAway;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.13.3;
+				MARKETING_VERSION = 2.14.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

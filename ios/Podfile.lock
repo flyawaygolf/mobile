@@ -1368,6 +1368,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-add-calendar-event (5.0.0):
+    - React-Core
   - react-native-cameraroll (7.9.0):
     - DoubleConversion
     - glog
@@ -2218,6 +2220,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-add-calendar-event (from `../node_modules/react-native-add-calendar-event`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
@@ -2364,6 +2367,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-add-calendar-event:
+    :path: "../node_modules/react-native-add-calendar-event"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-config:
@@ -2523,6 +2528,7 @@ SPEC CHECKSUMS:
   React-logger: 26155dc23db5c9038794db915f80bd2044512c2e
   React-Mapbuffer: ad1ba0205205a16dbff11b8ade6d1b3959451658
   React-microtasksnativemodule: e771eb9eb6ace5884ee40a293a0e14a9d7a4343c
+  react-native-add-calendar-event: b9802a8be8ad4beb0dcb3efb28969c077558fb29
   react-native-cameraroll: c71058d31a5e8088c9d42ff20bfe9cbc6752d36a
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
   react-native-date-picker: 543274fea228bdf7427a917d19b71f8f6eca7a72
