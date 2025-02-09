@@ -4,13 +4,13 @@ import BlockedScreen from "../Screens/Settings/BlockedScreen";
 import SessionScreen from "../Screens/Settings/SessionScreen";
 import SecurityScreen from "../Screens/Settings/SecurityScreen";
 import HomeSettingsScreen from "../Screens/Settings/HomeSettingsScreen";
-import LanguageThemeScreen from "../Screens/Settings/LanguageThemeScreen";
+import AppScreen from "../Screens/Settings/AppScreen";
 
 export type SettingsStackScreens =
     "BlockedScreen" |
     "SessionScreen" |
     "SecurityScreen" |
-    "HomeSettingsScreen" |
+    "AppScreen" |
     "LanguageThemeScreen";
     // "SubscriptionScreen";
 
@@ -23,7 +23,7 @@ const SettingsStack = () => {
     { name: "BlockedScreen", screen: BlockedScreen },
     { name: "SecurityScreen", screen: SecurityScreen },
     { name: "SessionScreen", screen: SessionScreen },
-    { name: "LanguageThemeScreen", screen: LanguageThemeScreen },
+    { name: "AppScreen", screen: AppScreen },
     /*{ name: "AffiliationScreen", screen: AffiliationScreen },
     { name: "SubscriptionScreen", screen: SubscriptionScreen },
     { name: "CustomSubscriptionScreen", screen: CustomSubscriptionScreen },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useTheme } from '../../Components/Container';
 import SettingsContainer from '../../Components/Container/SettingsContainer';
@@ -8,12 +8,11 @@ import { Avatar } from '../../Components/Member';
 import { cdnbaseurl } from '../../Services/constante';
 import { languageList } from '../../locales/i18n';
 import { getStorageInfo, setStorage, settingsStorageI } from '../../Services/storage';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Ithemes } from '../../Components/Container/Theme/Themes';
 
 // https://github.com/skb1129/react-native-change-icon/blob/master/example/android/app/src/main/AndroidManifest.xml
 
-function LanguageThemeScreen() {
+export default function AppScreen() {
 
     const { t, i18n } = useTranslation();
     const { theme, setTheme, colors } = useTheme();
@@ -58,7 +57,7 @@ function LanguageThemeScreen() {
     ]
 
     return (
-        <SettingsContainer title={t("settings.lang_and_theme")}>
+        <SettingsContainer title={t("settings.app")}>
             <ScrollView style={{ padding: 5 }}>
                 <Text variant='labelLarge'>{t("settings.theme")} :</Text>
                 <View>
@@ -117,5 +116,3 @@ function LanguageThemeScreen() {
         </SettingsContainer>
     )
 }
-
-export default LanguageThemeScreen;

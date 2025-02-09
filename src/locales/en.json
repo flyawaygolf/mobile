@@ -31,8 +31,6 @@
         "active": "Active",
         "inactive": "Inactive",
         "see_more": "Display more",
-        "translate": "Translate",
-        "translated_with": "Translated with",
         "trends": "Trends",
         "coming_soon": "Coming Soon",
         "download": "Download",
@@ -40,7 +38,11 @@
         "add_account": "Add an account",
 
         "required_fields": "Required fields",
+        "optional_fields": "Optional fields",
 
+        "translate": "Translate",
+        "translated_with": "Translated with",
+        "view_original": "View original",
 
         "top_of_day": "Trends",
         "top_users_of_day": "Top Users",
@@ -214,6 +216,9 @@
         "register_verification_code": "Link verification: {{response}}"
     },
     "settings": {
+        "app": "App",
+        "app_icons": "App Icons",
+
         "settings": "Settings",
         "my_account": "My Account",
         "my_app": "My app",

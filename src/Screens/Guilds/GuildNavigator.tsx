@@ -35,10 +35,8 @@ const GuildNavigator = () => {
             style={{
                 backgroundColor: colors.bg_primary
             }}
-            labelStyle={{
-                color: colors.text_normal,
-                textTransform: "capitalize"
-            }}
+            activeColor={colors.text_normal}
+            inactiveColor={colors.text_normal}
             tabStyle={{
                 width: full_width / routes.length
             }}

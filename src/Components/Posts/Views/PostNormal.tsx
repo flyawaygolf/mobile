@@ -10,13 +10,15 @@ import Markdown from "../../Text/Markdown";
 import { SinglePostContext } from "../PostContext";
 import { PostInterface } from "../../../Services/Client/Managers/Interfaces/index";
 
+export type PostNormalContextInfo = PostInterface.postResponseSchema & {
+    is_comment?: boolean;
+    is_share?: boolean;
+    no_bottom?: boolean;
+    original_post_user?: any
+}
+
 type PostNormalContext = {
-    info: PostInterface.postResponseSchema & {
-        is_comment?: boolean;
-        is_share?: boolean;
-        no_bottom?: boolean;
-        original_post_user?: any
-    },
+    info: PostNormalContextInfo
 }
 
 function PostNormal({ maxLines }: { maxLines?: number }) {
@@ -39,7 +41,7 @@ function PostNormal({ maxLines }: { maxLines?: number }) {
                 {
                     info.display_not_allowed ?
                         <Button onPress={() => { }}>{t("posts.subscribe_to", { username: info.from.username })}</Button>
-                        : <View style={{ marginTop: -15 }}><Markdown translate={info.content_language ? enableTranslation(info.content_language) : undefined} maxLine={maxLines} token={token} content={info.content} /></View>
+                        : <View style={{ marginTop: -15 }}><Markdown translate={info.content_language ? enableTranslation(info.content_language) : undefined} postInfo={info} maxLine={maxLines} token={token} content={info.content} /></View>
                 }
             </View>
             <View style={{

@@ -13,7 +13,7 @@ import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 function Bookmarks({ route }: any) {
 
     const { client } = useClient();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { target_id } = route.params;
     const posts = useAppSelector((state) => state.postBookmarks);
     const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ function Bookmarks({ route }: any) {
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
     
     async function getData() {
-        const response = await client.posts.getSavedPost(target_id);
+        const response = await client.posts.getSavedPost(target_id, i18n.language);
         setLoader(false)
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;        
@@ -37,7 +37,7 @@ function Bookmarks({ route }: any) {
     const bottomHandler = async () => {
         if(loader) return;
         setLoader(true)        
-        const response = await client.posts.getSavedPost(target_id, { pagination_key: pagination_key });
+        const response = await client.posts.getSavedPost(target_id, i18n.language, { pagination_key: pagination_key });
         setLoader(false);
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;

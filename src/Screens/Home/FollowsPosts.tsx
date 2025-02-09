@@ -10,6 +10,7 @@ import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import EmptyHome from '../../Components/Home/EmptyHome';
+import { useTranslation } from 'react-i18next';
 
 const FollowsPosts = () => {
 
@@ -20,13 +21,14 @@ const FollowsPosts = () => {
   const [loaderF, setLoaderF] = useState(false);
   const { colors } = useTheme();
   const { client } = useClient();
+  const { i18n } = useTranslation();
 
   async function getData(refresh: boolean = false) {
     if (refresh) {
       setLoaderF(true)
       if (loaderF) return;
     }
-    const response = await client.posts.fetch();
+    const response = await client.posts.fetch(i18n.language);
     if (refresh) setLoaderF(false)
     else setLoader(false)
     if (response.error || !response.data) return;
@@ -45,7 +47,7 @@ const FollowsPosts = () => {
   const bottomHandler = async () => {
     setLoader(true)
     if (loader) return;
-    const response = await client.posts.fetch({ pagination_key: pagination_key });
+    const response = await client.posts.fetch(i18n.language, { pagination_key: pagination_key });
     setLoader(false);
     if (response.error || !response.data) return;
     if (response.data.length < 1) return;

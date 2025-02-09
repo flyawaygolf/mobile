@@ -7,10 +7,12 @@ import { addPostSearch, initPostSearch } from '../../Redux/PostSearch/action';
 import { Loader } from '../../Other';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
+import { useTranslation } from 'react-i18next';
 
 function PostScreenSearch({ route }: any) {
 
     const { client } = useClient();
+    const { i18n } = useTranslation();
     const { query } = route.params;
     const posts = useAppSelector((state) => state.postSearch);
     const dispatch = useAppDispatch();
@@ -18,7 +20,7 @@ function PostScreenSearch({ route }: any) {
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
     
     async function getData() {
-        const response = await client.posts.search({ query:query });
+        const response = await client.posts.search(i18n.language, { query:query });
         setLoader(false)
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;        
@@ -34,7 +36,7 @@ function PostScreenSearch({ route }: any) {
     const bottomHandler = async () => {
         if(loader) return;
         setLoader(true)        
-        const response = await client.posts.search({ query:query, pagination_key: pagination_key });
+        const response = await client.posts.search(i18n.language, { query:query, pagination_key: pagination_key });
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;
         if(response.pagination_key) setPaginationKey(response.pagination_key);

@@ -22,7 +22,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
 
   const { scrollY, setUserInfo, user_info, setNickname } = useProfile();
   const { client } = useClient();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const navigation = useNavigation<navigationProps>();
 
@@ -58,7 +58,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   }, [user_info]);
 
   const getPinedPost = async (post_id: string) => {
-    const response = await client.posts.getPinPost(post_id);
+    const response = await client.posts.getPinPost(post_id, i18n.language);
     if (response.error) return handleToast(t(`errors.${response.error.code}`));
     if (!response.data) return;
     setPinedPost(response.data);
@@ -80,7 +80,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   const getPosts = async () => {
     if (loading) return;
     setLoading(true);
-    const response = await client.posts.user.fetch(nickname, { pagination_key: postsPaginationKey });
+    const response = await client.posts.user.fetch(nickname, i18n.language, { pagination_key: postsPaginationKey });
     setLoading(false);
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
     if (!response.data) return;

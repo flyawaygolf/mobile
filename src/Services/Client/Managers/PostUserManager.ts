@@ -6,11 +6,12 @@ class PostUserManager extends RequestEmitter {
     super(params);
   }
 
-  public async fetch(nickname: string, params?: GlobalInterface.paginationParams) {
+  public async fetch(nickname: string, translateTo: string, params?: GlobalInterface.paginationParams) {
 
     let _url = `/users/${nickname}/posts`;
     const parameters = [];
 
+    parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 

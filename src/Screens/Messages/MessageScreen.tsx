@@ -16,6 +16,7 @@ import { fetchMessageResponseInterface } from '../../Services/Client/Managers/In
 import MessageBoxHeader from '../../Components/Messages/MessageBoxHeader';
 import { MessageBox } from '../../Components/Messages/MessageBox';
 import { handleToast } from '../../Services';
+import { premiumAdvantages } from '../../Services/premiumAdvantages';
 
 const formatMessages = (messages: fetchMessageResponseInterface[], guild_id: string, client: Client): MessageType.Any[] => messages.map(((m) => {
   return {
@@ -47,6 +48,8 @@ const MessageScreen = ({ route }: any) => {
   const [messageInfo, setMessageInfo] = useState<MessageType.Text>();
   const dispatch = useDispatch();
   const messages = useAppSelector((state) => state.guildMessagesFeed[params.guild_id] || []);
+
+  const advantages = premiumAdvantages(user.premium_type, user.flags)
 
   const getMessages = useCallback(async () => {
     try {
@@ -101,6 +104,7 @@ const MessageScreen = ({ route }: any) => {
   const sendMessageToChannel = useCallback(async (message: MessageType.PartialText) => {
     if (inWait) return;
     setInwait(true);
+    if(message.text.length > advantages.textLength()) return handleToast(t(`errors.2001`))
     const request = await client.messages.create(params.guild_id, { content: message.text });
     setInwait(false);
     if (request.error) return handleToast(t(`errors.${request.error.code}`))

@@ -40,7 +40,7 @@ function Postheader({ info, created_at, post_id, lefComponent }: SectionProps) {
                     justifyContent: "flex-start",
                     alignItems: "flex-start"
                 }]}>
-                    <Avatar size={40} marginRight={10} url={client.user.avatar(info?.user_id, info?.avatar)} />
+                    <Avatar size={35} marginRight={10} url={client.user.avatar(info?.user_id, info?.avatar)} />
                     <Username user={info} created_at={created_at} lefComponent={lefComponent} />
                 </View>
             </TouchableOpacity>

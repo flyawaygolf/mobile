@@ -16,15 +16,15 @@ function PostScreen({ route }: any) {
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
     const [informations, setInformations] = useState<PostInterface.postResponseSchema>()
     const [posts, setPosts] = useState<PostInterface.postResponseSchema[]>()
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     async function getData() {
         // Get post informations
-        const post = await client.posts.fetchOne(post_id);
+        const post = await client.posts.fetchOne(post_id, i18n.language);
         if(post?.error) return Toast.show({ text1: t(`errors.${post.error.code}`) as string });
         setInformations(post?.data);
         // Get comments
-        const response = await client.posts.comments(post_id);
+        const response = await client.posts.comments(post_id, i18n.language);
         setLoader(false)
         if(response.error || !response.data) return Toast.show({ text1: t(`errors.${response?.error?.code}`) as string });
         if(response.data.length < 1) return;        
@@ -39,7 +39,7 @@ function PostScreen({ route }: any) {
     const bottomHandler = async () => {
         if(loader) return;
         setLoader(true);  
-        const response = await client.posts.comments(post_id, { pagination_key: pagination_key });
+        const response = await client.posts.comments(post_id, i18n.language, { pagination_key: pagination_key });
         setLoader(false)
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;

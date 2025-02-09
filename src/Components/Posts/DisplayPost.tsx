@@ -40,7 +40,7 @@ const DisplayPosts: SectionProps = ({
     is_original_post,
     original_post_user
 }): JSX.Element => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { colors } = useTheme();
     const { client } = useClient();
     const navigation = useNavigation<navigationProps>();
@@ -56,7 +56,7 @@ const DisplayPosts: SectionProps = ({
             setCommentLoad(false);
             return setAttachedPost(findPost)
         } else {
-            const response = await client.posts.fetchOne(post_id);
+            const response = await client.posts.fetchOne(post_id, i18n.language);
             setCommentLoad(false);
             if (response.error || !response.data) return setAttachedPost(false);
             dispatch(addPostTempSaveTrends([response.data]));
@@ -120,16 +120,20 @@ const DisplayPosts: SectionProps = ({
                     {pined && <PinnedView />}
 
                     <Postheader lefComponent={<LeftComponent />} info={informations.from} post_id={informations.post_id} created_at={informations.created_at} />
-                    {
-                        informations.golf_info && (
-                            <View style={styles.row}><Chip elevated icon="golf" onPress={() => navigation.navigate("GolfsStack", {
-                                screen: "GolfsProfileScreen",
-                                params: {
-                                    golf_id: informations?.golf_info?.golf_id,
-                                }
-                            })}>{informations.golf_info.name} {informations.golf_info.distance && `· ${formatDistance(informations.golf_info.distance)}Km`}</Chip></View>
-                        )
-                    }
+                    <View style={styles.row}>
+                        {
+                            informations.golf_info && (
+                                <Chip style={{
+                                    marginLeft: 5,
+                                }} icon="golf" onPress={() => navigation.navigate("GolfsStack", {
+                                    screen: "GolfsProfileScreen",
+                                    params: {
+                                        golf_id: informations?.golf_info?.golf_id,
+                                    }
+                                })}>{informations.golf_info.name} {informations.golf_info.distance && `· ${formatDistance(informations.golf_info.distance)}Km`}</Chip>
+                            )
+                        }
+                    </View>
                     {informations.categories && informations.categories.length > 0 && <View style={[styles.row, { marginTop: -5, marginLeft: 5 }]}>{informations.categories.map((c, idx) => <CategoriesBox key={idx} c={c} />)}</View>}
                     <PostNormal maxLines={comments ? undefined : 5} />
                 </TouchableOpacity>

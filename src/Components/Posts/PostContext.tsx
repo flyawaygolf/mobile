@@ -43,7 +43,8 @@ const defaultInfo: SinglePostInfoType = {
     comments: 0,
     views: 0,
     bookmarks: 0,
-    bookmarked: false
+    bookmarked: false,
+    display_not_allowed: false
 }
 
 export type SinglePostInfoType = postInterface & {

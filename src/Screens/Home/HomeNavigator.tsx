@@ -27,15 +27,13 @@ function HomeNavigator() {
             {...props}
             scrollEnabled
             indicatorStyle={{
-                backgroundColor: colors.fa_primary
+                backgroundColor: colors.fa_primary,
             }}
             style={{
-                backgroundColor: colors.bg_primary
+                backgroundColor: colors.bg_primary,
             }}
-            labelStyle={{
-                color: colors.text_normal,
-                textTransform: "capitalize"
-            }}
+            activeColor={colors.text_normal}
+            inactiveColor={colors.text_normal}
             tabStyle={{
                 width: full_width / routes.length
             }}

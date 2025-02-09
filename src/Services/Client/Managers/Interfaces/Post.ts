@@ -1,5 +1,5 @@
 import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
-import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, userInfo } from "./Global"
+import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, requestResponseInterface, userInfo } from "./Global"
 import { golfInterface } from "./Search";
 
 /**0 = text only | 1 = image (include gif) | 2 = video | 3 = audio | 4 = others */
@@ -79,7 +79,7 @@ export interface postResponseSchema {
     paid: boolean;
     from: userInfo
   } | false;
-  display_not_allowed?: true;
+  display_not_allowed: boolean;
   paid?: boolean;
   bookmarks: number;
   bookmarked: boolean;
@@ -110,5 +110,10 @@ export interface searchParams {
   before?: string;
   after?: string;
   type?: string | premium_type;
-  pagination_key?: string
+  pagination_key?: string;
 }
+
+
+export interface originalTextResponse extends requestResponseInterface<{
+  text: string
+}> {}

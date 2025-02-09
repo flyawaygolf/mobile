@@ -71,8 +71,8 @@ function HomeSettingsScreen() {
       title: t("settings.security")
     },
     {
-      route: "LanguageThemeScreen",
-      title: t("settings.language_theme")
+      route: "AppScreen",
+      title: t("settings.app")
     }
   ]);
 

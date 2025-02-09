@@ -58,8 +58,8 @@ class PostManager extends RequestEmitter {
     return response;
   }
 
-  public async getPinPost(target_id: string) {
-    const request = await this.getRequest(`/posts/${target_id}/pin`);
+  public async getPinPost(target_id: string, translateTo: string) {
+    const request = await this.getRequest(`/posts/${target_id}/pin?translateTo=${translateTo}`);
     const response = request as PostInterface.pinedPostResponse;
 
     return response;
@@ -100,10 +100,11 @@ class PostManager extends RequestEmitter {
     return response;
   }
 
-  public async getSavedPost(target_id: string, params?: GlobalInterface.paginationParams) {
+  public async getSavedPost(target_id: string, translateTo: string, params?: GlobalInterface.paginationParams) {
     let _url = `/posts/${target_id}/saves`;
     const parameters = [];
 
+    parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -122,19 +123,20 @@ class PostManager extends RequestEmitter {
     return response;
   }
 
-  public async fetchOne(post_id: string) {
-    const request = await this.getRequest(`/posts/${post_id}`);
+  public async fetchOne(post_id: string, translateTo: string) {
+    const request = await this.getRequest(`/posts/${post_id}?translateTo=${translateTo}`);
 
     const response = request as PostInterface.fetchOnePost;
 
     return response;
   }
 
-  public async comments(post_id: string, params?: GlobalInterface.paginationParams) {
+  public async comments(post_id: string, translateTo: string, params?: GlobalInterface.paginationParams) {
 
     let _url = `/posts/${post_id}/comments`;
     const parameters = [];
 
+    parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -145,11 +147,12 @@ class PostManager extends RequestEmitter {
     return response;
   }
 
-  public async shares(post_id: string, params?: GlobalInterface.paginationParams) {
+  public async shares(post_id: string, translateTo: string, params?: GlobalInterface.paginationParams) {
 
     let _url = `/posts/${post_id}/shares`;
     const parameters = [];
 
+    parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -160,11 +163,12 @@ class PostManager extends RequestEmitter {
     return response;
   }
 
-  public async fetch(params?: GlobalInterface.paginationParams) {
+  public async fetch(translateTo: string, params?: GlobalInterface.paginationParams) {
 
     let _url = `/posts`;
     const parameters = []
 
+    parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -174,11 +178,12 @@ class PostManager extends RequestEmitter {
     return response;
   }
 
-  public async search(params?: PostInterface.searchParams) {
+  public async search(translateTo: string, params?: PostInterface.searchParams) {
     let _url = `/posts/search`;
 
     const parameters = []
 
+    parameters.push(`translateTo=${translateTo}`);
     if(params?.after) parameters.push(`after=${params.after.toString()}`);
     if(params?.before) parameters.push(`before=${params.before.toString()}`);
     if(params?.query) parameters.push(`query=${encodeURIComponent(params.query.toString())}`);
@@ -191,6 +196,13 @@ class PostManager extends RequestEmitter {
     
     const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as PostInterface.postResponse;
+
+    return response;
+  }
+
+  public async getOriginalText(post_id: string) {
+    const request = await this.getRequest(`/posts/${post_id}/text`);
+    const response = request as PostInterface.originalTextResponse;
 
     return response;
   }

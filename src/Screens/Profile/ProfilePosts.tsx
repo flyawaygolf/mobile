@@ -11,7 +11,7 @@ import { Loader } from "../../Other";
 const ProfilePosts = () => {
     const { nickname, user_info, scrollY } = useProfile();
     const { client } = useClient();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [postsPaginationKey, setPostsPaginationKey] = useState<string | undefined>(undefined);
     const [posts, setPosts] = useState<PostInterface.postInterface[]>([])
@@ -28,7 +28,7 @@ const ProfilePosts = () => {
             if (loading) return;
             setLoading(true);
         }
-        const response = await client.posts.user.fetch(nickname, { pagination_key: postsPaginationKey });
+        const response = await client.posts.user.fetch(nickname, i18n.language, { pagination_key: postsPaginationKey });
         setLoading(false);
         if (response.error) return handleToast(t(`errors.${response.error.code}`))
         if (!response.data) return;

@@ -13,7 +13,7 @@ import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 function PostScreenShares({ route }: any) {
 
     const { client } = useClient();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { post_id } = route.params;
     const posts = useAppSelector((state) => state.postShares);
     const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ function PostScreenShares({ route }: any) {
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
     
     async function getData() {
-        const response = await client.posts.shares(post_id);
+        const response = await client.posts.shares(post_id, i18n.language);
         setLoader(false)
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;        
@@ -37,7 +37,7 @@ function PostScreenShares({ route }: any) {
     const bottomHandler = async () => {
         if(loader) return;
         setLoader(true)        
-        const response = await client.posts.shares(post_id, { pagination_key: pagination_key });
+        const response = await client.posts.shares(post_id, i18n.language, { pagination_key: pagination_key });
         if(response.error || !response.data) return;
         if(response.data.length < 1) return;
         if(response.pagination_key) setPaginationKey(response.pagination_key);

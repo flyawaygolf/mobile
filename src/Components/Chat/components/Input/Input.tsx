@@ -14,6 +14,8 @@ import {
 import { SendButton } from '../SendButton';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
+import { useClient } from '../../../Container';
+import { premiumAdvantages } from '../../../../Services/premiumAdvantages';
 
 export interface InputTopLevelProps {
   /** Whether attachment is uploading. Will replace attachment button with a
@@ -54,6 +56,8 @@ export const Input = ({
   const user = React.useContext(UserContext);
   const { container, input, marginRight } = styles({ theme });
   const { t } = useTranslation();
+  const { user: clientUser } = useClient();
+  const advantages = premiumAdvantages(clientUser.premium_type, clientUser.flags)
 
   // Use `defaultValue` if provided
   const [text, setText] = React.useState(textInputProps?.defaultValue ?? '');
@@ -99,7 +103,7 @@ export const Input = ({
         ))}
       <TextInput
         multiline
-        maxLength={1000}
+        maxLength={advantages.textLength()}
         placeholder={t('messages.input_placeholder') as string}
         placeholderTextColor={`${String(theme.colors.inputText)}80`}
         underlineColorAndroid="transparent"

@@ -22,6 +22,7 @@ import { AxiosRequestConfig } from 'axios';
 import TextAreaAutoComplete from '../../Components/Posts/Creator/TextAreaAutoComplete';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { usertokenkey } from '../../Services/constante';
+import { premiumAdvantages } from '../../Services/premiumAdvantages';
 
 export type postOptions = {
   paid: boolean;
@@ -41,9 +42,11 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
     progress: 0
   });
   const { client, token, user } = useClient();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation<navigationProps>();
+
+  const advantages = premiumAdvantages(user.premium_type, user.flags)
 
   const memoizedFiles = useMemo(() => files, [files]);
 
@@ -57,7 +60,10 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
     if (!content) {
       if (files.length < 1 && !shared_post) return handleToast(t(`errors.2001`))
     }
-    if (content && content.length > 280) return handleToast(t(`errors.2001`)) // Assuming 280 is the max length
+    if (content && content.length > advantages.textLength()) return handleToast(`errors.2001`);
+    if(files.length > 8) return handleToast(t(`errors.9002`))
+    if(files.length > 0 && files.reduce((acc, file) => acc + file.size, 0) > advantages.fileSize() * 1000000) return handleToast(t(`errors.9003`))
+
     setSending({ send: true, progress: 0 })
 
     let data = {
@@ -103,7 +109,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
       return handleToast(t(`errors.${response.error.code}`))
     }
     if (response.data) {
-      const post_info = await client.posts.fetchOne(response.data.post_id);
+      const post_info = await client.posts.fetchOne(response.data.post_id, i18n.language);
       if (post_info.data) dispatch(addMainCreatedTrends(post_info.data));
     }
     setFiles([])
@@ -162,7 +168,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <PostCreatorContainer dontSend={content.length > 512} onSave={() => sendInfo()} changeVisibilty={() => navigation.goBack()} >
+      <PostCreatorContainer dontSend={content.length > advantages.textLength()} onSave={() => sendInfo()} changeVisibilty={() => navigation.goBack()} >
         {sending.progress > 0 && <ProgressBar progress={sending.progress} />}
         <ScrollView>
           {attached_post && <DisplayAttachedPost attached_post={attached_post} />}
@@ -175,7 +181,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
             </View>
           </View>
           <View style={styles.row}>{options.golf && <Chip icon="golf" onPress={() => setOptions({ ...options, golf: undefined })}>{options.golf.name} {options.golf.distance && `· ${formatDistance(options.golf.distance)}Km`}</Chip>}</View>
-          <TextAreaAutoComplete autoFocus={true} value={content} maxLength={512} setValue={(text) => SetContent(text)} />
+          <TextAreaAutoComplete autoFocus={true} value={content} maxLength={advantages.textLength()} setValue={(text) => SetContent(text)} />
           {shared_post && <DisplaySharedPost shared_post={shared_post} />}
         </ScrollView>
         <View style={{
@@ -190,7 +196,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
             scrollsToTop={true}
             renderItem={({ item, index }) => item?.type.startsWith("video") ? <CreatorVideoDisplay deleteImage={(i) => deleteImage(i)} index={index} uri={item.uri} /> : <CreatorImageDisplay deleteImage={(i) => deleteImage(i)} index={index} uri={item.uri} />}
           />
-          <BottomButtonPostCreator options={options} setOptions={setOptions} content={content} maxLength={512} setCameraVisible={() => navigation.navigate("CreateStack", {
+          <BottomButtonPostCreator options={options} setOptions={setOptions} content={content} maxLength={advantages.textLength()} setCameraVisible={() => navigation.navigate("CreateStack", {
             screen: "CameraScreen",
             params: {
               ...params,

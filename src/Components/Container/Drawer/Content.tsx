@@ -23,8 +23,8 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
         <View style={{ height: 90, width: "100%" }}>
           {
             user?.banner ?
-              <Image style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}`, cache: "force-cache" }} />
-              : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color }]} />
+              <Image style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary, marginLeft: -5, marginTop: -5 }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}`, cache: "force-cache" }} />
+              : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color, marginLeft: -5, marginTop: -5 }]} />
           }
         </View>
         <View style={{ paddingLeft: 5 }}>
