@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { navigationProps } from '../../../../Services';
 import { useClient, useTheme } from '../../../Container';
@@ -7,6 +7,7 @@ import { SinglePostContext } from '../../../Posts/PostContext';
 import { premiumAdvantages } from '../../../../Services/premiumAdvantages';
 import { GlobalInterface } from '../../../../Services/Client/Managers/Interfaces';
 import { emojies_defs } from '../emojis';
+import { Text } from 'react-native-paper';
 
 interface Styles {
   container: ViewStyle;
