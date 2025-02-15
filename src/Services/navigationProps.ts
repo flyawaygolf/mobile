@@ -11,6 +11,7 @@ import { CreateStackScreens } from '../Navigator/CreateStack';
 import { SinglePostInfoType } from '../Components/Posts/PostContext';
 import { BottomStackScreens } from '../Navigator/BottomNavigation';
 import { EventStackScreens } from '../Navigator/EventStack';
+import { SubscriptionInterface } from './Client/Managers/Interfaces';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -72,7 +73,10 @@ export type RootStackParamList = {
         params?: object;
     },
     SettingsStack: {
-        screen?: SettingsStackScreens
+        screen?: SettingsStackScreens;
+        params?: {
+            subscription?: SubscriptionInterface.getSubscriptionsResponseInterface;
+        };
     },
     RegisterVerificationCode: {
         code: string[] | false;

@@ -11,4 +11,4 @@ export const websiteurl = Config?.WEBSITE_BASE_URL ?? 'https://flyawaygolf.com';
 export const posturl = Config?.POST_URL ?? 'https://flyawaygolf.com/posts';
 
 export const captchasiteKey = Config?.CAPTCHA_SITE_KEY ?? 'd53ab178-9eea-40c8-b02a-329a87904e70';
-export const strip_public_key = Config?.STRIPE_PUBLIC_KEY ?? 'pk_live_51MgmhMIjDzZnrQfFN0QFCPcbXetzt6u8nwmjAWfW9n8qZoonDe1U6fXhFTxIe8asAm1pehZjBAifxp9aYpvdbZ2d00PuNMWR5o';
+export const stripe_public_key = Config?.STRIPE_PUBLIC_KEY ?? 'pk_live_51QpTDFREQUp6NEUldDLOMTHcosl0g6daUJ30iqgKbpL1mTgyJP5upYMQaKktdpoj7o05UKheD2ouSpsLOXIKYJc100ZFiZmsXE';

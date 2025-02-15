@@ -13,6 +13,8 @@ interface Styles {
   paragraph: ViewStyle;
   bold: TextStyle;
   underline: TextStyle;
+  italic: TextStyle;
+  strike: TextStyle;
   listItem: ViewStyle;
   bullet: TextStyle;
 }
@@ -34,6 +36,12 @@ const styles = StyleSheet.create<Styles>({
   },
   underline: {
     textDecorationLine: 'underline',
+  },
+  italic: {
+    fontStyle: 'italic',
+  },
+  strike: {
+    textDecorationLine: 'line-through',
   },
   listItem: {
     flexDirection: 'row',
@@ -60,10 +68,10 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   const renderLine = (line: string, index: number): React.ReactNode => {
     const trimmedLine = line.trim();
 
-    if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+    if (trimmedLine.startsWith('- ')) {
       return (
         <View key={index} style={styles.listItem}>
-          <Text style={styles.bullet}>•</Text>
+          <Text style={styles.bullet}>{advantages.betterMarkdown() ? "•" : trimmedLine.substring(0, 1)}</Text>
           <Text>{renderInlineStyles(trimmedLine.slice(2))}</Text>
         </View>
       );
@@ -77,37 +85,100 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   };
 
   const renderInlineStyles = (text: string): React.ReactNode[] => {
-    const parts = text.split(/(\*\*.*?\*\*|__.*?__)/g);
-    return parts.map((part, index) => {      
-      if (RE_MENTIONS.test(part)) {
+    const result: React.ReactNode[] = [];
+    let currentText = '';
+  
+    const flushCurrentText = () => {
+      if (currentText) {
+        result.push(currentText);
+        currentText = '';
+      }
+    };
+  
+    const processText = (index: number): number => {
+      if (index >= text.length) return text.length;
+  
+      // Traitement des mentions
+      if (text[index] === '@') {
+        const endIndex = text.indexOf(' ', index);
+        const mention = text.slice(index, endIndex > -1 ? endIndex : undefined);
+        const nickname = mention.slice(1);
         
-        const nickname = part.replace(/@/g, "");
-        if (info?.mentions.length < 1) return <Text>{part} </Text>;
-
-        const find = info?.mentions.find((m: GlobalInterface.userInfo) => m.nickname === nickname);
-        if (!find) return <Text>{part} </Text>;
-
-        return <Text onPress={() => navigation?.navigate("ProfileStack", {
-          screen: "ProfileScreen",
-          params: {
-            nickname: find.nickname
+        flushCurrentText();
+  
+        if (info?.mentions.length > 0) {
+          const find = info.mentions.find((m: GlobalInterface.userInfo) => m.nickname === nickname);
+          if (find) {
+            result.push(
+              <Text key={result.length} onPress={() => navigation?.navigate("ProfileStack", {
+                screen: "ProfileScreen",
+                params: { nickname: find.nickname }
+              })} style={{ color: colors.text_link }}>
+                {find.username}{' '}
+              </Text>
+            );
+            return endIndex > -1 ? endIndex : text.length;
           }
-        })} style={{ color: colors.text_link }}>{find.username} </Text>;
+        }
+        
+        currentText += mention + ' ';
+        return endIndex > -1 ? endIndex : text.length;
       }
-      if (RE_TWEMOJI.test(part)) {
-        const sub = text.replace(/:/g, "")
-        if (!sub) return <Text>{text} </Text>
-        return <Text>{emojies_defs[sub]} </Text>
+  
+      // Traitement des emojis
+      if (text[index] === ':') {
+        const endIndex = text.indexOf(':', index + 1);
+        if (endIndex > -1) {
+          const emojiCode = text.slice(index + 1, endIndex);
+          flushCurrentText();
+          if (emojies_defs[emojiCode]) {
+            result.push(<Text key={result.length}>{emojies_defs[emojiCode]}</Text>);
+          } else {
+            currentText += text.slice(index, endIndex + 1);
+          }
+          return endIndex + 1;
+        }
       }
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <Text key={index} style={advantages.betterMarkdown() ? styles.bold : undefined}>{part.slice(2, -2)}</Text>;
+  
+      // Traitement du formatage Markdown
+      const markdownStyles = [
+        { start: '**', end: '**', style: styles.bold },
+        { start: '__', end: '__', style: styles.underline },
+        { start: '*', end: '*', style: styles.italic },
+        { start: '~~', end: '~~', style: styles.strike },
+      ];
+  
+      for (const { start, end, style } of markdownStyles) {
+        if (text.startsWith(start, index)) {
+          const endIndex = text.indexOf(end, index + start.length);
+          if (endIndex > -1) {
+            flushCurrentText();
+            const content = text.slice(index + start.length, endIndex);
+            result.push(
+              <Text key={result.length} style={advantages.betterMarkdown() ? style : undefined}>
+                {content}
+              </Text>
+            );
+            return endIndex + end.length;
+          }
+        }
       }
-      if (part.startsWith('__') && part.endsWith('__')) {
-        return <Text key={index} style={advantages.betterMarkdown() ? styles.underline : undefined}>{part.slice(2, -2)}</Text>;
-      }
-      return part;
-    });
+  
+      // Texte normal
+      currentText += text[index];
+      return index + 1;
+    };
+  
+    let i = 0;
+    while (i < text.length) {
+      i = processText(i);
+    }
+  
+    flushCurrentText();
+  
+    return result;
   };
+  
 
   const lines = content.split('\n');
 

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Badge, Button, Card, IconButton, Text } from "react-native-paper";
+import { Badge, Button, Card, Icon, IconButton, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { handleToast, navigationProps } from "../../Services";
 import { Avatar } from "../Member";
 import { useClient, useProfile, useTheme } from "../Container";
 import { displayHCP } from "../../Services/handicapNumbers";
 import { full_width } from "../../Style/style";
 import { addGuildList } from "../../Redux/guildList/action";
-import Clipboard from "@react-native-clipboard/clipboard";
 import { profileInformationsInterface } from "../../Services/Client/Managers/Interfaces/User";
+import { userFlags } from '../../Services/Client';
+import { ShrinkEffect } from '../Effects';
 
 type ProfileInfoProps = {
     navigation: navigationProps;
@@ -24,6 +26,7 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
     const { colors } = useTheme();
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const [flags] = useState(client.user.flags(user_info.flags.toString()));
 
     const follow = async () => {
         const response = await client.follows.create(user_info.user_id);
@@ -50,11 +53,16 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
             })
         }, 500)
     }
+
     const copyNickname = () => {
         Clipboard.setString(user_info.nickname);
         handleToast(t("commons.success"));
     }
 
+    const showBadgeName = (badge: string) => {
+        handleToast(t(`badges.${badge}`));
+    }
+    
     return (
         <Animated.View>
             <View style={{ height: 125 }}>
@@ -75,6 +83,13 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                         url={`${client.user.avatar(user_info.user_id, user_info.avatar)}`}
                     />
                     <Badge size={20} style={{ marginLeft: -30 }}>{displayHCP(user_info.golf_info.handicap)}</Badge>
+                    <View style={{ marginLeft: 10, marginTop: 5, flexDirection: "row", alignItems: "center", gap: 5 }}>
+                    { flags.has(userFlags.FLYAWAY_EMPLOYEE) && <ShrinkEffect onPress={() => showBadgeName("FLYAWAY_EMPLOYEE")}><Text><Icon source="shield-check" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                    { flags.has(userFlags.EARLY_SUPPORTER) && <ShrinkEffect onPress={() => showBadgeName("EARLY_SUPPORTER")}><Text><Icon source="account-star" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                    { user_info.premium_type > 0 && <ShrinkEffect onPress={() => showBadgeName("PREMIUM_USER")}><Text><Icon source="star-shooting" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                    { flags.has(userFlags.VERIFIED_USER) && <ShrinkEffect onPress={() => showBadgeName("VERIFIED_USER")}><Text><Icon source="check-decagram" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                    { flags.has(userFlags.FLYAWAY_PARTNER) && <ShrinkEffect onPress={() => showBadgeName("FLYAWAY_PARTNER")}><Text><Icon source="infinity" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                    </View>
                 </View>
                 <View style={{ position: "absolute", right: 5, flexDirection: "row", alignItems: "center" }}>
                     {user.user_id === user_info.user_id ? <Button icon="account-edit" onPress={() => navigation.navigate("ProfileStack", {
@@ -96,6 +111,7 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                     title={user_info.username}
                     subtitle={`@${user_info.nickname}`}
                 />
+                
             </Card>
             <Card style={{ margin: 5 }} mode="contained">
                 <Card.Content>
@@ -120,7 +136,7 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                 </View>
             </View>
             <View style={{ margin: 5 }}>
-                {user.user_id !== user_info.user_id && <Button mode="contained" icon={user_info.followed ? "account-heart" : "account"} onPress={() => user_info.followed ? unfollow() : follow()} >{t(`profile.${user_info.followed ? "unfollow" : "follow"}`)}</Button>}
+                {user.user_id !== user_info.user_id && <Button mode="contained" icon={user_info.followed ? "account-heart" : "account-plus"} onPress={() => user_info.followed ? unfollow() : follow()} >{t(`profile.${user_info.followed ? "unfollow" : "follow"}`)}</Button>}
             </View>
         </Animated.View>
     );

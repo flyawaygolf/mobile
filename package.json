@@ -41,6 +41,7 @@
     "@react-navigation/stack": "^7.0.18",
     "@realm/react": "^0.11.0",
     "@reduxjs/toolkit": "^2.4.0",
+    "@stripe/stripe-react-native": "^0.41.0",
     "axios": "^1.7.8",
     "dayjs": "^1.11.13",
     "i18next": "^24.0.5",

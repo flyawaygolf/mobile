@@ -48,6 +48,7 @@ export interface userInfo {
     username: string,
     is_private: boolean,
     avatar: string,
+    premium_type: premium_type,
     flags: number,
     description: string,
     certified: boolean,

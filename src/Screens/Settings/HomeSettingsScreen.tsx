@@ -56,23 +56,33 @@ function HomeSettingsScreen() {
 
   const [routes] = useState<Array<{
     title: string;
-    route: SettingsStackScreens
+    route: SettingsStackScreens,
+    leftIcon?: string
   }>>([
     {
+      route: "PremiumScreen",
+      title: t("settings.premium"),
+      leftIcon: "star-shooting"
+    },
+    {
       route: "SessionScreen",
-      title: t("settings.sessions")
+      title: t("settings.sessions"),
+      leftIcon: "monitor-cellphone"
     },
     {
       route: "BlockedScreen",
-      title: t("settings.blocked")
+      title: t("settings.blocked"),
+      leftIcon: "account-cancel"
     },
     {
       route: "SecurityScreen",
-      title: t("settings.security")
+      title: t("settings.security"),
+      leftIcon: "security"
     },
     {
       route: "AppScreen",
-      title: t("settings.app")
+      title: t("settings.app"),
+      leftIcon: "cellphone-cog"
     }
   ]);
 
@@ -80,7 +90,7 @@ function HomeSettingsScreen() {
     <SettingsContainer leftComponent={<Appbar.Action color={colors.text_normal} icon="exit-to-app" onPress={() => Disconnect()} />} title={t("settings.settings")}>
       <ScrollView>
         {
-          routes.map((r, index) => <SettingsButtons key={index} onPress={() => navigation.navigate("SettingsStack", {
+          routes.map((r, index) => <SettingsButtons leftIcon={r.leftIcon && r.leftIcon} key={index} onPress={() => navigation.navigate("SettingsStack", {
             screen: r.route
           })} t={r.title} />)
         }
