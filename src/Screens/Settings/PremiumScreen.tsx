@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { Platform, ScrollView } from 'react-native';
 import { Button, Dialog, Portal, RadioButton } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { SettingsContainer, useClient } from '../../Components/Container';
@@ -171,9 +171,6 @@ export default function PremiumScreen() {
                                 />
                             ))
                         }
-                        {
-                            // <TextInput mode='outlined' label={t("subscription.coupon") as string} value={coupon_id} onChangeText={(t) => setCouponID(t)} />
-                        }
                     </Dialog.Content>
                     <Dialog.Actions>
                         {loading ? false : <Button uppercase={false} onPress={() => hideDialog()}>{t("commons.cancel")}</Button>}
@@ -198,7 +195,7 @@ export default function PremiumScreen() {
                     })
                 }
                 {
-                    user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
+                    Platform.OS === "ios" ? <Button>{t("subscription.ios_blocked")}</Button> : user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
                 }     
             </ScrollView>
         </SettingsContainer>

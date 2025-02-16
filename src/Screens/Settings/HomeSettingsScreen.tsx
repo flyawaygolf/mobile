@@ -7,12 +7,13 @@ import Clipboard from "@react-native-clipboard/clipboard";
 import { useRealm } from '@realm/react';
 
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
-import { deviceInfo, navigationProps } from '../../Services';
+import { deviceInfo, navigationProps, openURL } from '../../Services';
 import { deleteUser } from '../../Services/Realm/userDatabase';
 
 import { SettingsStackScreens } from '../../Navigator/SettingsStack';
 import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
 import { useNavigation } from '@react-navigation/native';
+import { websiteurl } from '../../Services/constante';
 
 function HomeSettingsScreen() {
 
@@ -94,6 +95,7 @@ function HomeSettingsScreen() {
             screen: r.route
           })} t={r.title} />)
         }
+        <SettingsButtons onPress={async () => await openURL(websiteurl)} t={t("commons.website")} icon={"web"} />
         {appInfo && <SettingsButtons onPress={() => copyText()} t={`${t("settings.app_version")} : ${appInfo.version} (${appInfo.build_number})`} icon={"content-copy"} />}
       </ScrollView>
     </SettingsContainer>

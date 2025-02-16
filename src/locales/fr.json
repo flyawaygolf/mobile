@@ -1,5 +1,6 @@
 {
     "commons": {
+        "website": "Visiter le site web",
         "redirect_secondes": "Redirection dans {{time}} secondes",
         "profile": "Profil",
         "settings": "Paramètres",
@@ -368,6 +369,8 @@
         "no_ads_description": "Supprimez toutes les publicités"
     },
     "subscription": {
+        "ios_blocked": "Vous ne pouvez pas vous abonner à Premium dans l'application. On sait, c'est agaçant...",
+
         "fees": "Frais",
         "for_you": "Pour vous",
         "the_user_pay": "L'utilisateur paye",
