@@ -88,7 +88,6 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
 
       setValue({ ...allvalues, client: new_client, token: data.token, user: data, state: "loged" })
     }
-
   };
 
   return (
@@ -107,7 +106,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
           onChangeText={(email) => setUsers({ ...users, email: email })}
         />
         <ShakeEffect shakeOnDisplay>
-        <HelperText type="info" visible={true}><Icon source="information-outline" size={15} /> {t("login.passwordless_info")}</HelperText>
+          <HelperText type="info" visible={true}><Icon source="information-outline" size={15} /> {t("login.passwordless_info")}</HelperText>
         </ShakeEffect>
         {
           !showCode && (
@@ -131,7 +130,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
                 onChangeText={(code) => setUsers({ ...users, code: code })}
               />
             </View>
-            { loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} /> }
+            {loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t("login.connect")} />}
           </Animated.View>
         )
       }

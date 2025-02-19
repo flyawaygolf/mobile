@@ -61,13 +61,8 @@ function SubscriptionValidationScreen({ route }: any) {
             handleToast(`Error : ${error.message}`)
             setLoading(false)
         } else {
-            client.setValue({
-                ...client,
-                user: {
-                    ...client.user,
-                    premium_type: subscription.premium_type
-                }
-            })
+            const newUser = await client.client.user.myinformations();
+            client.setValue(newUser);
             handleToast(`Success Your order is confirmed!`)
             setTimeout(() => {
                 navigation.reset({
@@ -95,7 +90,7 @@ function SubscriptionValidationScreen({ route }: any) {
                 </Card.Content>
                 <Card.Actions>
                     <Button onPress={() => navigation.goBack()}>{t("commons.cancel")}</Button>
-                    <Button mode='elevated' theme={{ colors: { elevation: { level1: colors.good_color }, text: "#FFFFFF" } }} loading={loading} onPress={() => openPaymentSheet()}>{t("subscription.checkout")}</Button>
+                    <Button mode='elevated' textColor="#FFFFFF" theme={{ colors: { elevation: { level1: colors.good_color }} }} loading={loading} onPress={() => openPaymentSheet()}>{t("subscription.checkout")}</Button>
                 </Card.Actions>
             </Card>
         </SettingsContainer>

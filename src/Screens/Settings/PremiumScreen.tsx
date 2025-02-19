@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Platform, ScrollView } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import { Button, Dialog, Portal, RadioButton } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { SettingsContainer, useClient } from '../../Components/Container';
@@ -119,7 +119,7 @@ export default function PremiumScreen() {
     const getSubscriptions = async () => {
         const request = await client.subscription.fetch();        
         const response = request.data;
-        if (response) return setSubscriptions(response)
+        if (response) return setSubscriptions(response.sort((a, b) => a.price - b.price))
     }
 
     useEffect(() => {
@@ -194,9 +194,11 @@ export default function PremiumScreen() {
                         );
                     })
                 }
+                <View style={{ marginBottom: 20 }}>
                 {
                     Platform.OS === "ios" ? <Button>{t("subscription.ios_blocked")}</Button> : user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
                 }     
+                </View>    
             </ScrollView>
         </SettingsContainer>
     )
