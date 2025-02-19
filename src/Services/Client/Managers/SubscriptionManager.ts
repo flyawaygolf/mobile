@@ -8,14 +8,14 @@ class SubscriptionManager extends RequestEmitter {
   }
 
   public async dashboard() {
-    const request = await this.getRequest(`/dashboard`);
+    const request = await this.getRequest(`/subscriptions/dashboard`);
 
     const response = request as SubscriptionInterface.createDashboardResponse;
     return response;
   }
 
   public async fetch() {
-    const request = await this.getRequest(`/items`);
+    const request = await this.getRequest(`/subscriptions/items`);
 
     const response = request as SubscriptionInterface.getSubscriptionsResponse;
 

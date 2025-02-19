@@ -10,6 +10,7 @@ import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import EmptyHome from '../../Components/Home/EmptyHome';
 import { addRecentMainPosts, initRecentMainPosts } from '../../Redux/recentMainFeed/action';
+import { useTranslation } from 'react-i18next';
 
 const RecentPosts = () => {
 
@@ -20,6 +21,7 @@ const RecentPosts = () => {
   const [loaderF, setLoaderF] = useState(false);
   const { colors } = useTheme();
   const { client } = useClient();
+  const { i18n } = useTranslation();
 
   async function getData(refresh: boolean = false) {
     if (refresh) {
@@ -27,6 +29,7 @@ const RecentPosts = () => {
       if (loaderF) return;
     }
     const response = await client.explore.recentTrends({
+      translateTo: i18n.language,
       locale: "all"
     });
     if (refresh) setLoaderF(false)
@@ -47,7 +50,7 @@ const RecentPosts = () => {
   const bottomHandler = async () => {
     setLoader(true)
     if (loader) return;
-    const response = await client.explore.recentTrends({ pagination_key: pagination_key, locale: "all" });
+    const response = await client.explore.recentTrends({ pagination_key: pagination_key, locale: "all", translateTo: i18n.language });
     setLoader(false);
     if (response.error || !response.data) return;
     if (response.data.length < 1) return;

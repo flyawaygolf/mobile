@@ -1,5 +1,6 @@
 {
     "commons": {
+        "app_restart_required": "Redémarrage de l'application requis",
         "website": "Visiter le site web",
         "redirect_secondes": "Redirection dans {{time}} secondes",
         "profile": "Profil",
@@ -218,9 +219,23 @@
         "register_verification_code": "Vérification du lien : {{response}}"
     },
     "settings": {
-        "premium": "Premium",
-
         "app": "Personnalisation de l'application",
+
+        "theme": "Thème",
+        "dark_grey": "Gris foncé",
+        "dark_green": "Foncé / vert",
+        "dark_pink": "Foncé / rose",
+        "dark_blue": "Bleu foncé",
+        "dark": "Foncé",
+        "white": "Clair",
+        "auto": "Automatique",
+        
+        "language": "Langue",
+        "language_theme": "Langue & Thème",
+
+        "premium": "Premium",
+        "autotranslate": "Traduction automatique",
+
         "app_icons": "Icônes de l'application",
 
         "settings": "Paramètres",
@@ -258,18 +273,7 @@
         "language_spoken": "Langues parlées",
         "fees_charged": "Frais facturés",
         "cancel_subscription": "Annuler la souscription",
-        "renew_subscription": "Renouveler l'abonnement",
-        "theme": "Thème",
-        "language": "Langue",
-        "language_theme": "Langue & Thème",
-
-        "dark_grey": "Gris foncé",
-        "dark_green": "Foncé / vert",
-        "dark_pink": "Foncé / rose",
-        "dark_blue": "Bleu foncé",
-        "dark": "Foncé",
-        "white": "Clair",
-        "auto": "Automatique"
+        "renew_subscription": "Renouveler l'abonnement"
     },
     "profile": {
         "subscribers" : "Abonnés",

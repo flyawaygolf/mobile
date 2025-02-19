@@ -3,8 +3,12 @@ import type { ExploreInterface, PostInterface } from './Interfaces';
 import type { exploreBestUserResponse, exploreRandomUserResponse } from './Interfaces/Explore';
 
 class ExploreManager extends RequestEmitter {
+  private translate: boolean;
+
   constructor(params: requestParams) {
     super(params);
+
+    this.translate = params?.autoTranslate ?? false;
   }
 
   public async recentTrends(params?: ExploreInterface.exploreRecentTrendsParams) {
@@ -16,6 +20,7 @@ class ExploreManager extends RequestEmitter {
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(params?.type) parameters.push(`type=${params.type.toString()}`);
     if(params?.query) parameters.push(`query=${params.query}`);
+    if(params?.translateTo && this.translate) parameters.push(`translateTo=${params.translateTo}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));
@@ -33,6 +38,7 @@ class ExploreManager extends RequestEmitter {
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(params?.type) parameters.push(`type=${params.type.toString()}`);
     if(params?.query) parameters.push(`query=${params.query}`);
+    if(params?.translateTo && this.translate) parameters.push(`translateTo=${params.translateTo}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
     const request = await this.getRequest(_url.concat(parameters.join("&")));

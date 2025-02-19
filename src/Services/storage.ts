@@ -7,6 +7,7 @@ export interface settingsStorageI {
     theme?: Ithemes;
     locale?: string;
     fcm_token?: string;
+    auto_translate?: boolean;
 }
 
 export interface userStorageI {

@@ -8,6 +8,7 @@ export interface exploreRecentTrendsParams {
     type?: postTypes,
     query?: string,
     locale?: ISO_639_CODE_LIST | "all"
+    translateTo?: string;
 }
 
 export interface exploreUsersParams {

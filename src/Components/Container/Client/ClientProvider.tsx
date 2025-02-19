@@ -8,8 +8,9 @@ import { useRealm } from '@realm/react';
 
 import useTheme from '../Theme/useTheme';
 import { addUser, deleteUser, getAllUsers } from './../../../Services/Realm/userDatabase';
-import { initStorage, setStorage, userStorageI } from './../../../Services/storage';
+import { getStorageInfo, initStorage, setStorage, settingsStorageI, userStorageI } from './../../../Services/storage';
 import Client from '../../../Services/Client';
+import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 
 type SectionProps = React.PropsWithChildren<{}>
 
@@ -33,20 +34,30 @@ function ClientProvider({ children }: SectionProps) {
             ...value,
             state: "loading",
         })
+
+        const settings = getStorageInfo("settings") as settingsStorageI;
+        
         const new_client = new Client({
             token: user_info.token,
+            autoTranslate: settings?.auto_translate ?? false
         })
 
         const informations = await new_client.user.myinformations();
         if (informations.data) {
             setStorage("user_info", informations.data)
+            const advantages = premiumAdvantages(informations.data.premium_type, informations.data.flags);
+            if(!advantages.translatePosts()) setStorage("settings", { ...settings, auto_translate: false });
+            
             setValue({ ...value, client: new_client, token: user_info.token, user: informations.data, state: "loged" })
         } else return setValue({ ...value, state: "logout" });
     }
 
     const connectToToken = async (user_info: userStorageI) => {
+        const settings = getStorageInfo("settings") as settingsStorageI;
+
         const client = new Client({
             token: user_info?.token ?? "",
+            autoTranslate: settings?.auto_translate ?? false
         });
 
         const user = await client.user.myinformations();

@@ -1,37 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-paper';
-import { useTheme } from '../../Components/Container';
+import { Checkbox, Text } from 'react-native-paper';
+import { useClient, useTheme } from '../../Components/Container';
 import SettingsContainer from '../../Components/Container/SettingsContainer';
 import { Avatar } from '../../Components/Member';
 import { cdnbaseurl } from '../../Services/constante';
 import { languageList } from '../../locales/i18n';
 import { getStorageInfo, setStorage, settingsStorageI } from '../../Services/storage';
 import { Ithemes } from '../../Components/Container/Theme/Themes';
+import { premiumAdvantages } from '../../Services/premiumAdvantages';
+import { handleToast } from '../../Services';
 
 // https://github.com/skb1129/react-native-change-icon/blob/master/example/android/app/src/main/AndroidManifest.xml
 
 export default function AppScreen() {
 
+    const { user } = useClient();
     const { t, i18n } = useTranslation();
     const { theme, setTheme, colors } = useTheme();
+    const [premiumSettings, setPremiumSettings] = React.useState<settingsStorageI | undefined>({
+        auto_translate: false
+    });
+    const advantages = premiumAdvantages(user.premium_type, user.flags); 
 
-    const changeStorage = (type: "theme" | "language", txt: string) => {
+    const changeStorage = (type: "theme" | "language" | "autotranslate", txt: string) => {
         const settings = getStorageInfo("settings") as settingsStorageI;
 
         switch (type) {
             case "theme":
                 setStorage("settings", {
-                    theme: txt,
-                    locale: settings?.locale
+                    ...settings,
+                    theme: txt
                 })
+                setPremiumSettings({ ...premiumSettings, theme: txt as Ithemes })
                 break;
             case "language":
                 setStorage("settings", {
-                    theme: settings?.theme,
+                    ...settings,
                     locale: txt
                 })
+                setPremiumSettings({ ...premiumSettings, locale: txt })
+                break;
+            case "autotranslate":
+                setStorage("settings", {
+                    ...settings,
+                    auto_translate: txt === "true" ? true : false
+                })
+                setPremiumSettings({ ...premiumSettings, auto_translate: txt === "true" ? true : false })
+                handleToast(t("commons.app_restart_required"))
                 break;
             default:
                 break;
@@ -55,6 +72,10 @@ export default function AppScreen() {
             label: t("settings.dark"),
         }
     ]
+
+    useEffect(() => {
+        setPremiumSettings(getStorageInfo("settings") as settingsStorageI)
+    }, [])
 
     return (
         <SettingsContainer title={t("settings.app")}>
@@ -84,7 +105,6 @@ export default function AppScreen() {
                                     }} />
                                     <Text>{t.label}</Text>
                                 </TouchableOpacity>
-
                             </View>
                         )
                         )
@@ -97,12 +117,12 @@ export default function AppScreen() {
                             <View key={index}>
                                 <TouchableOpacity style={{
                                     flexDirection: "row",
-                                    backgroundColor: i18n.language === l.locale ? colors.bg_third : colors.bg_secondary,
+                                    backgroundColor: i18n.language === l.code ? colors.bg_third : colors.bg_secondary,
                                     padding: 10,
                                     marginBottom: 5
                                 }} onPress={() => {
-                                    i18n.changeLanguage(l.locale)
-                                    changeStorage("language", l.locale)
+                                    i18n.changeLanguage(l.code)
+                                    changeStorage("language", l.code)
                                 }}>
                                     <Avatar size={22} url={`${cdnbaseurl}/assets/icons/flags/${l.locale}.png`} />
                                     <Text>{l.language}</Text>
@@ -112,6 +132,13 @@ export default function AppScreen() {
                         )
                     }
                 </View>
+                <Text variant='labelLarge'>{t("settings.premium")} :</Text>
+                <Checkbox.Item
+                    disabled={advantages.translatePosts() ? false : true}
+                    label={t("settings.autotranslate")}
+                    status={premiumSettings?.auto_translate ? 'checked' : 'unchecked'}
+                    onPress={() => changeStorage("autotranslate", !premiumSettings?.auto_translate ? "true" : "false")}
+                />
             </ScrollView>
         </SettingsContainer>
     )

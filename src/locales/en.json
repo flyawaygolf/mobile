@@ -1,5 +1,6 @@
 {
     "commons": {
+        "app_restart_required": "An app restart is required to apply the changes.",
         "website": "Visit the website",
         "redirect_secondes": "Redirect in {{time}} seconds",
         "profile": "Profile",
@@ -219,9 +220,23 @@
         "register_verification_code": "Link verification: {{response}}"
     },
     "settings": {
-        "premium": "Premium",
-
         "app": "App customization",
+        
+        "theme": "Theme",
+        "dark_grey": "Dark grey",
+        "dark_green": "Dark / green",
+        "dark_pink": "Dark / pink",
+        "dark_blue": "Dark blue",
+        "dark": "Dark",
+        "white": "White",
+        "auto": "Automatic",
+
+        "language": "Language",
+        "language_theme": "Language & Theme",
+        
+        "premium": "Premium",
+        "autotranslate": "Auto-translate",
+
         "app_icons": "App Icons",
 
         "settings": "Settings",
@@ -259,18 +274,8 @@
         "language_spoken": "Languages spoken",
         "fees_charged": "Fees charged",
         "cancel_subscription": "Cancel the subscription",
-        "renew_subscription": "Renew the subscription",
-        "theme": "Theme",
-        "language": "Language",
-        "language_theme": "Language & Theme",
-        
-        "dark_grey": "Dark grey",
-        "dark_green": "Dark / green",
-        "dark_pink": "Dark / pink",
-        "dark_blue": "Dark blue",
-        "dark": "Dark",
-        "white": "White",
-        "auto": "Automatic"
+        "renew_subscription": "Renew the subscription"
+
     },
     "profile": {
         "subscribers": "Subscribers",

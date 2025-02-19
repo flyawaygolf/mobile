@@ -22,13 +22,13 @@ type providerProps = {
 const Providers = ({ children }: providerProps): JSX.Element => (
   <RealmProvider schema={[UserStoreRealmSchema]}>
     <Provider store={store}>
-    <StripeProvider
-      publishableKey={stripe_public_key ?? ""}
-      // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-      merchantIdentifier="merchant.com.flyawaygolf" // required for Apple Pay
-    >
-      {children}
-    </StripeProvider>
+      <StripeProvider
+        publishableKey={stripe_public_key ?? ""}
+        // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+        merchantIdentifier="merchant.com.flyawaygolf" // required for Apple Pay
+      >
+        {children}
+      </StripeProvider>
     </Provider>
   </RealmProvider>
 );
@@ -40,7 +40,7 @@ const App = () => {
       <BaseToast {...props} />
     ),
   };
-  
+
   return (
     <Providers>
       <ThemeContainer>

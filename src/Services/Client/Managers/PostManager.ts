@@ -6,12 +6,14 @@ import PostUserManager from './PostUserManager';
 class PostManager extends RequestEmitter {
   public user: PostUserManager;
   private cdnurl: string;
+  private translate: boolean;
 
   constructor(params: requestParams) {
     super(params);
 
     this.user = new PostUserManager(params);
     this.cdnurl = params?.cdnurl ?? cdnbaseurl;
+    this.translate = params?.autoTranslate ?? false;
   }
 
   public file(user_id: string, post_id: string, file_name: string) {
@@ -59,7 +61,13 @@ class PostManager extends RequestEmitter {
   }
 
   public async getPinPost(target_id: string, translateTo: string) {
-    const request = await this.getRequest(`/posts/${target_id}/pin?translateTo=${translateTo}`);
+    let _url = `/posts/${target_id}/pin`;
+    const parameters = [];
+
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
+    if(parameters.length > 0) _url = _url.concat("?")
+
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as PostInterface.pinedPostResponse;
 
     return response;
@@ -104,7 +112,7 @@ class PostManager extends RequestEmitter {
     let _url = `/posts/${target_id}/saves`;
     const parameters = [];
 
-    parameters.push(`translateTo=${translateTo}`);
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -124,8 +132,13 @@ class PostManager extends RequestEmitter {
   }
 
   public async fetchOne(post_id: string, translateTo: string) {
-    const request = await this.getRequest(`/posts/${post_id}?translateTo=${translateTo}`);
+    let _url = `/posts/${post_id}?`;
+    const parameters = [];
 
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
+    if(parameters.length > 0) _url = _url.concat("?")
+
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
     const response = request as PostInterface.fetchOnePost;
 
     return response;
@@ -136,7 +149,7 @@ class PostManager extends RequestEmitter {
     let _url = `/posts/${post_id}/comments`;
     const parameters = [];
 
-    parameters.push(`translateTo=${translateTo}`);
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -152,7 +165,7 @@ class PostManager extends RequestEmitter {
     let _url = `/posts/${post_id}/shares`;
     const parameters = [];
 
-    parameters.push(`translateTo=${translateTo}`);
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -168,7 +181,7 @@ class PostManager extends RequestEmitter {
     let _url = `/posts`;
     const parameters = []
 
-    parameters.push(`translateTo=${translateTo}`);
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
     if(params?.pagination_key) parameters.push(`pagination_key=${params.pagination_key}`);
     if(parameters.length > 0) _url = _url.concat("?")
 
@@ -183,7 +196,7 @@ class PostManager extends RequestEmitter {
 
     const parameters = []
 
-    parameters.push(`translateTo=${translateTo}`);
+    if(this.translate) parameters.push(`translateTo=${translateTo}`);
     if(params?.after) parameters.push(`after=${params.after.toString()}`);
     if(params?.before) parameters.push(`before=${params.before.toString()}`);
     if(params?.query) parameters.push(`query=${encodeURIComponent(params.query.toString())}`);

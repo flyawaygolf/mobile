@@ -76,15 +76,15 @@ function HomeSettingsScreen() {
       leftIcon: "account-cancel"
     },
     {
+      route: "AppScreen",
+      title: t("settings.app"),
+      leftIcon: "cellphone-cog"
+    },
+    {
       route: "SecurityScreen",
       title: t("settings.security"),
       leftIcon: "security"
     },
-    {
-      route: "AppScreen",
-      title: t("settings.app"),
-      leftIcon: "cellphone-cog"
-    }
   ]);
 
   return (
