@@ -375,7 +375,7 @@
         "no_ads_description": "Remove all advertisements"
     },
     "subscription": {
-        "ios_blocked": "You cannot upgrade to Premium in the app. We know, it's annoying...",
+        "ios_blocked": "You cannot upgrade to Premium in the app.",
 
         "fees": "Fees",
         "for_you": "For you",

@@ -347,8 +347,8 @@
     "premium": {
         "view_post_impressions_title": "Voir les impressions des posts",
         "view_post_impressions_description": "Voir le nombre d'impression sur tous les posts",
-        "heavier_files_title": "Téléchargez des fichiers plus volumineux",
-        "heavier_files_description": "Téléchargez des fichiers jusqu'à 512MB",
+        "heavier_files_title": "Envoyez des fichiers plus volumineux",
+        "heavier_files_description": "Envoyez des fichiers jusqu'à 512MB",
         "more_text_title": "Écrivez des posts plus longs", 
         "more_text_description": "Écrivez des posts jusqu'à 1024 caractères",
         "automatic_translate_title": "Traduction automatique",
@@ -373,7 +373,7 @@
         "no_ads_description": "Supprimez toutes les publicités"
     },
     "subscription": {
-        "ios_blocked": "Vous ne pouvez pas vous abonner à Premium dans l'application. On sait, c'est agaçant...",
+        "ios_blocked": "Vous ne pouvez pas vous abonner à Premium dans l'application.",
 
         "fees": "Frais",
         "for_you": "Pour vous",

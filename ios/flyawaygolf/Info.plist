@@ -40,7 +40,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>$(PRODUCT_NAME) need it to share audio in post or direct messages.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2021-2024, Trender Inc.,All Rights Reserved.</string>
+	<string>Copyright © 2021-2025, Trender Inc.,All Rights Reserved.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) need your location to provide personalized content based on your current location like user maps or posts location if you want to activate it.</string>
 	<key>NSCameraUsageDescription</key>
