@@ -53,12 +53,17 @@ function BottomStack({ navigation }: { navigation: navigationProps }) {
         if (navigation) return navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: nickname } })
     }
 
+    const navigateToMessage = (guild_id: string) => {
+        if (navigation) return navigation.navigate("MessagesStack", { screen: "MessageScreen", params: { guild_id: guild_id } })
+    }
+
     const redirectLink = (url: string | false) => {
         if (typeof url !== "string") return;
         if (url.startsWith("/posts")) return navigateToPost(url.split("/posts").slice(1)[0].replace("/", ""));
         if (url.startsWith("/golfs")) return navigateToGolf(url.split("/golfs").slice(1)[0].replace("/", ""));
         if (url.startsWith("/events")) return navigateToEvent(url.split("/events").slice(1)[0].replace("/", ""));
         if (url.startsWith("/users")) return navigateToProfile(url.split("/users").slice(1)[0].replace("/", ""));
+        if (url.startsWith("/messages")) return navigateToMessage(url.split("/messages").slice(1)[0].replace("/", ""));
         return;
     }
 

@@ -45,6 +45,7 @@
           <data android:pathPrefix="/users" />
           <data android:pathPrefix="/events" />
           <data android:pathPrefix="/posts" />
+          <data android:pathPrefix="/messages" />
         </intent-filter>
       </activity>
       <meta-data

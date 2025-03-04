@@ -13,6 +13,7 @@ export const golfurl = `${websiteurl}/golfs`;
 export const eventurl = `${websiteurl}/events`;
 export const profileurl = `${websiteurl}/users`;
 export const scorecardurl = `${websiteurl}/scorecards`;
+export const messageurl = `${websiteurl}/messages`;
 
 export const captchasiteKey = Config?.CAPTCHA_SITE_KEY ?? 'd53ab178-9eea-40c8-b02a-329a87904e70';
 export const stripe_public_key = Config?.STRIPE_PUBLIC_KEY ?? 'pk_live_51QpTDFREQUp6NEUldDLOMTHcosl0g6daUJ30iqgKbpL1mTgyJP5upYMQaKktdpoj7o05UKheD2ouSpsLOXIKYJc100ZFiZmsXE';

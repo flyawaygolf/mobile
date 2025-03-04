@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Share, View } from "react-native";
 import { Appbar, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,6 +9,7 @@ import { useClient, useTheme } from "../Container";
 import { guildI } from "../../Redux/guildList";
 import { navigationProps } from "../../Services";
 import { ShrinkEffect } from "../Effects";
+import { messageurl } from "../../Services/constante";
 
 type sectionProps = {
     params: guildI;
@@ -25,8 +26,15 @@ export default function MessageBoxHeader({ params }: sectionProps) {
         setUsers(users.filter(u => u.user_id !== user.user_id))
     }, [params])
 
+    const onShare = async () => {
+        await Share.share({
+            message: `${messageurl}/${params.guild_id}`,
+            url: `${messageurl}/${params.guild_id}`
+        });
+    }
+
     return (
-        <Appbar.Header style={{ width: full_width, flexDirection: "row", alignContent: "center", borderBottomColor: colors.bg_secondary, borderBottomWidth: 1 }}>
+        <Appbar.Header style={{ width: full_width, flexDirection: "row", alignContent: "center", justifyContent: "space-between", borderBottomColor: colors.bg_secondary, borderBottomWidth: 1 }}>
             <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
             <ShrinkEffect
                 onPress={() =>
@@ -40,6 +48,9 @@ export default function MessageBoxHeader({ params }: sectionProps) {
                     {params.type === 0 && <Text style={{ fontSize: 12, fontWeight: '700', marginLeft: 5 }}>{`@${users[0].nickname}`}</Text>}
                 </View>
             </ShrinkEffect>
+            <View style={{ flexDirection: "row" }}>
+                <Appbar.Action icon="share-variant" onPress={() => onShare()} />
+            </View>
         </Appbar.Header>
     )
 }
