@@ -30,6 +30,17 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <intent-filter android:autoVerify="true">
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+
+          <!-- Schéma et hôte -->
+          <data android:scheme="https" android:host="www.flyawaygolf.com" />
+          <data android:scheme="https" android:host="flyawaygolf.com" />
+          <data android:scheme="http" android:host="www.flyawaygolf.com" />
+          <data android:scheme="http" android:host="flyawaygolf.com" />
+        </intent-filter>
       </activity>
       <meta-data
           android:hardwareAccelerated="true"

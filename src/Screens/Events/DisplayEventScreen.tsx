@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Platform, ScrollView, View } from 'react-native';
+import { ImageBackground, Platform, ScrollView, Share, View } from 'react-native';
 import { useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -14,7 +14,7 @@ import { handleToast, messageFormatDate, navigationProps } from '../../Services'
 import { full_height, full_width } from '../../Style/style';
 import { Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
-import { cdnbaseurl } from '../../Services/constante';
+import { cdnbaseurl, websiteurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
 import { Avatar } from '../../Components/Member';
 import { displayHCP } from '../../Services/handicapNumbers';
@@ -64,6 +64,12 @@ export default function DisplayEventScreen({ route }: any) {
     getInfo()
   }, [event_id])
 
+  const onShare = async () => {
+    await Share.share({
+      message: `${websiteurl}/${eventInfo?.event_id}`,
+      url: `${websiteurl}/${eventInfo?.event_id}`
+    });
+  }
 
   const addEvent = async () => {
     /**
@@ -140,7 +146,10 @@ export default function DisplayEventScreen({ route }: any) {
             <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
             {
               eventInfo.joined && (
+                <>
+                <IconButton mode='contained' icon="share-variant" onPress={() => onShare()} />
                 <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
+                </>
               )
             }
           </View>

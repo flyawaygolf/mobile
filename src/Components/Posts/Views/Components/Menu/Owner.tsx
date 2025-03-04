@@ -11,6 +11,8 @@ import { useClient, useTheme } from "../../../../Container";
 import { deleteProfileTrends } from "../../../../../Redux/profileFeed/action";
 import { deleteMainTrends } from "../../../../../Redux/mainFeed/action";
 import { navigationProps } from "../../../../../Services/navigationProps";
+import { posturl } from "../../../../../Services/constante";
+import { Share } from "react-native";
 
 type SectionProps = {
     modalVisible: boolean,
@@ -66,6 +68,13 @@ function Owner({ modalVisible, setModalVisible, pined, post_id }: SectionProps) 
         setModalVisible(false)
     }
 
+    const onShare = async () => {
+        await Share.share({
+            message: `${posturl}/${post_id}`,
+            url: `${posturl}/${post_id}`
+        });
+    }
+
     return (
         <>
             <Portal>
@@ -81,12 +90,8 @@ function Owner({ modalVisible, setModalVisible, pined, post_id }: SectionProps) 
                 </Dialog>
             </Portal>
             <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
-                    {
-                        /**
-                         *                 <Button uppercase onPress={() => onShare()} icon="share-variant">{t("posts.share")}</Button>
+                <Button uppercase onPress={() => onShare()} icon="share-variant">{t("posts.share")}</Button>
                 <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-                         */
-                    }
                 <Button uppercase onPress={() => copyPostID()} icon="content-copy">{t("posts.copy_post_id")}</Button>
                 <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
                 <Button uppercase onPress={() => {
@@ -94,8 +99,8 @@ function Owner({ modalVisible, setModalVisible, pined, post_id }: SectionProps) 
                     setModalVisible(false)
                 }} icon="trash-can-outline">{t("posts.delete")}</Button>
                 <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-                { pined && pined === post_id && <Button uppercase onPress={() => unPinPost()} icon="pin-off-outline">{t("posts.unpin")}</Button> }
-                { !pined || pined !== post_id ? <Button uppercase onPress={() => pinPost()} icon="pin-outline">{t("posts.pin")}</Button> : null }
+                {pined && pined === post_id && <Button uppercase onPress={() => unPinPost()} icon="pin-off-outline">{t("posts.unpin")}</Button>}
+                {!pined || pined !== post_id ? <Button uppercase onPress={() => pinPost()} icon="pin-outline">{t("posts.pin")}</Button> : null}
                 <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
                 <Button uppercase textColor={colors.warning_color} onPress={() => setModalVisible(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
             </BottomModal>

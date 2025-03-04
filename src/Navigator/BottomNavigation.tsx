@@ -11,12 +11,14 @@ import HomeScreen from '../Screens/Home/HomeScreen';
 import { RootState, useAppDispatch, useAppSelector } from '../Redux';
 import { initNotificationFeed } from '../Redux/NotificationFeed/action';
 import { EventsScreen } from '../Screens/Events';
+import { Linking } from 'react-native';
+import { navigationProps, parseURL } from '../Services';
 
 export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen";
 
 const Tab = createBottomTabNavigator();
 
-function BottomStack() {
+function BottomStack({ navigation }: { navigation: navigationProps }) {
 
     const { colors } = useTheme();
     const { client } = useClient();
@@ -35,7 +37,43 @@ function BottomStack() {
     const countNotifications = () => notifications.length > 0 ? notifications.filter(n => (n?.read ?? true) === false).length : undefined;
     const countUnreadsDM = () => guilds.length > 0 ? guilds.filter(g => (g?.unread ?? false) === true).length : undefined;
 
+    const regex = new RegExp(/^\/[a-zA-Z0-9]+$/);
+
+    const navigateToPost = (post_id: string) => {
+        if (navigation) return navigation.navigate("PostsStack", { screen: "PostScreen", params: { post_id: post_id } })
+    }
+
+    const navigateToGolf = (golf_id: string) => {
+        if (navigation) return navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: golf_id } })
+    }
+
+    const navigateToEvent = (event_id: string) => {
+        if (navigation) return navigation.navigate("EventStack", { screen: "DisplayEventScreen", params: { event_id: event_id } })
+    }
+
+    const navigateToProfile = (nickname: string) => {
+        if (navigation) return navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: nickname } })
+    }
+
+    const redirectLink = (url: string | false) => {
+        if (typeof url !== "string") return;
+        if (url.startsWith("/posts")) return navigateToPost(url.split("/posts").slice(1)[0].replace("/", ""));
+        if (url.startsWith("/golfs")) return navigateToGolf(url.split("/golfs").slice(1)[0].replace("/", ""));
+        if (url.startsWith("/events")) return navigateToEvent(url.split("/events").slice(1)[0].replace("/", ""));
+        if (regex.test(url)) return navigateToProfile(url.replace("/", ""));
+        return;
+    }
+
+    const getUrlAsync = async () => {
+        const initialUrl = await Linking.getInitialURL();
+        if (!initialUrl) return;
+        const param = parseURL(initialUrl);
+        return redirectLink(param);
+    };
+
     useEffect(() => {
+        getUrlAsync();
+        Linking.addEventListener("url", ({ url }) => redirectLink(parseURL(url)));
         notificationList()
     }, [])
 

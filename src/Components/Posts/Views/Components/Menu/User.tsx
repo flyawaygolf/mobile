@@ -7,6 +7,8 @@ import { BottomModal } from "../../../../../Other";
 import { useClient, useTheme } from "../../../../Container";
 import { Button, Divider } from "react-native-paper";
 import { SinglePostContext } from "../../../PostContext";
+import { Share } from "react-native";
+import { posturl } from "../../../../../Services/constante";
 
 type SectionProps = {
     modalVisible: boolean,
@@ -40,16 +42,23 @@ function User({ modalVisible, setModalVisible }: SectionProps) {
         setModalVisible()
     }
 
+    const onShare = async () => {
+        await Share.share({
+            message: `${posturl}/${info.post_id}`,
+            url: `${posturl}/${info.post_id}`
+        });
+    }
+
     return (
         <BottomModal onSwipeComplete={() => setModalVisible()} dismiss={() => setModalVisible()} isVisible={modalVisible}>
             {
                 /**
                  * <Button uppercase onPress={() => download()} icon="download">{t("commons.download")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-            <Button uppercase onPress={() => onShare()} icon="share-variant">{t("posts.share")}</Button>
-            <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
                  */
             }
+            <Button uppercase onPress={() => onShare()} icon="share-variant">{t("posts.share")}</Button>
+            <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
             <Button uppercase onPress={() => copyPostID()} icon="content-copy">{t("posts.copy_post_id")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
             <Button uppercase onPress={() => report()} icon="shield-alert-outline">{t("commons.report")}</Button>

@@ -33,6 +33,8 @@ function PostScreen({ route }: any) {
     }
 
     useEffect(() => {
+        console.log(post_id);
+        
         getData()
     }, [post_id])
     

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Alert, Animated, StyleSheet, View } from "react-native";
+import { Alert, Animated, Share, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, Text, Tooltip } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import Clipboard from "@react-native-clipboard/clipboard";
 
 import { handleToast, navigationProps } from "../../Services";
 import { useClient, useProfile, useTheme } from "../Container";
+import { websiteurl } from '../../Services/constante';
 
 type ProfileHeaderProps = {
     navigation: navigationProps;
@@ -18,11 +18,6 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
     const { user_info, setUserInfo } = useProfile();
     const { colors } = useTheme();
     const { t } = useTranslation();
-
-    const copyUserID = () => {
-        Clipboard.setString(user_info.user_id);
-        handleToast(t("commons.success"))
-    }
 
     const report = async () => {
         Alert.alert(t("profile.report_alert_title", { username: user_info.username }), t("profile.report_alert_description"), [{
@@ -70,6 +65,13 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
         handleToast(t("commons.success"))
     };
 
+    const onShare = async () => {
+        await Share.share({
+            message: `${websiteurl}/${user_info.nickname}`,
+            url: `${websiteurl}/${user_info.nickname}`
+        });
+    }
+
     return (
         <View>
             {
@@ -99,9 +101,15 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                                                                 )
                                                             }
                                                         </Tooltip>
-                                                        <Tooltip title={t("profile.copy_id")}>
-                                                            <IconButton style={{ margin: 0 }} icon={"content-copy"} onPress={() => copyUserID()} />
-                                                        </Tooltip>
+                                                    </>
+                                                )
+                                            }
+                                            <Tooltip title={t("profile.share")}>
+                                                <IconButton style={{ margin: 0 }} icon={"share-variant"} onPress={() => onShare()} />
+                                            </Tooltip>
+                                            {
+                                                user.user_id !== user_info.user_id && (
+                                                    <>
                                                         <Tooltip title={t("profile.block")}>
                                                             <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
                                                         </Tooltip>

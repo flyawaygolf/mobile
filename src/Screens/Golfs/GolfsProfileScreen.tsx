@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Image, Platform, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Platform, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Avatar, Button, Card, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,7 @@ import { SafeBottomContainer, useClient, useTheme } from '../../Components/Conta
 import { full_width } from '../../Style/style';
 import { formatDistance, GolfsStackParams, handleToast, navigationProps } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';
-import { cdnbaseurl } from '../../Services/constante';
+import { cdnbaseurl, websiteurl } from '../../Services/constante';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { Loader } from '../../Other';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
@@ -89,6 +89,13 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         }
     };
 
+    const onShare = async () => {
+        await Share.share({
+            message: `${websiteurl}/golfs/${golfInfo.golf_id}`,
+            url: `${websiteurl}/golfs/${golfInfo.golf_id}`
+        });
+    }
+
     const getGolfUsers = async (refresh: boolean = false) => {
         if (loading) return;
         if (refresh) {
@@ -102,7 +109,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         if (response.error) return handleToast(t(`errors.${response.error.code}`));
         if (!response.data) return;
         if (response.pagination_key) setUsersPaginationKey(response.pagination_key);
-        if(refresh) setUsers(response.data);
+        if (refresh) setUsers(response.data);
         else setUsers([...users, ...response.data]);
     };
 
@@ -119,7 +126,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         if (response.error) return handleToast(t(`errors.${response.error.code}`));
         if (!response.data) return;
         if (response.pagination_key) setCommunityPostsPaginationKey(response.pagination_key);
-        if(refresh) setCommunityPosts(response.data);
+        if (refresh) setCommunityPosts(response.data);
         else setCommunityPosts([...community_posts, ...response.data]);
     };
 
@@ -136,7 +143,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         if (response.error) return handleToast(t(`errors.${response.error.code}`));
         if (!response.data) return;
         if (response.pagination_key) setEventsPaginationKey(response.pagination_key);
-        if(refresh) setEvents(response.data);
+        if (refresh) setEvents(response.data);
         else setEvents([...events, ...response.data]);
     };
 
@@ -246,18 +253,9 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                     <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
                     <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{golfInfo ? golfInfo.name : "..."}</Text>
                 </View>
-                {
-                    /**
-                     *                 <View style={{ flexDirection: "row" }}>
-                    <Appbar.Action icon="map-marker" onPress={() => navigation.navigate("GolfsStack", {
-                        screen: "LittleMapScreen",
-                        params: {
-                            initial_location: golfInfo.location
-                        }
-                    })} />
+                <View style={{ flexDirection: "row" }}>
+                    <Appbar.Action icon="share-variant" onPress={() => onShare()} />
                 </View>
-                     */
-                }
             </Appbar.Header>
             {
                 golfInfo.golf_id ? activeTab === "users" ? (
