@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, TouchableRipple, Icon } from 'react-native-paper';
+import { BottomNavigation, TouchableRipple, Icon, Text } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { GuildListSreen, MapScreen } from '../Screens';
 import { useClient, useTheme } from '../Components/Container';
 import HomeScreen from '../Screens/Home/HomeScreen';
 import { RootState, useAppDispatch, useAppSelector } from '../Redux';
 import { initNotificationFeed } from '../Redux/NotificationFeed/action';
-import { connect } from 'react-redux';
 import { EventsScreen } from '../Screens/Events';
 
 export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen";
@@ -19,6 +20,7 @@ function BottomStack() {
 
     const { colors } = useTheme();
     const { client } = useClient();
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const notifications = useAppSelector((state) => state.notificationFeed);
     const guilds = useAppSelector((state) => state.guildListFeed);
@@ -41,11 +43,12 @@ function BottomStack() {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
+                // animation: "shift"
             }}
             initialRouteName="HomeScreen"
             tabBar={({ navigation, state, descriptors, insets }) => (
                 <BottomNavigation.Bar
-                    labeled={false}
+                    labeled={true}
                     style={{
                         borderTopColor: colors.bg_secondary,
                         borderTopWidth: 1,
@@ -75,6 +78,20 @@ function BottomStack() {
                         }
                         return null;
                     }}
+                    renderLabel={({ route, color }) => {
+                        const { options } = descriptors[route.key];
+                        return options.title ? (
+                            <Text
+                                style={{
+                                    color,
+                                    fontSize: 12,
+                                    textAlign: 'center',
+                                }}
+                            >
+                                {options.title}
+                            </Text>
+                        ) : null;
+                    }}
                     getBadge={({ route }) => {
                         const { options } = descriptors[route.key];
                         if (options.tabBarBadge) {
@@ -96,11 +113,37 @@ function BottomStack() {
                     tabBarIcon: ({ color, size, focused }) => {
                         return <Icon source={focused ? "home" : "home-outline"} size={size} color={color} />;
                     },
+                    title: t("bottom.home"),
                     tabBarBadgeStyle: {
                         color: colors.text_normal,
                         backgroundColor: colors.badge_color,
                     },
                     tabBarBadge: countNotifications()
+                }}
+            />
+            {
+                /**
+                 *             <Tab.Screen
+                name="ScorecardHomeScreen"
+                component={ScorecardHomeScreen}
+                options={{
+                    tabBarIcon: ({ color, size, focused }) => {
+                        return <Icon source={focused ? "golf-tee" : "golf-tee"} size={size} color={color} />;
+                    },
+                    title: t("bottom.games")
+                }}
+            />
+                 */
+            }
+            <Tab.Screen
+                name="MapScreen"
+                component={MapScreen}
+                options={{
+                    tabBarIcon: ({ color, size, focused }) => {
+                        return <Icon source={focused ? "map-marker" : "map-marker-outline"} size={size} color={color} />;
+                    },
+                    tabBarButton: () => { return null; },
+                    title: t("bottom.map")
                 }}
             />
             <Tab.Screen
@@ -110,15 +153,7 @@ function BottomStack() {
                     tabBarIcon: ({ color, size, focused }) => {
                         return <Icon source={focused ? "calendar-month" : "calendar-month-outline"} size={size} color={color} />;
                     },
-                }}
-            />
-            <Tab.Screen
-                name="MapScreen"
-                component={MapScreen}
-                options={{
-                    tabBarIcon: ({ color, size, focused }) => {
-                        return <Icon source={focused ? "map-marker" : "map-marker-outline"} size={size} color={color} />;
-                    },
+                    title: t("bottom.events")
                 }}
             />
             <Tab.Screen
@@ -132,7 +167,8 @@ function BottomStack() {
                         color: colors.text_normal,
                         backgroundColor: colors.badge_color
                     },
-                    tabBarBadge: countUnreadsDM()
+                    tabBarBadge: countUnreadsDM(),
+                    title: t("bottom.messages")
                 }}
             />
             {

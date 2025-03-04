@@ -11,9 +11,14 @@ export const getCurrentLocation = async (): Promise<GeolocationResponse | false>
                     // Retourner la localisation via "resolve"
                     resolve(pos);
                 },
-                (err) => {
+                (err) => {                    
                     // Rejeter la promesse en cas d'erreur
                     reject(err);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 10000
                 }
             );
         });

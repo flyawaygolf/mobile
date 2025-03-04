@@ -14,11 +14,12 @@ import { addGuildList } from '../../Redux/guildList/action';
 import { RootState } from '../../Redux';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { getCurrentLocation, handleToast, navigationProps } from '../../Services';
+import { locationType } from '../../Components/Container/Client/ClientContext';
 
 const CreateGuildScreen = () => {
 
     const { colors } = useTheme();
-    const { client } = useClient();
+    const { client, location: initLocation } = useClient();
     const { t } = useTranslation();
     const navigation = useNavigation<navigationProps>()
     const [selected, setSelected] = useState<userInfo[]>([]);
@@ -26,12 +27,7 @@ const CreateGuildScreen = () => {
     const [list, setList] = useState<userInfo[]>([]);
     const [text, setText] = useState("");
     const [loading, setLoader] = useState(false);
-    const [location, setLocation] = useState<{
-        latitude: number,
-        longitude: number,
-        latitudeDelta: number,
-        longitudeDelta: number,
-    } | undefined>(undefined);
+    const [location, setLocation] = useState<locationType>(initLocation);
 
     const getCurrentPosition = async () => {
         try {

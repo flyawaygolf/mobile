@@ -14,6 +14,7 @@ const defaultInfo: SinglePostInfoType = {
     hashtags: [],
     created_at: "",
     from: {
+        premium_type: 0,
         user_id: "",
         nickname: "",
         username: "",

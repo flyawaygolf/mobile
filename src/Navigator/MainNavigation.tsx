@@ -11,6 +11,7 @@ import CreateStack from "./CreateStack";
 import FavoritesScreen from "../Screens/FavoritesScreen";
 import { NotificationScreen } from "../Screens/Notifications";
 import EventStack from "./EventStack";
+import ScorecardStack from "./ScorecardStack";
 
 const Stack = createStackNavigator();
 
@@ -26,8 +27,37 @@ export default function MainNavigation(): JSX.Element {
     { name: "CreateStack", screen: CreateStack },
     { name: "EventStack", screen: EventStack },
     { name: "FavoritesScreen", screen: FavoritesScreen },
-    { name: "NotificationsScreen", screen: NotificationScreen }
+    { name: "NotificationsScreen", screen: NotificationScreen },
+    { name: "ScorecardStack", screen: ScorecardStack }
   ])
+
+  /*const navigateToPost = (post_id: string) => {
+    if (navigation) return navigation.navigate("PostStack", { screen: "PostScreen", params: { post_id: post_id } })
+  }
+
+  const navigateToProfile = (nickname: string) => {
+    if (navigation) return navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: nickname } })
+  }
+
+  const redirectLink = (url: string | false) => {
+    if (typeof url !== "string") return;
+    if (url.startsWith("/trends")) return navigateToPost(url.split("/trends").slice(1)[0].replace("/", ""));
+    if (regex.test(url)) return navigateToProfile(url.replace("/", ""));
+    return;
+}
+
+  const getUrlAsync = async () => {
+    const initialUrl = await Linking.getInitialURL();
+    if (!initialUrl) return;
+    const param = parseURL(initialUrl);
+    return redirectLink(param);
+  };
+
+  useEffect(() => {
+    bootstrap();
+    getUrlAsync();
+    Linking.addEventListener("url", ({ url }) =>  redirectLink(parseURL(url)));
+  }, [])*/
 
   return (
     <Stack.Navigator initialRouteName="BottomNavigation" screenOptions={{ headerShown: false }}>

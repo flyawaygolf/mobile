@@ -1,66 +1,20 @@
-import { useEffect, useState } from "react";
 import { Appbar } from "react-native-paper";
 import { ScreenContainer, useTheme } from "../../Components/Container";
-import { getCurrentLocation, handleToast, navigationProps } from "../../Services";
+import { navigationProps } from "../../Services";
 import { useTranslation } from "react-i18next";
 import CustomHeader from "../../Components/Header/CustomHeader";
 import { useNavigation } from "@react-navigation/native";
-import NearbyEventList from "../../Components/Events/NearbyEventList";
-import { Loader } from "../../Other";
-import { ScrollView } from "react-native";
-import RecentEventsList from "../../Components/Events/RecentEventsList";
-import PrivateEvents from "../../Components/Events/PrivateEvents";
-
-type LocationType = {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number,
-}
+import EventsNavigator from "./EventsNavigator";
 
 export default function EventsScreen() {
     const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [location, setLocation] = useState<LocationType | undefined>(undefined);
-
-    const start = async () => {
-        setLoading(true);
-        try {
-            const position = await getCurrentLocation();
-            if (position) {
-                const crd = position.coords;
-                const init_location = {
-                    latitude: crd.latitude,
-                    longitude: crd.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }
-                setLoading(false);
-                setLocation(init_location);
-            }
-        } catch (error) {
-            setLoading(false);
-            handleToast(JSON.stringify(error))
-        }
-    }
-
-    useEffect(() => {
-        start();
-    }, [])
-
     return (
         <ScreenContainer>
             <CustomHeader title={t("events.header_title")} isHome leftComponent={<Appbar.Action color={colors.text_normal} icon="calendar-edit" onPress={() => navigation.navigate("EventStack", { screen: "CreateEventScreen" })} />} />
-            <ScrollView style={{ padding: 10 }}>
-                <PrivateEvents />
-                <RecentEventsList />
-                {
-                    loading ? <Loader /> : location && <NearbyEventList {...location} />
-                }
-            </ScrollView>
+            <EventsNavigator />
         </ScreenContainer>
     )
 }

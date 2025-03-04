@@ -16,16 +16,10 @@ import { displayHCP } from '../../Services/handicapNumbers';
 import { Br } from '../../Components/Text';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { Avatar, DisplayMember } from '../../Components/Member';
-
-type LocationType = {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number,
-}
+import { locationType } from '../../Components/Container/Client/ClientContext';
 
 export default function CreateEventScreen() {
-    const { client, user } = useClient();
+    const { client, user, location: initLocation } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
@@ -47,12 +41,7 @@ export default function CreateEventScreen() {
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
     const [golfModalVisible, setGolfModalVisible] = useState(false);
     const [searchGolf, setSearchGolf] = useState("");
-    const [location, setLocation] = useState<LocationType>({
-        latitude: user.golf_info.location[1] ?? 48.864716,
-        longitude: user.golf_info.location[0] ?? 2.349014,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
-    });
+    const [location, setLocation] = useState<locationType>(initLocation);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
 
     const [startDate, setStartDate] = useState<Date>(new Date());

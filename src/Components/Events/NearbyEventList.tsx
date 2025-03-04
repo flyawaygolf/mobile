@@ -1,39 +1,34 @@
 import { FlatList } from "react-native-gesture-handler";
-import { handleToast } from "../../Services";
+import { getCurrentLocation, handleToast } from "../../Services";
 import { useClient, useTheme } from "../Container";
 import { useTranslation } from "react-i18next";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
 import { useCallback, useEffect, useState } from "react";
 import EventCard from "./EventCard";
-import { RefreshControl, View } from "react-native";
+import { RefreshControl } from "react-native";
 import { Loader } from "../../Other";
 import { Text } from "react-native-paper";
+import { locationType } from "../Container/Client/ClientContext";
 
-type SectionProps = {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number,
-}
-
-export default function NearbyEventList({ latitude, longitude }: SectionProps) {
-    const { client } = useClient();
+export default function NearbyEventList() {
+    const { client, location: initLocation } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const [loading, setLoading] = useState(true);
     const [loaderF, setLoaderF] = useState(false);
     const [events, setEvents] = useState<eventsInterface[]>([]);
+    const [location, setLocation] = useState<locationType>(initLocation);
 
     async function getData(refresh: boolean = false) {
-        setLoading(true)
+        if (loaderF) return;
         if (refresh) {
+            setLoading(true)
             setLoaderF(true)
-            if (loaderF) return;
         }
         const response = await client.search.map.events({
-            lat: latitude,
-            long: longitude,
-            max_distance: 100000
+            lat: location.latitude,
+            long: location.longitude,
+            max_distance: 100
         });
         if (refresh) setLoaderF(false)
         setLoading(false)
@@ -42,7 +37,22 @@ export default function NearbyEventList({ latitude, longitude }: SectionProps) {
     }
 
     async function start() {
-        getData()
+        try {
+            const position = await getCurrentLocation();
+            if (position) {
+                const crd = position.coords;
+                const init_location = {
+                    latitude: crd.latitude,
+                    longitude: crd.longitude,
+                    latitudeDelta: 0.5,
+                    longitudeDelta: 0.5,
+                }
+                setLocation(init_location);
+            }
+            await getData();
+        } catch (error) {
+            await getData();
+        }
     }
 
     useEffect(() => {
@@ -50,29 +60,23 @@ export default function NearbyEventList({ latitude, longitude }: SectionProps) {
     }, [])
 
     const renderItem = useCallback(({ item }: { item: eventsInterface }) => (
-        <EventCard event={item} />
+        <EventCard full_width event={item} />
     ), [events]);
 
     return (
-        <View>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <Text variant="headlineSmall">{t("events.nearby_you")}</Text>
-            </View>
-            <FlatList
-                horizontal
-                ListFooterComponent={loading ? <Loader /> : undefined}
-                refreshControl={<RefreshControl
-                    refreshing={loaderF}
-                    progressBackgroundColor={colors.bg_primary}
-                    tintColor={colors.fa_primary}
-                    colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
-                    onRefresh={() => getData(true)} />}
-                ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_events_nearby_you")}</Text>}
-                initialNumToRender={20}
-                data={events}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.event_id}
-            />
-        </View>
+        <FlatList
+            ListFooterComponent={loading ? <Loader /> : undefined}
+            refreshControl={<RefreshControl
+                refreshing={loaderF}
+                progressBackgroundColor={colors.bg_primary}
+                tintColor={colors.fa_primary}
+                colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
+                onRefresh={() => getData(true)} />}
+            ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_events_nearby_you")}</Text>}
+            initialNumToRender={20}
+            data={events}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.event_id}
+        />
     )
 }

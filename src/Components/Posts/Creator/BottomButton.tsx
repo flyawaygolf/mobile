@@ -12,6 +12,7 @@ import { BottomModal } from "../../../Other";
 import { SearchBar } from "../../Elements/Input";
 import { DisplayGolfs } from "../../Golfs";
 import { getCurrentLocation, handleToast } from "../../../Services";
+import { locationType } from "../../Container/Client/ClientContext";
 
 type PropsType = {
     addFiles: (target: "photo" | "video") => any,
@@ -22,22 +23,15 @@ type PropsType = {
     maxLength: number;
 }
 
-type LocationType = {
-    latitude: number,
-    longitude: number,
-    latitudeDelta: number,
-    longitudeDelta: number,
-}
-
 function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLength, setOptions, options }: PropsType) {
 
-    const { client } = useClient();
+    const { client, location: initLocation } = useClient();
     const { colors } = useTheme();
     const { t } = useTranslation();
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
     const [golfModalVisible, setGolfModalVisible] = useState(false);
     const [searchGolf, setSearchGolf] = useState("");
-    const [location, setLocation] = useState<LocationType | undefined>(undefined);
+    const [location, setLocation] = useState<locationType>(initLocation);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
 
     const searchMap = async (latitude: number, longitude: number) => {

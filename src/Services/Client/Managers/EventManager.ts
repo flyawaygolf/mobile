@@ -72,6 +72,25 @@ class EventManager extends RequestEmitter {
     return response;
   }
 
+  public async joined(options?: {
+    pagination?: GlobalInterface.paginationParams;
+    limit?: number;
+  }) {
+    let _url = `/events/joined`;
+    const parameters = []
+
+    if (options?.pagination) {
+      const { pagination_key, limit } = options.pagination;
+      if (pagination_key) parameters.push(`pagination_key=${pagination_key}`);
+      if (limit) parameters.push(`limit=${limit}`);
+    }
+    if (parameters.length > 0) _url = _url.concat("?");
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
+    const response = request as EventInterface.multipleEventsResponse;
+
+    return response;
+  }
+
   public async join(event_id: string) {
     const request = await this.postRequest(`/events/${event_id}/join`);
     const response = request as GlobalInterface.successResponse;

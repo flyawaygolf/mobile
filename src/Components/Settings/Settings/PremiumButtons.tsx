@@ -18,7 +18,7 @@ type SectionProps = {
     };
 }
 
-function PremiumButtons({ title, description, onPress, soon, leftIcon, disable, colors: color }: SectionProps) {
+function PremiumButtons({ title, description, soon, leftIcon, disable, colors: color }: SectionProps) {
 
     const { colors } = useTheme();
 

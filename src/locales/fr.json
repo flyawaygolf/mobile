@@ -1,4 +1,11 @@
 {
+    "bottom": {
+        "home": "Accueil",
+        "games": "Parties",
+        "map": "Carte",
+        "events": "Événements",
+        "messages": "Messages"
+    },
     "commons": {
         "app_restart_required": "Redémarrage de l'application requis",
         "website": "Visiter le site web",
@@ -103,6 +110,7 @@
         "max_participants": "Nombre maximum de participants (2 à 250)",
         "create_event": "Créer un événement",
         "event": "Événement",
+        "joined": "Rejoint",
         "join": "Rejoindre",
         "leave": "Quitter",
         "nearby_you": "A proximité de chez vous",
@@ -120,6 +128,9 @@
         "owner": "Propriétaire",
         "delete": "Supprimer",
 
+        "no_joined_events": "Aucun événement rejoint pour le moment; créer ou rejoindre un événement pour le voir ici",
+        "from": "A partir de",
+        "per_person": "par personne",
         "dates": "Dates",
         "general_info": "Informations générales",
         "handicap": "Handicap",
@@ -128,6 +139,7 @@
         "select_max_handicap": "Handicap maximum : {{hcp}}",
         "greenfee": "Green fee",
         "private": "Privé",
+        "privates": "Privés",
         "select_players": "Sélectionner des joueurs",
         "search_players": "Rechercher des joueurs"
     },

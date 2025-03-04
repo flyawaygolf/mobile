@@ -137,7 +137,7 @@ const DisplayPosts: SectionProps = ({
                     {informations.categories && informations.categories.length > 0 && <View style={[styles.row, { marginTop: -5, marginLeft: 5 }]}>{informations.categories.map((c, idx) => <CategoriesBox key={idx} c={c} />)}</View>}
                     <PostNormal maxLines={comments ? undefined : 5} />
                 </TouchableOpacity>
-                {informations.shared_post_id && !is_share && (
+                {informations.shared_post && !is_share && (
                     <View style={{ margin: 10, borderColor: colors.bg_primary, borderWidth: 1, borderRadius: 8 }}>
                         {informations.shared_post ? (
                             <DisplayPosts is_share={true} informations={{

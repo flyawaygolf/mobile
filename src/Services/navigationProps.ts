@@ -12,6 +12,7 @@ import { SinglePostInfoType } from '../Components/Posts/PostContext';
 import { BottomStackScreens } from '../Navigator/BottomNavigation';
 import { EventStackScreens } from '../Navigator/EventStack';
 import { SubscriptionInterface } from './Client/Managers/Interfaces';
+import { ScorecardStackScreens } from '../Navigator/ScorecardStack';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -49,8 +50,19 @@ export type GolfsStackParams = {
     };
 }
 
+export type ScorecardStackParams = {
+    ScorecardHomeScreen: undefined;
+    ScorecardCreateScreen: {
+        golf_id: string;
+    };
+}
+
 export type RootStackParamList = {
     DrawerNavigation: undefined;
+    ScorecardStack: {
+        screen: ScorecardStackScreens;
+        params?: object;
+    };
     ProfileStack: {
         screen: ProfileStackScreens,
         params?: {

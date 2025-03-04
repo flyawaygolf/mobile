@@ -14,13 +14,7 @@ import { SearchBar } from '../Components/Elements/Input';
 import { FadeInFromTop, ShrinkEffect } from '../Components/Effects';
 import { golfInterface } from '../Services/Client/Managers/Interfaces/Search';
 import SearchMapModal from '../Components/Map/SearchMapModal';
-
-type LocationType = {
-  latitude: number,
-  longitude: number,
-  latitudeDelta: number,
-  longitudeDelta: number,
-}
+import { locationType } from '../Components/Container/Client/ClientContext';
 
 type searchChipsType = {
   icon: string;
@@ -32,22 +26,18 @@ type FilterType = "golfs" | "all" | "users" | "pro" | "events"
 
 const MapScreen = () => {
   const { theme, colors } = useTheme();
-  const { client, user } = useClient();
+  const { client, user, setValue, location: initLocation } = useClient();
+  const allClient = useClient();
   const navigation = useNavigation<navigationProps>();
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
-  const [location, setLocation] = useState<LocationType>({
-    latitude: user.golf_info.location[1] ?? 48.864716,
-    longitude: user.golf_info.location[0] ?? 2.349014,
-    latitudeDelta: 0.5,
-    longitudeDelta: 0.5,
-  });
+  const [location, setLocation] = useState<locationType>(initLocation);
   const { top } = useSafeAreaInsets();
   const [query, setQuery] = useState<string>("");
   const [queryResult, setQueryResult] = useState<(userInfo | golfInterface)[]>([]);
   const [queryFilter, setQueryFilter] = useState<FilterType>("all");
   const [filter, setFilter] = useState<FilterType>("all");
-  const [searchLocation, setSearchLocation] = useState<LocationType & { width?: number, heigth?: number } | undefined>(undefined);
+  const [searchLocation, setSearchLocation] = useState<locationType & { width?: number, heigth?: number } | undefined>(undefined);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [users, setUsers] = useState<userInfo[]>([]);
   const [golfs, setGolfs] = useState<golfInterface[]>([]);
@@ -114,6 +104,7 @@ const MapScreen = () => {
   const updateUserLocation = async (long = location?.longitude, lat = location?.latitude, toast = true) => {
     const request = await client.user.editLocation([long ?? 48.864716, lat ?? 2.349014]);
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
+    setValue({ ...allClient, user: { ...user, golf_info: { ...user.golf_info, location: [long, lat ] }}});
     return toast && handleToast(t(`commons.success`));
   }
 
@@ -137,7 +128,7 @@ const MapScreen = () => {
     return setUsers(request.data.users.items);
   }
 
-  function calculateMapSize(region: LocationType) {
+  function calculateMapSize(region: locationType) {
     const { latitude, latitudeDelta, longitudeDelta } = region;
 
     // Conversion des degrés en radians

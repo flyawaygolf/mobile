@@ -20,8 +20,8 @@ interface Styles {
   bullet: TextStyle;
 }
 
-const RE_MENTIONS = /@[A-z0-9]{1,33}/gi;
-const RE_TWEMOJI = /:(\w+):/gi;
+/*const RE_MENTIONS = /@[A-z0-9]{1,33}/gi;
+const RE_TWEMOJI = /:(\w+):/gi;*/
 // const RE_HASHTAG = /#(.*)/gi;
 export const RE_LINKS = /(https?:\/\/[^\s]+)/gi;
 

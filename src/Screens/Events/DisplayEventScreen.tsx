@@ -149,7 +149,7 @@ export default function DisplayEventScreen({ route }: any) {
       <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
         {displayJointButton()}
       </View>
-      <ScrollView style={{ top: full_height / 2, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30, }}>
+      <ScrollView style={{ top: full_height / 4, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30, }}>
         {
           eventInfo ? (
             <View style={{ flexDirection: "column", justifyContent: "space-between" }}>

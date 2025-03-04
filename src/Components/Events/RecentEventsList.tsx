@@ -1,5 +1,5 @@
 import { FlatList } from "react-native-gesture-handler";
-import { RefreshControl, View } from "react-native";
+import { RefreshControl } from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
@@ -40,29 +40,23 @@ export default function RecentEventsList() {
     }, [])
 
     const renderItem = useCallback(({ item }: { item: eventsInterface }) => (
-        <EventCard event={item} />
+        <EventCard full_width event={item} />
     ), [events]);
 
     return (
-        <View>
-            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                <Text variant="headlineSmall">{t("events.recents")}</Text>
-            </View>
-            <FlatList
-                horizontal
-                ListFooterComponent={loading ? <Loader /> : undefined}
-                refreshControl={<RefreshControl
-                    refreshing={loaderF}
-                    progressBackgroundColor={colors.bg_primary}
-                    tintColor={colors.fa_primary}
-                    colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
-                    onRefresh={() => getData(true)} />}
-                ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_events")}</Text>}
-                initialNumToRender={20}
-                data={events}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.event_id}
-            />
-        </View>
+        <FlatList
+            ListFooterComponent={loading ? <Loader /> : undefined}
+            refreshControl={<RefreshControl
+                refreshing={loaderF}
+                progressBackgroundColor={colors.bg_primary}
+                tintColor={colors.fa_primary}
+                colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
+                onRefresh={() => getData(true)} />}
+            ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_events")}</Text>}
+            initialNumToRender={20}
+            data={events}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.event_id}
+        />
     )
 }

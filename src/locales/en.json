@@ -1,4 +1,11 @@
 {
+    "bottom": {
+        "home": "Home",
+        "games": "Games",
+        "map": "Map",
+        "events": "Events",
+        "messages": "Messages"
+    },
     "commons": {
         "app_restart_required": "An app restart is required to apply the changes.",
         "website": "Visit the website",
@@ -103,6 +110,7 @@
         "select_end_date": "Select end date",
         "create_event": "Create an event",
         "event": "Event",
+        "joined": "Joined",
         "join": "Join",
         "leave": "Leave",
         "nearby_you": "Near you",
@@ -120,6 +128,9 @@
         "owner": "Owner",
         "delete": "Delete",
 
+        "no_joined_events": "No joined events at the moment; create or join an event to see it here",
+        "from": "From",
+        "per_person": "per person",
         "dates": "Dates",
         "general_info": "General Information",
         "handicap": "Handicap",
@@ -128,6 +139,7 @@
         "select_max_handicap": "Maximum handicap : {{hcp}}",
         "greenfee": "Green fee",
         "private": "Private",
+        "privates": "Privates",
         "select_players": "Select players",
         "search_players": "Search players"
     },

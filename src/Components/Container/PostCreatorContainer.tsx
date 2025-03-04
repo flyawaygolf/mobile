@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from "react";
 import { Appbar, Button, DataTable, Divider, Text } from "react-native-paper";
-import { View, ViewStyle } from "react-native";
+import { View } from "react-native";
 
 import styles, { full_width } from "../../Style/style";
 import { SafeBottomContainer, useTheme } from ".";

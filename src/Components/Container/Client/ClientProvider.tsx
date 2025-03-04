@@ -48,7 +48,12 @@ function ClientProvider({ children }: SectionProps) {
             const advantages = premiumAdvantages(informations.data.premium_type, informations.data.flags);
             if(!advantages.translatePosts()) setStorage("settings", { ...settings, auto_translate: false });
             
-            setValue({ ...value, client: new_client, token: user_info.token, user: informations.data, state: "loged" })
+            return setValue({ ...value, client: new_client, token: user_info.token, user: informations.data, state: "loged", location: {
+                latitude: informations.data.golf_info.location[1],
+                longitude: informations.data.golf_info.location[0],
+                latitudeDelta: 0.5,
+                longitudeDelta: 0.5,
+            }})
         } else return setValue({ ...value, state: "logout" });
     }
 
@@ -60,21 +65,18 @@ function ClientProvider({ children }: SectionProps) {
             autoTranslate: settings?.auto_translate ?? false
         });
 
-        const user = await client.user.myinformations();
+        const user = await client.user.myinformations();        
         if (user.error || !user.data) return await connectToNewUser(user_info?.user_id);
-        const user_data = user.data;
+        const informations = user.data;       
 
-        addUser(realm, user_data)
+        addUser(realm, informations);
 
-        setValue({
-            ...value,
-            client: client,
-            token: user_info?.token ?? "",
-            user: user_data,
-            state: "loged",
-        });
-
-        return;
+        return setValue({ ...value, client: client, token: user_info?.token ?? "", user: informations, state: "loged", location: {
+            latitude: informations.golf_info.location[1],
+            longitude: informations.golf_info.location[0],
+            latitudeDelta: 0.5,
+            longitudeDelta: 0.5,
+        }})
     }
 
     async function splash() {
@@ -88,11 +90,11 @@ function ClientProvider({ children }: SectionProps) {
         if (Platform.OS === "ios") {
             const trackPermission = await check(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
             if (trackPermission === RESULTS.DENIED || trackPermission === RESULTS.LIMITED) await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY)
-        }
+        }        
 
         if (!user_info) return await connectToNewUser();
 
-        const user_token = user_info?.token;
+        const user_token = user_info?.token;        
         if (!user_token) return await connectToNewUser();
 
         return await connectToToken(user_info);
