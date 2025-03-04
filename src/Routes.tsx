@@ -53,7 +53,7 @@ function Routes() {
         return;
     }
 
-    async function start() {        
+    async function start() {
         const update_require = await getAppInfo();
         if (update_require) return setUpdateRequire(true);
         else {
@@ -67,7 +67,7 @@ function Routes() {
         }
     }
 
-    useEffect(() => {        
+    useEffect(() => {
         start()
     }, [state])
 
@@ -78,9 +78,9 @@ function Routes() {
             if (idx < 0) return;
             dispatch(initGuildList(changeElementPlaceArray(DmGroupList, 0, idx)));
             dispatch(modifyGuildList({ guild_id: data.channel_id, content: data.content, created_at: data.created_at, message_id: data.message_id, unread: true }))
-        } else if(notification.code === webSocketRoutes.RECEIVE_NOTIFICATION) {
+        } else if (notification.code === webSocketRoutes.RECEIVE_NOTIFICATION) {
             const data: any = notification.data;
-            if(!data) return;
+            if (!data) return;
             dispatch(addNotificationFeed([data]))
         }
     }, [notification])

@@ -8,7 +8,7 @@ import { SafeBottomContainer, useClient, useTheme } from '../../Components/Conta
 import { full_width } from '../../Style/style';
 import { formatDistance, GolfsStackParams, handleToast, navigationProps } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';
-import { cdnbaseurl, websiteurl } from '../../Services/constante';
+import { cdnbaseurl, golfurl } from '../../Services/constante';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { Loader } from '../../Other';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
@@ -91,8 +91,8 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
 
     const onShare = async () => {
         await Share.share({
-            message: `${websiteurl}/golfs/${golfInfo.golf_id}`,
-            url: `${websiteurl}/golfs/${golfInfo.golf_id}`
+            message: `${golfurl}/${golfInfo.golf_id}`,
+            url: `${golfurl}/${golfInfo.golf_id}`
         });
     }
 

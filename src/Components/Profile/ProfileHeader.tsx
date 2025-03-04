@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { handleToast, navigationProps } from "../../Services";
 import { useClient, useProfile, useTheme } from "../Container";
-import { websiteurl } from '../../Services/constante';
+import { profileurl } from '../../Services/constante';
 
 type ProfileHeaderProps = {
     navigation: navigationProps;
@@ -67,8 +67,8 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
 
     const onShare = async () => {
         await Share.share({
-            message: `${websiteurl}/${user_info.nickname}`,
-            url: `${websiteurl}/${user_info.nickname}`
+            message: `${profileurl}/${user_info.nickname}`,
+            url: `${profileurl}/${user_info.nickname}`
         });
     }
 

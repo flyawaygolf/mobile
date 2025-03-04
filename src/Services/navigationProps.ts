@@ -91,7 +91,7 @@ export type RootStackParamList = {
         };
     },
     RegisterVerificationCode: {
-        code: string[] | false;
+        code: string | false;
         [x: string]: any;
     };
     ChangePassword: {

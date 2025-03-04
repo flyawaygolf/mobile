@@ -14,7 +14,7 @@ import { handleToast, messageFormatDate, navigationProps } from '../../Services'
 import { full_height, full_width } from '../../Style/style';
 import { Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
-import { cdnbaseurl, websiteurl } from '../../Services/constante';
+import { cdnbaseurl, eventurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
 import { Avatar } from '../../Components/Member';
 import { displayHCP } from '../../Services/handicapNumbers';
@@ -66,8 +66,8 @@ export default function DisplayEventScreen({ route }: any) {
 
   const onShare = async () => {
     await Share.share({
-      message: `${websiteurl}/${eventInfo?.event_id}`,
-      url: `${websiteurl}/${eventInfo?.event_id}`
+      message: `${eventurl}/${eventInfo?.event_id}`,
+      url: `${eventurl}/${eventInfo?.event_id}`
     });
   }
 
