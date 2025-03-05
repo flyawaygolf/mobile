@@ -13,13 +13,12 @@ import { SearchBar } from '../../Components/Elements/Input';
 import { addGuildList } from '../../Redux/guildList/action';
 import { RootState } from '../../Redux';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
-import { getCurrentLocation, handleToast, navigationProps } from '../../Services';
-import { locationType } from '../../Components/Container/Client/ClientContext';
+import { handleToast, navigationProps } from '../../Services';
 
 const CreateGuildScreen = () => {
 
     const { colors } = useTheme();
-    const { client, location: initLocation } = useClient();
+    const { client, location } = useClient();
     const { t } = useTranslation();
     const navigation = useNavigation<navigationProps>()
     const [selected, setSelected] = useState<userInfo[]>([]);
@@ -27,29 +26,6 @@ const CreateGuildScreen = () => {
     const [list, setList] = useState<userInfo[]>([]);
     const [text, setText] = useState("");
     const [loading, setLoader] = useState(false);
-    const [location, setLocation] = useState<locationType>(initLocation);
-
-    const getCurrentPosition = async () => {
-        try {
-            const position = await getCurrentLocation();
-            if (position) {
-                const crd = position.coords;
-                setLocation({
-                    latitude: crd.latitude,
-                    longitude: crd.longitude,
-                    latitudeDelta: 1,
-                    longitudeDelta: 1,
-                });
-            }
-            return;
-        } catch (error) {
-            handleToast(JSON.stringify(error))
-        }
-    }
-
-    useEffect(() => {
-        getCurrentPosition()
-    }, [])
 
     const searchMember = async () => {
         const request = await client.search.users(text, {

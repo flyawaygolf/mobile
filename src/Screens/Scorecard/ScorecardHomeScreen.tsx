@@ -4,48 +4,25 @@ import { Text } from "react-native-paper";
 import { SearchBar } from "../../Components/Elements/Input";
 import { FlatList, View } from "react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { getCurrentLocation, handleToast, navigationProps } from "../../Services";
+import { handleToast, navigationProps } from "../../Services";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
 import { useNavigation } from "@react-navigation/native";
 import { DisplayGolfs } from "../../Components/Golfs";
-import { locationType } from "../../Components/Container/Client/ClientContext";
 
 const ScorecardHomeScreen = () => {
-    const { client, user, setValue, location: initLocation } = useClient();
+    const { client, user, setValue, location } = useClient();
     const allClient = useClient();
     const { t } = useTranslation();
     const navigation = useNavigation<navigationProps>();
     const [search, setSearch] = useState<string>("");
-    const [location, setLocation] = useState<locationType>(initLocation);
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
 
     const start = async () => {
-        try {
-            const position = await getCurrentLocation();
-            if (position) {
-                const crd = position.coords;
-                const init_location = {
-                    latitude: crd.latitude,
-                    longitude: crd.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }
-                setLocation(init_location);
-                await updateMapGolfs(crd.longitude, crd.latitude);
-                await updateUserLocation(crd.longitude, crd.latitude, false);
-            }
-        } catch (error) {
-            const init_location = {
-                latitude: location.latitude,
-                longitude: location.longitude,
-                latitudeDelta: 0.5,
-                longitudeDelta: 0.5,
-            }
-            setLocation(init_location);
-            await updateMapGolfs();
-        }
+        await Promise.all([
+            updateMapGolfs(location.longitude, location.latitude),
+            updateUserLocation(location.longitude, location.latitude, false)
+        ]);
     }
-
 
     const searchGolfs = async (long = location?.longitude, lat = location?.latitude) => {
         const response = await client.search.golfs(search, {

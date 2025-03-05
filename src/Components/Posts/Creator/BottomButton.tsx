@@ -11,8 +11,7 @@ import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Sear
 import { BottomModal } from "../../../Other";
 import { SearchBar } from "../../Elements/Input";
 import { DisplayGolfs } from "../../Golfs";
-import { getCurrentLocation, handleToast } from "../../../Services";
-import { locationType } from "../../Container/Client/ClientContext";
+import { handleToast } from "../../../Services";
 
 type PropsType = {
     addFiles: (target: "photo" | "video") => any,
@@ -25,13 +24,12 @@ type PropsType = {
 
 function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLength, setOptions, options }: PropsType) {
 
-    const { client, location: initLocation } = useClient();
+    const { client, location } = useClient();
     const { colors } = useTheme();
     const { t } = useTranslation();
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
     const [golfModalVisible, setGolfModalVisible] = useState(false);
     const [searchGolf, setSearchGolf] = useState("");
-    const [location, setLocation] = useState<locationType>(initLocation);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
 
     const searchMap = async (latitude: number, longitude: number) => {
@@ -45,22 +43,7 @@ function BottomButtonPostCreator({ addFiles, setCameraVisible, content, maxLengt
         setGolfs(response.data.golfs.items);
     }
     const start = async () => {
-        try {
-            const position = await getCurrentLocation();
-            if (position) {
-                const crd = position.coords;
-                const init_location = {
-                    latitude: crd.latitude,
-                    longitude: crd.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }
-                setLocation(init_location);
-                await searchMap(crd.latitude, crd.longitude);
-            }
-        } catch (error) {
-            handleToast(JSON.stringify(error))
-        }
+        await searchMap(location.latitude, location.longitude);
     }
 
     useEffect(() => {

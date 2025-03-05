@@ -37,8 +37,9 @@
 
           <!-- Schéma et hôte -->
           <data android:scheme="http" />
-          <data android:scheme="https" android:host="www.flyawaygolf.com" />
-          <data android:scheme="https" android:host="flyawaygolf.com" />
+          <data android:scheme="https" />
+          <data android:host="www.flyawaygolf.com" />
+          <data android:host="flyawaygolf.com" />
 
           <!-- Chemin -->
           <data android:pathPrefix="/golfs" />

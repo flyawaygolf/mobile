@@ -1,5 +1,5 @@
 import { FlatList } from "react-native-gesture-handler";
-import { getCurrentLocation, handleToast } from "../../Services";
+import { handleToast } from "../../Services";
 import { useClient, useTheme } from "../Container";
 import { useTranslation } from "react-i18next";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
@@ -8,16 +8,14 @@ import EventCard from "./EventCard";
 import { RefreshControl } from "react-native";
 import { Loader } from "../../Other";
 import { Text } from "react-native-paper";
-import { locationType } from "../Container/Client/ClientContext";
 
 export default function NearbyEventList() {
-    const { client, location: initLocation } = useClient();
+    const { client, location } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const [loading, setLoading] = useState(true);
     const [loaderF, setLoaderF] = useState(false);
     const [events, setEvents] = useState<eventsInterface[]>([]);
-    const [location, setLocation] = useState<locationType>(initLocation);
 
     async function getData(refresh: boolean = false) {
         if (loaderF) return;
@@ -38,17 +36,6 @@ export default function NearbyEventList() {
 
     async function start() {
         try {
-            const position = await getCurrentLocation();
-            if (position) {
-                const crd = position.coords;
-                const init_location = {
-                    latitude: crd.latitude,
-                    longitude: crd.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }
-                setLocation(init_location);
-            }
             await getData();
         } catch (error) {
             await getData();

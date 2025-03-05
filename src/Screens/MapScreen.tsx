@@ -5,9 +5,10 @@ import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { full_width } from '../Style/style';
 import { useClient, useTheme } from '../Components/Container';
-import { getCurrentLocation, handleToast, navigationProps } from '../Services';
+import { getCurrentLocation, gpsActivated, handleToast, navigationProps } from '../Services';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
 import { SearchBar } from '../Components/Elements/Input';
@@ -43,39 +44,29 @@ const MapScreen = () => {
   const [golfs, setGolfs] = useState<golfInterface[]>([]);
   const [mapType, setMapType] = useState<MapType>("standard");
   const [loadingCenter, setLoadingCenter] = useState(false);
+  const [startExecuted, setStartExecuted] = useState(false);
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
   const start = async () => {
+    setLoadingCenter(true);
     try {
-      setLoadingCenter(true)
-      const position = await getCurrentLocation();
-      if (position) {
-        const crd = position.coords;
-        const init_location = {
-          latitude: crd.latitude,
-          longitude: crd.longitude,
-          latitudeDelta: 0.5,
-          longitudeDelta: 0.5,
-        }
-        centerMap({
-          init: true,
-          go_to: init_location,
-          duration: 0
-        })
-        setLocation(init_location);
-        setSearchLocation(init_location);
-        await Promise.all([
-          updateUserLocation(crd.longitude, crd.latitude, false),
-          updateMapUsers(crd.longitude, crd.latitude),
-          updateMapGolfs(crd.longitude, crd.latitude)
-        ])
-      }
-      return setLoadingCenter(false);
+      centerMap({
+        init: true,
+        go_to: initLocation,
+        duration: 0
+      })
+      setLocation(initLocation);
+      setSearchLocation(initLocation);
+      await Promise.all([
+        updateUserLocation(initLocation.longitude, initLocation.latitude, false),
+        updateMapUsers(initLocation.longitude, initLocation.latitude),
+        updateMapGolfs(initLocation.longitude, initLocation.latitude)
+      ])
     } catch (error) {
       const init_location = {
-        latitude: location.latitude,
-        longitude: location.longitude,
+        latitude: initLocation.latitude,
+        longitude: initLocation.longitude,
         latitudeDelta: 0.5,
         longitudeDelta: 0.5,
       }
@@ -84,12 +75,15 @@ const MapScreen = () => {
         go_to: init_location,
         duration: 0
       })
-      setLocation(init_location);
       setSearchLocation(init_location);
       await Promise.all([
-        updateMapUsers(location.longitude, location.latitude),
-        updateMapGolfs(location.longitude, location.latitude)
+        updateMapUsers(init_location.longitude, init_location.latitude),
+        updateMapGolfs(init_location.longitude, init_location.latitude)
       ])
+    } finally {
+      const gpsEnabled = await gpsActivated();
+      if (!gpsEnabled) handleToast(t("errors.no_gps"));
+      return setLoadingCenter(false);
     }
   }
 
@@ -97,14 +91,17 @@ const MapScreen = () => {
     if (!isInputFocused) Keyboard.dismiss();
   }, [isInputFocused]);
 
-  useEffect(() => {    
-    if (mapRef.current?.state.isReady) start()
-  }, [mapRef.current?.state])
+  useEffect(() => {
+    if (mapRef.current?.state.isReady && !startExecuted) {
+      start();
+      setStartExecuted(true);
+    }
+  }, [mapRef.current?.state, startExecuted]);
 
   const updateUserLocation = async (long = location?.longitude, lat = location?.latitude, toast = true) => {
     const request = await client.user.editLocation([long ?? 48.864716, lat ?? 2.349014]);
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
-    setValue({ ...allClient, user: { ...user, golf_info: { ...user.golf_info, location: [long, lat ] }}});
+    setValue({ ...allClient, user: { ...user, golf_info: { ...user.golf_info, location: [long, lat] } }, location: location });
     return toast && handleToast(t(`commons.success`));
   }
 
@@ -164,7 +161,7 @@ const MapScreen = () => {
         lat: lat ?? 2.349014,
       }
     })
-    
+
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     setQueryResult(response.data.golfs.items);
   }
@@ -270,21 +267,32 @@ const MapScreen = () => {
     }
     if (location && mapRef.current) {
       setLoadingCenter(true)
-      const position = await getCurrentLocation();
-      if (!position) return mapRef.current.animateToRegion(location, options?.duration ?? 1000);
-      const crd = position.coords;
-      const new_location = {
-        latitude: crd.latitude,
-        longitude: crd.longitude,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
+      try {
+        const position = await getCurrentLocation();
+        if (!position) return mapRef.current.animateToRegion(location, options?.duration ?? 1000);
+        const crd = position.coords;
+        const new_location = {
+          latitude: crd.latitude,
+          longitude: crd.longitude,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        }
+        setLocation(new_location);
+        setSearchLocation(new_location);
+        await Promise.all([
+          pressChip(filter, {
+            latitude: new_location.latitude,
+            longitude: new_location.longitude
+          }),
+          updateUserLocation(new_location.longitude, new_location.latitude, false)
+        ])
+        return mapRef.current.animateToRegion(new_location, options?.duration ?? 1000);
+      } catch (error) {
+        handleToast(t(`errors.no_gps`));
+        return mapRef.current.animateToRegion(location, options?.duration ?? 1000);
+      } finally {
+        setLoadingCenter(false)
       }
-      await pressChip(filter, {
-        latitude: new_location.latitude,
-        longitude: new_location.longitude
-      });
-      setLoadingCenter(false)
-      return mapRef.current.animateToRegion(new_location, options?.duration ?? 1000);
     }
   };
 
@@ -312,161 +320,161 @@ const MapScreen = () => {
   ], [mapType, loadingCenter])
 
   return (
-      <View style={[styles.globalView]}>
-        <View style={{
-          position: "absolute",
-          bottom: 5,
-          right: 5,
-          gap: 20,
-          zIndex: 2,
-          flexDirection: "column",
-        }}>
-          {
-            !isInputFocused && iconActions.map((i, idx) => (
-              <FAB
-                loading={i.loading}
-                key={idx}
-                color={i.main ? undefined : colors.fa_primary}
-                style={!i.main && {
-                  backgroundColor: colors.bg_primary,
-                  borderRadius: 60 / 2
-                }} icon={i.icon} onPress={i.onPress} />
-            ))
-          }
-        </View>
-        <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
-        <View style={[styles.elements, { top: top + 5  }]}>
-          <View style={styles.searchElements}>
-            <FadeInFromTop>
-              <SearchBar
-                inputProps={{
-                  onPress: () => setIsInputFocused(true),
-                  onFocus: () => setIsInputFocused(true),
-                  onBlur: () => Keyboard.dismiss()
-                }}
-                style={{
-                  width: "95%",
-                }}
-                onClearPress={() => {
-                  setIsInputFocused(false);
-                  setQueryResult([])
-                  setQuery("");
-                }}
-                onSearchPress={() => searchQuery(queryFilter)}
-                value={query}
-                onChangeText={(txt) => setQuery(txt)}
-                placeholder="Search..."
-              />
-            </FadeInFromTop>
-            <ScrollView horizontal={true} contentContainerStyle={styles.searchChips}>
-              {
-                !isInputFocused && (
-                  <ShrinkEffect shrinkAmount={0.90}><Chip icon={"refresh"} style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }} onPress={() => pressChip(filter)}>{t("map.refresh")}</Chip></ShrinkEffect>
-                )
-              }
-              {
-                searchChips.map((c, idx) => (
-                  <ShrinkEffect key={idx} shrinkAmount={0.90}>
-                    <Chip
-                      selected={isInputFocused ? queryFilter === c.value : c.value === filter}
-                      disabled={isInputFocused ? queryFilter === c.value : c.value === filter}
-                      icon={isInputFocused ? queryFilter === c.value ? "check-bold" : c.icon : c.value === filter ? "check-bold" : c.icon}
-                      style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10, backgroundColor: colors.bg_secondary }}
-                      onPress={() => isInputFocused ? searchQuery(c.value) : pressChip(c.value)}>
-                      {t(`map.${c.text}`)}
-                    </Chip>
-                  </ShrinkEffect>
-                ))
-              }
-            </ScrollView>
-          </View>
-        </View>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          ref={mapRef}
-          initialRegion={location}
-          // onTouchEnd={() => pressChip(filter)}
-          onRegionChange={(region) => {
-            const { widthMeters, heightMeters } = calculateMapSize(region);
-            setSearchLocation({
-              ...region,
-              heigth: heightMeters,
-              width: widthMeters,
-            })
-          }}
-          onUserLocationChange={(event) => setLocation({
-            ...location,
-            latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
-            longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude,
-          })}
-          userLocationUpdateInterval={30000} // 30sec
-          loadingIndicatorColor={colors.fa_primary}
-          loadingBackgroundColor={colors.bg_primary}
-          showsUserLocation={true}
-          followsUserLocation={true}
-          toolbarEnabled={false}
-          showsCompass={false}
-          showsMyLocationButton={false}
-          scrollEnabled={true}
-          zoomEnabled={true}
-          pitchEnabled={false}
-          rotateEnabled={false}
-          mapType={mapType}
-          userInterfaceStyle={theme === "dark" ? "dark" : "light"}
-          style={{
-            width: full_width,
-            height: "100%",
-          }}
-        >
-          {
-            users.length > 0 && users.map((u, idx) => {
-              return (
-                <Marker
-                  key={idx}
-                  onPress={() => navigation.navigate("ProfileStack", {
-                    screen: "ProfileScreen",
-                    params: {
-                      nickname: u.nickname,
-                    },
-                  })}
-                  coordinate={{
-                    longitude: u.golf_info.location.longitude,
-                    latitude: u.golf_info.location.latitude,
-                  }}
-                // calloutOffset={{ x: -8, y: 28 }}
-                // calloutAnchor={{ x: 0.5, y: -0.2 }}
-                // tracksViewChanges={false}
-                >
-                  <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
-                </Marker>
-              )
-            })
-          }
-          {
-            golfs.length > 0 && golfs.map((g, idx) => {
-              const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.location.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.location.longitude.toFixed(2));
-              
-              return (
-                <Marker
-                key={`${idx}-${isActive ? 'active' : 'inactive'}`}
-                  onPress={() => navigation.navigate("GolfsStack", {
-                    screen: "GolfsProfileScreen",
-                    params: {
-                      golf_id: g.golf_id,
-                    }
-                  })}
-                  pinColor={isActive ? 'yellow' : 'red'}
-                  coordinate={{
-                    longitude: g.location.longitude,
-                    latitude: g.location.latitude,
-                  }}
-                  title={g.name}
-                />
-              )
-            })
-          }
-        </MapView>
+    <View style={[styles.globalView]}>
+      <View style={{
+        position: "absolute",
+        bottom: 5,
+        right: 5,
+        gap: 20,
+        zIndex: 2,
+        flexDirection: "column",
+      }}>
+        {
+          !isInputFocused && iconActions.map((i, idx) => (
+            <FAB
+              loading={i.loading}
+              key={idx}
+              color={i.main ? undefined : colors.fa_primary}
+              style={!i.main && {
+                backgroundColor: colors.bg_primary,
+                borderRadius: 60 / 2
+              }} icon={i.icon} onPress={i.onPress} />
+          ))
+        }
       </View>
+      <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
+      <View style={[styles.elements, { top: top + 5 }]}>
+        <View style={styles.searchElements}>
+          <FadeInFromTop>
+            <SearchBar
+              inputProps={{
+                onPress: () => setIsInputFocused(true),
+                onFocus: () => setIsInputFocused(true),
+                onBlur: () => Keyboard.dismiss()
+              }}
+              style={{
+                width: "95%",
+              }}
+              onClearPress={() => {
+                setIsInputFocused(false);
+                setQueryResult([])
+                setQuery("");
+              }}
+              onSearchPress={() => searchQuery(queryFilter)}
+              value={query}
+              onChangeText={(txt) => setQuery(txt)}
+              placeholder="Search..."
+            />
+          </FadeInFromTop>
+          <ScrollView horizontal={true} contentContainerStyle={styles.searchChips}>
+            {
+              !isInputFocused && (
+                <ShrinkEffect shrinkAmount={0.90}><Chip icon={"refresh"} style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }} onPress={() => pressChip(filter)}>{t("map.refresh")}</Chip></ShrinkEffect>
+              )
+            }
+            {
+              searchChips.map((c, idx) => (
+                <ShrinkEffect key={idx} shrinkAmount={0.90}>
+                  <Chip
+                    selected={isInputFocused ? queryFilter === c.value : c.value === filter}
+                    disabled={isInputFocused ? queryFilter === c.value : c.value === filter}
+                    icon={isInputFocused ? queryFilter === c.value ? "check-bold" : c.icon : c.value === filter ? "check-bold" : c.icon}
+                    style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10, backgroundColor: colors.bg_secondary }}
+                    onPress={() => isInputFocused ? searchQuery(c.value) : pressChip(c.value)}>
+                    {t(`map.${c.text}`)}
+                  </Chip>
+                </ShrinkEffect>
+              ))
+            }
+          </ScrollView>
+        </View>
+      </View>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        ref={mapRef}
+        initialRegion={location}
+        // onTouchEnd={() => pressChip(filter)}
+        onRegionChange={(region) => {
+          const { widthMeters, heightMeters } = calculateMapSize(region);
+          setSearchLocation({
+            ...region,
+            heigth: heightMeters,
+            width: widthMeters,
+          })
+        }}
+        onUserLocationChange={(event) => setLocation({
+          ...location,
+          latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
+          longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude,
+        })}
+        userLocationUpdateInterval={30000} // 30sec
+        loadingIndicatorColor={colors.fa_primary}
+        loadingBackgroundColor={colors.bg_primary}
+        showsUserLocation={true}
+        followsUserLocation={true}
+        toolbarEnabled={false}
+        showsCompass={false}
+        showsMyLocationButton={false}
+        scrollEnabled={true}
+        zoomEnabled={true}
+        pitchEnabled={false}
+        rotateEnabled={false}
+        mapType={mapType}
+        userInterfaceStyle={theme === "dark" ? "dark" : "light"}
+        style={{
+          width: full_width,
+          height: "100%",
+        }}
+      >
+        {
+          users.length > 0 && users.map((u, idx) => {
+            return (
+              <Marker
+                key={idx}
+                onPress={() => navigation.navigate("ProfileStack", {
+                  screen: "ProfileScreen",
+                  params: {
+                    nickname: u.nickname,
+                  },
+                })}
+                coordinate={{
+                  longitude: u.golf_info.location.longitude,
+                  latitude: u.golf_info.location.latitude,
+                }}
+              // calloutOffset={{ x: -8, y: 28 }}
+              // calloutAnchor={{ x: 0.5, y: -0.2 }}
+              // tracksViewChanges={false}
+              >
+                <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
+              </Marker>
+            )
+          })
+        }
+        {
+          golfs.length > 0 && golfs.map((g, idx) => {
+            const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.location.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.location.longitude.toFixed(2));
+
+            return (
+              <Marker
+                key={`${idx}-${isActive ? 'active' : 'inactive'}`}
+                onPress={() => navigation.navigate("GolfsStack", {
+                  screen: "GolfsProfileScreen",
+                  params: {
+                    golf_id: g.golf_id,
+                  }
+                })}
+                pinColor={isActive ? 'yellow' : 'red'}
+                coordinate={{
+                  longitude: g.location.longitude,
+                  latitude: g.location.latitude,
+                }}
+                title={g.name}
+              />
+            )
+          })
+        }
+      </MapView>
+    </View>
   );
 };
 

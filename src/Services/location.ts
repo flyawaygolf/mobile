@@ -1,5 +1,6 @@
 import Geolocation, { GeolocationResponse } from "@react-native-community/geolocation";
 import { Platform } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
 
 export const getCurrentLocation = async (): Promise<GeolocationResponse | false> => {
@@ -26,6 +27,10 @@ export const getCurrentLocation = async (): Promise<GeolocationResponse | false>
         return false
     }
 };
+
+export const gpsActivated = async () => {
+    return await DeviceInfo.isLocationEnabled();
+}; 
 
 export const requestLocationPermission = async () => {
     const result = await request(Platform.OS === "android" ? PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION : PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);

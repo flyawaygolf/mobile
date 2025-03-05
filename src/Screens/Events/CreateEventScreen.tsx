@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
 import { EventsContainer, useClient, useTheme } from '../../Components/Container';
-import { getCurrentLocation, handleToast, navigationProps } from '../../Services';
+import { handleToast, navigationProps } from '../../Services';
 import { BottomModal } from '../../Other';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { DisplayGolfs } from '../../Components/Golfs';
@@ -16,10 +16,9 @@ import { displayHCP } from '../../Services/handicapNumbers';
 import { Br } from '../../Components/Text';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { Avatar, DisplayMember } from '../../Components/Member';
-import { locationType } from '../../Components/Container/Client/ClientContext';
 
 export default function CreateEventScreen() {
-    const { client, user, location: initLocation } = useClient();
+    const { client, user, location } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
@@ -41,7 +40,6 @@ export default function CreateEventScreen() {
     const [golfs, setGolfs] = useState<golfInterface[]>([]);
     const [golfModalVisible, setGolfModalVisible] = useState(false);
     const [searchGolf, setSearchGolf] = useState("");
-    const [location, setLocation] = useState<locationType>(initLocation);
     const [keyboardHeight, setKeyboardHeight] = useState(0);
 
     const [startDate, setStartDate] = useState<Date>(new Date());
@@ -97,23 +95,10 @@ export default function CreateEventScreen() {
     }
 
     const start = async () => {
-        try {
-            const position = await getCurrentLocation();
-            if (position) {
-                const crd = position.coords;
-                const init_location = {
-                    latitude: crd.latitude,
-                    longitude: crd.longitude,
-                    latitudeDelta: 0.5,
-                    longitudeDelta: 0.5,
-                }
-                setLocation(init_location);
-                await searchGolfsMap(crd.latitude, crd.longitude);
-                await searchPlayersMap(crd.latitude, crd.longitude);
-            }
-        } catch (error) {
-            handleToast(JSON.stringify(error))
-        }
+        await Promise.all([
+            searchGolfsMap(location.latitude, location.longitude),
+            searchPlayersMap(location.latitude, location.longitude)
+        ]);
     }
 
     useEffect(() => {
@@ -172,7 +157,7 @@ export default function CreateEventScreen() {
         const maxParticipants = parseInt(maxParticipantsString);
         if (!title.trim().substring(0, 512) || !description.trim().substring(0, 512) || !endDate || !startDate || !golf || !maxParticipants) return handleToast(t(`errors.verify_fields`));
         if (isNaN(maxParticipants) || maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
-        if(is_private && players.length < 1) return handleToast(t(`errors.verify_fields`));
+        if (is_private && players.length < 1) return handleToast(t(`errors.verify_fields`));
 
         setLoading(true);
         const request = await client.events.create({

@@ -602,6 +602,7 @@
         "16006": "Le propriétaire ne peut pas rejoindre son propre événement",
         "16007": "Le propriétaire ne peut pas quitter son propre événement",
 
+        "no_gps": "Pas de signal GPS",
         "verify_fields": "Verifier que tout les champs sont bien remplis",
         "sending_form": "Envoi en cours ...",
         "different_password": "Les mots de passe sont différents",

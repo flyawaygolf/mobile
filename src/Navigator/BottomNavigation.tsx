@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, TouchableRipple, Icon, Text } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { Linking } from 'react-native';
 
 import { GuildListSreen, MapScreen } from '../Screens';
 import { useClient, useTheme } from '../Components/Container';
@@ -11,8 +12,7 @@ import HomeScreen from '../Screens/Home/HomeScreen';
 import { RootState, useAppDispatch, useAppSelector } from '../Redux';
 import { initNotificationFeed } from '../Redux/NotificationFeed/action';
 import { EventsScreen } from '../Screens/Events';
-import { Linking } from 'react-native';
-import { navigationProps, parseURL } from '../Services';
+import { getCurrentLocation, navigationProps, parseURL } from '../Services';
 
 export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen";
 
@@ -21,14 +21,14 @@ const Tab = createBottomTabNavigator();
 function BottomStack({ navigation }: { navigation: navigationProps }) {
 
     const { colors } = useTheme();
-    const { client } = useClient();
+    const client = useClient();
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const notifications = useAppSelector((state) => state.notificationFeed);
     const guilds = useAppSelector((state) => state.guildListFeed);
 
     const notificationList = async () => {
-        const request = await client.notifications.fetch();
+        const request = await client.client.notifications.fetch();
         if (!request.data) return;
         if (request.data.length < 1) return;
         dispatch(initNotificationFeed(request.data));
@@ -74,10 +74,35 @@ function BottomStack({ navigation }: { navigation: navigationProps }) {
         return redirectLink(param);
     };
 
+    const updateLocation = async () => {
+        try {
+            const position = await getCurrentLocation();           
+            if (position) {
+                const crd = position.coords;
+                const init_location = {
+                    latitude: crd.latitude,
+                    longitude: crd.longitude,
+                    latitudeDelta: 0.5,
+                    longitudeDelta: 0.5,
+                }
+                client.setValue({ ...client, location: init_location });
+            }
+        } catch (error) {
+            return error;
+        }
+    };
+
+    const fetchDatas = async () => {
+        await Promise.all([
+            notificationList(),
+            updateLocation()
+        ])
+    };
+
     useEffect(() => {
         getUrlAsync();
         Linking.addEventListener("url", ({ url }) => redirectLink(parseURL(url)));
-        notificationList()
+        fetchDatas();
     }, [])
 
     return (
