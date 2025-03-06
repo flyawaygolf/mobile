@@ -4,5 +4,12 @@
 <dict>
 	<key>aps-environment</key>
 	<string>production</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:www.flyawaygolf.com</string>
+		<string>applinks:flyawaygolf.com</string>
+		<string>webcredentials:flyawaygolf.com</string>
+		<string>webcredentials:www.flyawaygolf.com</string>
+	</array>
 </dict>
 </plist>
