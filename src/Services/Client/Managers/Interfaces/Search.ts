@@ -14,19 +14,49 @@ export interface searchResponseQuery {
 }
 
 export interface golfInterface {
-    golf_id: string,
-    name: string,
-    email: string,
-    country: string,
-    city: string,
-    continent: string,
-    banner?: string,
+    golf_id: string;
+    name: string;
+    slug: string;
+    email: string;
+    country: string;
+    city: string;
+    continent: string;
+    content?: string;
+    website?: string;
+    phone?: string;
+    yearBuilt?: number;
+    architect?: string;
     location: {
         latitude: number;
-        longitude: number
-    },
-    linked?: boolean,
-    distance?: number
+        longitude: number;
+    };
+    scorecards?: {
+        scorecard_id: string;
+        name: string;
+        holesCount: number;
+        grid: {
+            grid_id: string;
+            par: number[];
+            handicap: number[];
+            teeboxType: string;
+            teeboxes: {
+                name: string;
+                slope: number;
+                rating: number;
+                color: {
+                    hex: string;
+                    name: string;
+                };
+                distances: number[];
+            }[];
+        }[];
+    }[];
+    golfTypes?: number[];
+    holes?: number;
+    latitude: number;
+    longitude: number;
+    linked: boolean;
+    distance?: number;
 }
 
 export interface fetchGolfResponse extends requestResponseInterface<golfInterface> {}

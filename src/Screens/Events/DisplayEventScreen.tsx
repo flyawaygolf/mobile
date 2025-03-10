@@ -134,7 +134,7 @@ export default function DisplayEventScreen({ route }: any) {
   }
 
   return (
-    <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }}>
+    <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/golf_covers/${eventInfo?.golf_info.slug}/default.jpg`, cache: "force-cache" }}>
       <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
         {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
       </View>

@@ -452,7 +452,7 @@ const MapScreen = () => {
         }
         {
           golfs.length > 0 && golfs.map((g, idx) => {
-            const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.location.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.location.longitude.toFixed(2));
+            const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.longitude.toFixed(2));
 
             return (
               <Marker
@@ -465,8 +465,8 @@ const MapScreen = () => {
                 })}
                 pinColor={isActive ? 'yellow' : 'red'}
                 coordinate={{
-                  longitude: g.location.longitude,
-                  latitude: g.location.latitude,
+                  longitude: g.longitude,
+                  latitude: g.latitude,
                 }}
                 title={g.name}
               />

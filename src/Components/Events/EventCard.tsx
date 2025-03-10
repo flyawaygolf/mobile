@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Icon, Text, Title } from "react-native-paper";
+import { Button, Card, Icon, Text, Title } from "react-native-paper";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
 import { View } from "react-native";
 import { messageFormatDate, navigationProps } from "../../Services";
@@ -7,6 +7,7 @@ import { useTheme } from "../Container";
 import { cdnbaseurl } from "../../Services/constante";
 import { ShrinkEffect } from "../Effects";
 import { useNavigation } from "@react-navigation/native";
+import { Avatar } from "../Member";
 
 type SectionProps = {
     event: eventsInterface;
@@ -24,7 +25,7 @@ export default function EventCard({ event, full_width }: SectionProps) {
             <Card style={{ backgroundColor: colors.bg_secondary, margin: 5, width: full_width ? "auto" : 300 }}>
                 <Card.Cover
                     style={{ backgroundColor: colors.good_color, marginBottom: 5, borderRadius: 0, borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
-                    source={{ uri: `${cdnbaseurl}/assets/background/events.jpg`, cache: "force-cache" }} />
+                    source={{ uri: `${cdnbaseurl}/golf_covers/${event?.golf_info.slug}/default.jpg`, cache: "force-cache" }} />
                 <View style={{ position: 'absolute', top: 10, right: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     {
                         event.joined && <Icon source='heart' color={colors.color_red} size={24} />
@@ -36,7 +37,7 @@ export default function EventCard({ event, full_width }: SectionProps) {
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <Title style={{ fontWeight: "bold" }} numberOfLines={1}>{event.title}</Title>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                        <Avatar.Text label={event.golf_info.name} size={40} style={{ borderRadius: 8 }} />
+                        <Avatar url={`${cdnbaseurl}/golf_avatars/${event?.golf_info.slug}/default.jpg`} size={40} radius={8} />
                         <Text style={{ marginLeft: 5 }}>{event.golf_info.name}</Text>
                     </View>
                     <View style={{ alignItems: "center", flexDirection: "row", display: "flex", marginTop: 5 }}>
