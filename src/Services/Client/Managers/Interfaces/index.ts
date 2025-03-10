@@ -14,3 +14,4 @@ export * as SubscriptionInterface from "./Subscription";
 export * as CustomSubscriptionInterface from "./CustomSubscription";
 export * as FavoritesInterface from "./Favorites";
 export * as EventInterface from "./Events";
+export * as AffiliationInterface from "./Affiliation";

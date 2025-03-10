@@ -111,7 +111,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
         {
           !showCode && (
             <>
-              <NormalButton onPress={() => sendCode()} text={t("login.send_email")} />
+              { loadingSendCode ? <Loader /> : <NormalButton onPress={() => sendCode()} text={t("login.send_email")} /> }
             </>
           )
         }

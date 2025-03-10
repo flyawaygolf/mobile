@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
-import { Text, Checkbox } from 'react-native-paper';
+import { Text, Checkbox, TextInput } from 'react-native-paper';
 import dayjs from 'dayjs';
 
 import styles from '../../../Style/style';
@@ -31,6 +31,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
         birthday: dayjs().subtract(13, "years").subtract(1, 'day').toDate(),
         accept_tas: false,
     });
+    const [affiliationCode, setAffiliationCode] = useState<string | undefined>(undefined);
 
     const handleSubmit = async () => {
 
@@ -49,6 +50,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
             username: users.username,
             password: users.password,
             birthday: users.birthday,
+            affiliation_code: affiliationCode,
         });
 
         if (response.error) {
@@ -70,6 +72,14 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
             </View>
             <View style={style.section}>
                 <Text style={{ color: colors.warning_color, textAlign: "center", marginBottom: 10 }}>{error.error && error.response}</Text>
+                <TextInput
+                    style={{ marginBottom: 10 }}
+                    label={`${t("login.affiliation_code")}`}
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                    value={affiliationCode ?? ""}
+                    onChangeText={(text) => setAffiliationCode(text)}
+                />
                 <DateInput onChange={(date) => setUsers({ ...users, birthday: date })} minimumDate={new Date(min_birthday)} value={users?.birthday} label={t("login.birthday")} />
                 <View style={styles.row}>
                     <Checkbox.Android status={users.accept_tas ? "checked" : "unchecked"} onPress={() => setUsers({ ...users, accept_tas: !users.accept_tas })} />

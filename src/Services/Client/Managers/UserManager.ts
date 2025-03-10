@@ -25,14 +25,14 @@ class UserManager extends RequestEmitter {
     username: string;
     password: string;
     birthday: Date;
-    captcha_code?: string;
+    affiliation_code?: string;
   }) {
     const request = await this.postRequest(`/users/register`, {
       email: options.email.trim(),
       username: options.username,
       password: options.password,
       birthday: dayjs(options.birthday).format(),
-      captcha_code: options?.captcha_code ?? "",
+      affiliation_code: options.affiliation_code,
     });
 
     const response = request as successResponse;

@@ -17,6 +17,7 @@ import ExploreManager from './Managers/ExploreManager';
 import NotificationManager from './Managers/NotificationManager';
 import EventManager from './Managers/EventManager';
 import SubscriptionManager from './Managers/SubscriptionManager';
+import AffiliationManager from './Managers/AffiliationManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -28,6 +29,7 @@ class Client extends RequestEmitter {
     public static webSocketRoutes = WebSocketRoutes;
     public static languageList = LanguageList;
 
+    public affiliations: AffiliationManager;
     public user: UserManager;
     public sessions: SessionManager;
     public guilds: GuildManager;
@@ -47,6 +49,7 @@ class Client extends RequestEmitter {
     constructor(params: requestParams) {
         super(params);
 
+        this.affiliations = new AffiliationManager(params);
         this.user = new UserManager(params);
         this.sessions = new SessionManager(params);
         this.guilds = new GuildManager(params);

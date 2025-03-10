@@ -66,6 +66,11 @@ function HomeSettingsScreen() {
       leftIcon: "star-shooting"
     },
     {
+      route: "AffiliationScreen",
+      title: t("settings.affiliation"),
+      leftIcon: "account-multiple"
+    },
+    {
       route: "SessionScreen",
       title: t("settings.sessions"),
       leftIcon: "monitor-cellphone"

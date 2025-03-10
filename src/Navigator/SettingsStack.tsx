@@ -7,6 +7,7 @@ import HomeSettingsScreen from "../Screens/Settings/HomeSettingsScreen";
 import AppScreen from "../Screens/Settings/AppScreen";
 import PremiumScreen from "../Screens/Settings/PremiumScreen";
 import SubscriptionValidationScreen from "../Screens/Settings/SubscriptionValidationScreen";
+import AffiliationScreen from "../Screens/Settings/AffiliationScreen";
 
 export type SettingsStackScreens =
     "BlockedScreen" |
@@ -15,7 +16,8 @@ export type SettingsStackScreens =
     "AppScreen" |
     "LanguageThemeScreen" |
     "PremiumScreen" |
-    "SubscriptionValidationScreen"
+    "SubscriptionValidationScreen" |
+    "AffiliationScreen"
 
 const Stack = createStackNavigator();
 
@@ -29,7 +31,7 @@ const SettingsStack = () => {
     { name: "AppScreen", screen: AppScreen },
     { name: "PremiumScreen", screen: PremiumScreen },
     { name: "SubscriptionValidationScreen", screen: SubscriptionValidationScreen },
-    /*{ name: "AffiliationScreen", screen: AffiliationScreen },*/
+  { name: "AffiliationScreen", screen: AffiliationScreen }
   ])
 
   return (
