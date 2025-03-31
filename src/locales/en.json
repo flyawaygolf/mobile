@@ -365,6 +365,8 @@
         "delete": "Delete"
     },
     "guilds": {
+        "all": "All",
+        "unread": "Unread",
         "favorites": "Favorites",
         "others": "Others",
         "events": "Events",

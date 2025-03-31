@@ -77,7 +77,6 @@ const MessageScreen = ({ route }: any) => {
       let data: any = notification.data;
       if (data.channel_id === params.guild_id) {
         dispatch(addGuildMessages(formatMessages([data], params.guild_id, client)))
-        dispatch(modifyGuildList({ guild_id: data.channel_id, content: data.content, created_at: data.created_at, message_id: data.message_id, unread: false }))
         readMessage(data)
       }
     } /*else if(notification.code === webSocketRoutes.START_TYPING) {
@@ -99,7 +98,10 @@ const MessageScreen = ({ route }: any) => {
     }
   }, []);
 
-  const readMessage = async (data: fetchMessageResponseInterface) => await client.messages.read(data.channel_id, data.message_id);
+  const readMessage = async (data: fetchMessageResponseInterface) => {
+    await client.messages.read(data.channel_id, data.message_id);
+    dispatch(modifyGuildList({ guild_id: data.channel_id, content: data.content, created_at: data.created_at, message_id: data.message_id, unread: false }))
+  }
 
   const sendMessageToChannel = useCallback(async (message: MessageType.PartialText) => {
     if (inWait) return;

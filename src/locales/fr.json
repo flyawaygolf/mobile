@@ -362,6 +362,8 @@
         "delete": "Supprimer"
     },
     "guilds": {
+        "all": "Tous",
+        "unread": "Non lus",
         "favorites": "Favoris",
         "others": "Autres",
         "events": "Événements",
