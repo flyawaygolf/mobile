@@ -102,6 +102,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
           autoCapitalize="none"
           keyboardType="email-address"
           returnKeyType="next"
+          style={{ marginBottom: 5 }}
           value={users.email}
           onChangeText={(email) => setUsers({ ...users, email: email })}
         />
