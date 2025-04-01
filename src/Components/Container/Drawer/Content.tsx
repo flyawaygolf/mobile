@@ -1,7 +1,7 @@
 import React from 'react';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Title, Caption, Drawer } from 'react-native-paper';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import globalStyles from '../../../Style/style';
@@ -17,14 +17,18 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
   return (
     <DrawerContentScrollView
       alwaysBounceVertical={false}
-      contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between', marginLeft: -10, marginTop: -5 }}
+      bounces={false}
+      bouncesZoom={false}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between', marginLeft: Platform.OS === "android" ? -10 : -5, marginTop: -5 }}
       style={{ flex: 1, backgroundColor: colors.bg_secondary, marginTop: -5 }}>
       <View>
         <View style={{ height: 90, width: "100%" }}>
           {
             user?.banner ?
-              <Image style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary, marginLeft: -5, marginTop: -5 }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}`, cache: "force-cache" }} />
-              : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color, marginLeft: -5, marginTop: -5 }]} />
+              <Image style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}`, cache: "force-cache" }} />
+              : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} />
           }
         </View>
         <View style={{ paddingLeft: 5 }}>
