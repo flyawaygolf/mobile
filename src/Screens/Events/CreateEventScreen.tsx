@@ -49,7 +49,7 @@ export default function CreateEventScreen() {
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
 
     const [minHandicapModalVisible, setMinHandicapModalVisible] = useState(false);
-    const [minHandicap, setMinHandicap] = useState<number>(520);
+    const [minHandicap, setMinHandicap] = useState<number>(540);
 
     const [maxHandicapModalVisible, setMaxHandicapModalVisible] = useState(false);
     const [maxHandicap, setMaxHandicap] = useState<number>(-100);
