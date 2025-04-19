@@ -8,6 +8,7 @@
     "android:release": "react-native run-android --mode=release",
     "ios": "react-native run-ios",
     "ios:release": "react-native run-ios --mode Release",
+    "ios:debug": "react-native run-ios --verbose",
     "start": "react-native start",
     "test": "npm run test:typescript",
     "test:typescript": "tsc --noEmit",
