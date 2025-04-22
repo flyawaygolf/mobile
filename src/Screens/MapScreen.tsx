@@ -47,8 +47,8 @@ const MapScreen = () => {
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
-  const start = async () => {
-    setLoadingCenter(true);    
+  const start = useCallback(async () => {
+    setLoadingCenter(true);
     try {
       centerMap({
         init: true,
@@ -60,9 +60,8 @@ const MapScreen = () => {
       await Promise.all([
         updateMapUsers(initLocation.longitude, initLocation.latitude),
         updateMapGolfs(initLocation.longitude, initLocation.latitude)
-      ])      
+      ])
     } catch (error) {
-      console.log("Error in MapScreen start:", error);
       const init_location = {
         latitude: initLocation.latitude,
         longitude: initLocation.longitude,
@@ -79,64 +78,45 @@ const MapScreen = () => {
         updateMapUsers(init_location.longitude, init_location.latitude),
         updateMapGolfs(init_location.longitude, init_location.latitude)
       ])
-    } finally {      
+    } finally {
       const gpsEnabled = await gpsActivated();
-      if (!gpsEnabled) {
-        setLoadingCenter(false);
-        handleToast(t("errors.no_gps"));
-      };
-      const position = await getCurrentLocation();
-      if (!position) return setLoadingCenter(false);
-      const crd = position.coords;
-      await updateUserLocation(crd.longitude, crd.latitude, false);
-      const location = {
-        latitude: crd.latitude,
-        longitude: crd.longitude,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
-      }
-      centerMap({
-        init: true,
-        go_to: location,
-        duration: 0
-      })
-      setSearchLocation(location);
-      return setLoadingCenter(false);
+      if (!gpsEnabled) handleToast(t("errors.no_gps"));
+      setLoadingCenter(false);
     }
-  }
+  }, [initLocation, t]);
 
   useEffect(() => {
     if (!isInputFocused) Keyboard.dismiss();
   }, [isInputFocused]);
 
-  const updateUserLocation = async (long = location?.longitude, lat = location?.latitude, toast = true) => {
+  const updateUserLocation = useCallback(async (long = location?.longitude, lat = location?.latitude, toast = true) => {
     const request = await client.user.editLocation([long ?? 48.864716, lat ?? 2.349014]);
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     setValue({ ...allClient, user: { ...user, golf_info: { ...user.golf_info, location: [long, lat] } }, location: location });
     return toast && handleToast(t(`commons.success`));
-  }
+  }, [client, user, setValue, allClient, location, t]);
 
-  const updateMapGolfs = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+  const updateMapGolfs = useCallback(async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
     const request = await client.search.map.golfs({
       long: long ?? 48.864716,
       lat: lat ?? 2.349014,
       max_distance: searchLocation?.width ?? 50000,
-    })
+    });
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     return setGolfs(request.data.golfs.items);
-  }
+  }, [client, searchLocation, t]);
 
-  const updateMapUsers = async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
+  const updateMapUsers = useCallback(async (long = searchLocation?.longitude, lat = searchLocation?.latitude) => {
     const request = await client.search.map.users({
       long: long ?? 48.864716,
       lat: lat ?? 2.349014,
       max_distance: searchLocation?.width ?? 50000,
-    })
+    });
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     return setUsers(request.data.users.items);
-  }
+  }, [client, searchLocation, t]);
 
-  function calculateMapSize(region: locationType) {
+  const calculateMapSize = useMemo(() => (region: locationType) => {
     const { latitude, latitudeDelta, longitudeDelta } = region;
 
     // Conversion des degrés en radians
@@ -151,65 +131,57 @@ const MapScreen = () => {
     const heightMeters = latitudeDelta * 111320;
 
     return { widthMeters, heightMeters };
-  }
+  }, []);
 
-  const searchAll = async (long = location?.longitude, lat = location?.latitude) => {
+  const searchAll = useCallback(async (long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.all(query, {
       location: {
         long: long ?? 48.864716,
         lat: lat ?? 2.349014,
       }
-    })
-
+    });
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     setQueryResult(response.data.result.items);
-  }
+  }, [client, query, location, t]);
 
-  const searchGolfs = async (long = location?.longitude, lat = location?.latitude) => {
+  const searchGolfs = useCallback(async (long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.golfs(query, {
       location: {
         long: long ?? 48.864716,
         lat: lat ?? 2.349014,
       }
-    })
-
+    });
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     setQueryResult(response.data.golfs.items);
-  }
+  }, [client, query, location, t]);
 
-  const searchUsers = async (long = location?.longitude, lat = location?.latitude) => {
+  const searchUsers = useCallback(async (long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.users(query, {
       location: {
         long: long ?? 48.864716,
         lat: lat ?? 2.349014,
       }
-    })
+    });
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     setQueryResult(response.data.users.items);
-  }
+  }, [client, query, location, t]);
+
+  const debounceSearch = useCallback((filter: FilterType) => {
+    setQueryFilter(filter);
+    const timeout = setTimeout(async () => {
+      if (filter === 'all') await searchAll();
+      else if (filter === 'golfs') await searchGolfs();
+      else if (filter === 'users') await searchUsers();
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [queryFilter]);
 
   useEffect(() => {
-    if (query.length > 2) searchQuery(queryFilter);
-  }, [query])
+    if (query.length > 2) debounceSearch(queryFilter);
+  }, [query, debounceSearch]);
 
-  const searchQuery = async (filter: FilterType) => {
-    setQueryFilter(filter);
-    switch (filter) {
-      case "golfs":
-        await searchGolfs();
-        break;
-      case 'users':
-        await searchUsers();
-        break;
-      case "all":
-        await searchAll();
-        break;
-      default:
-        break;
-    }
-  }
-
-  const pressChip = async (type: FilterType, options?: {
+  const handleChipPress = useCallback(async (type: FilterType, options?: {
     latitude: number;
     longitude: number;
   }) => {
@@ -230,9 +202,9 @@ const MapScreen = () => {
       default:
         break;
     }
-  }
+  }, [setFilter, setUsers, setGolfs, updateMapGolfs, updateMapUsers]);
 
-  const [searchChips] = useState<searchChipsType>([
+  const searchChips = useMemo<searchChipsType>(() => [
     {
       icon: "all-inclusive",
       text: "all",
@@ -247,14 +219,14 @@ const MapScreen = () => {
       icon: "golf",
       text: "golfs",
       value: "golfs",
-    },
+    }
     /*{
-      text: "Search events",
-      value: "events"
-    },*/
-  ])
+  text: "Search events",
+  value: "events"
+},*/
+  ], []);
 
-  const centerMap = async (options: {
+  const centerMap = useCallback(async (options: {
     init?: boolean;
     go_to?: {
       latitude: number;
@@ -271,7 +243,7 @@ const MapScreen = () => {
       mapRef.current.animateToRegion(new_location, options?.duration ?? 1000);
       setSearchLocation(new_location);
       if (options.init) return;
-      return await pressChip(filter, {
+      return await handleChipPress(filter, {
         latitude: new_location.latitude,
         longitude: new_location.longitude
       });
@@ -291,7 +263,7 @@ const MapScreen = () => {
         setLocation(new_location);
         setSearchLocation(new_location);
         await Promise.all([
-          pressChip(filter, {
+          handleChipPress(filter, {
             latitude: new_location.latitude,
             longitude: new_location.longitude
           }),
@@ -305,7 +277,7 @@ const MapScreen = () => {
         setLoadingCenter(false)
       }
     }
-  };
+  }, [mapRef, filter, location, setLoadingCenter, t, handleChipPress, updateUserLocation]);
 
   const iconActions = useMemo(() => [
     {
@@ -330,6 +302,90 @@ const MapScreen = () => {
     },
   ], [mapType, loadingCenter])
 
+
+  const fabButtons = useMemo(() => iconActions.map((i, idx) => (
+    <FAB
+      loading={i.loading}
+      key={idx}
+      color={i.main ? undefined : colors.fa_primary}
+      style={!i.main && {
+        backgroundColor: colors.bg_primary,
+        borderRadius: 60 / 2
+      }} icon={i.icon} onPress={i.onPress} />
+  )), [iconActions, colors.fa_primary, colors.bg_primary]);
+
+
+  const searchChipsComponents = useMemo(() => searchChips.map((c, idx) => (
+    <ShrinkEffect key={idx} shrinkAmount={0.90}>
+      <Chip
+        selected={isInputFocused ? queryFilter === c.value : c.value === filter}
+        disabled={isInputFocused ? queryFilter === c.value : c.value === filter}
+        icon={isInputFocused ? queryFilter === c.value ? "check-bold" : c.icon : c.value === filter ? "check-bold" : c.icon}
+        style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10, backgroundColor: colors.bg_secondary }}
+        onPress={() => isInputFocused ? debounceSearch(c.value) : handleChipPress(c.value)}>
+        {t(`map.${c.text}`)}
+      </Chip>
+    </ShrinkEffect>
+  )), [searchChips, queryFilter, filter, isInputFocused, t, debounceSearch, handleChipPress]);
+
+
+  const userMarkers = useMemo(() => users.map((u, idx) => {
+    return (
+      <Marker
+        key={idx}
+        onPress={() => navigation.navigate("ProfileStack", {
+          screen: "ProfileScreen",
+          params: {
+            nickname: u.nickname,
+          },
+        })}
+        coordinate={{
+          longitude: u.golf_info.location.longitude,
+          latitude: u.golf_info.location.latitude,
+        }}
+      // calloutOffset={{ x: -8, y: 28 }}
+      // calloutAnchor={{ x: 0.5, y: -0.2 }}
+      // tracksViewChanges={false}
+      >
+        <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
+      </Marker>
+    )
+  }), [users, client, navigation]);
+
+  const golfMarkers = useMemo(() => golfs.map((g, idx) => {
+    const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.longitude.toFixed(2));
+
+    return (
+      <Marker
+        key={`${idx}-${isActive ? 'active' : 'inactive'}`}
+        onPress={() => navigation.navigate("GolfsStack", {
+          screen: "GolfsProfileScreen",
+          params: {
+            golf_id: g.golf_id,
+          }
+        })}
+        pinColor={isActive ? 'yellow' : 'red'}
+        coordinate={{
+          longitude: g.longitude,
+          latitude: g.latitude,
+        }}
+        title={g.name}
+      />
+    )
+  }), [golfs, searchLocation, navigation]);
+
+  const debouncedRegionChange = useCallback((region: locationType) => {
+    const timeout = setTimeout(() => {
+      const { widthMeters, heightMeters } = calculateMapSize(region);
+      setSearchLocation({
+        ...region,
+        heigth: heightMeters,
+        width: widthMeters,
+      });
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [setSearchLocation, calculateMapSize]);
+
   return (
     <View style={[styles.globalView]}>
       <View style={{
@@ -341,16 +397,7 @@ const MapScreen = () => {
         flexDirection: "column",
       }}>
         {
-          !isInputFocused && iconActions.map((i, idx) => (
-            <FAB
-              loading={i.loading}
-              key={idx}
-              color={i.main ? undefined : colors.fa_primary}
-              style={!i.main && {
-                backgroundColor: colors.bg_primary,
-                borderRadius: 60 / 2
-              }} icon={i.icon} onPress={i.onPress} />
-          ))
+          !isInputFocused && fabButtons
         }
       </View>
       <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
@@ -371,7 +418,7 @@ const MapScreen = () => {
                 setQueryResult([])
                 setQuery("");
               }}
-              onSearchPress={() => searchQuery(queryFilter)}
+              onSearchPress={() => debounceSearch(queryFilter)}
               value={query}
               onChangeText={(txt) => setQuery(txt)}
               placeholder="Search..."
@@ -380,23 +427,10 @@ const MapScreen = () => {
           <ScrollView horizontal={true} contentContainerStyle={styles.searchChips}>
             {
               !isInputFocused && (
-                <ShrinkEffect shrinkAmount={0.90}><Chip icon={"refresh"} style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }} onPress={() => pressChip(filter)}>{t("map.refresh")}</Chip></ShrinkEffect>
+                <ShrinkEffect shrinkAmount={0.90}><Chip icon={"refresh"} style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10 }} onPress={() => handleChipPress(filter)}>{t("map.refresh")}</Chip></ShrinkEffect>
               )
             }
-            {
-              searchChips.map((c, idx) => (
-                <ShrinkEffect key={idx} shrinkAmount={0.90}>
-                  <Chip
-                    selected={isInputFocused ? queryFilter === c.value : c.value === filter}
-                    disabled={isInputFocused ? queryFilter === c.value : c.value === filter}
-                    icon={isInputFocused ? queryFilter === c.value ? "check-bold" : c.icon : c.value === filter ? "check-bold" : c.icon}
-                    style={{ borderRadius: 60, paddingRight: 10, paddingLeft: 10, backgroundColor: colors.bg_secondary }}
-                    onPress={() => isInputFocused ? searchQuery(c.value) : pressChip(c.value)}>
-                    {t(`map.${c.text}`)}
-                  </Chip>
-                </ShrinkEffect>
-              ))
-            }
+            {searchChipsComponents}
           </ScrollView>
         </View>
       </View>
@@ -405,21 +439,13 @@ const MapScreen = () => {
         ref={mapRef}
         initialRegion={location}
         onMapReady={() => start()}
-        // onTouchEnd={() => pressChip(filter)}
-        onRegionChange={(region) => {
-          const { widthMeters, heightMeters } = calculateMapSize(region);
-          setSearchLocation({
-            ...region,
-            heigth: heightMeters,
-            width: widthMeters,
-          })
-        }}
+        onRegionChange={debouncedRegionChange}
         onUserLocationChange={(event) => setLocation({
           ...location,
           latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,
           longitude: event.nativeEvent.coordinate?.longitude ?? location.longitude,
         })}
-        userLocationUpdateInterval={30000} // 30sec
+        userLocationUpdateInterval={30 * 1000} // 30sec
         loadingIndicatorColor={colors.fa_primary}
         loadingBackgroundColor={colors.bg_primary}
         showsUserLocation={true}
@@ -438,53 +464,8 @@ const MapScreen = () => {
           height: "100%",
         }}
       >
-        {
-          users.length > 0 && users.map((u, idx) => {
-            return (
-              <Marker
-                key={idx}
-                onPress={() => navigation.navigate("ProfileStack", {
-                  screen: "ProfileScreen",
-                  params: {
-                    nickname: u.nickname,
-                  },
-                })}
-                coordinate={{
-                  longitude: u.golf_info.location.longitude,
-                  latitude: u.golf_info.location.latitude,
-                }}
-              // calloutOffset={{ x: -8, y: 28 }}
-              // calloutAnchor={{ x: 0.5, y: -0.2 }}
-              // tracksViewChanges={false}
-              >
-                <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
-              </Marker>
-            )
-          })
-        }
-        {
-          golfs.length > 0 && golfs.map((g, idx) => {
-            const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.longitude.toFixed(2));
-
-            return (
-              <Marker
-                key={`${idx}-${isActive ? 'active' : 'inactive'}`}
-                onPress={() => navigation.navigate("GolfsStack", {
-                  screen: "GolfsProfileScreen",
-                  params: {
-                    golf_id: g.golf_id,
-                  }
-                })}
-                pinColor={isActive ? 'yellow' : 'red'}
-                coordinate={{
-                  longitude: g.longitude,
-                  latitude: g.latitude,
-                }}
-                title={g.name}
-              />
-            )
-          })
-        }
+        {users.length > 0 && userMarkers}
+        {golfs.length > 0 && golfMarkers}
       </MapView>
     </View>
   );
