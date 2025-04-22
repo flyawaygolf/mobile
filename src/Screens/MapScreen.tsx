@@ -44,12 +44,11 @@ const MapScreen = () => {
   const [golfs, setGolfs] = useState<golfInterface[]>([]);
   const [mapType, setMapType] = useState<MapType>("standard");
   const [loadingCenter, setLoadingCenter] = useState(false);
-  const [startExecuted, setStartExecuted] = useState(false);
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
   const start = async () => {
-    setLoadingCenter(true);
+    setLoadingCenter(true);    
     try {
       centerMap({
         init: true,
@@ -59,11 +58,11 @@ const MapScreen = () => {
       setLocation(initLocation);
       setSearchLocation(initLocation);
       await Promise.all([
-        updateUserLocation(initLocation.longitude, initLocation.latitude, false),
         updateMapUsers(initLocation.longitude, initLocation.latitude),
         updateMapGolfs(initLocation.longitude, initLocation.latitude)
-      ])
+      ])      
     } catch (error) {
+      console.log("Error in MapScreen start:", error);
       const init_location = {
         latitude: initLocation.latitude,
         longitude: initLocation.longitude,
@@ -80,9 +79,28 @@ const MapScreen = () => {
         updateMapUsers(init_location.longitude, init_location.latitude),
         updateMapGolfs(init_location.longitude, init_location.latitude)
       ])
-    } finally {
+    } finally {      
       const gpsEnabled = await gpsActivated();
-      if (!gpsEnabled) handleToast(t("errors.no_gps"));
+      if (!gpsEnabled) {
+        setLoadingCenter(false);
+        handleToast(t("errors.no_gps"));
+      };
+      const position = await getCurrentLocation();
+      if (!position) return setLoadingCenter(false);
+      const crd = position.coords;
+      await updateUserLocation(crd.longitude, crd.latitude, false);
+      const location = {
+        latitude: crd.latitude,
+        longitude: crd.longitude,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5,
+      }
+      centerMap({
+        init: true,
+        go_to: location,
+        duration: 0
+      })
+      setSearchLocation(location);
       return setLoadingCenter(false);
     }
   }
@@ -90,13 +108,6 @@ const MapScreen = () => {
   useEffect(() => {
     if (!isInputFocused) Keyboard.dismiss();
   }, [isInputFocused]);
-
-  useEffect(() => {
-    if (mapRef.current?.state.isReady && !startExecuted) {
-      start();
-      setStartExecuted(true);
-    }
-  }, [mapRef.current?.state, startExecuted]);
 
   const updateUserLocation = async (long = location?.longitude, lat = location?.latitude, toast = true) => {
     const request = await client.user.editLocation([long ?? 48.864716, lat ?? 2.349014]);
@@ -393,6 +404,7 @@ const MapScreen = () => {
         provider={PROVIDER_GOOGLE}
         ref={mapRef}
         initialRegion={location}
+        onMapReady={() => start()}
         // onTouchEnd={() => pressChip(filter)}
         onRegionChange={(region) => {
           const { widthMeters, heightMeters } = calculateMapSize(region);
