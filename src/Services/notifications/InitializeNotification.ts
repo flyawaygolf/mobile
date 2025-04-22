@@ -1,14 +1,18 @@
-import messaging from "@react-native-firebase/messaging";
+import { deleteToken, getInitialNotification, getMessaging, getToken, onNotificationOpenedApp } from "@react-native-firebase/messaging";
 import notifee, { AndroidImportance } from "@notifee/react-native";
 import { checkNotifications, requestNotifications, RESULTS } from 'react-native-permissions';
 import { getStorageInfo, setStorage, userStorageI } from "../storage";
+import { getApp } from "@react-native-firebase/app";
+
+const app = getApp();
+export const messaging = getMessaging(app);
 
 export const resetFcmToken = async (user_info: userStorageI, refresh: boolean = false) => {
   try {
     if(refresh) {
-      await messaging().deleteToken();
+      await deleteToken(messaging);
     }
-    const fcmToken = await messaging().getToken();
+    const fcmToken = await getToken(messaging);
     if (fcmToken) {
       setStorage("user_info", {
         ...user_info,
@@ -46,7 +50,7 @@ export async function requestNotificationPermission(refresh: boolean = false) {
 export const notificationListener = async () => {
   // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-  messaging().onNotificationOpenedApp(remoteMessage => {
+  onNotificationOpenedApp(messaging, remoteMessage => {
     console.log('Notification caused app to open from background state:', remoteMessage.notification);
     // navigation.navigate(remoteMessage.data.type);
   });
@@ -56,8 +60,7 @@ export const notificationListener = async () => {
   })*/
 
   // Check whether an initial notification is available
-  messaging()
-    .getInitialNotification()
+  getInitialNotification(messaging)
     .then(remoteMessage => {
       if (remoteMessage) {
         console.log('Notification caused app to open from quit state:', remoteMessage.notification);

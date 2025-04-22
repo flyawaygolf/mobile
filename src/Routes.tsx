@@ -3,7 +3,7 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import messaging from "@react-native-firebase/messaging";
+import { onTokenRefresh } from "@react-native-firebase/messaging";
 
 import { SplashScreen } from './Screens';
 import { DrawerNavigation, LoginNavigation } from './Navigator';
@@ -16,7 +16,7 @@ import { initGuildList, modifyGuildList, setUnreadGuildList } from './Redux/guil
 import { webSocketRoutes } from './Services/Client';
 import { changeElementPlaceArray, getAppInfo } from './Services';
 import UpdateScreen from './Screens/UpdateScreen';
-import { requestNotificationPermission } from './Services/notifications';
+import { messaging, requestNotificationPermission } from './Services/notifications';
 import { addNotificationFeed } from './Redux/NotificationFeed/action';
 
 const Stack = createStackNavigator();
@@ -60,7 +60,7 @@ function Routes() {
             if (state === "loged") {
                 await getGuilds()
                 registerFCMToken()
-                messaging().onTokenRefresh(async token => {
+                onTokenRefresh(messaging, async token => {
                     await client.pushNotification.register(token);
                 });
             }
