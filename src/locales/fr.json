@@ -71,6 +71,12 @@
         "paragraph_2": "Pour éviter tout problème, veuillez mettre à jour l'application.",
         "paragraph_3": "Si aucune mise à jour n'est disponible dans la boutique, merci de patienter 24h maximum et revérifier."
     },
+    "offline": {
+        "title": "Hors ligne",
+        "offline_message": "Vous n'êtes pas connecté à Internet. Veuillez vérifier votre connexion.",
+        "retry": "Réessayer",
+        "retrying": "Nouvelle tentative..."
+    },
     "notification": {
         "no_new_followers": "Aucun nouvel abonné.",
         "no_posts_interactions": "Aucune interaction avec vos posts.",

@@ -71,6 +71,12 @@
         "paragraph_2": "To prevent crashes, please update the app.",
         "paragraph_3": "If no update is available in the store, please wait a maximum of 24h and check again."
     },
+    "offline": {
+        "title": "Offline",
+        "offline_message": "You are offline, please check your internet connection.",
+        "retry": "Retry",
+        "retrying": "Retrying..."
+    },
     "notification": {
         "no_new_followers": "No new followers.",
         "no_trends_interactions": "No interactions with your posts.",

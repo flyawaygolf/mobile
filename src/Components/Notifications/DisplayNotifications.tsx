@@ -10,7 +10,7 @@ import { Icon } from "react-native-paper";
 import { NotificationInterface } from "../../Services/Client/Managers/Interfaces";
 import { notificationTypeInterface } from "../../Services/Client/Managers/Interfaces/Global";
 import { Markdown } from "../Text";
-import { SwipeEffect } from "../Effects";
+import { ShrinkEffect } from "../Effects";
 
 type sectionProps = {
     info: NotificationInterface.notificationFetchResponseSchema;
@@ -96,8 +96,8 @@ const DisplayNotifications = ({ info, readOneNotification }: sectionProps) => {
     }
 
     return (
-        <SwipeEffect onSwipeLeft={readNotification} onSwipeRight={readNotification}>
-            <TouchableOpacity activeOpacity={0.7} onPress={() => navigateScreen(info?.notification_type ?? "none")}>
+        <ShrinkEffect>
+            <TouchableOpacity activeOpacity={0.7} onLongPress={() => readNotification()} onPress={() => navigateScreen(info?.notification_type ?? "none")}>
                 <View style={{
                     padding: 5,
                     flexDirection: "column",
@@ -121,8 +121,7 @@ const DisplayNotifications = ({ info, readOneNotification }: sectionProps) => {
                     </View>
                 </View>
             </TouchableOpacity>
-
-        </SwipeEffect>
+        </ShrinkEffect>
     )
 
 }

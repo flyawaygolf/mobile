@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
+import { FlashList } from "@shopify/flash-list";
+import { useTranslation } from 'react-i18next';
 
 import { useClient, useTheme } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
@@ -10,7 +12,7 @@ import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import EmptyHome from '../../Components/Home/EmptyHome';
-import { useTranslation } from 'react-i18next';
+import { ESTIMATE_POSTS_ITEM_SIZE, ON_END_REACHED_THRESHOLD_POSTS } from '../../Services/constante';
 
 const FollowsPosts = () => {
 
@@ -44,33 +46,46 @@ const FollowsPosts = () => {
     start()
   }, [])
 
-  const bottomHandler = async () => {
-    setLoader(true)
-    if (loader) return;
-    const response = await client.posts.fetch(i18n.language, { pagination_key: pagination_key });
-    setLoader(false);
-    if (response.error || !response.data) return;
-    if (response.data.length < 1) return;
-    if (response.pagination_key) setPaginationKey(response.pagination_key);
-    dispatch(addMainTrends(response.data));
-  }
+  const onEndReached = async () => {
+    if (!loader && pagination_key) {
+      setLoader(true);
+      const response = await client.posts.fetch(i18n.language, { pagination_key });
+      if (response.data?.length) {
+        dispatch(addMainTrends(response.data));
+        setPaginationKey(response.pagination_key);
+      }
+      setLoader(false);
+    }
+  };
 
+  const MemoizedDisplayPosts = React.memo(
+    DisplayPosts,
+    (prev, next) =>
+      prev.informations.post_id === next.informations.post_id &&
+      prev.informations.created_at === next.informations.created_at
+  );
 
   const renderItem = useCallback(({ item }: { item: PostInterface.postResponseSchema }) => (
-    <DisplayPosts comments={false} informations={item} pined={undefined} is_comment={undefined} />
-  ), [])
-
-  const memoizedValue = useMemo(() => renderItem, [posts]);
+    <MemoizedDisplayPosts
+      key={`${item.post_id}-${item.created_at}`}
+      comments={false}
+      informations={item}
+    />
+  ), []);
 
   return (
-    <FlatList
-      removeClippedSubviews={true}
-      initialNumToRender={20}
+    <FlashList
+      estimatedItemSize={ESTIMATE_POSTS_ITEM_SIZE}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={ON_END_REACHED_THRESHOLD_POSTS}
+      overrideItemLayout={(layout) => {
+        layout.size = ESTIMATE_POSTS_ITEM_SIZE
+      }}
       data={posts}
-      renderItem={memoizedValue}
-      keyExtractor={item => item.post_id}
+      refreshing={loaderF}
+      keyExtractor={item => `${item.post_id}-${item.created_at}`}
+      renderItem={renderItem}
       ListFooterComponent={loader ? <Loader /> : undefined}
-      onScrollEndDrag={() => bottomHandler()}
       ListEmptyComponent={<EmptyHome />}
       refreshControl={<RefreshControl
         refreshing={loaderF}

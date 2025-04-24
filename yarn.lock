@@ -1524,6 +1524,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@d11/react-native-fast-image@npm:^8.9.2":
+  version: 8.9.2
+  resolution: "@d11/react-native-fast-image@npm:8.9.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 535e018df2affddd3bcb354949f60b5f42d1b303354e2e2d7667cbc63319a4fc82cceeca0308200601790f34b47cc84d89da420866aa10349f03508ac9671349
+  languageName: node
+  linkType: hard
+
 "@egjs/hammerjs@npm:^2.0.17":
   version: 2.0.17
   resolution: "@egjs/hammerjs@npm:2.0.17"
@@ -2994,6 +3004,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/netinfo@npm:^11.4.1":
+  version: 11.4.1
+  resolution: "@react-native-community/netinfo@npm:11.4.1"
+  peerDependencies:
+    react-native: ">=0.59"
+  checksum: d347ae522da6b8c045d6378754d4928bdf23cc85b74571b91fa8a03fa168bdac5e3c65eb97eac0dd0c7cbd20e782f99d41b090fb79ce7d815cbaf6fb5d1abe37
+  languageName: node
+  linkType: hard
+
 "@react-native-firebase/app@npm:^21.14.0":
   version: 21.14.0
   resolution: "@react-native-firebase/app@npm:21.14.0"
@@ -3588,6 +3607,20 @@ __metadata:
     react-redux:
       optional: true
   checksum: b30f8c4fba64d414879b50413a1ab96013aef6cac0a338f8472d1f2b7ae2763ab1606add7118aec04e8a727cc42f9c7b97714e09e33859781641d634d44c65ba
+  languageName: node
+  linkType: hard
+
+"@shopify/flash-list@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "@shopify/flash-list@npm:1.8.0"
+  dependencies:
+    recyclerlistview: 4.2.3
+    tslib: 2.8.1
+  peerDependencies:
+    "@babel/runtime": "*"
+    react: "*"
+    react-native: "*"
+  checksum: 0da268023823194ad2169cc3383ea296dec682dee49e31ca89542ed82d0b2de93e7e1de17acff3d77a9c05f0b053cb0670626323717f67c46a70d6f6f80a0037
   languageName: node
   linkType: hard
 
@@ -6249,6 +6282,7 @@ __metadata:
     "@babel/eslint-parser": ^7.27.0
     "@babel/preset-env": ^7.26.9
     "@babel/runtime": ^7.27.0
+    "@d11/react-native-fast-image": ^8.9.2
     "@flyerhq/react-native-keyboard-accessory-view": ^2.4.0
     "@flyerhq/react-native-link-preview": ^1.6.0
     "@notifee/react-native": ^9.1.8
@@ -6258,6 +6292,7 @@ __metadata:
     "@react-native-community/cli-platform-android": 15.1.3
     "@react-native-community/cli-platform-ios": 15.1.3
     "@react-native-community/geolocation": ^3.4.0
+    "@react-native-community/netinfo": ^11.4.1
     "@react-native-firebase/app": ^21.14.0
     "@react-native-firebase/messaging": ^21.14.0
     "@react-native/babel-preset": 0.76.9
@@ -6274,6 +6309,7 @@ __metadata:
     "@react-navigation/stack": ^7.2.10
     "@realm/react": ^0.11.0
     "@reduxjs/toolkit": ^2.6.1
+    "@shopify/flash-list": ^1.8.0
     "@stripe/stripe-react-native": ^0.41.0
     "@types/react": ^18.3.20
     "@types/react-native-vector-icons": ^6.4.18
@@ -6290,6 +6326,7 @@ __metadata:
     react-i18next: ^15.4.1
     react-native: 0.76.9
     react-native-add-calendar-event: ^5.0.0
+    react-native-android-location-enabler: ^2.0.1
     react-native-config: ^1.5.5
     react-native-date-picker: ^5.0.12
     react-native-device-info: ^14.0.4
@@ -8119,7 +8156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.debounce@npm:^4.0.8":
+"lodash.debounce@npm:4.0.8, lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
@@ -9658,7 +9695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:15.8.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -9846,6 +9883,16 @@ __metadata:
     expo:
       optional: true
   checksum: 28c12cd5435d12be2d368e8c7dc4e42e0418a5ba6ca59ca64426248fa257b4b4e130bc760f2e71b29bef189d2c336a1dba220d68d1f270ccdac6a5ab09d35c07
+  languageName: node
+  linkType: hard
+
+"react-native-android-location-enabler@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "react-native-android-location-enabler@npm:2.0.1"
+  peerDependencies:
+    react: ">= 18.2.0"
+    react-native: ">= 0.71.0"
+  checksum: 077d5367def5d9a4186701c8b8427911f631323db5b954ac9262abbf5af5260e6b64f193f45f7777fe59130c4d980e307298af34e81d4ae9331dba745ce06a92
   languageName: node
   linkType: hard
 
@@ -10429,6 +10476,20 @@ __metadata:
     source-map: ~0.6.1
     tslib: ^2.0.1
   checksum: 03cc7f57562238ba258d468be67bf7446ce7a707bc87a087891dad15afead46c36e9aaeedf2130e2ab5a465244a9c62bfd4127849761cf8f4085abe2f3e5f485
+  languageName: node
+  linkType: hard
+
+"recyclerlistview@npm:4.2.3":
+  version: 4.2.3
+  resolution: "recyclerlistview@npm:4.2.3"
+  dependencies:
+    lodash.debounce: 4.0.8
+    prop-types: 15.8.1
+    ts-object-utils: 0.0.5
+  peerDependencies:
+    react: ">= 15.2.1"
+    react-native: ">= 0.30.0"
+  checksum: 847c00bdc7e22178cc20b58b8da215fb2f3f69a4edffd41db97038d0f9eb1475340793e11025f6cc160d3452967ab5724db3896920ba77d2da5208276328254f
   languageName: node
   linkType: hard
 
@@ -11539,17 +11600,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-object-utils@npm:0.0.5":
+  version: 0.0.5
+  resolution: "ts-object-utils@npm:0.0.5"
+  checksum: 83c48fbdaba392fb2c01cea53b267ed5538d2bb44fc6c3eecc10bcfabc1780bfa6ec8569b52bbf0140d9b521d9049d5f15884e12286918244d463d854dbc73cb
+  languageName: node
+  linkType: hard
+
+"tslib@npm:2.8.1, tslib@npm:^2.0.1, tslib@npm:^2.1.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.0.1, tslib@npm:^2.1.0":
-  version: 2.8.1
-  resolution: "tslib@npm:2.8.1"
-  checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
   languageName: node
   linkType: hard
 

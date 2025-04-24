@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, View, StyleSheet, Keyboard } from 'react-native';
+import { ScrollView, View, StyleSheet, Keyboard, Platform } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
 
 import { full_width } from '../Style/style';
 import { useClient, useTheme } from '../Components/Container';
@@ -49,6 +50,35 @@ const MapScreen = () => {
 
   const start = useCallback(async () => {
     setLoadingCenter(true);
+    if(Platform.OS === "android") {
+      try {
+        const isEnabled = await isLocationEnabled();
+        if (!isEnabled) {
+          const result = await promptForEnableLocationIfNeeded();
+          if(result === "enabled") {
+            const position = await getCurrentLocation();
+            if (!position) return;
+            const crd = position.coords;
+            const new_location = {
+              latitude: crd.latitude,
+              longitude: crd.longitude,
+              latitudeDelta: 0.5,
+              longitudeDelta: 0.5,
+            }
+            centerMap({
+              init: true,
+              go_to: new_location,
+              duration: 0
+            })
+            setLocation(new_location);
+            setSearchLocation(new_location);
+            await updateUserLocation(new_location.longitude, new_location.latitude, false);
+          }
+        }
+      } catch (error) {
+        handleToast(t("errors.no_gps"));
+      }
+    }
     try {
       centerMap({
         init: true,
@@ -79,8 +109,6 @@ const MapScreen = () => {
         updateMapGolfs(init_location.longitude, init_location.latitude)
       ])
     } finally {
-      const gpsEnabled = await gpsActivated();
-      if (!gpsEnabled) handleToast(t("errors.no_gps"));
       setLoadingCenter(false);
     }
   }, [initLocation, t]);

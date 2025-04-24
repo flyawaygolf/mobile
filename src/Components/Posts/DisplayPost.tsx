@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { Button, Divider, Text, Card, Icon, Chip } from "react-native-paper";
@@ -99,6 +99,11 @@ const DisplayPosts: SectionProps = ({
         </View>
     )
 
+    const handlePostPress = useCallback((post_id: string) => {
+        navigation?.navigate("PostsStack", { screen: "PostScreen", params: { post_id: post_id } });
+      }, []);
+      
+
     return (
         <Card mode="contained" style={{
             borderRadius: 10,
@@ -112,7 +117,7 @@ const DisplayPosts: SectionProps = ({
                     no_bottom: no_bottom,
                     original_post_user: original_post_user
                 }}>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => comments ? null : navigation?.navigate("PostsStack", { screen: "PostScreen", params: { post_id: informations.post_id } })}>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => comments ? null : handlePostPress(informations.post_id)}>
                     {attached_post ? <DisplayPosts is_original_post={true} comments informations={attached_post} /> : typeof attached_post !== "undefined" && <Button>{t("posts.deleted_post")}</Button>}
 
                     {commentLoad && <Loader />}

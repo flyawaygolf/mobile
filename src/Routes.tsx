@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { onTokenRefresh } from "@react-native-firebase/messaging";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import { SplashScreen } from './Screens';
 import { DrawerNavigation, LoginNavigation } from './Navigator';
@@ -18,6 +19,7 @@ import { changeElementPlaceArray, getAppInfo } from './Services';
 import UpdateScreen from './Screens/UpdateScreen';
 import { messaging, requestNotificationPermission } from './Services/notifications';
 import { addNotificationFeed } from './Redux/NotificationFeed/action';
+import OfflineScreen from './Screens/OfflineScreen';
 
 const Stack = createStackNavigator();
 
@@ -93,17 +95,17 @@ function Routes() {
         <Stack.Navigator screenOptions={{ headerShown: false }} >
             {
                 updateRequire ? <Stack.Screen name="UpdateScreen" component={UpdateScreen} /> :
-                    state === "loading" || state === "switch_user" ? <Stack.Screen name="Splash" component={SplashScreen} />
-                        : state === "logout" ? <Stack.Screen name="LoginNavigator" component={LoginNavigation} />
-                            : state === "loged" && (
-                                <>
-                                    {
-                                        routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
-                                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                                        }} />)
-                                    }
-                                </>
-                            )
+                state === "loading" || state === "switch_user" ? <Stack.Screen name="Splash" component={SplashScreen} />
+                    : state === "logout" ? <Stack.Screen name="LoginNavigator" component={LoginNavigation} />
+                        : state === "loged" && (
+                            <>
+                                {
+                                    routes.map((r, index) => <Stack.Screen key={index} name={r.name} component={r.screen} options={{
+                                        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                                    }} />)
+                                }
+                            </>
+                        )
             }
         </Stack.Navigator>
     );

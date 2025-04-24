@@ -1,12 +1,13 @@
 import React from 'react';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Title, Caption, Drawer } from 'react-native-paper';
-import { View, StyleSheet, Image, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import globalStyles from '../../../Style/style';
 import useClient from '../Client/useClient';
 import useTheme from '../Theme/useTheme';
+import FastImage from '@d11/react-native-fast-image';
 
 export default function DrawerContent({ navigation }: DrawerContentComponentProps) {
 
@@ -27,12 +28,12 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
         <View style={{ height: 90, width: "100%" }}>
           {
             user?.banner ?
-              <Image style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}`, cache: "force-cache" }} />
+              <FastImage style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}` }} />
               : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} />
           }
         </View>
         <View style={{ paddingLeft: 5 }}>
-          <Image style={[globalStyles.pdp50, { marginTop: -30, backgroundColor: colors.bg_secondary }]} source={{ uri: `${client.user.avatar(user?.user_id, user?.avatar)}`, cache: "force-cache" }} />
+          <FastImage style={[globalStyles.pdp50, { marginTop: -30, backgroundColor: colors.bg_secondary }]} source={{ uri: `${client.user.avatar(user?.user_id, user?.avatar)}` }} />
           <Title style={{ marginTop: 5, fontWeight: 'bold' }}>{user?.username}</Title>
           <Caption style={styles.caption}>@{user?.nickname}</Caption>
         </View>

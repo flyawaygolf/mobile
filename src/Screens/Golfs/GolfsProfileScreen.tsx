@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Image, Linking, Platform, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Linking, Platform, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Button, Card, List, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,7 @@ import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import DisplayPost from '../../Components/Posts/DisplayPost';
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import EventCard from '../../Components/Events/EventCard';
+import FastImage from '@d11/react-native-fast-image';
 
 const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "GolfsProfileScreen">) => {
     const { golf_id } = route.params;
@@ -185,7 +186,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         (
             <>
                 <View style={{ height: 150, backgroundColor: colors.bg_secondary }}>
-                    <Image source={{ uri: `${cdnbaseurl}/golf_covers/${golfInfo.slug}/default.jpg`, cache: "force-cache" }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
+                    <FastImage source={{ uri: `${cdnbaseurl}/golf_covers/${golfInfo.slug}/default.jpg` }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
                 </View>
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                     <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
