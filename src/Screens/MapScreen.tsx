@@ -9,7 +9,7 @@ import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native
 
 import { full_width } from '../Style/style';
 import { useClient, useTheme } from '../Components/Container';
-import { getCurrentLocation, gpsActivated, handleToast, navigationProps } from '../Services';
+import { getCurrentLocation, handleToast, navigationProps } from '../Services';
 import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
 import { SearchBar } from '../Components/Elements/Input';
@@ -36,6 +36,7 @@ const MapScreen = () => {
   const [location, setLocation] = useState<locationType>(initLocation);
   const { top } = useSafeAreaInsets();
   const [query, setQuery] = useState<string>("");
+  const [lastQuery, setLastQuery] = useState<string>("");
   const [queryResult, setQueryResult] = useState<(userInfo | golfInterface)[]>([]);
   const [queryFilter, setQueryFilter] = useState<FilterType>("all");
   const [filter, setFilter] = useState<FilterType>("all");
@@ -161,7 +162,7 @@ const MapScreen = () => {
     return { widthMeters, heightMeters };
   }, []);
 
-  const searchAll = useCallback(async (long = location?.longitude, lat = location?.latitude) => {
+  const searchAll = useCallback(async (query: string, long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.all(query, {
       location: {
         long: long ?? 48.864716,
@@ -172,7 +173,7 @@ const MapScreen = () => {
     setQueryResult(response.data.result.items);
   }, [client, query, location, t]);
 
-  const searchGolfs = useCallback(async (long = location?.longitude, lat = location?.latitude) => {
+  const searchGolfs = useCallback(async (query: string, long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.golfs(query, {
       location: {
         long: long ?? 48.864716,
@@ -183,7 +184,7 @@ const MapScreen = () => {
     setQueryResult(response.data.golfs.items);
   }, [client, query, location, t]);
 
-  const searchUsers = useCallback(async (long = location?.longitude, lat = location?.latitude) => {
+  const searchUsers = useCallback(async (query: string, long = location?.longitude, lat = location?.latitude) => {
     const response = await client.search.users(query, {
       location: {
         long: long ?? 48.864716,
@@ -194,19 +195,16 @@ const MapScreen = () => {
     setQueryResult(response.data.users.items);
   }, [client, query, location, t]);
 
-  const debounceSearch = useCallback((filter: FilterType) => {
+  const debounceSearch =  async (filter: FilterType) => {
     setQueryFilter(filter);
-    const timeout = setTimeout(async () => {
-      if (filter === 'all') await searchAll();
-      else if (filter === 'golfs') await searchGolfs();
-      else if (filter === 'users') await searchUsers();
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [queryFilter]);
+    setLastQuery(query);
+      if (filter === 'all') await searchAll(query);
+      else if (filter === 'golfs') await searchGolfs(query);
+      else if (filter === 'users') await searchUsers(query);
+  };
 
   useEffect(() => {
-    if (query.length > 2) debounceSearch(queryFilter);
+    if (query.length > 2 && lastQuery !== query) debounceSearch(queryFilter);
   }, [query, debounceSearch]);
 
   const handleChipPress = useCallback(async (type: FilterType, options?: {
