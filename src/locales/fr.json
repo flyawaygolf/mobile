@@ -423,6 +423,7 @@
     },
     "subscription": {
         "ios_blocked": "Vous ne pouvez pas vous abonner à Premium dans l'application.",
+        "ios_login": "Abonnez-vous sur le site Web.",
 
         "fees": "Frais",
         "for_you": "Pour vous",

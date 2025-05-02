@@ -426,6 +426,7 @@
     },
     "subscription": {
         "ios_blocked": "You cannot upgrade to Premium in the app.",
+        "ios_login": "Subscribe via the website.",
 
         "fees": "Fees",
         "for_you": "For you",

@@ -7,6 +7,7 @@ import PremiumButtons from '../../Components/Settings/Settings/PremiumButtons';
 import { SubscriptionInterface } from '../../Services/Client/Managers/Interfaces';
 import { handleToast, navigationProps, openURL } from '../../Services';
 import { useNavigation } from '@react-navigation/native';
+import { websiteurl } from '../../Services/constante';
 
 export default function PremiumScreen() {
 
@@ -196,7 +197,7 @@ export default function PremiumScreen() {
                 }
                 <View style={{ marginBottom: 20 }}>
                 {
-                    Platform.OS === "ios" ? <Button>{t("subscription.ios_blocked")}</Button> : user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
+                    Platform.OS === "ios" ? <Button onPress={() => openURL(`${websiteurl}/account/login`)}>{t("subscription.ios_login")}</Button> : user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
                 }     
                 </View>    
             </ScrollView>
