@@ -133,6 +133,11 @@
         "leave_success": "You have successfully left the event",
         "owner": "Owner",
         "delete": "Delete",
+        "deleted": "Deleted",
+        "not_joinable": "Not joinable",
+        "share": "Share",
+        "share_post": "Share in a post",
+        "share_guild": "Share in a group",
 
         "no_joined_events": "No joined events at the moment; create or join an event to see it here",
         "from": "From",

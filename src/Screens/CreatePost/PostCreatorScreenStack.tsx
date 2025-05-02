@@ -23,6 +23,7 @@ import TextAreaAutoComplete from '../../Components/Posts/Creator/TextAreaAutoCom
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import { usertokenkey } from '../../Services/constante';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
+import DisplayEvent from '../../Components/Posts/Views/Components/DisplayEvent';
 
 export type postOptions = {
   paid: boolean;
@@ -31,11 +32,12 @@ export type postOptions = {
 
 const PostCreatorScreenStack = ({ route: { params } }: any) => {
 
-  const { attached_post, shared_post, initFiles, initContent } = params;
+  const { attached_post, shared_post, initFiles, initContent, attached_event, attached_golf } = params;
   const [content, SetContent] = useState(initContent ?? "");
   const [files, setFiles] = useState<Array<{ size: number, name: string, type: string, uri: string }>>([]);
   const [options, setOptions] = useState<postOptions>({
-    paid: false
+    paid: false,
+    golf: attached_golf ?? undefined
   })
   const [sending, setSending] = useState({
     send: false,
@@ -51,6 +53,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
   const memoizedFiles = useMemo(() => files, [files]);
 
   useEffect(() => {
+    if(!initFiles) return;
     if (Array.isArray(initFiles)) setFiles(initFiles);
     else setFiles([initFiles])
   }, [initFiles])
@@ -61,15 +64,16 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
       if (files.length < 1 && !shared_post) return handleToast(t(`errors.2001`))
     }
     if (content && content.length > advantages.textLength()) return handleToast(`errors.2001`);
-    if(files.length > 8) return handleToast(t(`errors.9002`))
-    if(files.length > 0 && files.reduce((acc, file) => acc + file.size, 0) > advantages.fileSize() * 1000000) return handleToast(t(`errors.9003`))
+    if (files.length > 8) return handleToast(t(`errors.9002`))
+    if (files.length > 0 && files.reduce((acc, file) => acc + file.size, 0) > advantages.fileSize() * 1000000) return handleToast(t(`errors.9003`))
 
     setSending({ send: true, progress: 0 })
 
     let data = {
       content: content ?? "",
       paid: options.paid,
-      golf_id: options.golf?.golf_id
+      golf_id: options.golf?.golf_id,
+      attached_event_id: attached_event?.event_id,
     };
 
     if (files.length > 0) {
@@ -183,6 +187,9 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
           <View style={styles.row}>{options.golf && <Chip icon="golf" onPress={() => setOptions({ ...options, golf: undefined })}>{options.golf.name} {options.golf.distance && `· ${formatDistance(options.golf.distance)}Km`}</Chip>}</View>
           <TextAreaAutoComplete autoFocus={true} value={content} maxLength={advantages.textLength()} setValue={(text) => SetContent(text)} />
           {shared_post && <DisplaySharedPost shared_post={shared_post} />}
+          {
+            attached_event && <DisplayEvent event={attached_event} />
+          }
         </ScrollView>
         <View style={{
           bottom: 0,

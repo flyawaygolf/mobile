@@ -21,19 +21,12 @@ export default function EventCard({ event, full_width }: SectionProps) {
     const navigation = useNavigation<navigationProps>();
 
     return (
-        <ShrinkEffect onPress={() => navigation.navigate("EventStack", { screen: "DisplayEventScreen", params: { event_id: event.event_id } })}>
-            <Card style={{ backgroundColor: colors.bg_secondary, margin: 5, width: full_width ? "auto" : 300 }}>
+        <ShrinkEffect onPress={() => event.deleted ? null : navigation.navigate("EventStack", { screen: "DisplayEventScreen", params: { event_id: event.event_id } })}>
+            <Card style={{ backgroundColor: event.deleted ? colors.bg_third : colors.bg_secondary, margin: 5, width: full_width ? "auto" : 300 }}>
                 <Card.Cover
                     style={{ backgroundColor: colors.good_color, marginBottom: 5, borderRadius: 0, borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
                     source={{ uri: `${cdnbaseurl}/golf_covers/${event?.golf_info.slug}/default.jpg`, cache: "force-cache" }} />
-                <View style={{ position: 'absolute', top: 10, right: 10, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    {
-                        event.joined && <Icon source='heart' color={colors.color_red} size={24} />
-                    }
-                    {
-                        event.favorites && <Icon source='account-star-outline' color={colors.color_yellow} size={24} />
-                    }
-                </View>
+
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <Title style={{ fontWeight: "bold" }} numberOfLines={1}>{event.title}</Title>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
@@ -55,9 +48,9 @@ export default function EventCard({ event, full_width }: SectionProps) {
                             <Text style={{ fontSize: 12 }}>{t("events.per_person")}</Text>
                         </View>
                         <Card.Actions>
-                            <Button>
-                                {t('events.display_more')}
-                            </Button>
+                            {
+                                event.deleted ? <Button textColor={colors.badge_color}>{t('events.deleted')}</Button> : <Button>{t('events.display_more')}</Button>
+                            }
                         </Card.Actions>
                     </View>
                 </View>

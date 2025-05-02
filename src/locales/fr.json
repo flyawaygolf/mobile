@@ -133,6 +133,11 @@
         "leave_success": "Vous avez quitté l'événement avec succès",
         "owner": "Propriétaire",
         "delete": "Supprimer",
+        "deleted": "Supprimé",
+        "not_joinable": "Non joignable",
+        "share": "Partager",
+        "share_post": "Partager dans un post",
+        "share_guild": "Partager dans un groupe",
 
         "no_joined_events": "Aucun événement rejoint pour le moment; créer ou rejoindre un événement pour le voir ici",
         "from": "A partir de",

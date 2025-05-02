@@ -21,6 +21,14 @@ export interface eventsInterface {
     guild_id: string;
     deleted: boolean;
     created_at: string;
+    joinable: boolean;
+}
+
+export interface postEventInterface {
+    event_id: string;
+    startDate: Date;
+    endDate: Date;
+    deleted: boolean;
 }
 
 export interface eventResponse extends requestResponseInterface<eventsInterface> {}

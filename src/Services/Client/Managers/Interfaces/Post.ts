@@ -1,4 +1,5 @@
 import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
+import { postEventInterface } from "./Events";
 import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, requestResponseInterface, userInfo } from "./Global"
 import { golfInterface } from "./Search";
 
@@ -15,6 +16,10 @@ export interface createPostParameters {
    * Use it to create a share
    */
   shared_post_id?: string;
+  /**
+   * Use it to attach a post to an event
+   */
+  attached_event_id?: string;
   content: string;
   attachments?: Array<attachments>;
   categories?: number[];
@@ -35,6 +40,9 @@ export interface createPostResponseInterface {
   type: postTypes;
   paid?: boolean;
   device?: string;
+  golf_id?: string;
+  golf_info?: golfInterface;
+  event_info?: postEventInterface;
   // poll?: pollInterface;
   // giveway?: givewayInterface;
   created_at: Date;
@@ -79,6 +87,7 @@ export interface postResponseSchema {
     paid: boolean;
     from: userInfo
   } | false;
+  event_info?: postEventInterface;
   display_not_allowed: boolean;
   paid?: boolean;
   bookmarks: number;
@@ -116,4 +125,4 @@ export interface searchParams {
 
 export interface originalTextResponse extends requestResponseInterface<{
   text: string
-}> {}
+}> { }

@@ -3,7 +3,7 @@ import { ImageBackground, Platform, ScrollView, Share, View } from 'react-native
 import { useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Chip, IconButton, Text } from 'react-native-paper';
+import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import dayjs from 'dayjs';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
@@ -12,7 +12,7 @@ import { check, PERMISSIONS, request } from 'react-native-permissions';
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import { handleToast, messageFormatDate, navigationProps } from '../../Services';
 import { full_height, full_width } from '../../Style/style';
-import { Loader } from '../../Other';
+import { BottomModal, Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
 import { cdnbaseurl, eventurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
@@ -29,6 +29,7 @@ export default function DisplayEventScreen({ route }: any) {
 
   const [eventInfo, setEventInfo] = useState<eventsInterface | undefined>(undefined);
   const [displayParcitipants, setDisplayParticipants] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
 
   const getInfo = async () => {
     if (!event_id) return;
@@ -58,6 +59,17 @@ export default function DisplayEventScreen({ route }: any) {
     if (response.error || !response.data) return handleToast(t(`errors.${response?.error?.code}`));
     handleToast(t(`errors.success`));
     navigation.goBack();
+  }
+
+  const shareEventToPost = (eventInfo: eventsInterface) => {
+    navigation.navigate("CreateStack", {
+      screen: "PostCreatorScreen",
+      params: {
+        attached_event: eventInfo,
+        attached_golf: eventInfo.golf_info,
+        initContent: `${eventInfo.title} : \n${eventInfo.description}`,
+      }
+    })
   }
 
   useEffect(() => {
@@ -105,6 +117,12 @@ export default function DisplayEventScreen({ route }: any) {
             {t('events.delete')}
           </Button>
         )
+      } else if (!eventInfo.joinable) {
+        return (
+          <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="block-helper">
+            {t('events.not_joinable')}
+          </Button>
+        )
       } else if (dayjs(new Date()).isAfter(eventInfo.start_date) && dayjs(new Date()).isBefore(eventInfo.end_date)) {
         return (
           <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="calendar-month">
@@ -136,19 +154,33 @@ export default function DisplayEventScreen({ route }: any) {
   return (
     <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/golf_covers/${eventInfo?.golf_info.slug}/default.jpg`, cache: "force-cache" }}>
       <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-        {eventInfo && <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />}
+        {eventInfo && (
+          <>
+            <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
+            <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
+              <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
+              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+              <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
+              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+              <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
+            </BottomModal>
+          </>
+        )}
+
       </View>
       <View style={{ position: "absolute", padding: 10, paddingTop: top + 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
         <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
-        <Button mode='contained'>{t("events.event")}</Button>
+        {
+          // <Button mode='contained'>{t("events.event")}</Button>
+        }
         {eventInfo ? (
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
+            <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
             {
               eventInfo.joined && (
                 <>
-                <IconButton mode='contained' icon="share-variant" onPress={() => onShare()} />
-                <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
+                  <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
                 </>
               )
             }

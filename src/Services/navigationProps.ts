@@ -13,6 +13,8 @@ import { BottomStackScreens } from '../Navigator/BottomNavigation';
 import { EventStackScreens } from '../Navigator/EventStack';
 import { SubscriptionInterface } from './Client/Managers/Interfaces';
 import { ScorecardStackScreens } from '../Navigator/ScorecardStack';
+import { eventsInterface } from './Client/Managers/Interfaces/Events';
+import { golfInterface } from './Client/Managers/Interfaces/Search';
 
 export type LoginRootParamList = {
     ForgotPassword: undefined;
@@ -120,7 +122,9 @@ export type RootStackParamList = {
                 name: string;
                 type: string;
                 uri: string;
-              }
+            },
+            attached_event?: eventsInterface;
+            attached_golf?: golfInterface;
         }
     };
     EventStack: {

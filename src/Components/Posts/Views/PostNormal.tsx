@@ -9,6 +9,7 @@ import DisplayEmbed from "./Components/DisplayEmbed";
 import Markdown from "../../Text/Markdown";
 import { SinglePostContext } from "../PostContext";
 import { PostInterface } from "../../../Services/Client/Managers/Interfaces/index";
+import DisplayEvent from "./Components/DisplayEvent";
 
 export type PostNormalContextInfo = PostInterface.postResponseSchema & {
     is_comment?: boolean;
@@ -27,8 +28,8 @@ function PostNormal({ maxLines }: { maxLines?: number }) {
     const { client, token } = useClient();
     const { t, i18n } = useTranslation();
     const { colors } = useTheme();
-    
-    const enableTranslation = (text_lang: string) => {        
+
+    const enableTranslation = (text_lang: string) => {
         if (i18n.language.startsWith(text_lang.toLocaleLowerCase())) return undefined;
         return i18n.language;
     }
@@ -36,14 +37,16 @@ function PostNormal({ maxLines }: { maxLines?: number }) {
     return (
         <>
             <View style={{ paddingLeft: 15 }}>
-                
-            {info?.original_post_user && <Text variant="labelMedium" style={{ color: colors.text_muted }} >{t("posts.reply_to", { username: info.original_post_user.username })}</Text>}
+                {info?.original_post_user && <Text variant="labelMedium" style={{ color: colors.text_muted }} >{t("posts.reply_to", { username: info.original_post_user.username })}</Text>}
                 {
                     info.display_not_allowed ?
                         <Button onPress={() => { }}>{t("posts.subscribe_to", { username: info.from.username })}</Button>
                         : <View style={{ marginTop: -15 }}><Markdown translate={info.content_language ? enableTranslation(info.content_language) : undefined} postInfo={info} maxLine={maxLines} token={token} content={info.content} /></View>
                 }
             </View>
+            {
+                info.event_info && <DisplayEvent event={info.event_info} />
+            }
             <View style={{
                 marginTop: 5,
                 borderRadius: 10,
