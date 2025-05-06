@@ -1,7 +1,7 @@
 {
   "name": "flyawaygolf",
-  "version": "2.18.0",
-  "version_number": 42,
+  "version": "2.18.2",
+  "version_number": 44,
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -53,6 +53,7 @@
     "react-native": "0.76.9",
     "react-native-add-calendar-event": "^5.0.0",
     "react-native-android-location-enabler": "^2.0.1",
+    "react-native-change-icon": "^5.0.0",
     "react-native-config": "^1.5.5",
     "react-native-date-picker": "^5.0.12",
     "react-native-device-info": "^14.0.4",

@@ -285,8 +285,16 @@
         "premium": "Premium",
         "autotranslate": "Auto-translate",
 
-        "app_icons": "App Icons",
+        "app_icon": "App Icon",
 
+        "advantages": "Advantages",
+        "better_markown": "Better Markdown",
+        "file_size": "File size",
+        "megabytes": "MB",
+        "text_length": "Text length",
+        "characters": "chars",
+
+        "premium_required": "Premium required",
         "settings": "Settings",
         "my_account": "My Account",
         "my_app": "My app",

@@ -40,6 +40,14 @@ class premiumAdvantagesClass {
         return false;
     }
 
+    changeAppIcon() {
+        if(this.type === 1) return true;
+        if(this.type === 2) return true;
+        if(this.type === 3) return true;
+        if(this.type === 4) return true;
+        return false;
+    }
+
     nftProfileFilesAllowed() {
         if(this.type === 1) return true;
         if(this.type === 2) return true;

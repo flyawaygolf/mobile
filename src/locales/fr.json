@@ -283,8 +283,16 @@
         "premium": "Premium",
         "autotranslate": "Traduction automatique",
 
-        "app_icons": "Icônes de l'application",
+        "app_icon": "Icône de l'application",
 
+        "advantages": "Avantages",
+        "better_markown": "Mise en forme avancée",
+        "file_size": "Taille de fichier",
+        "megabytes": "Mo",
+        "text_length": "Longueur de texte",
+        "characters": "car.",
+
+        "premium_required": "Premium requis",
         "settings": "Paramètres",
         "my_account": "Mon compte",
         "my_app": "Mon application",

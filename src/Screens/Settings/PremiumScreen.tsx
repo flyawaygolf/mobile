@@ -19,38 +19,44 @@ export default function PremiumScreen() {
         {
             icon: "file-plus",
             title: "premium.heavier_files_title",
-            description: "premium.heavier_files_description"
+            description: "premium.heavier_files_description",
+            soon: false
         },
         {
             icon: "card-text",
             title: "premium.more_text_title",
-            description: "premium.more_text_description"
+            description: "premium.more_text_description",
+            soon: false
         },
         {
             icon: "translate",
             title: "premium.automatic_translate_title",
-            description: "premium.automatic_translate_description"
+            description: "premium.automatic_translate_description",
+            soon: false
         },
         {
             icon: "eye",
             title: "premium.view_post_impressions_title",
-            description: "premium.view_post_impressions_description"
+            description: "premium.view_post_impressions_description",
+            soon: false
         },
         {
             icon: "format-line-style",
             title: "premium.better_markdown_title",
-            description: "premium.better_markdown_description"
+            description: "premium.better_markdown_description",
+            soon: false
         },
         {
             icon: "star-shooting",
             title: "premium.premium_badge_title",
-            description: "premium.premium_badge_description"
+            description: "premium.premium_badge_description",
+            soon: false
         },
         {
             icon: "apps",
             title: "premium.app_icon_title",
             description: "premium.app_icon_description",
-            soon: true
+            soon: false
         },
         {
             icon: "map-marker-radius",
@@ -92,7 +98,7 @@ export default function PremiumScreen() {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
-    const [subscriptions, setSubscriptions] = useState<SubscriptionInterface.getSubscriptionsResponseInterface[]| undefined>(undefined);
+    const [subscriptions, setSubscriptions] = useState<SubscriptionInterface.getSubscriptionsResponseInterface[] | undefined>(undefined);
     const [subscriptionType, setSubscriptionType] = useState<SubscriptionInterface.intervalType>("year");
 
     const hideDialog = () => setVisible(false);
@@ -118,7 +124,7 @@ export default function PremiumScreen() {
     }
 
     const getSubscriptions = async () => {
-        const request = await client.subscription.fetch();        
+        const request = await client.subscription.fetch();
         const response = request.data;
         if (response) return setSubscriptions(response.sort((a, b) => a.price - b.price))
     }
@@ -128,9 +134,9 @@ export default function PremiumScreen() {
     }, [])
 
     const openCheckOutPage = async () => {
-        if(!subscriptions) return;
+        if (!subscriptions) return;
         const find_sub = subscriptions.find(s => s.interval === subscriptionType);
-        if(!find_sub) return;
+        if (!find_sub) return;
         setLoading(true)
         hideDialog()
         setLoading(false)
@@ -196,10 +202,12 @@ export default function PremiumScreen() {
                     })
                 }
                 <View style={{ marginBottom: 20 }}>
-                {
-                    Platform.OS === "ios" ? <Button onPress={() => openURL(`${websiteurl}/account/login`)}>{t("subscription.ios_login")}</Button> : user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
-                }     
-                </View>    
+                    {
+                        Platform.OS === "ios" ?
+                            <Button mode='contained' onPress={() => openURL(`${websiteurl}/account/login`)}>{t("subscription.ios_login")}</Button>
+                            : user.premium_type !== 0 ? <Button mode='contained' style={{ marginTop: 10 }} loading={loading} focusable={!loading} onPress={() => openDashboardPage()}>{t("subscription.dashboard")}</Button> : <Button mode='contained' style={{ marginTop: 10 }} onPress={() => showDialog()}>{t("subscription.subscribe")}</Button>
+                    }
+                </View>
             </ScrollView>
         </SettingsContainer>
     )

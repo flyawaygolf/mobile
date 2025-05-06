@@ -6327,6 +6327,7 @@ __metadata:
     react-native: 0.76.9
     react-native-add-calendar-event: ^5.0.0
     react-native-android-location-enabler: ^2.0.1
+    react-native-change-icon: ^5.0.0
     react-native-config: ^1.5.5
     react-native-date-picker: ^5.0.12
     react-native-device-info: ^14.0.4
@@ -9902,6 +9903,15 @@ __metadata:
   dependencies:
     prop-types: ^15.7.2
   checksum: eb35821de36ae4eb00f97d99fc22ed79bd017248092ff1299f9d46a7ab946de16d2e6d6bfbf4cab5ef77d0d3bf47684aec761a7670ec7d36aae8d77ab8ddd171
+  languageName: node
+  linkType: hard
+
+"react-native-change-icon@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "react-native-change-icon@npm:5.0.0"
+  peerDependencies:
+    react-native: "*"
+  checksum: d319990c025c8b7b3ff73f949c2c070e5144471301f1c544fa0979d55e3939b0f7ba9856649d9a79ab1961791c9eca911cd740cbfd806214d5d88940a04a2b33
   languageName: node
   linkType: hard
 
