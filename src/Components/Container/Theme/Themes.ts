@@ -6,7 +6,7 @@ export const WhiteTheme = {
     colors: {
         bg_primary: "#fafafa",
         bg_primary_opacity: "#D9D9D9",
-        bg_secondary: Platform.OS === "android" ? "#EAEAEA" : "#C8CACA",
+        bg_secondary: Platform.OS === "android" ? "#EAEAEA" : "#EAEAEA", // "#C8CACA",
         bg_third: "#989898",
         text_normal: "#181818",
         text_normal_hover: "#858585",

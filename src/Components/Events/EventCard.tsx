@@ -1,6 +1,6 @@
 import { Button, Card, Icon, Text, Title } from "react-native-paper";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
-import { View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { messageFormatDate, navigationProps } from "../../Services";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../Container";
@@ -23,10 +23,12 @@ export default function EventCard({ event, full_width }: SectionProps) {
     return (
         <ShrinkEffect onPress={() => event.deleted ? null : navigation.navigate("EventStack", { screen: "DisplayEventScreen", params: { event_id: event.event_id } })}>
             <Card style={{ backgroundColor: event.deleted ? colors.bg_third : colors.bg_secondary, margin: 5, width: full_width ? "auto" : 300 }}>
-                <Card.Cover
-                    style={{ backgroundColor: colors.good_color, marginBottom: 5, borderRadius: 0, borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
+                <View style={{ width: "100%", height: 150, borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", position: "relative" }}>
+                <Image
+                    resizeMode="cover"
+                    style={{ backgroundColor: colors.good_color, ...StyleSheet.absoluteFillObject }}
                     source={{ uri: `${cdnbaseurl}/golf_covers/${event?.golf_info.slug}/default.jpg`, cache: "force-cache" }} />
-
+                </View>
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <Title style={{ fontWeight: "bold" }} numberOfLines={1}>{event.title}</Title>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>

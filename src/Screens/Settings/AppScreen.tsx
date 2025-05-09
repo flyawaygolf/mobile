@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
+import { FlatList, ScrollView, TouchableOpacity, View , Platform} from 'react-native';
 import { changeIcon, resetIcon } from 'react-native-change-icon';
 import { Checkbox, Divider, Icon, Text } from 'react-native-paper';
 import { useClient, useTheme } from '../../Components/Container';
@@ -75,15 +75,25 @@ export default function AppScreen() {
 
     const icons: string[] = [
         "Default",
+        "Black",
+        "BlueGreen",
         "Pink",
-        "Orange",
         "Green",
-        "Black"
+        "Orange"
     ]
 
     useEffect(() => {
         setPremiumSettings(getStorageInfo("settings") as settingsStorageI)
     }, [])
+
+    const getIconUrl = (iconName: string) => {
+        if (Platform.OS === 'android') {
+          return `@mipmap/ic_launcher${iconName === "Default" ? "" : `_${iconName.toLowerCase()}`}`;
+        } else {
+          // Pour iOS, utilisez un chemin vers vos assets ou une URL CDN
+          return `${cdnbaseurl}/assets/icons/app_icons/${iconName.toLowerCase()}.png`;
+        }
+      };
 
     return (
         <SettingsContainer title={t("settings.app")}>
@@ -186,7 +196,7 @@ export default function AppScreen() {
                                     }
                                 }}
                             >
-                                <Avatar size={50} url={`@mipmap/ic_launcher${item === "Default" ? "" : `_` + item.toLowerCase()}`} />
+                                <Avatar size={50} url={getIconUrl(item)} />
                             </ShrinkEffect>
                         )}
                         keyExtractor={(item) => item}
@@ -199,6 +209,7 @@ export default function AppScreen() {
                     </View>
                     <Checkbox.Item
                         disabled={advantages.translatePosts() ? false : true}
+                        mode='android'
                         label={t("settings.autotranslate")}
                         status={premiumSettings?.auto_translate ? 'checked' : 'unchecked'}
                         onPress={() => changeStorage("autotranslate", !premiumSettings?.auto_translate ? "true" : "false")}

@@ -122,6 +122,15 @@
 					<string>AppIconLight</string>
 				</array>
 			</dict>
+			<key>BlueGreen</key>
+			<dict>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AppIconLight</string>
+				</array>
+			</dict>
 		</dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
