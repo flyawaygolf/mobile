@@ -117,7 +117,7 @@ const MapScreen = () => {
   }, [isInputFocused]);
 
   const updateUserLocation = useCallback(async (long = location?.longitude, lat = location?.latitude, toast = true) => {
-    const request = await client.user.editLocation([long ?? 48.864716, lat ?? 2.349014]);
+    const request = await client.user.editLocation([long ?? 0, lat ?? 0]);
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     setValue({ ...allClient, user: { ...user, golf_info: { ...user.golf_info, location: [long, lat] } }, location: location });
     return toast && handleToast(t(`commons.success`));
