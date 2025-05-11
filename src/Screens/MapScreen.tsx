@@ -49,66 +49,64 @@ const MapScreen = () => {
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
+  const getAndSetLocation = async () => {
+    const position = await getCurrentLocation();
+    if (!position) return null;
+    const crd = position.coords;
+    const new_location = {
+      latitude: crd.latitude,
+      longitude: crd.longitude,
+      latitudeDelta: 0.5,
+      longitudeDelta: 0.5,
+    };
+    centerMap({ init: true, go_to: new_location, duration: 0 });
+    setLocation(new_location);
+    setSearchLocation(new_location);
+    await updateUserLocation(new_location.longitude, new_location.latitude, false);
+    return new_location;
+  };
+
   const start = useCallback(async () => {
     setLoadingCenter(true);
-    if(Platform.OS === "android") {
-      try {
+    let currentLocation = null;
+
+    try {
+      if (Platform.OS === "android") {
         const isEnabled = await isLocationEnabled();
         if (!isEnabled) {
           const result = await promptForEnableLocationIfNeeded();
-          if(result === "enabled") {
-            const position = await getCurrentLocation();
-            if (!position) return;
-            const crd = position.coords;
-            const new_location = {
-              latitude: crd.latitude,
-              longitude: crd.longitude,
-              latitudeDelta: 0.5,
-              longitudeDelta: 0.5,
-            }
-            centerMap({
-              init: true,
-              go_to: new_location,
-              duration: 0
-            })
-            setLocation(new_location);
-            setSearchLocation(new_location);
-            await updateUserLocation(new_location.longitude, new_location.latitude, false);
+          if (result === "enabled") {
+            currentLocation = await getAndSetLocation();
           }
+        } else {
+          currentLocation = await getAndSetLocation();
         }
-      } catch (error) {
-        handleToast(t("errors.no_gps"));
+      } else {
+        currentLocation = await getAndSetLocation();
       }
+    } catch (error) {
+      handleToast(t("errors.no_gps"));
     }
+
     try {
-      centerMap({
-        init: true,
-        go_to: initLocation,
-        duration: 0
-      })
-      setLocation(initLocation);
-      setSearchLocation(initLocation);
+      const loc = currentLocation || initLocation;
       await Promise.all([
-        updateMapUsers(initLocation.longitude, initLocation.latitude),
-        updateMapGolfs(initLocation.longitude, initLocation.latitude)
-      ])
+        updateMapUsers(loc.longitude, loc.latitude),
+        updateMapGolfs(loc.longitude, loc.latitude)
+      ]);
     } catch (error) {
       const init_location = {
         latitude: initLocation.latitude,
         longitude: initLocation.longitude,
         latitudeDelta: 0.5,
         longitudeDelta: 0.5,
-      }
-      centerMap({
-        init: true,
-        go_to: init_location,
-        duration: 0
-      })
+      };
+      centerMap({ init: true, go_to: init_location, duration: 0 });
       setSearchLocation(init_location);
       await Promise.all([
         updateMapUsers(init_location.longitude, init_location.latitude),
         updateMapGolfs(init_location.longitude, init_location.latitude)
-      ])
+      ]);
     } finally {
       setLoadingCenter(false);
     }
@@ -195,12 +193,12 @@ const MapScreen = () => {
     setQueryResult(response.data.users.items);
   }, [client, query, location, t]);
 
-  const debounceSearch =  async (filter: FilterType) => {
+  const debounceSearch = async (filter: FilterType) => {
     setQueryFilter(filter);
     setLastQuery(query);
-      if (filter === 'all') await searchAll(query);
-      else if (filter === 'golfs') await searchGolfs(query);
-      else if (filter === 'users') await searchUsers(query);
+    if (filter === 'all') await searchAll(query);
+    else if (filter === 'golfs') await searchGolfs(query);
+    else if (filter === 'users') await searchUsers(query);
   };
 
   useEffect(() => {
@@ -401,16 +399,13 @@ const MapScreen = () => {
   }), [golfs, searchLocation, navigation]);
 
   const debouncedRegionChange = useCallback((region: locationType) => {
-    const timeout = setTimeout(() => {
-      const { widthMeters, heightMeters } = calculateMapSize(region);
-      setSearchLocation({
-        ...region,
-        heigth: heightMeters,
-        width: widthMeters,
-      });
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [setSearchLocation, calculateMapSize]);
+    const { widthMeters, heightMeters } = calculateMapSize(region);
+    setSearchLocation({
+      ...region,
+      heigth: heightMeters,
+      width: widthMeters,
+    });
+  }, [setSearchLocation]);
 
   return (
     <View style={[styles.globalView]}>
