@@ -16,7 +16,7 @@ export default function CreatorImageDisplay({ uri, index, deleteImage }: Section
   
   return (
     <>
-      <IconButton onPress={() => deleteImage(index)} icon="close-circle" style={{ position: "absolute", right: 0, zIndex: 2 }} />
+      <IconButton onPress={() => deleteImage(index)} mode='contained' icon="close-circle" style={{ position: "absolute", right: 0, zIndex: 2 }} />
       <Button icon="image" style={{ position: "absolute", bottom: 0, left: 0, zIndex: 3 }}>{index + 1}/8</Button>
       <Image style={{
         width: 100,

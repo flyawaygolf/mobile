@@ -1,19 +1,21 @@
 import React from 'react';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Title, Caption, Drawer } from 'react-native-paper';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import FastImage from '@d11/react-native-fast-image';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import globalStyles from '../../../Style/style';
 import useClient from '../Client/useClient';
 import useTheme from '../Theme/useTheme';
-import FastImage from '@d11/react-native-fast-image';
 
 export default function DrawerContent({ navigation }: DrawerContentComponentProps) {
 
   const { user, client } = useClient();
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   return (
     <DrawerContentScrollView
@@ -22,17 +24,23 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
       bouncesZoom={false}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between', marginLeft: Platform.OS === "android" ? -10 : -5, marginTop: -5 }}
-      style={{ flex: 1, backgroundColor: colors.bg_secondary, marginTop: -5 }}>
+      contentContainerStyle={{
+        flex: 1, flexDirection: 'column', justifyContent: 'space-between',
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingStart: insets.left,
+        paddingEnd: insets.right,
+      }}
+      style={{ flex: 1, backgroundColor: colors.bg_secondary }}>
       <View>
-        <View style={{ height: 90, width: "100%" }}>
+        <View style={{ height: 90 }}>
           {
             user?.banner ?
-              <FastImage style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}` }} />
-              : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color, marginLeft: Platform.OS === "android" ? -5 : undefined, marginTop: -5 }]} />
+              <FastImage style={[globalStyles.banner_image_drawer, { backgroundColor: colors.bg_secondary }]} source={{ uri: `${client.user.banner(user.user_id, user.banner)}` }} />
+              : <View style={[globalStyles.banner_image, { backgroundColor: user.accent_color }]} />
           }
         </View>
-        <View style={{ paddingLeft: 5 }}>
+        <View style={{ padding: 12 }}>
           <FastImage style={[globalStyles.pdp50, { marginTop: -30, backgroundColor: colors.bg_secondary }]} source={{ uri: `${client.user.avatar(user?.user_id, user?.avatar)}` }} />
           <Title style={{ marginTop: 5, fontWeight: 'bold' }}>{user?.username}</Title>
           <Caption style={styles.caption}>@{user?.nickname}</Caption>

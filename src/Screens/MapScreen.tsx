@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View, StyleSheet, Keyboard, Platform } from 'react-native';
-import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { MapType, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -398,14 +398,14 @@ const MapScreen = () => {
     )
   }), [golfs, searchLocation, navigation]);
 
-  const debouncedRegionChange = useCallback((region: locationType) => {
-    const { widthMeters, heightMeters } = calculateMapSize(region);
+  const debouncedRegionChange = (region: Region) => {
+    const { widthMeters, heightMeters } = calculateMapSize(region);    
     setSearchLocation({
       ...region,
       heigth: heightMeters,
       width: widthMeters,
     });
-  }, [setSearchLocation]);
+  };
 
   return (
     <View style={[styles.globalView]}>
@@ -460,7 +460,7 @@ const MapScreen = () => {
         ref={mapRef}
         initialRegion={location}
         onMapReady={() => start()}
-        onRegionChange={debouncedRegionChange}
+        onRegionChangeComplete={(props) => debouncedRegionChange(props)}
         onUserLocationChange={(event) => setLocation({
           ...location,
           latitude: event.nativeEvent.coordinate?.latitude ?? location.latitude,

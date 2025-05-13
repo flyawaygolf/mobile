@@ -26,8 +26,8 @@ export interface eventsInterface {
 
 export interface postEventInterface {
     event_id: string;
-    startDate: Date;
-    endDate: Date;
+    start_date: Date;
+    end_date: Date;
     deleted: boolean;
 }
 

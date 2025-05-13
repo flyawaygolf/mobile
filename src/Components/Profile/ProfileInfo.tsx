@@ -8,11 +8,11 @@ import { handleToast, navigationProps } from "../../Services";
 import { Avatar } from "../Member";
 import { useClient, useProfile, useTheme } from "../Container";
 import { displayHCP } from "../../Services/handicapNumbers";
-import { full_width } from "../../Style/style";
 import { addGuildList } from "../../Redux/guildList/action";
 import { profileInformationsInterface } from "../../Services/Client/Managers/Interfaces/User";
 import { userFlags } from '../../Services/Client';
 import { ShrinkEffect } from '../Effects';
+import FastImage from '@d11/react-native-fast-image';
 
 type ProfileInfoProps = {
     navigation: navigationProps;
@@ -62,11 +62,15 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
     const showBadgeName = (badge: string) => {
         handleToast(t(`badges.${badge}`));
     }
-    
+
     return (
         <Animated.View>
             <View style={{ height: 125 }}>
-                <View style={[styles.banner_image, { backgroundColor: user_info.accent_color }]} />
+                <View style={[styles.banner_image]}>
+                    {
+                        user_info.banner ? <FastImage style={[styles.banner_image, { backgroundColor: user_info.accent_color }]} source={{ uri: `${client.user.banner(user_info.user_id, user_info.banner)}` }} /> : <View style={[styles.banner_image, { backgroundColor: user_info.accent_color }]} />
+                    }
+                </View>
             </View>
             <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                 <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
@@ -84,11 +88,11 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                     />
                     <Badge size={20} style={{ marginLeft: -30 }}>{displayHCP(user_info.golf_info.handicap)}</Badge>
                     <View style={{ marginLeft: 10, marginTop: 5, flexDirection: "row", alignItems: "center", gap: 5 }}>
-                    { flags.has(userFlags.FLYAWAY_EMPLOYEE) && <ShrinkEffect onPress={() => showBadgeName("FLYAWAY_EMPLOYEE")}><Text><Icon source="shield-check" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
-                    { flags.has(userFlags.EARLY_SUPPORTER) && <ShrinkEffect onPress={() => showBadgeName("EARLY_SUPPORTER")}><Text><Icon source="account-star" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
-                    { user_info.premium_type > 0 && <ShrinkEffect onPress={() => showBadgeName("PREMIUM_USER")}><Text><Icon source="star-shooting" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
-                    { flags.has(userFlags.VERIFIED_USER) && <ShrinkEffect onPress={() => showBadgeName("VERIFIED_USER")}><Text><Icon source="check-decagram" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
-                    { flags.has(userFlags.FLYAWAY_PARTNER) && <ShrinkEffect onPress={() => showBadgeName("FLYAWAY_PARTNER")}><Text><Icon source="infinity" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                        {flags.has(userFlags.FLYAWAY_EMPLOYEE) && <ShrinkEffect onPress={() => showBadgeName("FLYAWAY_EMPLOYEE")}><Text><Icon source="shield-check" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                        {flags.has(userFlags.EARLY_SUPPORTER) && <ShrinkEffect onPress={() => showBadgeName("EARLY_SUPPORTER")}><Text><Icon source="account-star" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                        {user_info.premium_type > 0 && <ShrinkEffect onPress={() => showBadgeName("PREMIUM_USER")}><Text><Icon source="star-shooting" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                        {flags.has(userFlags.VERIFIED_USER) && <ShrinkEffect onPress={() => showBadgeName("VERIFIED_USER")}><Text><Icon source="check-decagram" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
+                        {flags.has(userFlags.FLYAWAY_PARTNER) && <ShrinkEffect onPress={() => showBadgeName("FLYAWAY_PARTNER")}><Text><Icon source="infinity" color={colors.fa_primary} size={18} /></Text></ShrinkEffect>}
                     </View>
                 </View>
                 <View style={{ position: "absolute", right: 5, flexDirection: "row", alignItems: "center" }}>
@@ -111,7 +115,7 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                     title={user_info.username}
                     subtitle={`@${user_info.nickname}`}
                 />
-                
+
             </Card>
             <Card style={{ margin: 5 }} mode="contained">
                 <Card.Content>
@@ -144,8 +148,8 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
 
 const styles = StyleSheet.create({
     banner_image: {
-        width: full_width,
-        height: "100%",
+        width: "100%",
+        height: '100%',
         ...StyleSheet.absoluteFillObject,
     },
     column: {

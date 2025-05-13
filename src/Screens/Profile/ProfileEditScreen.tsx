@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Appbar, Text, TextInput, ProgressBar, IconButton, Button, SegmentedButtons } from "react-native-paper";
 import { useRealm } from "@realm/react";
 import { AxiosRequestConfig } from "axios";
+import FastImage from "@d11/react-native-fast-image";
 
 import useTheme from "../../Components/Container/Theme/useTheme";
 import { useClient } from "../../Components/Container";
@@ -36,7 +37,8 @@ export interface modifI {
         player_status: number;
         location?: [number, number];
     },
-    avatar?: fileI
+    avatar?: fileI,
+    banner?: fileI
 }
 
 function ProfileEditScreen() {
@@ -62,11 +64,14 @@ function ProfileEditScreen() {
             player_status: user.golf_info?.player_status ?? 0,
             location: user.golf_info?.location ?? [0, 0],
         },
-    });
+    });    
+    
     const [profilePictures, setProfilePicture] = useState<{
-        avatar: string
+        avatar: string;
+        banner?: string;
     }>({
         avatar: `${client.user.avatar(user.user_id, user.avatar)}`,
+        banner: `${client.user.banner(user.user_id, user?.banner ?? "")}`
     });
 
     const [sending, setSending] = useState({
@@ -95,8 +100,13 @@ function ProfileEditScreen() {
             uri: res.path,
         }
 
-        setModif({ ...modif, avatar: file })
-        setProfilePicture({ ...profilePictures, avatar: file.uri })
+        if (target === "banner") {
+            setModif({ ...modif, banner: file })
+            setProfilePicture({ ...profilePictures, banner: file.uri })
+        } else {
+            setModif({ ...modif, avatar: file })
+            setProfilePicture({ ...profilePictures, avatar: file.uri })
+        }
 
         return;
     }
@@ -104,7 +114,6 @@ function ProfileEditScreen() {
     const send_info = async () => {
 
         if (sending.send) return;
-
         let data: modifI = {
             ...modif,
             description: modif.description ? modif.description.substring(0, 120) : "",
@@ -143,6 +152,34 @@ function ProfileEditScreen() {
             data = { ...data, avatar: response.data };
         }
 
+        if (data?.banner) {
+            var formdata = new FormData();
+
+            formdata.append("banner", modif.banner);
+
+            var config: AxiosRequestConfig = {
+                headers: {
+                    'content-type': 'multipart/form-data',
+                    [usertokenkey]: token,
+                },
+                onUploadProgress: function (progressEvent) {
+                    const total = progressEvent?.total ?? 1;
+                    let percentCompleted = Math.round((progressEvent.loaded * 100) / total);
+                    setSending({ send: true, progress: percentCompleted })
+                },
+            }
+
+            const request = await axiosInstance.post(`/files/upload?type=banner`, formdata, config);
+            const response = request.data;
+            if (response?.error) {
+                setSending({ send: false, progress: 0 });
+                return handleToast(t(`errors.${response.error.code}`));
+            }
+
+            data = { ...data, banner: response.data };
+
+        }
+
         setSending({ send: true, progress: 100 });
 
         const response = await client.user.edit(data);
@@ -173,6 +210,16 @@ function ProfileEditScreen() {
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
                     <View>
                         <View style={[{ padding: 5 }]}>
+                            <View style={{ height: 100, marginBottom: 5 }}>
+                                <View style={[styles.banner_image]}>
+                                    {
+                                        user.banner || modif.banner ? <FastImage style={[styles.banner_image, { backgroundColor: user.accent_color }]} source={{ uri: `${profilePictures.banner}` }} /> : <View style={[styles.banner_image, { backgroundColor: user.accent_color }]} />
+                                    }
+                                </View>
+                            </View>
+                            <Button style={{ marginBottom: 10 }} mode="contained" onPress={() => changePictures("banner")}>
+                                {t("profile.edit_banner")}
+                            </Button>
                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginLeft: 10, marginBottom: 5 }}>
                                 <Avatar style={{ marginRight: 20 }} size={64} url={profilePictures.avatar} />
                                 <Button mode="contained" onPress={() => changePictures("avatar")}>{t("profile.edit_pfp")}</Button>
@@ -261,6 +308,11 @@ const styles = StyleSheet.create({
         minHeight: 60,
         marginTop: 5,
         margin: 10,
+    },
+    banner_image: {
+        width: "100%",
+        height: "100%",
+        ...StyleSheet.absoluteFillObject,
     },
 })
 

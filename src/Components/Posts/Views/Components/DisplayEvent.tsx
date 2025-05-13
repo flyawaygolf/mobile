@@ -28,11 +28,11 @@ export default function DisplayEvent({ event }: displayEmbedType) {
                 <View style={{ padding: 10, flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 10, gap: 5 }}>
                         <Icon source="calendar-month" size={20} />
-                        <Text variant="labelMedium">{dayjs(event.startDate).format("dddd, LL")}</Text>
+                        <Text variant="labelMedium">{dayjs(event.start_date).format("dddd, LL")}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 10, gap: 5 }}>
                         <Icon source="clock" size={20} />
-                        <Text variant="labelMedium">{dayjs(event.startDate).format("LT")} Tee Time</Text>
+                        <Text variant="labelMedium">{dayjs(event.start_date).format("LT")} Tee Time</Text>
                     </View>
                 </View>
             </ShrinkEffect>
