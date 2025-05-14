@@ -241,7 +241,7 @@ function ProfileEditScreen() {
                             <TextInput
                                 label={`${t("profile.bio", { length: modif?.description?.length ?? 0 })}`}
                                 style={[{ backgroundColor: colors.bg_primary }, styles.inputStyle]}
-                                multiline
+                                multiline={true}
                                 maxLength={120}
                                 returnKeyType="next"
                                 value={modif.description}
