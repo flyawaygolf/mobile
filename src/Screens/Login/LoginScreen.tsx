@@ -93,6 +93,10 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
   return (
     <LoginContainer>
       <View style={style.section} />
+      <View style={{ flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ fontWeight: "bold" }} variant='headlineMedium'>{t("login.welcome")}</Text>
+        <Text variant='headlineMedium'>{t("login.glad_to_see_you")}</Text>
+      </View>
       <Text style={{ color: error.error ? colors.warning_color : colors.color_green, textAlign: "center", marginBottom: 10 }}>{error.response}</Text>
       <View style={style.section}>
         <TextInput
@@ -112,7 +116,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
         {
           !showCode && (
             <>
-              { loadingSendCode ? <Loader /> : <NormalButton onPress={() => sendCode()} text={t("login.send_email")} /> }
+              {loadingSendCode ? <Loader /> : <NormalButton onPress={() => sendCode()} text={t("login.send_email")} />}
             </>
           )
         }

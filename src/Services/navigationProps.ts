@@ -17,6 +17,7 @@ import { eventsInterface } from './Client/Managers/Interfaces/Events';
 import { golfInterface } from './Client/Managers/Interfaces/Search';
 
 export type LoginRootParamList = {
+    WelcomeScreen: undefined;
     ForgotPassword: undefined;
     LoginScreen: undefined;
     RegisterEmailUsername: undefined;

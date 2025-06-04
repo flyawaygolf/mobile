@@ -205,11 +205,10 @@
     },
     "badges": {
         "FLYAWAY_EMPLOYEE": "FlyAway Employee",
-        "EARLY_SUPPORTER": "Early Supporter", 
+        "EARLY_SUPPORTER": "Early Supporter",
         "PREMIUM_USER": "Premium User",
         "VERIFIED_USER": "Verified User",
         "FLYAWAY_PARTNER": "FlyAway Partner",
-        
         "CERTIFIED_MODERATOR": "Certified Moderator",
         "CERTIFIED_USER": "Certified User",
         "PRIVATE_USER": "Private User"
@@ -244,6 +243,12 @@
     },
     "login": {
         "connect": "Login",
+        "welcome": "Welcome,",
+        "glad_to_see_you": "Glad to see you again",
+        "create_account": "Create an account",
+        "to_get_started_now": "to get started now !",
+        "choose_password": "Choose a password",
+        "last_step": "Ready to play ?",
         "send_email": "Send verification email",
         "code": "Verification Code",
         "already_account": "Already have an account?",
@@ -652,7 +657,7 @@
         "16008": "(4) You cannot create an event with a handicap lower than required",
         "16009": "(5) You cannot create an event with a handicap higher than required",
         "16010": "(1) Event is full",
-        "16011": "(6) Event is private", 
+        "16011": "(6) Event is private",
         "16012": "(3) Event has no guild",
         "16013": "(2) You need to be a part of the owner favorites to join this event",
         

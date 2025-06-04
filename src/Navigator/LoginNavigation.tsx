@@ -6,16 +6,18 @@ import ForgotPassword from '../Screens/Login/ForgotPassword';
 import { RegisterBirthdayAccept, RegisterEmailUsername, RegisterPassword } from '../Screens/Login/Register';
 import RegisterVerification from '../Screens/Login/RegisterVerification';
 import { LoginRootParamList, ScreenNavigationProps } from '../Services';
+import WelcomeScreen from '../Screens/Login/WelcomeScreen';
 
 const Stack = createStackNavigator();
 
 export type loginRoutesNames =
+    "WelcomeScreen" |
     "LoginScreen" |
     "ForgotPassword" |
     "RegisterEmailUsername" |
     "RegisterPassword" |
     "RegisterBirthdayAccept" |
-    "RegisterVerification"
+    "RegisterVerification";
 
 function LoginNavigator() {
 
@@ -23,6 +25,7 @@ function LoginNavigator() {
         name: string;
         component: ({ navigation }: ScreenNavigationProps<LoginRootParamList, any>) => React.JSX.Element
     }>>([
+        { name: "WelcomeScreen", component: WelcomeScreen },
         { name: "LoginScreen", component: LoginScreen },
         { name: "ForgotPassword", component: ForgotPassword },
         { name: "RegisterEmailUsername", component: RegisterEmailUsername },
@@ -32,7 +35,7 @@ function LoginNavigator() {
     ])
 
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginScreen">
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="WelcomeScreen">
             {
                 routes.map((r, idx) => <Stack.Screen key={idx} name={r.name} component={r.component} options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }} />)
             }

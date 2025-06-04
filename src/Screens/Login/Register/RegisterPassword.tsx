@@ -46,11 +46,16 @@ const RegisterPassword = ({
         });
     };
 
+    
+
     return (
         <LoginContainer>
             <View style={style.section} />
             <View style={style.section}>
-            <Text style={{ color: colors.warning_color, textAlign: 'center', marginBottom: 10 }}> {error.error && error.response} </Text>
+                <View style={{ flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}>
+                    <Text variant='headlineMedium' style={{ fontWeight: "bold" }}>{t("login.choose_password")}</Text>
+                </View>
+                <Text style={{ color: colors.warning_color, textAlign: 'center', marginBottom: 10 }}> {error.error && error.response} </Text>
                 <PaperTextInput
                     mode="outlined"
                     label={`${t('login.password')}`}

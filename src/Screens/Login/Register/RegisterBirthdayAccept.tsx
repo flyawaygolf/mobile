@@ -71,6 +71,9 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
             <View style={style.section}>
             </View>
             <View style={style.section}>
+                <View style={{ flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}>
+                    <Text variant='headlineMedium' style={{ fontWeight: "bold" }}>{t("login.last_step")}</Text>
+                </View>
                 <Text style={{ color: colors.warning_color, textAlign: "center", marginBottom: 10 }}>{error.error && error.response}</Text>
                 <TextInput
                     style={{ marginBottom: 10 }}

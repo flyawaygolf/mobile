@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { onTokenRefresh } from "@react-native-firebase/messaging";
-import { useNetInfo } from "@react-native-community/netinfo";
 
 import { SplashScreen } from './Screens';
 import { DrawerNavigation, LoginNavigation } from './Navigator';
@@ -19,7 +18,6 @@ import { changeElementPlaceArray, getAppInfo } from './Services';
 import UpdateScreen from './Screens/UpdateScreen';
 import { messaging, requestNotificationPermission } from './Services/notifications';
 import { addNotificationFeed } from './Redux/NotificationFeed/action';
-import OfflineScreen from './Screens/OfflineScreen';
 
 const Stack = createStackNavigator();
 

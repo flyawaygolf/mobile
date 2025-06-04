@@ -59,6 +59,10 @@ const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootPa
     <LoginContainer>
       <View style={style.section}>
       </View>
+      <View style={{ flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ fontWeight: "bold" }} variant='headlineMedium'>{t("login.create_account")}</Text>
+        <Text variant='headlineMedium'>{t("login.to_get_started_now")}</Text>
+      </View>
       <View style={style.section}>
         <Text style={{ color: colors.warning_color, textAlign: 'center', marginBottom: 10 }}> {error.error && error.response} </Text>
         <PaperTextInput
@@ -81,7 +85,7 @@ const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootPa
           onChangeText={text => setUsers({ ...users, username: text })}
         />
       </View>
-      { loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t('commons.next')} /> }
+      {loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t('commons.next')} />}
       <View
         style={{
           alignSelf: 'center',

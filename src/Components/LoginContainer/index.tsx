@@ -2,9 +2,8 @@ import React, { PropsWithChildren } from 'react';
 import { useTheme } from '../Container';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Logo } from '../Elements/Assets';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+
+import { ScrollView, StyleSheet } from 'react-native';
 
 function LoginContainer({ children }: PropsWithChildren) {
 
@@ -14,17 +13,9 @@ function LoginContainer({ children }: PropsWithChildren) {
         <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
             <ScrollView
                 keyboardShouldPersistTaps="handled"
-                contentContainerStyle={style.area}>
+                contentContainerStyle={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center', height: '100%', paddingBottom: 100 }}>
                 <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
-                    <View>
-                        <View style={{ alignItems: 'center', marginTop: 20 }}>
-                            <Logo size={65} style={{
-                                marginBottom: 20,
-                            }} />
-                            <Text variant="headlineMedium" style={{ fontFamily: "Lobster-Regular" }}>FlyAway</Text>
-                        </View>
-                        {children}
-                    </View>
+                    {children}
                 </KeyboardAwareScrollView>
             </ScrollView>
         </SafeAreaView>
@@ -33,10 +24,11 @@ function LoginContainer({ children }: PropsWithChildren) {
 
 const style = StyleSheet.create({
     area: {
-      flex: 1,
-      justifyContent: 'center',
-      alignContent: 'center',
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
     },
-  })
+})
 
 export default LoginContainer;
+
