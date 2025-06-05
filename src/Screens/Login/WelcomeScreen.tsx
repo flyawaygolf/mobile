@@ -5,12 +5,15 @@ import { useTranslation } from 'react-i18next';
 
 import { LoginRootParamList, ScreenNavigationProps } from '../../Services';
 import { Logo } from '../../Components/Elements/Assets';
+import { useTheme } from '../../Components/Container';
 
 const WelcomeScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "WelcomeScreen">) => {
 
   const { t } = useTranslation();
+  const { colors } = useTheme();
+
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, paddingLeft: 20, paddingRight: 20, paddingBottom: 10 }}>
+    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, paddingLeft: 20, paddingRight: 20, paddingBottom: 10, backgroundColor: colors.bg_primary }}>
       <View style={{ marginBottom: 50, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <Logo size={80} style={{
           marginBottom: 20,
