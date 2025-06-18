@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { Appbar, Text } from "react-native-paper";
+import { Appbar, Banner, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
@@ -10,6 +10,7 @@ import HomeNavigator from "./HomeNavigator";
 import { RootState, useAppSelector } from "../../Redux";
 import { ShrinkEffect } from "../../Components/Effects";
 import { userFlags } from "../../Services/Client";
+import { useEffect, useState } from "react";
 
 const HomeScreen = () => {
 
@@ -18,6 +19,13 @@ const HomeScreen = () => {
   const navigation = useNavigation<navigationProps>();
   const notifications = useAppSelector((state) => state.notificationFeed);
 
+  const [bannerVisible, setBannerVisible] = useState(false);
+
+  /**
+   * 
+   * @returns true if not premium, false otherwise.
+   * This function checks the user's flags to determine if they are a premium user or not.
+   */
   const displayPremiumUpgrade = () => {
     const flags = client.user.flags(user.flags.toString());
     if (flags.has(userFlags.PREMIUM_USER)) return false;
@@ -26,6 +34,14 @@ const HomeScreen = () => {
     if (flags.has(userFlags.FLYAWAY_PARTNER)) return false;
     return true;
   }
+
+  useEffect(() => {
+    if (displayPremiumUpgrade()) {
+      setBannerVisible(true);
+    } else {
+      setBannerVisible(false);
+    }
+  }, [user.flags]);
 
   const CustomLeftComponent = () => {
     return (
@@ -62,6 +78,20 @@ const HomeScreen = () => {
   return (
     <ScreenContainer>
       <CustomHomeHeader leftComponent={<CustomLeftComponent />} />
+      {
+        displayPremiumUpgrade() && <Banner
+          visible={bannerVisible}
+          actions={[
+            {
+              icon: "close",
+              label: 'Close',
+              onPress: () => setBannerVisible(false),
+            }
+          ]}
+          icon={"advertisements"}>
+          There is ad space available here. Contact us to advertise your business.
+        </Banner>
+      }
       <HomeNavigator />
     </ScreenContainer>
   );

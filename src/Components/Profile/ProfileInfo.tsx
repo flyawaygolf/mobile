@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Badge, Button, Card, Icon, IconButton, Text } from "react-native-paper";
+import { Badge, Button, Card, Divider, Icon, IconButton, List, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import Clipboard from "@react-native-clipboard/clipboard";
@@ -13,6 +13,8 @@ import { profileInformationsInterface } from "../../Services/Client/Managers/Int
 import { userFlags } from '../../Services/Client';
 import { ShrinkEffect } from '../Effects';
 import FastImage from '@d11/react-native-fast-image';
+import ShowAvailability from '../Premium/ShowAvalability';
+import { availabilityDefault, premiumAdvantages } from '../../Services/premiumAdvantages';
 
 type ProfileInfoProps = {
     navigation: navigationProps;
@@ -27,6 +29,8 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [flags] = useState(client.user.flags(user_info.flags.toString()));
+    const [showDetails, setShowDetails] = useState(true);
+    const [schedule] = useState(user_info.premium_settings?.availability || availabilityDefault);
 
     const follow = async () => {
         const response = await client.follows.create(user_info.user_id);
@@ -101,30 +105,43 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                     })}>{t("profile.edit")}</Button> : <Button icon="message-text" onPress={() => createDM()}>{t("profile.send_message")}</Button>}
                 </View>
             </View>
-            <Card style={{ margin: 5 }} mode="contained">
-                <Card.Title
-                    titleStyle={{
-                        fontWeight: 800,
-                    }}
-                    subtitleStyle={{
-                        fontWeight: 500,
-                    }}
-                    left={() => <IconButton mode="contained" icon="content-copy" onPress={() => copyNickname()} />}
-                    titleVariant="titleLarge"
-                    subtitleVariant="labelLarge"
-                    title={user_info.username}
-                    subtitle={`@${user_info.nickname}`}
-                />
+            <List.Accordion expanded={showDetails} onPress={() => setShowDetails(!showDetails)} title={t("profile.details")} id="1">
+                <Card style={{ margin: 5 }} mode="contained">
+                    <Card.Title
+                        titleStyle={{
+                            fontWeight: 800,
+                        }}
+                        subtitleStyle={{
+                            fontWeight: 500,
+                        }}
+                        left={() => <IconButton mode="contained" icon="content-copy" onPress={() => copyNickname()} />}
+                        titleVariant="titleLarge"
+                        subtitleVariant="labelLarge"
+                        title={user_info.username}
+                        subtitle={`@${user_info.nickname}`}
+                    />
 
-            </Card>
-            <Card style={{ margin: 5 }} mode="contained">
-                <Card.Content>
-                    <View style={{ marginBottom: 5 }}>
-                        <Text style={{ fontWeight: '900' }}>{t("profile.description")}</Text>
-                        <Text>{user_info.description}</Text>
-                    </View>
-                </Card.Content>
-            </Card>
+                </Card>
+                <Card style={{ margin: 5 }} mode="contained">
+                    <Card.Content>
+                        <View style={{ marginBottom: 5 }}>
+                            <Text style={{ fontWeight: '900' }}>{t("profile.description")}</Text>
+                            <Text>{user_info.description}</Text>
+                        </View>
+                    </Card.Content>
+                </Card>
+                {
+                    premiumAdvantages(user_info.premium_type, user_info.flags).showAvailability() && user_info.premium_settings?.show_availability && (
+                        <Card style={{ margin: 5 }} mode="contained">
+                            <Card.Content>
+                                <Text variant="titleMedium">{t("premium.availability_title")}</Text>
+                                <ShowAvailability schedule={schedule} />
+                            </Card.Content>
+                        </Card>
+                    )
+                }
+            </List.Accordion>
+            {!showDetails && <Divider horizontalInset style={{ marginBottom: 10 }} />}
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingBottom: 10 }}>
                 <TouchableOpacity style={[styles.column, { alignItems: "center" }]} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileFollower", params: { type: "subscriptions", nickname: user_info.nickname } })}>
                     <Text variant="bodyLarge" style={{ fontWeight: "900" }}>{user_info.subscriptions}</Text>

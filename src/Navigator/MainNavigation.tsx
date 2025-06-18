@@ -12,6 +12,7 @@ import FavoritesScreen from "../Screens/FavoritesScreen";
 import { NotificationScreen } from "../Screens/Notifications";
 import EventStack from "./EventStack";
 import ScorecardStack from "./ScorecardStack";
+import PremiumStack from "./PremiumStack";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export default function MainNavigation(): JSX.Element {
   const [routes] = useState([
     { name: "BottomNavigation", screen: BottomNavigation },
     { name: "ProfileStack", screen: ProfileStack },
+    { name: "PremiumStack", screen: PremiumStack },
     { name: "MessagesStack", screen: MessageStack },
     { name: "SettingsStack", screen: SettingsStack },
     { name: "GolfsStack", screen: GolfsStack },

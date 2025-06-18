@@ -15,6 +15,7 @@ import { SubscriptionInterface } from './Client/Managers/Interfaces';
 import { ScorecardStackScreens } from '../Navigator/ScorecardStack';
 import { eventsInterface } from './Client/Managers/Interfaces/Events';
 import { golfInterface } from './Client/Managers/Interfaces/Search';
+import { PremiumStackScreens } from '../Navigator/PremiumStack';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -134,6 +135,9 @@ export type RootStackParamList = {
             event_id?: string;
         }
     };
+    PremiumStack: {
+        screen: PremiumStackScreens;
+    }
     BottomNavigation: {
         screen: BottomStackScreens;
         params?: {

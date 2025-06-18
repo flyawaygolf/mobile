@@ -1,4 +1,5 @@
 import { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
+import { AvailabilitySlot } from "./Me";
 
 export interface requestResponseInterface<T extends Record<string, any>> {
     error?: error,
@@ -11,7 +12,7 @@ export interface error {
     code: number
 }
 
-export type notificationTypeInterface = "likes" | "mentions" | "follows" | "shares" | "comments" | "events"| "events_modifications" | "events_deleted";
+export type notificationTypeInterface = "likes" | "mentions" | "follows" | "shares" | "comments" | "events" | "events_modifications" | "events_deleted";
 
 /**
 *  0 = none | 1 = normal (2.99€) | 2 = shared with others projects (5.99€) | 3 = premium 1 + 2 (9.99€)
@@ -67,6 +68,15 @@ export interface userInfo {
             latitude: number,
             longitude: number
         }
+    },
+    premium_settings?: {
+        locked_location?: {
+            latitude: number;
+            longitude: number;
+        },
+        show_availability?: boolean;
+        show_locked_location?: boolean;
+        availability?: AvailabilitySlot[]
     },
     distance?: number
 }

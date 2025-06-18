@@ -6,7 +6,15 @@
         "events": "Events",
         "messages": "Messages"
     },
+    "drawer": {
+        "premium_settings": "Premium Settings",
+        "my_profile": "My Profile",
+        "change_theme": "Change theme",
+        "preferences": "Preferences",
+        "language": "Language"
+    },
     "commons": {
+        "soon": "Soon",
         "app_restart_required": "An app restart is required to apply the changes.",
         "website": "Visit the website",
         "redirect_secondes": "Redirect in {{time}} seconds",
@@ -45,24 +53,17 @@
         "download": "Download",
         "switch_account": "Switch account",
         "add_account": "Add an account",
-
         "required_fields": "Required fields",
         "optional_fields": "Optional fields",
-
         "translate": "Translate",
         "translated_with": "Translated with",
         "view_original": "View original",
-
         "top_of_day": "Trends",
         "top_users_of_day": "Top Users",
         "last_trends": "Last Trends",
         "top_world_trends_day": "World Trends",
-        "last_word_trends": "Last World Trends"
-    },
-    "drawer": {
-        "change_theme": "Change theme",
-        "preferences": "Preferences",
-        "language": "Language"
+        "last_word_trends": "Last World Trends",
+        "reset": "Reset"
     },
     "update": {
         "update": "Update",
@@ -138,7 +139,6 @@
         "share": "Share",
         "share_post": "Share in a post",
         "share_guild": "Share in a group",
-
         "no_joined_events": "No joined events at the moment; create or join an event to see it here",
         "from": "From",
         "per_person": "per person",
@@ -166,7 +166,6 @@
         "community_posts": "Community posts",
         "no_posts": "No posts to display",
         "events": "Events",
-        
         "details": "Details",
         "architect": "Architect",
         "holes": "Holes",
@@ -255,9 +254,7 @@
         "email_code_send": "A code has just been sent by email",
         "forgot_password": "Forgot your password?",
         "passwordless_info": "We are testing a passwordless login to improve security.",
-
         "email": "Email",
-
         "no_account": "Not registered yet?",
         "password": "Password",
         "repeat_password": "Confirm the password",
@@ -274,7 +271,6 @@
     },
     "settings": {
         "app": "App customization",
-        
         "theme": "Theme",
         "dark_grey": "Dark grey",
         "dark_green": "Dark / green",
@@ -283,22 +279,17 @@
         "dark": "Dark",
         "white": "White",
         "auto": "Automatic",
-
         "language": "Language",
         "language_theme": "Language & Theme",
-        
         "premium": "Premium",
         "autotranslate": "Auto-translate",
-
         "app_icon": "App Icon",
-
         "advantages": "Advantages",
         "better_markown": "Better Markdown",
         "file_size": "File size",
         "megabytes": "MB",
         "text_length": "Text length",
         "characters": "chars",
-
         "premium_required": "Premium required",
         "settings": "Settings",
         "my_account": "My Account",
@@ -336,9 +327,9 @@
         "fees_charged": "Fees charged",
         "cancel_subscription": "Cancel the subscription",
         "renew_subscription": "Renew the subscription"
-
     },
     "profile": {
+        "details": "Profile details",
         "subscribers": "Subscribers",
         "subscriptions": "Subscriptions",
         "joined": "Joined",
@@ -368,18 +359,13 @@
         "player_status_pro": "Pro",
         "player_status_amateur": "Amateur",
         "edit_hcp": "Change handicap",
-
         "golf_linked": "Golf linked",
         "no_linked_golfs": "No linked golf",
-
         "no_posts": "No posts to display",
-
         "golfs": "Golfs",
         "posts": "Posts",
-
         "block_alert_title": "Block {{username}}",
         "block_alert_description": "Are you sure you want to block this user?",
-
         "report_alert_title": "Report {{username}}",
         "report_alert_description": "Are you sure you want to report this user?"
     },
@@ -411,6 +397,8 @@
         "no_events_guilds": "No event groups. Join an event to see associated groups"
     },
     "premium": {
+        "settings_title": "Premium Settings",
+        "availability_settings": "Availability Settings",
         "view_post_impressions_title": "View post impressions",
         "view_post_impressions_description": "View impression count on all posts",
         "heavier_files_title": "Upload heavier files",
@@ -436,12 +424,25 @@
         "private_account_title": "Private account",
         "private_account_description": "Make your account private and block unwanted users from your direct messages",
         "no_ads_title": "No ads",
-        "no_ads_description": "Remove all advertisements"
+        "no_ads_description": "Remove all advertisements",
+        "day_1": "Monday",
+        "day_2": "Tuesday",
+        "day_3": "Wednesday",
+        "day_4": "Thursday",
+        "day_5": "Friday",
+        "day_6": "Saturday",
+        "day_7": "Sunday",
+        "not_available": "Not available",
+        "end": "End",
+        "start": "Start",
+        "reset_schedule_title": "Reset schedule",
+        "reset_schedule_description": "Are you sure you want to reset your availability schedule?",
+        "show_availability_title": "Show availability",
+        "show_availability_description": "Show your availability on your profile"
     },
     "subscription": {
         "ios_blocked": "You cannot upgrade to Premium in the app.",
         "ios_login": "Subscribe via the website.",
-
         "fees": "Fees",
         "for_you": "For you",
         "the_user_pay": "The user pay",
@@ -450,18 +451,15 @@
         "no_subscriptions": "You didn't subscribe to an account",
         "next_renew": "Renew",
         "end_period": "Subscription ending",
-
         "recap": "Recap",
         "price": "Price",
         "subscription": "Subscription",
         "make_your_choice": "Make your choice",
         "subscription_type": "{{subscription_type}} subscription",
-
         "price_type_day": "Day {{subscription_price}} $",
         "price_type_week": "Week {{subscription_price}} $",
         "price_type_year": "Year {{subscription_price}} $",
         "price_type_month": "Month {{subscription_price}} $",
-
         "coupon": "Coupon",
         "checkout": "Checkout",
         "current": "Current",
@@ -513,6 +511,33 @@
         "video": "video",
         "audio": "audio",
         "others": "others"
+    },
+    "reports": {
+        "title": "Report",
+        "description": "Please provide a detailed description of the issue encountered.",
+        "reason": "Reason for reporting",
+        "select_reason": "Select a reason",
+        "select_reason_description": "Select a reason and provide a detailed description of the issue encountered.",
+        "send_report": "Send report",
+        "1": "Harassment",
+        "2": "Spam",
+        "3": "Hate speech",
+        "4": "Inappropriate content",
+        "5": "Identity theft",
+        "6": "Scam / Fraud",
+        "8": "Self-harm",
+        "9": "Violence / Threats",
+        "10": "Illegal content",
+        "11": "NSFW content (explicit)",
+        "12": "Copyright violation",
+        "13": "Misinformation",
+        "14": "Political content",
+        "15": "Commercial spam",
+        "16": "Group rules violation",
+        "17": "Inappropriate channel",
+        "18": "Flood",
+        "19": "Bot abuse",
+        "99": "Other"
     },
     "categories": {
         "0": "News",
@@ -660,13 +685,14 @@
         "16011": "(6) Event is private",
         "16012": "(3) Event has no guild",
         "16013": "(2) You need to be a part of the owner favorites to join this event",
-        
         "no_gps": "No GPS signal",
         "verify_fields": "Please verify that all fields are correctly filled",
         "sending_form": "Sending ...",
         "different_password": "Passwords are different",
         "password_security": "Enter at least 8 characters for the password",
         "email_verified": "Email successfully verified",
-        "unknown": "An unknown error occurred"
+        "unknown": "An unknown error occurred",
+        "success": "Success",
+        "no_internet": "No internet connection"
     }
 }

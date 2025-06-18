@@ -7,13 +7,16 @@ import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
 import { fetchUserResponse, profileInformations } from './Interfaces/User';
 import { LocationQuery } from './SearchMapManager';
 import UserPermissions from '../Permissions/UserPermissions';
+import PremiumUser from './PremiumUser';
 
 class UserManager extends RequestEmitter {
   private cdnurl: string;
+  public premium: PremiumUser;
 
   constructor(params: requestParams) {
     super(params);
     this.cdnurl = params?.cdnurl ?? cdnbaseurl;
+    this.premium = new PremiumUser(params);
   }
 
   public flags(bits?: string) {
@@ -87,12 +90,13 @@ class UserManager extends RequestEmitter {
   }
 
   public async report(target_id: string, reason: number, description?: string) {
-    const request = await this.postRequest(`/reports/users/${target_id}`, {
+    const request = await this.postRequest(`/reports/users`, {
+      target_id: target_id,
       reason: reason,
-      description: description,
+      description: description
     });
-
     const response = request as successResponse;
+
     return response;
   }
 

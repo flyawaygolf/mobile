@@ -40,10 +40,14 @@ export const clientContextPlaceholder: ClientContextI = {
         session_id: "-",
         token: "-",
         gender: 0,
+        premium_settings: undefined,
         golf_info: {
             handicap: 0,
             player_status: 0,
-            location: [0, 0],
+            location: {
+                latitude: 0,
+                longitude: 0,
+            },
         },
     },
     location: {

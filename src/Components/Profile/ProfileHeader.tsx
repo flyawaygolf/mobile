@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, Animated, Share, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, Text, Tooltip } from "react-native-paper";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { handleToast, navigationProps } from "../../Services";
 import { useClient, useProfile, useTheme } from "../Container";
 import { profileurl } from '../../Services/constante';
+import UsersReportModal from '../../Screens/Reports/UsersReportModal';
 
 type ProfileHeaderProps = {
     navigation: navigationProps;
@@ -19,21 +20,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
     const { colors } = useTheme();
     const { t } = useTranslation();
 
-    const report = async () => {
-        Alert.alert(t("profile.report_alert_title", { username: user_info.username }), t("profile.report_alert_description"), [{
-            text: t("commons.no"),
-            style: "cancel",
-        },
-        {
-            text: t("commons.yes"),
-            onPress: async () => {
-                const response = await client.user.report(user_info.user_id, 1);
-                if (response.error) return handleToast(t(`errors.${response.error.code}`))
-                handleToast(t("commons.success"));
-            },
-            style: "default",
-        }])
-    }
+    const [reportModalVisible, setReportModalVisible] = useState(false);
 
     const block = async () => {
         Alert.alert(t("profile.block_alert_title", { username: user_info.username }), t("profile.block_alert_description"), [{
@@ -77,6 +64,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
             {
                 user_info.user_id ? (
                     <>
+                        <UsersReportModal visible={reportModalVisible} setVisible={setReportModalVisible} target_id={user_info.user_id} />
                         <Appbar.Header style={[styles.header]}>
                             <View style={{ flexDirection: "row", alignItems: 'center' }}>
                                 <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
@@ -114,7 +102,7 @@ const ProfileHeader = ({ navigation, headerOpacity }: ProfileHeaderProps) => {
                                                             <IconButton style={{ margin: 0 }} icon={"block-helper"} onPress={() => block()} />
                                                         </Tooltip>
                                                         <Tooltip title={t("profile.report")}>
-                                                            <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => report()} />
+                                                            <IconButton style={{ margin: 0 }} icon={"flag-variant"} onPress={() => setReportModalVisible(true)} />
                                                         </Tooltip>
                                                     </>
                                                 )

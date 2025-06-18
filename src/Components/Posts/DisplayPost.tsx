@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { Button, Divider, Text, Card, Icon, Chip } from "react-native-paper";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "@react-native-vector-icons/material-design-icons";
 import { connect } from 'react-redux';
 import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 

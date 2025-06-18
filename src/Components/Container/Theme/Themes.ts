@@ -4,7 +4,7 @@ export type Ithemes = 'auto' | 'white' | 'dark';
 
 export const WhiteTheme = {
     colors: {
-        bg_primary: "#fafafa",
+        bg_primary: "#F5F5F5",
         bg_primary_opacity: "#D9D9D9",
         bg_secondary: Platform.OS === "android" ? "#EAEAEA" : "#EAEAEA", // "#C8CACA",
         bg_third: "#989898",

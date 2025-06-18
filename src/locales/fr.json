@@ -6,7 +6,15 @@
         "events": "Événements",
         "messages": "Messages"
     },
+    "drawer": {
+        "premium_settings": "Paramètres Premium",
+        "my_profile": "Mon profil",
+        "change_theme": "Changer de thème",
+        "preferences": "Préférences",
+        "language": "Langue"
+    },
     "commons": {
+        "soon": "Bientôt",
         "app_restart_required": "Redémarrage de l'application requis",
         "website": "Visiter le site web",
         "redirect_secondes": "Redirection dans {{time}} secondes",
@@ -45,24 +53,17 @@
         "download": "Télécharger",
         "switch_account": "Changer de compte",
         "add_account": "Ajouter un compte",
-
         "required_fields": "Champs requis",
         "optional_fields": "Champs optionnels",
-        
         "translate": "Traduire",
         "translated_with": "Traduit avec",
         "view_original": "Voir l'original",
-
         "top_of_day": "Tendances",
         "top_users_of_day": "Top utilisateurs",
         "last_posts": "Dernière publications",
         "top_world_posts_day": "Tendances mondial",
-        "last_word_posts": "Dernière publications mondial"
-    },
-    "drawer": {
-        "change_theme": "Changer de thème",
-        "preferences": "Préférences",
-        "language": "Langue"
+        "last_word_posts": "Dernière publications mondial",
+        "reset": "Réinitialiser"
     },
     "update": {
         "update": "Mettre à jour",
@@ -138,7 +139,6 @@
         "share": "Partager",
         "share_post": "Partager dans un post",
         "share_guild": "Partager dans un groupe",
-
         "no_joined_events": "Aucun événement rejoint pour le moment; créer ou rejoindre un événement pour le voir ici",
         "from": "A partir de",
         "per_person": "par personne",
@@ -208,7 +208,6 @@
         "PREMIUM_USER": "Abonné Premium",
         "VERIFIED_USER": "Utilisateur vérifié",
         "FLYAWAY_PARTNER": "Partenaire FlyAway",
-        
         "CERTIFIED_MODERATOR": "Modérateur certifié",
         "CERTIFIED_USER": "Utilisateur certifié",
         "PRIVATE_USER": "Utilisateur privé"
@@ -238,7 +237,6 @@
         "subscribe_to": "S'abonner à {{username}} pour afficher.",
         "paying": "Payant",
         "free": "Gratuit",
-
         "bookmark": "Signet",
         "bookmarks": "Signets"
     },
@@ -273,7 +271,6 @@
     },
     "settings": {
         "app": "Personnalisation de l'application",
-
         "theme": "Thème",
         "dark_grey": "Gris foncé",
         "dark_green": "Foncé / vert",
@@ -282,22 +279,17 @@
         "dark": "Foncé",
         "white": "Clair",
         "auto": "Automatique",
-        
         "language": "Langue",
         "language_theme": "Langue & Thème",
-
         "premium": "Premium",
         "autotranslate": "Traduction automatique",
-
         "app_icon": "Icône de l'application",
-
         "advantages": "Avantages",
         "better_markown": "Mise en forme avancée",
         "file_size": "Taille de fichier",
         "megabytes": "Mo",
         "text_length": "Longueur de texte",
         "characters": "car.",
-
         "premium_required": "Premium requis",
         "settings": "Paramètres",
         "my_account": "Mon compte",
@@ -337,6 +329,7 @@
         "renew_subscription": "Renouveler l'abonnement"
     },
     "profile": {
+        "details": "Détails du profil",
         "subscribers": "Abonnés",
         "subscriptions": "Abonnements",
         "joined": "A rejoint",
@@ -366,18 +359,13 @@
         "player_status_pro": "Pro",
         "player_status_amateur": "Amateur",
         "edit_hcp": "Modifier le handicap",
-
         "golf_linked": "Golf lié",
         "no_linked_golfs": "Aucun golf lié",
-
         "no_posts": "Aucun post à afficher",
-
         "golfs": "Golfs",
         "posts": "Posts",
-
         "block_alert_title": "Bloquer {{username}}",
         "block_alert_description": "Êtes-vous sur de vouloir bloquer cet utilisateur ?",
-
         "report_alert_title": "Signaler {{username}}",
         "report_alert_description": "Êtes-vous sur de vouloir signaler cet utilisateur ?"
     },
@@ -409,6 +397,8 @@
         "no_events_guilds": "Aucun groupe d'événement. Rejoindre un événement pour voir les groupes associés"
     },
     "premium": {
+        "settings_title": "Paramètres Premium",
+        "availability_settings": "Paramètres de disponibilité",
         "view_post_impressions_title": "Voir les impressions des posts",
         "view_post_impressions_description": "Voir le nombre d'impression sur tous les posts",
         "heavier_files_title": "Envoyez des fichiers plus volumineux",
@@ -434,12 +424,25 @@
         "private_account_title": "Compte privé",
         "private_account_description": "Rendez votre compte privé et bloquez les utilisateurs indésirables de vos messages directs",
         "no_ads_title": "Sans publicités",
-        "no_ads_description": "Supprimez toutes les publicités"
+        "no_ads_description": "Supprimez toutes les publicités",
+        "day_1": "Lundi",
+        "day_2": "Mardi",
+        "day_3": "Mercredi",
+        "day_4": "Jeudi",
+        "day_5": "Vendredi",
+        "day_6": "Samedi",
+        "day_7": "Dimanche",
+        "not_available": "Non disponible",
+        "start": "Début",
+        "end": "Fin",
+        "reset_schedule_title": "Réinitialiser le calendrier",
+        "reset_schedule_description": "Êtes-vous sûr de vouloir réinitialiser votre calendrier de disponibilité ?",
+        "show_availability_title": "Afficher la disponibilité",
+        "show_availability_description": "Afficher votre calendrier de disponibilité sur votre profil"
     },
     "subscription": {
         "ios_blocked": "Vous ne pouvez pas vous abonner à Premium dans l'application.",
         "ios_login": "Abonnez-vous sur le site Web.",
-
         "fees": "Frais",
         "for_you": "Pour vous",
         "the_user_pay": "L'utilisateur paye",
@@ -448,7 +451,6 @@
         "no_subscriptions": "Vous n'avez aucun abonnement actif",
         "next_renew": "Renouvellement",
         "end_period": "Fin de l'abonnement",
-
         "recap": "Récapitulatif",
         "price": "Prix",
         "subscription": "Abonnement",
@@ -472,12 +474,10 @@
         "elite": "Elite",
         "standard": "Standard",
         "premium": "Premium",
-
         "free_title": "Abonnement gratuit",
         "free_1": "512 caractères autorisé",
         "free_2": "Taille maximum des fichiers 25Mo",
         "free_3": "Pas de publicité",
-
         "standard_1": "1024 caractères autorisé",
         "standard_2": "Taille maximum des fichiers 50Mo",
         "standard_3": "Résumé annuel du compte",
@@ -485,13 +485,11 @@
         "standard_5": "Avatar et bannière NFT (bientôt disponible)",
         "standard_6": "Afficher le nombre de vues sur les publications",
         "standard_7": "Pas de publicités",
-
         "premium_1": "Avantages Standard",
         "premium_2": "2048 caractères",
         "premium_3": "Taille maximum des fichiers 100Mo de limite",
         "premium_4": "Pas de frais de retrait",
         "premium_5": "Avantages dans les projets partenaires",
-
         "elite_1": "Avantages Premium et Standard",
         "elite_2": "4096 caractères",
         "elite_3": "Taille maximum des fichiers 200Mo de limite",
@@ -513,6 +511,33 @@
         "video": "vidéo",
         "audio": "audio",
         "others": "autres"
+    },
+    "reports": {
+        "title": "Signaler",
+        "description": "Veuillez fournir une description détaillée du problème rencontré.",
+        "reason": "Raison du signalement",
+        "select_reason": "Sélectionnez une raison",
+        "select_reason_description": "Sélectionnez une raison et fournissez une description détaillée du problème rencontré.",
+        "send_report": "Envoyer le signalement",
+        "1": "Harcèlement",
+        "2": "Spam",
+        "3": "Discours haineux",
+        "4": "Contenu inapproprié",
+        "5": "Usurpation d'identité",
+        "6": "Arnaque / Fraude",
+        "8": "Automutilation",
+        "9": "Violence / Menaces",
+        "10": "Contenu illégal",
+        "11": "Contenu NSFW (explicite)",
+        "12": "Violation du droit d'auteur",
+        "13": "Désinformation",
+        "14": "Contenu politique",
+        "15": "Spam commercial",
+        "16": "Violation des règles du groupe",
+        "17": "Canal inapproprié",
+        "18": "Flood",
+        "19": "Abus de bot",
+        "99": "Autre"
     },
     "categories": {
         "0": "Actualités",
@@ -660,7 +685,6 @@
         "16011": "(6) L'événement est privé",
         "16012": "(3) L'événement n'a pas de groupe",
         "16013": "(2) Vous devez faire partie des favoris du propriétaire pour rejoindre cet événement",
-
         "no_gps": "Pas de signal GPS",
         "verify_fields": "Verifier que tout les champs sont bien remplis",
         "sending_form": "Envoi en cours ...",
@@ -669,6 +693,8 @@
         "email_verified": "Email vérifié avec succès",
         "bad_file": "Choisir jusque 8 images, 1 audio ou 1 vidéo",
         "empty": "Rien à afficher",
-        "unknown": "Une erreur inconnue est survenue"
+        "unknown": "Une erreur inconnue est survenue",
+        "success": "Succès",
+        "no_internet": "Aucune connexion Internet"
     }
 }

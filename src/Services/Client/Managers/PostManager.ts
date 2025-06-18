@@ -122,7 +122,8 @@ class PostManager extends RequestEmitter {
   }
 
   public async report(target_id: string, reason: number, description?: string) {
-    const request = await this.postRequest(`/posts/${target_id}/reports`, {
+    const request = await this.postRequest(`/reports/posts`, {
+      target_id: target_id,
       reason: reason,
       description: description
     });

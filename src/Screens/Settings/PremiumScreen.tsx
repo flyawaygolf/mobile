@@ -59,6 +59,12 @@ export default function PremiumScreen() {
             soon: false
         },
         {
+            icon: "calendar-multiselect",
+            title: "premium.availability_title",
+            description: "premium.availability_description",
+            soon: false
+        },
+        {
             icon: "map-marker-radius",
             title: "premium.location_choose_title",
             description: "premium.location_choose_description",
@@ -68,12 +74,6 @@ export default function PremiumScreen() {
             icon: "comment",
             title: "premium.golf_comment_title",
             description: "premium.golf_comment_description",
-            soon: true
-        },
-        {
-            icon: "calendar-multiselect",
-            title: "premium.availability_title",
-            description: "premium.availability_description",
             soon: true
         },
         {

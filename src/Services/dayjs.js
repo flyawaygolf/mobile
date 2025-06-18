@@ -1,9 +1,13 @@
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(isToday);
 dayjs.extend(LocalizedFormat);
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 export class formatDate {
     constructor(date) {

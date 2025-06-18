@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Toast from 'react-native-toast-message';
 import Clipboard from "@react-native-clipboard/clipboard";
@@ -9,6 +9,7 @@ import { Button, Divider } from "react-native-paper";
 import { SinglePostContext } from "../../../PostContext";
 import { Share } from "react-native";
 import { posturl } from "../../../../../Services/constante";
+import PostsReportModal from "../../../../../Screens/Reports/PostsReportModal";
 
 type SectionProps = {
     modalVisible: boolean,
@@ -22,15 +23,10 @@ function User({ modalVisible, setModalVisible }: SectionProps) {
     const { info } = useContext(SinglePostContext);
     const { colors } = useTheme();
 
+    const [reportModalVisible, setReportModalVisible] = useState(false);
+
     const block = async () => {
         const response = await client.block.create(info.from.user_id);
-        if (response.error) return Toast.show({ text1: t(`errors.${response.error.code}`) as string })
-        Toast.show({ text1: t("commons.success") as string })
-        setModalVisible()
-    }
-
-    const report = async () => {
-        const response = await client.posts.report(info.post_id, 1);
         if (response.error) return Toast.show({ text1: t(`errors.${response.error.code}`) as string })
         Toast.show({ text1: t("commons.success") as string })
         setModalVisible()
@@ -51,6 +47,7 @@ function User({ modalVisible, setModalVisible }: SectionProps) {
 
     return (
         <BottomModal onSwipeComplete={() => setModalVisible()} dismiss={() => setModalVisible()} isVisible={modalVisible}>
+            <PostsReportModal visible={reportModalVisible} setVisible={setReportModalVisible} target_id={info.post_id} />
             {
                 /**
                  * <Button uppercase onPress={() => download()} icon="download">{t("commons.download")}</Button>
@@ -61,7 +58,7 @@ function User({ modalVisible, setModalVisible }: SectionProps) {
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
             <Button uppercase onPress={() => copyPostID()} icon="content-copy">{t("posts.copy_post_id")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-            <Button uppercase onPress={() => report()} icon="shield-alert-outline">{t("commons.report")}</Button>
+            <Button uppercase onPress={() => setReportModalVisible(true)} icon="flag-variant">{t("commons.report")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
             <Button uppercase onPress={() => block()} icon="block-helper">{t("profile.block")}</Button>
             <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />

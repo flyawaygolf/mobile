@@ -1,6 +1,6 @@
 import React from 'react';
 import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
-import { Title, Caption, Drawer } from 'react-native-paper';
+import { Drawer, Text } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import FastImage from '@d11/react-native-fast-image';
@@ -9,6 +9,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import globalStyles from '../../../Style/style';
 import useClient from '../Client/useClient';
 import useTheme from '../Theme/useTheme';
+import { handleToast } from '../../../Services';
+import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 
 export default function DrawerContent({ navigation }: DrawerContentComponentProps) {
 
@@ -42,23 +44,12 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
         </View>
         <View style={{ padding: 12 }}>
           <FastImage style={[globalStyles.pdp50, { marginTop: -30, backgroundColor: colors.bg_secondary }]} source={{ uri: `${client.user.avatar(user?.user_id, user?.avatar)}` }} />
-          <Title style={{ marginTop: 5, fontWeight: 'bold' }}>{user?.username}</Title>
-          <Caption style={styles.caption}>@{user?.nickname}</Caption>
+          <Text variant='titleLarge' style={{ marginTop: 5, fontWeight: 'bold' }}>{user?.username}</Text>
+          <Text variant='bodySmall' style={styles.caption}>@{user?.nickname}</Text>
         </View>
         <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
           <Drawer.Section style={styles.drawerSection}>
-            <Drawer.Item icon="plus-circle" label={t('commons.create')} onPress={() => navigation.navigate("MainNavigation", {
-              screen: "CreateStack",
-              params: {
-                screen: "PostCreatorScreen",
-                params: {
-                  attached_post_id: '',
-                  initFiles: [],
-                  initContent: '',
-                },
-              }
-            })} />
-            <Drawer.Item icon="account" label={t('commons.profile')} onPress={() => navigation.navigate('MainNavigation', {
+            <Drawer.Item icon="account" label={t('drawer.my_profile')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'ProfileStack',
               params: {
                 screen: 'ProfileScreen',
@@ -67,6 +58,10 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
                 },
               }
             })} />
+            <Drawer.Item icon="star-shooting" label={t('drawer.premium_settings')} onPress={() => premiumAdvantages(user.premium_type, user.flags).showAvailability() ? navigation.navigate("MainNavigation", {
+              screen: 'PremiumStack',
+            }) : handleToast(t("settings.premium_required"))}
+             />
             <Drawer.Item icon="calendar-month" label={t('events.create_event')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'EventStack',
               params: {

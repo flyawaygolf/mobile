@@ -1,6 +1,13 @@
 import type { attachments, error, gender, player_status, premium_type } from "./Global";
 import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 
+export interface AvailabilitySlot {
+    id: number;
+    available: boolean;
+    start: Date;
+    end: Date;
+}
+
 export interface myInformationInterface {
     user_id: string,
     nickname: string,
@@ -25,10 +32,22 @@ export interface myInformationInterface {
     banned: boolean;
     activated: boolean;
     birthday: Date;
+    premium_settings?: {
+        locked_location?: {
+            latitude: number;
+            longitude: number;
+        },
+        show_availability?: boolean;
+        show_locked_location?: boolean;
+        availability?: AvailabilitySlot[]
+    },
     golf_info: {
         handicap: number;
         player_status: player_status;
-        location: [number, number]; // [longitude, latitude]
+        location: {
+            latitude: number;
+            longitude: number;
+        }; // [longitude, latitude]
     }
 }
 
