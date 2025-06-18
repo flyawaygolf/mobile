@@ -26,7 +26,7 @@ export default function UsersReportModal({ target_id, visible, setVisible }: Use
         ReportReason.INAPPROPRIATE_CONTENT,
         ReportReason.IMPERSONATION,
         ReportReason.SCAM_FRAUD,
-        ReportReason.UNDERAGE,
+        // ReportReason.UNDERAGE,
         ReportReason.SELF_HARM,
         ReportReason.VIOLENCE_THREATS,
         ReportReason.ILLEGAL_CONTENT,
