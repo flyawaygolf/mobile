@@ -37,7 +37,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (displayPremiumUpgrade()) {
-      setBannerVisible(true);
+      setBannerVisible(false);
     } else {
       setBannerVisible(false);
     }

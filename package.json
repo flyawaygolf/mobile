@@ -6,7 +6,6 @@
   "scripts": {
     "android": "react-native run-android",
     "android:release": "react-native run-android --mode=release",
-    "android:staging": "react-native run-android --mode=staging",
     "ios": "react-native run-ios",
     "ios:release": "react-native run-ios --mode Release",
     "ios:debug": "react-native run-ios --verbose",

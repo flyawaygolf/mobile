@@ -58,7 +58,7 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
                 },
               }
             })} />
-            <Drawer.Item icon="star-shooting" label={t('drawer.premium_settings')} onPress={() => premiumAdvantages(user.premium_type, user.flags).showAvailability() ? navigation.navigate("MainNavigation", {
+            <Drawer.Item icon="star-shooting" label={t('drawer.premium_settings')} onPress={() => premiumAdvantages(user.premium_type, user.flags).isPremium() ? navigation.navigate("MainNavigation", {
               screen: 'PremiumStack',
             }) : handleToast(t("settings.premium_required"))}
              />

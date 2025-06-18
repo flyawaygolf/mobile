@@ -61,6 +61,14 @@ class premiumAdvantagesClass {
         else this.type = type;
     }
 
+    isPremium() {
+        if (this.type === 1) return true;
+        if (this.type === 2) return true;
+        if (this.type === 3) return true;
+        if (this.type === 4) return true;
+        return false;
+    }
+
     textLength() {
         if (this.type === 1) return 1024;
         if (this.type === 2) return 2048;
@@ -132,7 +140,15 @@ class premiumAdvantagesClass {
         if (this.type === 4) return true;
         return false;
     }
-    
+
+    showLockedLocation() {
+        if (this.type === 1) return true;
+        if (this.type === 2) return true;
+        if (this.type === 3) return true;
+        if (this.type === 4) return true;
+        return false;
+    }
+
     withdrawCommissions() {
         return 0;
     }

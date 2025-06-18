@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -9,7 +8,7 @@ import {
 } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
-import { IconButton, Switch } from 'react-native-paper';
+import { IconButton, Switch, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { AvailabilitySlot } from '../../Services/Client/Managers/Interfaces/Me';
 import { availabilityDefault } from '../../Services/premiumAdvantages';
@@ -26,6 +25,7 @@ export default function AvailabilityPremiumSettingsScreen() {
 
     useEffect(() => {
         if (user?.premium_settings?.availability) setSchedule(user.premium_settings.availability);
+        if (user?.premium_settings?.show_availability !== undefined) setShowAvailability(user.premium_settings.show_availability);
     }, [user]);
 
     const [showTimePicker, setShowTimePicker] = useState<{
