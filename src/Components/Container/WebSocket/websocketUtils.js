@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { websocketurl } from '../../../Services/constante';
+import { deviceInfo } from '../../../Services';
 
 
 export function useWebLocalsocket(onOpen, onMessage) {
@@ -29,12 +30,14 @@ export function useWebLocalsocket(onOpen, onMessage) {
       setSession(ws);
     },[]);
 
-  const sendMessage = (data = {
+  const sendMessage = async (data = {
     code: 0,
     token: "",
     data: {},
   }) => {
+    const info = deviceInfo()
     session.send(JSON.stringify({
+      device_id: `${data.token}-${info.imei}`,
       code: data.code,
       token: data?.token,
       data: data?.data,

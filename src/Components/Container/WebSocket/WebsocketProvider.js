@@ -12,22 +12,24 @@ const WebSocketContextProvider = ({ children }) => {
 
     const onOpen = useConnectionCallback();
     const onMessage = useMessageCallback(dispatch);
-    const [connect, sendMessage] = useWebLocalsocket(onOpen,onMessage);
+    const [connect, sendMessage] = useWebLocalsocket(onOpen, onMessage);
 
     useEffect(() => {
-        if(client.state === "loged") {
+        if (client.state === "loged") {
             connect()
         }
     }, [client.state])
 
     useEffect(() => {
-        if(notification.code === webSocketRoutes.CONNECT) return sendMessage({
-            code: webSocketRoutes.CHECK_CONNECTION,
-            token: client.token,
-        })
-    }, [notification])
+        if (notification.code === webSocketRoutes.CONNECT) {
+            sendMessage({
+                code: webSocketRoutes.CHECK_CONNECTION,
+                token: client.token,
+            });
+        }
+    }, [notification]);
 
-    return <WebSocketContext.Provider value={{notification, sendMessage, dispatch}}>{children}</WebSocketContext.Provider>
+    return <WebSocketContext.Provider value={{ notification, sendMessage, dispatch }}>{children}</WebSocketContext.Provider>
 }
 
 export default WebSocketContextProvider;

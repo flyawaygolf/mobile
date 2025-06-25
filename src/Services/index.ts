@@ -92,9 +92,10 @@ export const translateText = async (user_token: string, options: { content: stri
   return response.data.data as string;
 };
 
-export const deviceInfo = async () => {
+export const deviceInfo = () => {
 
   return {
+    imei: DeviceInfo.getUniqueIdSync(),
     device_name: DeviceInfo.getBrand(),
     device_id: DeviceInfo.getDeviceId(),
     base_os: Platform.OS,

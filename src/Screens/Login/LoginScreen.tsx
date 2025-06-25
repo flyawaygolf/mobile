@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
     if (!users.email) return setError({ error: true, response: t(`errors.verify_fields`) })
 
     setLoadingSendCode(true);
-    const browser = await deviceInfo();
+    const browser = deviceInfo();
 
     let friendly_name = "Unknown Device";
     if (browser) friendly_name = `${convertFirstCharacterToUppercase(browser.base_os)} ${browser.system_version} - FlyAway mobile`;

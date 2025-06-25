@@ -15,12 +15,8 @@ const SettingsModifyProfile = ({ setModalVisible }: PropsType) => {
     const [appInfo, setAppInfo] = useState<any>(undefined);
     const navigation = useNavigation<navigationProps>();
 
-    const getInfo = async () => {
-        setAppInfo(await deviceInfo())
-    }
-
     useEffect(() => {
-        getInfo()
+        setAppInfo(deviceInfo())
     }, [])
 
     const copyText = () => {

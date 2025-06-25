@@ -24,12 +24,8 @@ function HomeSettingsScreen() {
   const { client, user, setValue } = useClient();
   const realm = useRealm();
 
-  const getInfo = async () => {
-    setAppInfo(await deviceInfo())
-  }
-
   useEffect(() => {
-    getInfo()
+    setAppInfo(deviceInfo())
   }, [])
 
   const Disconnect = () => {

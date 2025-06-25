@@ -12,12 +12,8 @@ const SplashScreen = () => {
   const { colors } = useTheme();
   const [appInfo, setAppInfo] = useState<any>(undefined);
 
-  const getInfo = async () => {
-    setAppInfo(await deviceInfo());
-  };
-
   useEffect(() => {
-    getInfo();
+    setAppInfo(deviceInfo());
   }, []);
 
   return (
