@@ -16,6 +16,7 @@ import { ScorecardStackScreens } from '../Navigator/ScorecardStack';
 import { eventsInterface } from './Client/Managers/Interfaces/Events';
 import { golfInterface } from './Client/Managers/Interfaces/Search';
 import { PremiumStackScreens } from '../Navigator/PremiumStack';
+import { GuestStackScreens } from '../Navigator/GuestStack';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -34,6 +35,7 @@ export type LoginRootParamList = {
     RegisterVerification: {
         email: string;
     };
+    GuestStack: undefined;
     DrawerNavigation: undefined;
 }
 
@@ -138,6 +140,9 @@ export type RootStackParamList = {
     PremiumStack: {
         screen: PremiumStackScreens;
     }
+    GuestStack: {
+        screen: GuestStackScreens;
+    };
     BottomNavigation: {
         screen: BottomStackScreens;
         params?: {

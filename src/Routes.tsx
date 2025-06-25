@@ -18,6 +18,7 @@ import { changeElementPlaceArray, getAppInfo } from './Services';
 import UpdateScreen from './Screens/UpdateScreen';
 import { messaging, requestNotificationPermission } from './Services/notifications';
 import { addNotificationFeed } from './Redux/NotificationFeed/action';
+import GuestStack from './Navigator/GuestStack';
 
 const Stack = createStackNavigator();
 
@@ -105,6 +106,7 @@ function Routes() {
                             </>
                         )
             }
+            <Stack.Screen name='GuestStack' component={GuestStack} />
         </Stack.Navigator>
     );
 }

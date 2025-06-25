@@ -241,6 +241,7 @@
         "bookmarks": "Signets"
     },
     "login": {
+        "continue_as_guest": "Continuer en tant qu'invité",
         "connect": "Se connecter",
         "welcome": "Bienvenue,",
         "glad_to_see_you": "Ravi de vous revoir",

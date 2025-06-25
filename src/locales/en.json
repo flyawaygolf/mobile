@@ -241,6 +241,7 @@
         "bookmarks": "Bookmarks"
     },
     "login": {
+        "continue_as_guest": "Continue as guest",
         "connect": "Login",
         "welcome": "Welcome,",
         "glad_to_see_you": "Glad to see you again",

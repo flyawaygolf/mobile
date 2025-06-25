@@ -37,6 +37,14 @@ const WelcomeScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList,
           style={{ marginTop: 15, width: "100%", justifyContent: 'center' }}>
           {t("login.register")}
         </Button>
+        <Button 
+          mode="text" 
+          onPress={() => navigation.navigate('GuestStack')} 
+          contentStyle={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 48 }}
+          labelStyle={{ fontSize: 16, fontWeight: '600' }}
+          style={{ marginTop: 15, width: "100%", justifyContent: 'center' }}>
+          {t("login.continue_as_guest")}
+        </Button>
       </View>
     </View>
 
