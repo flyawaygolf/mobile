@@ -421,14 +421,14 @@ const GuestMapScreen = () => {
               backgroundColor: colors.bg_primary
             }}
           >
+            <IconButton
+              icon="close"
+              mode="contained"
+              size={30}
+              style={{ position: "absolute", top: 10, right: 10, zIndex: 99 }}
+              onPress={() => setModalInfo({ visible: false, data: undefined })}
+            />
             <ScrollView>
-              <IconButton
-                icon="close"
-                mode="contained"
-                size={30}
-                style={{ position: "absolute", top: 0, right: 0, zIndex: 4 }}
-                onPress={() => setModalInfo({ visible: false, data: undefined })}
-              />
               {
                 'user_id' in modalInfo.data ? (
                   <ProfileInfo user_info={modalInfo.data} />

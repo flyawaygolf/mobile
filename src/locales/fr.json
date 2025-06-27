@@ -268,7 +268,9 @@
         "affiliation_code": "Code d'affiliation (optionnel)",
         "t_and_s": "Accepter les conditions d'utilisation",
         "go_back": "Retour",
-        "register_verification_code": "Vérification du lien : {{response}}"
+        "register_verification_code": "Vérification du lien : {{response}}",
+        "return_to_login": "Retourner à la page de connexion",
+        "verify_email": "Vérifiez votre email"
     },
     "settings": {
         "app": "Personnalisation de l'application",
