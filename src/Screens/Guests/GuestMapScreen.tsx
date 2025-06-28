@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, View, StyleSheet, Keyboard, Platform } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { Chip, FAB, IconButton } from 'react-native-paper';
+import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,12 +13,13 @@ import { getCurrentLocation, handleToast, navigationProps } from '../../Services
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../../Components/Member';
 import { SearchBar } from '../../Components/Elements/Input';
-import { FadeInFromBottom, FadeInFromTop, ShrinkEffect } from '../../Components/Effects';
+import { FadeInFromTop, ShrinkEffect } from '../../Components/Effects';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
 import SearchMapModal from './SearchMapModal';
 import { locationType } from '../../Components/Container/Client/ClientContext';
 import ProfileInfo from './ProfileInfo';
 import GolfProfileScreen from './GolfsProfileScreen';
+import { BottomModal } from '../../Other';
 
 type searchChipsType = {
   icon: string;
@@ -409,25 +410,7 @@ const GuestMapScreen = () => {
       <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
       {
         modalInfo.visible && modalInfo.data && (
-          <FadeInFromBottom
-            duration={450}
-            style={{
-              position: "absolute",
-              zIndex: 3,
-              width: full_width,
-              height: "60%",
-              padding: 10,
-              bottom: 0,
-              backgroundColor: colors.bg_primary
-            }}
-          >
-            <IconButton
-              icon="close"
-              mode="contained"
-              size={30}
-              style={{ position: "absolute", top: 10, right: 10, zIndex: 99 }}
-              onPress={() => setModalInfo({ visible: false, data: undefined })}
-            />
+          <BottomModal isVisible={modalInfo.visible} dismiss={() => setModalInfo({ visible: false, data: undefined })} onSwipeComplete={() => setModalInfo({ visible: false, data: undefined })}>
             <ScrollView>
               {
                 'user_id' in modalInfo.data ? (
@@ -437,7 +420,7 @@ const GuestMapScreen = () => {
                 )
               }
             </ScrollView>
-          </FadeInFromBottom>
+          </BottomModal>
         )
       }
       <View style={[styles.elements, { top: top + 5 }]}>
