@@ -11,7 +11,7 @@ const ScorecardCreateScreen = ({ route }: ScreenNavigationProps<ScorecardStackPa
     }, [golf_id]);
 
     return (
-        <SafeBottomContainer padding={undefined}>
+        <SafeBottomContainer>
             <Text>Score card</Text>
         </SafeBottomContainer>
     );

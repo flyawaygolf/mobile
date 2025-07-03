@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Alert } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,6 @@ import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Loader } from '../../Other';
 import { useAppDispatch, useAppSelector } from '../../Redux';
 import { addGolfsPlayed, deleteGolfsPlayed, initGolfsPlayed } from '../../Redux/GolfsPlayed/action';
-import { ShrinkEffect } from '../../Components/Effects';
 import { Avatar } from '../../Components/Member';
 
 const GolfsPlayedScreen = () => {
@@ -38,7 +37,6 @@ const GolfsPlayedScreen = () => {
     }
 
     useEffect(() => {
-        dispatch(initGolfsPlayed([]));
         getData()
     }, [])
 
@@ -55,17 +53,33 @@ const GolfsPlayedScreen = () => {
 
     const removePlayedGolf = async (golfInfo: golfInterface) => {
         if (!golfInfo.golf_id) return;
-        const response = await client.golfs.played.unmarkAsPlayed(golfInfo.golf_id);
-        if (response.error) return handleToast(t(`errors.${response.error.code}`));
-        if (response.data) {
-            handleToast(t(`commons.success`));
-            dispatch(deleteGolfsPlayed(golfInfo.golf_id));
-        }
+
+        Alert.alert(
+            t('golf.confirm_delete_title'),
+            t('golf.confirm_delete_message', { golfName: golfInfo.name }),
+            [
+                {
+                    text: t('commons.cancel'),
+                    style: 'cancel',
+                },
+                {
+                    text: t('commons.delete'),
+                    style: 'destructive',
+                    onPress: async () => {
+                        const response = await client.golfs.played.unmarkAsPlayed(golfInfo.golf_id);
+                        if (response.error) return handleToast(t(`errors.${response.error.code}`));
+                        if (response.data) {
+                            handleToast(t(`commons.success`));
+                            dispatch(deleteGolfsPlayed(golfInfo.golf_id));
+                        }
+                    },
+                },
+            ]
+        );
     };
 
     const renderItem = ({ item }: { item: golfInterface }) => (
-        <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: item.golf_id } })}>
-            <Card style={{ margin: 5, width: full_width ? "auto" : 300 }}>
+            <Card style={{ margin: 5, width: full_width ? "auto" : 300, backgroundColor: colors.bg_secondary }}>
                 <View style={{ width: "100%", height: 150, borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", position: "relative" }}>
                     <FastImage
                         resizeMode="cover"
@@ -74,17 +88,20 @@ const GolfsPlayedScreen = () => {
                 </View>
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                        <Avatar url={`${cdnbaseurl}/golf_avatars/${item.slug}/default.jpg`} size={40} radius={8} />
-                        <Text style={{ marginLeft: 5 }}>{item.name}</Text>
+                        <Avatar style={{ borderColor: colors.bg_primary, borderWidth: 1 }} url={`${cdnbaseurl}/golf_avatars/${item.slug}/default.jpg`} size={40} radius={8} />
+                        <View>
+                            <Text style={{ marginLeft: 5 }}>{item.name}</Text>
+                            <Text style={{ marginLeft: 5 }}>{item.city}, {item.country}</Text>
+                        </View>
                     </View>
-                    <Card.Actions>
+                    <Card.Actions style={{ flexDirection: "row",  flexWrap: "wrap", justifyContent: "flex-end" }}>
                         {
                             item.played && <Button onPress={() => removePlayedGolf(item)} textColor={colors.badge_color}>{t('golf.delete_from_played')}</Button>
                         }
+                        <Button onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: item.golf_id } })}>{t('golf.display_golf')}</Button>
                     </Card.Actions>
                 </View>
             </Card>
-        </ShrinkEffect>
     )
 
     const memoizedValue = useMemo(() => renderItem, [golfs]);

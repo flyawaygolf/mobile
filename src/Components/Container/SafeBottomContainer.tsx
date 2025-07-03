@@ -10,10 +10,20 @@ type SectionProps = PropsWithChildren<{
         bottom: number;
         [x: string]: any
     };
-    padding?: number
+    padding?: {
+        top?: number;
+        bottom?: number;
+        left?: number;
+        right?: number;
+    }
 }>
 
-function SafeBottomContainer({ children, safeAreaInsets, padding = 5 }: SectionProps) {
+function SafeBottomContainer({ children, safeAreaInsets, padding = {
+        top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
+} }: SectionProps) {
     const BOTTOM_INSET = getBottomSpace();
     const { colors } = useTheme();
 
@@ -29,7 +39,10 @@ function SafeBottomContainer({ children, safeAreaInsets, padding = 5 }: SectionP
             backgroundColor: colors.bg_primary,
             marginBottom: insets.bottom,
             marginHorizontal: Math.max(insets.left, insets.right),
-            padding: padding,
+            paddingTop: padding.top,
+            paddingBottom: padding.bottom,
+            paddingLeft: padding.left,
+            paddingRight: padding.right,
         }}>
             {children}
         </View>

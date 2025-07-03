@@ -46,7 +46,12 @@ function GuildInfo({ info }: sectionProps) {
     }, [info])
 
     return (
-        <SafeBottomContainer padding={0}>
+        <SafeBottomContainer padding={{
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+        }}>
             <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
                 <ModalSection onPress={() => copyText(info.guild_id)}>
                     <Icon source="content-copy" size={22} />

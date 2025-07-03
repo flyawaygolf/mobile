@@ -8,7 +8,12 @@ const ProfileContainer = ({ route }: ScreenNavigationProps<ProfileStackParams, "
 
     return (
         <ProfileProvider>
-            <SafeBottomContainer padding={0}>
+            <SafeBottomContainer padding={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0
+            }}>
                 <ProfileScreen nickname={nickname} />
             </SafeBottomContainer>
         </ProfileProvider>

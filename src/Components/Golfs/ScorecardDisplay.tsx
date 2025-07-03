@@ -15,10 +15,28 @@ const ScorecardDisplay: React.FC<ScorecardDisplayProps> = ({ scorecards }) => {
     const [isMetric, setIsMetric] = useState(true);
 
     const TeeboxColors: { [key: string]: string } = {
-        "white": "#FFFFFF",
+        "white": colors.color_white,
         "red": colors.badge_color,
         "blue": colors.color_blue,
-        "yellow": colors.color_yellow
+        "yellow": colors.color_yellow,
+        "black": colors.color_black,
+        "brass": colors.color_brass,
+        "bronze": colors.color_bronze,
+        "brown": colors.color_brown,
+        "burgundy": colors.color_burgundy,
+        "copper": colors.color_copper,
+        "gold": colors.color_gold,
+        "grey": colors.color_grey,
+        "green": colors.color_green,
+        "jade": colors.color_jade,
+        "magenta": colors.color_magenta,
+        "orange": colors.color_orange,
+        "peach": colors.color_peach,
+        "platinum": colors.color_platinum,
+        "purple": colors.color_purple,
+        "silver": colors.color_silver,
+        "teal": colors.color_teal,
+        "turquoise": colors.color_turquoise,
     }
 
     const calculateTotal = (values: number[]) => {
@@ -118,8 +136,7 @@ const ScorecardDisplay: React.FC<ScorecardDisplayProps> = ({ scorecards }) => {
                                                 {renderColorDot(teebox.color.hex, teebox.name.toLocaleLowerCase())}
                                                 <View>
                                                     <Text style={[styles.rowLabel]}>
-                                                        {t(`golf.${teebox.name.toLocaleLowerCase()}`)}
-                                                        {gridIndex > 0 ? ` ${gridIndex + 1}` : ''}
+                                                        {t(`colors.${teebox.name.toLocaleLowerCase()}`)}
                                                     </Text>
                                                     <Text variant='bodySmall' style={[styles.rowLabel]}>
                                                         {teebox.rating}/{teebox.slope}

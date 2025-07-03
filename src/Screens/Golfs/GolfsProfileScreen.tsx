@@ -344,7 +344,12 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     );
 
     return (
-        <SafeBottomContainer padding={0}>
+        <SafeBottomContainer padding={{
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+        }}>
             <Appbar.Header style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />

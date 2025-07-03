@@ -156,7 +156,12 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   )
 
   return (
-    <SafeBottomContainer padding={0}>
+    <SafeBottomContainer padding={{
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0
+    }}>
       <ProfileHeader headerOpacity={headerOpacity} navigation={navigation} />
       {
         user_info.user_id ? activeTab === "golfs" ? (

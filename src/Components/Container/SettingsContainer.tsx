@@ -11,7 +11,7 @@ type SectionProps = PropsWithChildren<{
 const SettingsContainer = ({ children, title, leftComponent = undefined }: SectionProps) => {
 
   return (
-    <SafeBottomContainer padding={undefined}>
+    <SafeBottomContainer>
       <CustomHeader title={title} isHome={false} leftComponent={leftComponent} />
       {children}
     </SafeBottomContainer>
