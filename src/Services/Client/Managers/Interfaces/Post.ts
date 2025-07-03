@@ -1,7 +1,7 @@
 import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 import { postEventInterface } from "./Events";
 import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, requestResponseInterface, userInfo } from "./Global"
-import { golfInterface } from "./Search";
+import { golfInterface } from "./Golf";
 
 /**0 = text only | 1 = image (include gif) | 2 = video | 3 = audio | 4 = others */
 export type postTypes = 0 | 1 | 2 | 3 | 4;

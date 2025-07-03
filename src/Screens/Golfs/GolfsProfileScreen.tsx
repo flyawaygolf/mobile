@@ -9,7 +9,7 @@ import { full_width } from '../../Style/style';
 import { formatDistance, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';
 import { cdnbaseurl, golfurl } from '../../Services/constante';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Loader } from '../../Other';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { Avatar, DisplayMember } from '../../Components/Member';
@@ -18,6 +18,7 @@ import DisplayPost from '../../Components/Posts/DisplayPost';
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import EventCard from '../../Components/Events/EventCard';
 import FastImage from '@d11/react-native-fast-image';
+import ScorecardDisplay from '../../Components/Golfs/ScorecardDisplay';
 
 const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "GolfsProfileScreen">) => {
     const { golf_id } = route.params;
@@ -150,6 +151,26 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         else setEvents([...events, ...response.data]);
     };
 
+    const addPlayedGolf = async () => {
+        if (!golfInfo.golf_id) return;
+        const response = await client.golfs.played.markAsPlayed(golfInfo.golf_id);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
+        if (response.data) {
+            handleToast(t(`golf.added_as_played`));
+            setGolfInfo({ ...golfInfo, played: true });
+        }
+    }
+
+    const removePlayedGolf = async () => {
+        if (!golfInfo.golf_id) return;
+        const response = await client.golfs.played.unmarkAsPlayed(golfInfo.golf_id);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
+        if (response.data) {
+            handleToast(t(`commons.success`));
+            setGolfInfo({ ...golfInfo, played: false });
+        }
+    };
+
     const tabs = [{
         name: 'community_posts',
         active: activeTab === 'community_posts',
@@ -202,7 +223,8 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                             url={`${cdnbaseurl}/golf_avatars/${golfInfo.slug}/default.jpg`}
                         />
                     </View>
-                    <View style={{ position: "absolute", right: 5 }}>
+                    <View style={{ position: "absolute", rowGap: 5, right: 10, top: 10, flexDirection: "row", alignItems: "center", gap: 5 }}>
+                        {golfInfo.played ? <Button icon="check-circle" onPress={() => removePlayedGolf()}>{t("golf.played")}</Button> : <Button icon="check-circle-outline" onPress={() => addPlayedGolf()}>{t("golf.not_played")}</Button>}
                         {golfInfo.linked ? <Button icon="link-variant-off" onPress={() => unlinkGolf()}>{t("golf.unlink")}</Button> : <Button icon="link-variant" onPress={() => linkGolf()}>{t("golf.link")}</Button>}
                     </View>
                 </View>
@@ -268,7 +290,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                 }
                             </View>
                         </Card.Content>
-                        <Card.Actions>
+                        <Card.Content style={{ marginTop: 5, flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
                             {
                                 golfInfo.email && (
                                     <Button mode='contained' icon={"email-fast"} onPress={() => Linking.openURL(`mailto:${golfInfo.email}`)}>
@@ -290,7 +312,12 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                     </Button>
                                 )
                             }
-                        </Card.Actions>
+                        </Card.Content>
+                        <Card.Content>
+                            {
+                                golfInfo.scorecards && <ScorecardDisplay scorecards={golfInfo.scorecards} />
+                            }
+                        </Card.Content>
                     </Card>
                 </List.Accordion>
 

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { SafeBottomContainer, useClient, useProfile, useTheme } from '../../Components/Container';
 import { handleToast, navigationProps } from '../../Services';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { DisplayGolfs } from '../../Components/Golfs';
 import ProfileHeader from '../../Components/Profile/ProfileHeader';
 import ProfileInfo from '../../Components/Profile/ProfileInfo';

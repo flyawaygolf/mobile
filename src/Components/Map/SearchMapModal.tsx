@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { FadeInFromBottom } from "../Effects";
 import { full_width } from "../../Style/style";
 import { useTheme } from "../Container";

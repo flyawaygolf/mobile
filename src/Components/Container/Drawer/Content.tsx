@@ -61,7 +61,7 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
             <Drawer.Item icon="star-shooting" label={t('drawer.premium_settings')} onPress={() => premiumAdvantages(user.premium_type, user.flags).isPremium() ? navigation.navigate("MainNavigation", {
               screen: 'PremiumStack',
             }) : handleToast(t("settings.premium_required"))}
-             />
+            />
             <Drawer.Item icon="calendar-month" label={t('events.create_event')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'EventStack',
               params: {
@@ -70,6 +70,12 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
             })} />
             <Drawer.Item icon="star" label={t('guilds.favorites')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'FavoritesScreen'
+            })} />
+            <Drawer.Item icon="golf" label={t('golf.golfs_played')} onPress={() => navigation.navigate('MainNavigation', {
+              screen: 'GolfsStack',
+              params: {
+                screen: 'GolfsPlayedScreen'
+              }
             })} />
             <Drawer.Item icon="bookmark" label={t('posts.bookmarks')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'PostsStack',

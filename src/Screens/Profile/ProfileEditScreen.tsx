@@ -35,7 +35,10 @@ export interface modifI {
     golf_info: {
         handicap: number,
         player_status: number;
-        location?: [number, number];
+        location?: {
+            latitude: number;
+            longitude: number;
+        };
     },
     avatar?: fileI,
     banner?: fileI
@@ -62,7 +65,10 @@ function ProfileEditScreen() {
         golf_info: {
             handicap: user.golf_info?.handicap ?? 540,
             player_status: user.golf_info?.player_status ?? 0,
-            location: user.golf_info?.location ?? [0, 0],
+            location: user.golf_info?.location ?? {
+                latitude: 0,
+                longitude: 0,
+            },
         },
     });    
     

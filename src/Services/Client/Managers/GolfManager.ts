@@ -1,5 +1,6 @@
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import GolfLinkManager from './GolfLinkManager';
+import GolfPlayedManager from './GolfPlayedManager';
 import { EventInterface, PostInterface } from './Interfaces';
 import { paginationParams } from './Interfaces/Global';
 import { fetchGolfResponse } from './Interfaces/Search';
@@ -7,10 +8,12 @@ import { LocationQuery } from './SearchMapManager';
 
 class GolfManager extends RequestEmitter {
   public link: GolfLinkManager;
+  public played: GolfPlayedManager;
 
   constructor(params: requestParams) {
     super(params);
     this.link = new GolfLinkManager(params);
+    this.played = new GolfPlayedManager(params);
   }
 
   public async fetch(golf_id: string, options?: {

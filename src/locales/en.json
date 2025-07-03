@@ -63,7 +63,10 @@
         "last_trends": "Last Trends",
         "top_world_trends_day": "World Trends",
         "last_word_trends": "Last World Trends",
-        "reset": "Reset"
+        "reset": "Reset",
+        "yards": "Yards",
+        "meters": "Meters",
+        "total": "Total"
     },
     "update": {
         "update": "Update",
@@ -155,6 +158,20 @@
         "search_players": "Search players"
     },
     "golf": {
+        "women": "Women",
+        "men": "Men",
+        "white": "White",
+        "red": "Red",
+        "blue": "Blue",
+        "yellow": "Yellow",
+        "handicap": "Handicap",
+        "course": "Course",
+        "scorecard_display": "Scorecard",
+        "delete_from_played": "Delete from played",
+        "golfs_played": "Golfs played",
+        "added_as_played": "Added as played",
+        "played": "Played",
+        "not_played": "Not played",
         "link": "Link",
         "unlink": "Unlink",
         "no_linked_users": "No linked users",
@@ -605,6 +622,7 @@
         "404": "This root doesn't exit",
         "204": "Successfully deleted",
         "505": "Internal server error",
+        "403": "Forbidden",
         "100": "A verification email has been sent",
         "0": "Invalid parameter",
         "1": "Invalid email or password",

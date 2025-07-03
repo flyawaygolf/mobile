@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RootState } from '../../Redux';
 import { AxiosRequestConfig } from 'axios';
 import TextAreaAutoComplete from '../../Components/Posts/Creator/TextAreaAutoComplete';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { usertokenkey } from '../../Services/constante';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
 import DisplayEvent from '../../Components/Posts/Views/Components/DisplayEvent';

@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { full_width } from '../../Style/style';
 import { useClient, useTheme } from '../../Components/Container';
 import { handleToast, navigationProps } from '../../Services';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import CustomHeader from '../../Components/Header/CustomHeader';
 import { SafeAreaView } from 'react-native';
 

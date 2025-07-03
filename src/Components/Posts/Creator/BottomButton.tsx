@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import styles from "../../../Style/style";
 import { useClient, useTheme } from "../../Container";
 import { postOptions } from "../../../Screens/CreatePost/PostCreatorScreenStack";
-import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Search";
+import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Golf";
 import { BottomModal } from "../../../Other";
 import { SearchBar } from "../../Elements/Input";
 import { DisplayGolfs } from "../../Golfs";

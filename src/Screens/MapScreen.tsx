@@ -14,7 +14,7 @@ import { userInfo } from '../Services/Client/Managers/Interfaces/Global';
 import { Avatar } from '../Components/Member';
 import { SearchBar } from '../Components/Elements/Input';
 import { FadeInFromTop, ShrinkEffect } from '../Components/Effects';
-import { golfInterface } from '../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../Services/Client/Managers/Interfaces/Golf';
 import SearchMapModal from '../Components/Map/SearchMapModal';
 import { locationType } from '../Components/Container/Client/ClientContext';
 

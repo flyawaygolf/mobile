@@ -63,7 +63,10 @@
         "last_posts": "Dernière publications",
         "top_world_posts_day": "Tendances mondial",
         "last_word_posts": "Dernière publications mondial",
-        "reset": "Réinitialiser"
+        "reset": "Réinitialiser",
+        "yards": "Yards",
+        "meters": "Mètres",
+        "total": "Total"
     },
     "update": {
         "update": "Mettre à jour",
@@ -155,6 +158,20 @@
         "search_players": "Rechercher des joueurs"
     },
     "golf": {
+        "women": "Femme",
+        "men": "Homme",
+        "white": "Blanc",
+        "red": "Rouge",
+        "blue": "Bleu",
+        "yellow": "Jaune",
+        "handicap": "Handicap",
+        "course": "Parcours",
+        "scorecard_display": "Feuille de score",
+        "delete_from_played": "Supprimer des golfs joués",
+        "golfs_played": "Golfs joués",
+        "added_as_played": "Ajouté comme joué",
+        "played": "Joué",
+        "not_played": "Non joué",
         "link": "Se lier",
         "unlink": "Se délier",
         "no_linked_users": "Aucun utilisateur lié",
@@ -605,6 +622,7 @@
         "404": "Cette root n'existe pas",
         "204": "Supprimé avec succès",
         "505": "Erreur interne du serveur",
+        "403": "Accès refusé",
         "100": "Un email de vérification a été envoyé",
         "0": "Paramètre invalide",
         "1": "Email ou mot de passe invalide",

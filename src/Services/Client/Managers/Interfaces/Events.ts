@@ -1,5 +1,5 @@
 import type { requestResponseInterface, userInfo } from "./Global";
-import { golfInterface } from "./Search";
+import { golfInterface } from "./Golf";
 
 export interface eventsInterface {
     event_id: string;

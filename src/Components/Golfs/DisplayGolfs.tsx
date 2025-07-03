@@ -6,7 +6,7 @@ import styles from "../../Style/style";
 import { useTheme } from "../Container";
 import { formatDistance } from "../../Services";
 import { ShrinkEffect } from "../Effects";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { Avatar } from "../Member";
 import { cdnbaseurl } from "../../Services/constante";
 

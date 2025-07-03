@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { DisplayGolfs } from "../Golfs";
 import { handleToast, navigationProps } from "../../Services";
 import { useCallback, useMemo, useState } from "react";

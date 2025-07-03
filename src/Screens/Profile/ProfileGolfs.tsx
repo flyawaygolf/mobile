@@ -6,7 +6,7 @@ import { Text } from "react-native-paper";
 import { useClient, useProfile } from "../../Components/Container";
 import { handleToast, navigationProps } from "../../Services";
 import { Loader } from "../../Other";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { DisplayGolfs } from "../../Components/Golfs";
 
 const ProfileGolfs = () => {

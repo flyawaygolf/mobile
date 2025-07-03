@@ -14,7 +14,7 @@ import { EventStackScreens } from '../Navigator/EventStack';
 import { SubscriptionInterface } from './Client/Managers/Interfaces';
 import { ScorecardStackScreens } from '../Navigator/ScorecardStack';
 import { eventsInterface } from './Client/Managers/Interfaces/Events';
-import { golfInterface } from './Client/Managers/Interfaces/Search';
+import { golfInterface } from './Client/Managers/Interfaces/Golf';
 import { PremiumStackScreens } from '../Navigator/PremiumStack';
 import { GuestStackScreens } from '../Navigator/GuestStack';
 
@@ -53,6 +53,12 @@ export type ProfileStackParams = {
 export type GolfsStackParams = {
     GolfsProfileScreen: {
         golf_id: string;
+    };
+    GolfsPlayedScreen: undefined;
+    LittleMapScreen: {
+        longitude: number;
+        latitude: number;
+        golf_id?: string;
     };
 }
 

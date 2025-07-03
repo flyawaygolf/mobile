@@ -18,6 +18,7 @@ import { postSharesReducer } from './PostShares';
 import { postBookmarksReducer } from './Bookmarks';
 import { exploreTopUsersReducer } from './exploreTopUsers';
 import { recentMainFeedReducer } from './recentMainFeed';
+import { golfsPlayedReducer } from './GolfsPlayed';
 
 // Combine les réducteurs en un seul objet de réducteur
 const rootReducer = combineReducers({
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
   postTempSaveFeed: postTempSaveFeedReducer,
   guildListFeed: guildListReducer,
   guildMessagesFeed: guildMessagesReducer,
-  notificationFeed: notificationFeedReducer
+  notificationFeed: notificationFeedReducer,
+  golfsPlayed: golfsPlayedReducer
 });
 
 // Crée le magasin Redux en utilisant le réducteur combiné

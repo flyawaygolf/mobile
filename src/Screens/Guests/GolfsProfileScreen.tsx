@@ -7,7 +7,7 @@ import { useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { formatDistance, openURL } from '../../Services';
 import { cdnbaseurl } from '../../Services/constante';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Avatar } from '../../Components/Member';
 import FastImage from '@d11/react-native-fast-image';
 

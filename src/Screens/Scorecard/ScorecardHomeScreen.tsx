@@ -5,7 +5,7 @@ import { SearchBar } from "../../Components/Elements/Input";
 import { FlatList, View } from "react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { handleToast, navigationProps } from "../../Services";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Search";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { useNavigation } from "@react-navigation/native";
 import { DisplayGolfs } from "../../Components/Golfs";
 

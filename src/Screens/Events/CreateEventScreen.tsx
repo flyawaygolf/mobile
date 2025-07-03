@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { EventsContainer, useClient, useTheme } from '../../Components/Container';
 import { handleToast, navigationProps } from '../../Services';
 import { BottomModal } from '../../Other';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Search';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { DisplayGolfs } from '../../Components/Golfs';
 import { SearchBar } from '../../Components/Elements/Input';
 import HandicapModal from '../../Components/Events/HandicapModal';
