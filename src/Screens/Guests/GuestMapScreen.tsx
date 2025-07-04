@@ -36,7 +36,7 @@ const GuestMapScreen = () => {
   const { t } = useTranslation();
   const mapRef = useRef<MapView>(null);
   const [location, setLocation] = useState<locationType>(initLocation);
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
   const [query, setQuery] = useState<string>("");
   const [lastQuery, setLastQuery] = useState<string>("");
   const [queryResult, setQueryResult] = useState<(userInfo | golfInterface)[]>([]);
@@ -328,7 +328,7 @@ const GuestMapScreen = () => {
       color={i.main ? undefined : colors.fa_primary}
       style={!i.main && {
         backgroundColor: colors.bg_primary,
-        borderRadius: 60 / 2
+        borderRadius: 60 / 2,
       }} icon={i.icon} onPress={i.onPress} />
   )), [iconActions, colors.fa_primary, colors.bg_primary]);
 
@@ -404,23 +404,29 @@ const GuestMapScreen = () => {
         flexDirection: "column",
       }}>
         {
-          !isInputFocused && fabButtons
+          !isInputFocused && (
+            <View style={{ bottom: bottom, flexDirection: "column", alignItems: "center", gap: 10 }}>
+              {fabButtons}
+            </View>
+          )
         }
       </View>
       <SearchMapModal queryResult={queryResult} setIsInputFocused={setIsInputFocused} centerMap={centerMap} visible={isInputFocused} query={query} />
       {
         modalInfo.visible && modalInfo.data && (
-          <BottomModal isVisible={modalInfo.visible} dismiss={() => setModalInfo({ visible: false, data: undefined })} onSwipeComplete={() => setModalInfo({ visible: false, data: undefined })}>
-            <ScrollView>
-              {
-                'user_id' in modalInfo.data ? (
-                  <ProfileInfo user_info={modalInfo.data} />
-                ) : (
-                  <GolfProfileScreen golfInfo={modalInfo.data} />
-                )
-              }
-            </ScrollView>
-          </BottomModal>
+          <View>
+            <BottomModal isVisible={modalInfo.visible} dismiss={() => setModalInfo({ visible: false, data: undefined })} onSwipeComplete={() => setModalInfo({ visible: false, data: undefined })}>
+              <ScrollView>
+                {
+                  'user_id' in modalInfo.data ? (
+                    <ProfileInfo user_info={modalInfo.data} />
+                  ) : (
+                    <GolfProfileScreen golfInfo={modalInfo.data} />
+                  )
+                }
+              </ScrollView>
+            </BottomModal>
+          </View>
         )
       }
       <View style={[styles.elements, { top: top + 5 }]}>

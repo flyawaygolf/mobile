@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { View } from 'react-native';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { Platform, View } from 'react-native';
 import Modal from 'react-native-modal';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../Components/Container';
 
 type SectionProps = PropsWithChildren<{
@@ -15,7 +15,7 @@ const BottomModal = (props: SectionProps) => {
   const {children, isVisible, dismiss, scrollView} = props;
 
   const { colors } = useTheme();
-  const BOTTOM_INSET = getBottomSpace();
+  const { bottom } = useSafeAreaInsets();
 
   return (
     <Modal
@@ -24,7 +24,7 @@ const BottomModal = (props: SectionProps) => {
       swipeDirection="down"
       style={{
         justifyContent: 'flex-end',
-        margin: 0,
+        margin: 0
       }}
       onBackButtonPress={dismiss}
       onBackdropPress={dismiss}
@@ -62,7 +62,7 @@ const BottomModal = (props: SectionProps) => {
         <View style={{
           backgroundColor: colors.bg_secondary,
           width: "100%",
-          height: BOTTOM_INSET,
+          height: Platform.OS === 'ios' ? bottom : undefined,
         }} />
       </View>
     </Modal>
