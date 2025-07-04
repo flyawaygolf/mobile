@@ -61,3 +61,16 @@ export interface fetchGolfUsers {
     data?: userInfo[],
     pagination_key?: string
 }
+
+export interface fetchPlayedGolfResponse {
+    error?: {
+        message: string,
+        code: number
+    },
+    data?: {
+        golfs: golfInterface[];
+        total: number;
+        played: number;
+    },
+    pagination_key?: string
+}

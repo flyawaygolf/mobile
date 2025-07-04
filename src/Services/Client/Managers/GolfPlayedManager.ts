@@ -1,6 +1,6 @@
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { paginationParams, successResponse } from './Interfaces/Global';
-import { fetchMultipleGolfResponse } from './Interfaces/Search';
+import { fetchPlayedGolfResponse } from './Interfaces/Golf';
 
 class GolfPlayedManager extends RequestEmitter {
   constructor(params: requestParams) {
@@ -21,10 +21,10 @@ class GolfPlayedManager extends RequestEmitter {
     return response;
   }
 
-  public async playedGolfs(user_id: string, options?: {
+  public async playedGolfs(user_id: string, stats: boolean, options?: {
     pagination?: paginationParams,
   }) {
-    let _url = `/golfs/${user_id}/played`;
+    let _url = `/golfs/${user_id}/played?stats=${stats}`;
     const parameters = []
 
     if (options?.pagination) {
@@ -34,7 +34,7 @@ class GolfPlayedManager extends RequestEmitter {
     }
     if (parameters.length > 0) _url = _url.concat("?");
     const request = await this.getRequest(_url.concat(parameters.join("&")));
-    const response = request as fetchMultipleGolfResponse;
+    const response = request as fetchPlayedGolfResponse;
 
     return response;
   }

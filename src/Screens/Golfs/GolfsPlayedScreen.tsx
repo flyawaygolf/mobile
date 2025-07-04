@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from '@d11/react-native-fast-image';
 
-import { PostContainer, useClient, useTheme } from '../../Components/Container';
+import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
 import { handleToast, navigationProps } from '../../Services';
 import { cdnbaseurl } from '../../Services/constante';
@@ -25,15 +25,16 @@ const GolfsPlayedScreen = () => {
     const golfs = useAppSelector((state) => state.golfsPlayed);
     const dispatch = useAppDispatch();
     const [loader, setLoader] = useState(true);
+    const [stats, setStats] = useState<{ total: number; played: number }>({ total: 30000, played: 0 });
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
 
     async function getData() {
-        const response = await client.golfs.played.playedGolfs(user.user_id, { pagination: { pagination_key: pagination_key } });
+        const response = await client.golfs.played.playedGolfs(user.user_id, true, { pagination: { pagination_key: pagination_key } });
         setLoader(false)
         if (response.error || !response.data) return;
-        if (response.data.length < 1) return;
         if (response.pagination_key) setPaginationKey(response.pagination_key);
-        dispatch(initGolfsPlayed(response.data));
+        dispatch(initGolfsPlayed(response.data.golfs));
+        setStats({ total: response.data.total, played: response.data.played });
     }
 
     useEffect(() => {
@@ -43,12 +44,11 @@ const GolfsPlayedScreen = () => {
     const bottomHandler = async () => {
         if (loader) return;
         setLoader(true)
-        const response = await client.golfs.played.playedGolfs(user.user_id, { pagination: { pagination_key: pagination_key } });
+        const response = await client.golfs.played.playedGolfs(user.user_id, false, { pagination: { pagination_key: pagination_key } });
         setLoader(false);
         if (response.error || !response.data) return;
-        if (response.data.length < 1) return;
         if (response.pagination_key) setPaginationKey(response.pagination_key);
-        dispatch(addGolfsPlayed(response.data));
+        dispatch(addGolfsPlayed(response.data.golfs));
     }
 
     const removePlayedGolf = async (golfInfo: golfInterface) => {
@@ -94,12 +94,12 @@ const GolfsPlayedScreen = () => {
                             <Text style={{ marginLeft: 5 }}>{item.city}, {item.country}</Text>
                         </View>
                     </View>
-                    <Card.Actions style={{ flexDirection: "row",  flexWrap: "wrap", justifyContent: "flex-end" }}>
+                    <Card.Content style={{ flexDirection: "row",  flexWrap: "wrap", justifyContent: "flex-end", gap: 5 }}>
                         {
-                            item.played && <Button onPress={() => removePlayedGolf(item)} textColor={colors.badge_color}>{t('golf.delete_from_played')}</Button>
+                            item.played && <Button mode='outlined' onPress={() => removePlayedGolf(item)} textColor={colors.badge_color}>{t('golf.delete_from_played')}</Button>
                         }
-                        <Button onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: item.golf_id } })}>{t('golf.display_golf')}</Button>
-                    </Card.Actions>
+                        <Button mode='contained' onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: item.golf_id } })}>{t('golf.display_golf')}</Button>
+                    </Card.Content>
                 </View>
             </Card>
     )
@@ -107,7 +107,7 @@ const GolfsPlayedScreen = () => {
     const memoizedValue = useMemo(() => renderItem, [golfs]);
 
     return (
-        <PostContainer title="golf.golfs_played">
+        <SettingsContainer leftComponent={<Text style={{ fontSize: 16, fontWeight: '700', marginRight: 10 }}>{stats.played.toLocaleString('en-US')}/{stats.total.toLocaleString('en-US')}</Text>} title={t("golf.golfs_played")}>
             <FlatList
                 ListEmptyComponent={<Text style={{ padding: 5 }}>{t("commons.nothing_display")}</Text>}
                 ListFooterComponent={loader ? <Loader /> : undefined}
@@ -115,7 +115,7 @@ const GolfsPlayedScreen = () => {
                 data={golfs}
                 renderItem={memoizedValue}
                 keyExtractor={item => item.golf_id} />
-        </PostContainer>
+        </SettingsContainer>
     );
 };
 
