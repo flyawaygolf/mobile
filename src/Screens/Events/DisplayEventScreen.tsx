@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, Platform, ScrollView, Share, View } from 'react-native';
-import { useClient, useTheme } from '../../Components/Container';
+import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
@@ -152,80 +152,82 @@ export default function DisplayEventScreen({ route }: any) {
   }
 
   return (
-    <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/golf_covers/${eventInfo?.golf_info.slug}/default.jpg`, cache: "force-cache" }}>
-      <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-        {eventInfo && (
-          <>
-            <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
-            <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
-              <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
-              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-              <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
-              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-              <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
-            </BottomModal>
-          </>
-        )}
+    <SafeBottomContainer>
+      <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/golf_covers/${eventInfo?.golf_info.slug}/default.jpg`, cache: "force-cache" }}>
+        <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+          {eventInfo && (
+            <>
+              <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
+              <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
+                <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
+                <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+                <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
+                <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+                <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
+              </BottomModal>
+            </>
+          )}
 
-      </View>
-      <View style={{ position: "absolute", padding: 10, paddingTop: top + 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-        <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
-        {
-          // <Button mode='contained'>{t("events.event")}</Button>
-        }
-        {eventInfo ? (
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
-            <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
-            {
-              eventInfo.joined && (
-                <>
-                  <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
-                </>
-              )
-            }
-          </View>
-        ) : <Loader />}
-      </View>
-      <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
-        {displayJointButton()}
-      </View>
-      <ScrollView style={{ top: full_height / 4, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30, }}>
-        {
-          eventInfo ? (
-            <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
-              <View>
-                <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
-                  </ShrinkEffect>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100, marginRight: 5 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
-                  <Chip style={{ borderRadius: 100 }} onPress={() => navigation.navigate("ProfileStack", {
-                    screen: "ProfileScreen",
-                    params: {
-                      nickname: eventInfo.owner_info.nickname
-                    }
-                  })} avatar={<Avatar size={25} url={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)} />}>{t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}</Chip>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                  <Chip style={{ borderRadius: 100, marginRight: 5 }} icon="cash-marker">{t("events.greenfee")} {eventInfo?.greenfee ?? 0}</Chip>
-                  <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {displayHCP(eventInfo?.min_hancicap ?? 520)} - {displayHCP(eventInfo?.max_handicap ?? -100)}</Chip>
-                </View>
-                <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
-                  <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
-                  <Text>{eventInfo.description}</Text>
+        </View>
+        <View style={{ position: "absolute", padding: 10, paddingTop: top + 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
+          {
+            // <Button mode='contained'>{t("events.event")}</Button>
+          }
+          {eventInfo ? (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
+              <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
+              {
+                eventInfo.joined && (
+                  <>
+                    <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
+                  </>
+                )
+              }
+            </View>
+          ) : <Loader />}
+        </View>
+        <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+          {displayJointButton()}
+        </View>
+        <ScrollView style={{ top: full_height / 4, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30, }}>
+          {
+            eventInfo ? (
+              <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
+                <View>
+                  <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
+                    </ShrinkEffect>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100, marginRight: 5 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
+                    <Chip style={{ borderRadius: 100 }} onPress={() => navigation.navigate("ProfileStack", {
+                      screen: "ProfileScreen",
+                      params: {
+                        nickname: eventInfo.owner_info.nickname
+                      }
+                    })} avatar={<Avatar size={25} url={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)} />}>{t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}</Chip>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+                    <Chip style={{ borderRadius: 100, marginRight: 5 }} icon="cash-marker">{t("events.greenfee")} {eventInfo?.greenfee ?? 0}</Chip>
+                    <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {displayHCP(eventInfo?.min_hancicap ?? 520)} - {displayHCP(eventInfo?.max_handicap ?? -100)}</Chip>
+                  </View>
+                  <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
+                    <Text>{eventInfo.description}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          ) : <Loader />
-        }
-      </ScrollView>
-    </ImageBackground>
+            ) : <Loader />
+          }
+        </ScrollView>
+      </ImageBackground>
+    </SafeBottomContainer>
   );
 }

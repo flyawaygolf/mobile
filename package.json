@@ -1,7 +1,7 @@
 {
   "name": "flyawaygolf",
-  "version": "2.23.3",
-  "version_number": 59,
+  "version": "2.23.4",
+  "version_number": 60,
   "private": true,
   "scripts": {
     "android": "react-native run-android",

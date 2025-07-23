@@ -14,7 +14,7 @@ import { addUser } from '../../Services/Realm/userDatabase';
 import LoginContainer from '../../Components/LoginContainer';
 import { ShakeEffect } from '../../Components/Effects';
 
-const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "LoginScreen">) => {
+const LoginScreen = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "LoginScreen">) => {
 
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "
     response: "",
   });
   const [users, setUsers] = useState({
-    email: '',
+    email: route?.params?.email ?? "",
     code: '',
   });
 

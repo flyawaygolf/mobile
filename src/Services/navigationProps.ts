@@ -21,7 +21,9 @@ import { GuestStackScreens } from '../Navigator/GuestStack';
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
     ForgotPassword: undefined;
-    LoginScreen: undefined;
+    LoginScreen?: {
+        email?: string;
+    };
     RegisterEmailUsername: undefined;
     RegisterPassword: {
         email: string;

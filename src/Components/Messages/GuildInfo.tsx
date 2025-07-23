@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useTranslation } from "react-i18next";
 import { full_width } from "../../Style/style";
-import { SafeBottomContainer, useClient, useTheme } from "../Container";
+import { useClient, useTheme } from "../Container";
 import { Avatar } from "../Member";
 import { BottomModal, ModalSection } from "../../Other";
 import { MultipleAvatar } from "../Guilds";
@@ -46,12 +46,7 @@ function GuildInfo({ info }: sectionProps) {
     }, [info])
 
     return (
-        <SafeBottomContainer padding={{
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0
-        }}>
+        <View>
             <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
                 <ModalSection onPress={() => copyText(info.guild_id)}>
                     <Icon source="content-copy" size={22} />
@@ -95,7 +90,7 @@ function GuildInfo({ info }: sectionProps) {
                     </View>
                 </TouchableOpacity>
             </Card>
-        </SafeBottomContainer>
+        </View>
     )
 }
 

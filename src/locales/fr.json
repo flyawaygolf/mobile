@@ -311,7 +311,8 @@
         "go_back": "Retour",
         "register_verification_code": "Vérification du lien : {{response}}",
         "return_to_login": "Retourner à la page de connexion",
-        "verify_email": "Vérifiez votre email"
+        "verify_email": "Vérifiez votre email",
+        "register_success": "Inscription réussie, vous pouvez maintenant vous connecter"
     },
     "settings": {
         "app": "Personnalisation de l'application",

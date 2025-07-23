@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
@@ -9,11 +9,6 @@ import { NormalButton } from "../../Components/Elements/Buttons";
 function RegisterVerification({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterVerification">) {
 
     const { t } = useTranslation()
-    const [email, setEmail] = useState("")
-
-    useEffect(() => {
-        setEmail(route?.params?.email ?? "")
-    }, [])
 
     return (
         <LoginContainer>
@@ -21,12 +16,11 @@ function RegisterVerification({ navigation, route }: ScreenNavigationProps<Login
             </View>
             <View style={style.section}>
                 <View style={{ flexDirection: "column", alignItems: "flex-start", justifyContent: "center" }}>
-                    <Text variant='headlineMedium' style={{ fontWeight: "bold" }}>{t("login.verify_email")}</Text>
-                    <Text variant='headlineSmall'>{t("login.email_verif_link_send", {
-                        email: email,
-                    })}</Text>
+                    <Text variant='headlineMedium' style={{ fontWeight: "bold" }}>{t("login.register_success")}</Text>
                 </View>
-                <NormalButton onPress={() => navigation.replace("LoginScreen")} text={t('login.return_to_login')} />
+                <NormalButton onPress={() => navigation.replace("LoginScreen", {
+                    email: route?.params?.email ?? ""
+                })} text={t('login.return_to_login')} />
             </View>
         </LoginContainer>
     )
