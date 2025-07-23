@@ -152,7 +152,7 @@ export default function DisplayEventScreen({ route }: any) {
   }
 
   return (
-    <SafeBottomContainer>
+    <SafeBottomContainer padding={{ top: 0, bottom: 0, left: 0, right: 0 }}>
       <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/golf_covers/${eventInfo?.golf_info.slug}/default.jpg`, cache: "force-cache" }}>
         <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
           {eventInfo && (

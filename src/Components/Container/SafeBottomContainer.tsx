@@ -5,9 +5,9 @@ import useTheme from './Theme/useTheme';
 
 type SectionProps = PropsWithChildren<{
     safeAreaInsets?: {
-        left: number;
-        right: number;
-        bottom: number;
+        left?: number;
+        right?: number;
+        bottom?: number;
         [x: string]: any
     };
     padding?: {
