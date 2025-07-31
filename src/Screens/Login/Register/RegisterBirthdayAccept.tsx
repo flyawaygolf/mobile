@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
-import { Text, Checkbox, TextInput } from 'react-native-paper';
+import { Text, Checkbox, TextInput, HelperText, Icon } from 'react-native-paper';
 import dayjs from 'dayjs';
 
 import styles from '../../../Style/style';
@@ -11,6 +11,7 @@ import { DateInput } from '../../../Components/Elements/Input';
 import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
 import { Loader } from '../../../Other';
 import LoginContainer from '../../../Components/LoginContainer';
+import { ShakeEffect } from '../../../Components/Effects';
 
 const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterBirthdayAccept">) => {
 
@@ -83,6 +84,9 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
                     value={affiliationCode ?? ""}
                     onChangeText={(text) => setAffiliationCode(text)}
                 />
+                <ShakeEffect shakeOnDisplay>
+                    <HelperText type="info" visible={true}><Icon source="information-outline" size={15} /> {t("login.affiliate_code_info")}</HelperText>
+                </ShakeEffect>
                 <DateInput onChange={(date) => setUsers({ ...users, birthday: date })} minimumDate={new Date(min_birthday)} value={users?.birthday} label={t("login.birthday")} />
                 <View style={styles.row}>
                     <Checkbox.Android status={users.accept_tas ? "checked" : "unchecked"} onPress={() => setUsers({ ...users, accept_tas: !users.accept_tas })} />

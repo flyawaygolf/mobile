@@ -30,7 +30,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     const [showDetails, setShowDetails] = useState(true);
 
     const [golfInfo, setGolfInfo] = useState<golfInterface>({} as golfInterface);
-    const [activeTab, setActiveTab] = useState<'community_posts' | 'users' | 'events'>('community_posts');
+    const [activeTab, setActiveTab] = useState<'community_posts' | 'users' | 'events' | 'social_links'>('community_posts');
 
     const [loading, setLoading] = useState(false);
 
@@ -45,6 +45,10 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     const [eventsPaginationKey, setEventsPaginationKey] = useState<string | undefined>(undefined);
     const [events, setEvents] = useState<eventsInterface[]>([]);
     const [eventsLoader, setEventsLoader] = useState(false);
+
+    const [linksPaginationKey, setLinksPaginationKey] = useState<string | undefined>(undefined);
+    const [links, setLinks] = useState<PostInterface.postInterface[]>([]);
+    const [linksLoader, setLinksLoader] = useState(false);
 
     const fetchData = async () => {
         if (!golfInfo.golf_id) return await fetchGolf();
@@ -61,6 +65,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         if (activeTab === 'users' && users.length < 1) return await getGolfUsers();
         if (activeTab === 'community_posts' && community_posts.length < 1) return await getGolfCommunityPosts();
         if (activeTab === 'events' && events.length < 1) return await getGolfEvents();
+        if (activeTab === 'social_links' && links.length < 1) return await getGolfSocialLinks();
     };
 
     useEffect(() => {
@@ -134,6 +139,23 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         else setCommunityPosts([...community_posts, ...response.data]);
     };
 
+    const getGolfSocialLinks = async (refresh: boolean = false) => {
+        if (loading) return;
+        if (refresh) {
+            setLinksLoader(true)
+            if (linksLoader) return;
+        }
+        setLoading(true);
+        const response = await client.golfs.communitySocialLinksPosts(golf_id, { pagination: { pagination_key: refresh ? undefined : linksPaginationKey } });
+        setLoading(false);
+        if (refresh) setLinksLoader(false);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
+        if (!response.data) return;
+        if (response.pagination_key) setLinksPaginationKey(response.pagination_key);
+        if (refresh) setLinks(response.data);
+        else setLinks([...links, ...response.data]);
+    };
+
     const getGolfEvents = async (refresh: boolean = false) => {
         if (loading) return;
         if (refresh) {
@@ -181,8 +203,11 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     {
         name: 'events',
         active: activeTab === 'events'
-    }
-    ]
+    },
+    {
+        name: 'social_links',
+        active: activeTab === 'social_links'
+    }];
 
     const renderUsers = useCallback(({ item }: { item: userInfo }) => (
         <DisplayMember
@@ -196,6 +221,10 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     ), [navigation]);
 
     const renderCommunityPosts = useCallback(({ item }: { item: PostInterface.postInterface }) => (
+        <DisplayPost informations={item} />
+    ), []);
+
+    const renderSocialLinks = useCallback(({ item }: { item: PostInterface.postInterface }) => (
         <DisplayPost informations={item} />
     ), []);
 
@@ -394,29 +423,48 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                             colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
                             onRefresh={() => getGolfCommunityPosts(true)} />}
                         ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("golf.no_posts")}</Text>}
-
                         scrollIndicatorInsets={Platform.OS === "ios" ? {
                             right: 1
                         } : undefined}
                     />
-                ) : <FlatList
-                    ListHeaderComponent={golfHeader()}
-                    onScrollEndDrag={() => getGolfEvents()}
-                    scrollEventThrottle={16}
-                    data={events}
-                    keyExtractor={(item) => item.event_id}
-                    renderItem={renderEvents}
-                    ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("events.no_events")}</Text>}
-                    refreshControl={<RefreshControl
-                        refreshing={eventsLoader}
-                        progressBackgroundColor={colors.bg_primary}
-                        tintColor={colors.fa_primary}
-                        colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
-                        onRefresh={() => getGolfEvents(true)} />}
-                    scrollIndicatorInsets={Platform.OS === "ios" ? {
-                        right: 1
-                    } : undefined}
-                /> : <Loader />
+                ) : activeTab === "events" ? (
+                    <FlatList
+                        ListHeaderComponent={golfHeader()}
+                        onScrollEndDrag={() => getGolfEvents()}
+                        scrollEventThrottle={16}
+                        data={events}
+                        keyExtractor={(item) => item.event_id}
+                        renderItem={renderEvents}
+                        ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("events.no_events")}</Text>}
+                        refreshControl={<RefreshControl
+                            refreshing={eventsLoader}
+                            progressBackgroundColor={colors.bg_primary}
+                            tintColor={colors.fa_primary}
+                            colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
+                            onRefresh={() => getGolfEvents(true)} />}
+                        scrollIndicatorInsets={Platform.OS === "ios" ? {
+                            right: 1
+                        } : undefined}
+                    />) : activeTab === "social_links" ? (
+                        <FlatList
+                            ListHeaderComponent={golfHeader()}
+                            onScrollEndDrag={() => getGolfSocialLinks()}
+                            scrollEventThrottle={16}
+                            data={links}
+                            keyExtractor={(item) => item.post_id}
+                            renderItem={renderSocialLinks}
+                            refreshControl={<RefreshControl
+                                refreshing={linksLoader}
+                                progressBackgroundColor={colors.bg_primary}
+                                tintColor={colors.fa_primary}
+                                colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
+                                onRefresh={() => getGolfSocialLinks(true)} />}
+                            ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("golf.no_social_links")}</Text>}
+                            scrollIndicatorInsets={Platform.OS === "ios" ? {
+                                right: 1
+                            } : undefined}
+                        />
+                    ) : <Loader /> : <Loader />
             }
         </SafeBottomContainer>
     );

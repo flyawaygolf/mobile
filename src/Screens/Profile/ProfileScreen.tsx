@@ -28,7 +28,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
 
   const [pinedPost, setPinedPost] = useState<PostInterface.postInterface | undefined>(undefined);
 
-  const [activeTab, setActiveTab] = useState<'posts' | 'golfs'>('posts');
+  const [activeTab, setActiveTab] = useState<'posts' | 'golfs' | 'social_links'>('posts');
 
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,10 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   const [golfs, setGolfs] = React.useState<golfInterface[]>([]);
 
   const [postsPaginationKey, setPostsPaginationKey] = React.useState<string | undefined>(undefined);
-  const [posts, setPosts] = useState<PostInterface.postInterface[]>([])
+  const [posts, setPosts] = useState<PostInterface.postInterface[]>([]);
+
+  const [linksPaginationKey, setLinksPaginationKey] = useState<string | undefined>(undefined);
+  const [links, setLinks] = useState<PostInterface.postInterface[]>([]);
 
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, 100],
@@ -51,6 +54,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
   const fetchTabData = async () => {
     if (activeTab === 'posts' && posts.length < 1) return await getPosts();
     if (activeTab === 'golfs' && golfs.length < 1) return await getGolfs();
+    if (activeTab === 'social_links' && links.length < 1) return await getLinks();
   };
 
   useEffect(() => {
@@ -88,6 +92,17 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
     setPosts([...posts, ...response.data]);
   };
 
+  const getLinks = async () => {
+    if (loading) return;
+    setLoading(true);
+    const response = await client.posts.user.fetchSocialLinks(nickname, i18n.language, { pagination_key: linksPaginationKey });
+    setLoading(false);
+    if (response.error) return handleToast(t(`errors.${response.error.code}`))
+    if (!response.data) return;
+    if (response.pagination_key) setLinksPaginationKey(response.pagination_key);
+    setLinks([...links, ...response.data]);
+  };
+
   const getGolfs = async () => {
     if (loading) return;
     setLoading(true);
@@ -118,6 +133,10 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
     <DisplayPost informations={item} />
   ), []);
 
+  const memoizedLinks = useCallback(({ item }: { item: PostInterface.postInterface }) => (
+    <DisplayPost informations={item} />
+  ), []);
+
   const memoizedPosts = useMemo(() => renderPosts, [posts]);
 
   const tabs = [{
@@ -128,6 +147,11 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
     name: 'golfs',
     active: activeTab === 'golfs',
     icon: "golf-cart"
+  },
+  {
+    name: 'social_links',
+    active: activeTab === 'social_links',
+    icon: "link"
   }]
 
   const renderProfileInfo = () => (
@@ -144,7 +168,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
                   borderBottomColor: colors.fa_primary,
                   borderBottomWidth: 2,
                 }]}
-                onPress={() => setActiveTab(tab.name as 'posts' | 'golfs')}>
+                onPress={() => setActiveTab(tab.name as 'posts' | 'golfs' | 'social_links' )}>
                 <Icon source={tab.icon} size={20} color={tab.active ? colors.fa_primary : colors.text_normal} />
                 <Text>{t(`profile.${tab.name}`)}</Text>
               </TouchableOpacity>
@@ -181,7 +205,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
               right: 1
             } : undefined}
           />
-        ) : (
+        ) : activeTab === "posts" ? (
           <Animated.FlatList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -198,7 +222,24 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
               right: 1
             } : undefined}
           />
-        ) : <Loader />
+        ) : activeTab === "social_links" ? (
+          <Animated.FlatList
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            scrollEventThrottle={16}
+            data={links}
+            keyExtractor={(item) => item.post_id}
+            renderItem={memoizedLinks}
+            onScrollEndDrag={() => getLinks()}
+            ListEmptyComponent={loading ? <Loader /> : <Text style={{ textAlign: "center" }}>{t("profile.no_social_links_shared")}</Text>}
+            ListHeaderComponent={renderProfileInfo()}
+            scrollIndicatorInsets={Platform.OS === "ios" ? {
+              right: 1
+            } : undefined}
+          />
+        ) : <Loader /> : <Loader />
       }
     </SafeBottomContainer >
   );
