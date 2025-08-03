@@ -37,14 +37,18 @@ function SafeBottomContainer({ children, safeAreaInsets, padding = {
         <View style={{
             flex: 1,
             backgroundColor: colors.bg_primary,
-            marginBottom: insets.bottom,
-            marginHorizontal: Math.max(insets.left, insets.right),
-            paddingTop: padding.top,
-            paddingBottom: padding.bottom,
-            paddingLeft: padding.left,
-            paddingRight: padding.right,
         }}>
-            {children}
+            <View style={{
+                flex: 1,
+                marginBottom: insets.bottom,
+                marginHorizontal: Math.max(insets.left, insets.right),
+                paddingTop: padding.top,
+                paddingBottom: padding.bottom,
+                paddingLeft: padding.left,
+                paddingRight: padding.right,
+            }}>
+                {children}
+            </View>
         </View>
     );
 }

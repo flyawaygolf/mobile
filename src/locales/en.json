@@ -242,7 +242,10 @@
         "no_results": "No results for {{query}}",
         "change_type": "Change map type",
         "account_sync": "Update account location",
-        "center": "Center on user"
+        "center": "Center on user",
+        "30km": "30 km",
+        "50km": "50 km",
+        "100km": "100 km"
     },
     "badges": {
         "FLYAWAY_EMPLOYEE": "FlyAway Employee",

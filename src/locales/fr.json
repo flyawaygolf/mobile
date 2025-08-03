@@ -242,7 +242,10 @@
         "no_results": "Pas de résultats pour {{query}}",
         "change_type": "Changer de type de carte",
         "account_sync": "Actualiser la localisation du compte",
-        "center": "Centrer sur l'utilisateur"
+        "center": "Centrer sur l'utilisateur",
+        "30km": "30 km",
+        "50km": "50 km",
+        "100km": "100 km"
     },
     "badges": {
         "FLYAWAY_EMPLOYEE": "Employé FlyAway",

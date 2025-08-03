@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { navigationProps } from '../../../../Services';
+import { navigationProps, openURL } from '../../../../Services';
 import { useClient, useTheme } from '../../../Container';
 import { SinglePostContext } from '../../../Posts/PostContext';
 import { premiumAdvantages } from '../../../../Services/premiumAdvantages';
@@ -124,6 +124,29 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
         
         currentText += mention + ' ';
         return endIndex > -1 ? endIndex : text.length;
+      }
+
+      // Traitement des liens
+      if (text.startsWith('http', index)) {
+        const remainingText = text.slice(index);
+        // Utilise une regex locale sans flag global
+        const linkRegex = /(https?:\/\/[^\s]+)/;
+        const match = remainingText.match(linkRegex);
+        if (match && match.index === 0) {
+          const url = match[0];
+          flushCurrentText();
+          
+          result.push(
+            <Text 
+              key={result.length} 
+              style={{ color: colors.text_link }}
+              onPress={() => openURL(url)}
+            >
+              {url}
+            </Text>
+          );
+          return index + url.length;
+        }
       }
   
       // Traitement des emojis

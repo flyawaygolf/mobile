@@ -1,4 +1,4 @@
-import { ProfileProvider, SafeBottomContainer } from "../../Components/Container";
+import { ProfileProvider } from "../../Components/Container";
 import { ProfileStackParams, ScreenNavigationProps } from '../../Services';
 import ProfileScreen from "./ProfileScreen";
 
@@ -8,14 +8,7 @@ const ProfileContainer = ({ route }: ScreenNavigationProps<ProfileStackParams, "
 
     return (
         <ProfileProvider>
-            <SafeBottomContainer padding={{
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0
-            }}>
-                <ProfileScreen nickname={nickname} />
-            </SafeBottomContainer>
+            <ProfileScreen nickname={nickname} />
         </ProfileProvider>
     )
 };

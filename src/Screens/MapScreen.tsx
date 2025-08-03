@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, View, StyleSheet, Keyboard, Platform } from 'react-native';
-import MapView, { MapType, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { ScrollView, View, StyleSheet, Keyboard, Platform, Text } from 'react-native';
+import MapView, { MapType, Marker, PROVIDER_GOOGLE, Region, Circle } from 'react-native-maps';
 import { Chip, FAB } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -46,8 +46,11 @@ const MapScreen = () => {
   const [golfs, setGolfs] = useState<golfInterface[]>([]);
   const [mapType, setMapType] = useState<MapType>("standard");
   const [loadingCenter, setLoadingCenter] = useState(false);
+  const [showDistanceCircles, setShowDistanceCircles] = useState(false);
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
+
+  const toggleDistanceCircles = useCallback(() => setShowDistanceCircles(prev => !prev), []);
 
   const getAndSetLocation = async () => {
     const position = await getCurrentLocation();
@@ -311,6 +314,13 @@ const MapScreen = () => {
       main: false,
       loading: false
     },
+    {
+      icon: showDistanceCircles ? "circle-off-outline" : "circle-outline",
+      label: showDistanceCircles ? t("map.hide_circles") : t("map.show_circles"),
+      onPress: () => toggleDistanceCircles(),
+      main: false,
+      loading: false
+    },
     /*{
       icon: "account-sync",
       label: t("map.account_sync"),
@@ -324,7 +334,7 @@ const MapScreen = () => {
       main: true,
       loading: loadingCenter
     },
-  ], [mapType, loadingCenter])
+  ], [mapType, showDistanceCircles, loadingCenter, t, changeMapType, toggleDistanceCircles, centerMap])
 
 
   const fabButtons = useMemo(() => iconActions.map((i, idx) => (
@@ -407,6 +417,60 @@ const MapScreen = () => {
     });
   };
 
+  const distanceCircles = useMemo(() => {
+    if (!showDistanceCircles || !location) return null;
+    
+    const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
+    const colors = ['rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(0, 128, 0, 0.2)'];
+    const strokeColors = ['rgba(255, 0, 0, 0.5)', 'rgba(255, 165, 0, 0.5)', 'rgba(0, 128, 0, 0.5)'];
+    
+    return distances.map((distance, index) => (
+      <Circle
+        key={`distance-circle-${distance}`}
+        center={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+        }}
+        radius={distance}
+        fillColor={colors[index]}
+        strokeColor={strokeColors[index]}
+        strokeWidth={2}
+      />
+    ));
+  }, [showDistanceCircles, location]);
+
+  const distanceLabels = useMemo(() => {
+    if (!showDistanceCircles || !location) return null;
+    
+    const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
+    const labels = [t("map.30km"), t("map.50km"), t("map.100km")];
+    const labelColors = ['#FF0000', '#FFA500', '#008000'];
+    
+    return distances.map((distance, index) => {
+      // Calculer la position du label (à droite du cercle)
+      const earthRadius = 6371000; // Rayon de la Terre en mètres
+      const latOffset = 0;
+      const lngOffset = (distance / earthRadius) * (180 / Math.PI) / Math.cos(location.latitude * Math.PI / 180);
+      
+      return (
+        <Marker
+          key={`distance-label-${distance}`}
+          coordinate={{
+            latitude: location.latitude + latOffset,
+            longitude: location.longitude + lngOffset,
+          }}
+          anchor={{ x: 0, y: 0.5 }}
+        >
+          <View style={[styles.distanceLabel, { backgroundColor: labelColors[index] + '20', borderColor: labelColors[index] }]}>
+            <Text style={[styles.distanceLabelText, { color: labelColors[index] }]}>
+              {labels[index]}
+            </Text>
+          </View>
+        </Marker>
+      );
+    });
+  }, [showDistanceCircles, location]);
+
   return (
     <View style={[styles.globalView]}>
       <View style={{
@@ -485,6 +549,8 @@ const MapScreen = () => {
           height: "100%",
         }}
       >
+        {distanceCircles}
+        {distanceLabels}
         {users.length > 0 && userMarkers}
         {golfs.length > 0 && golfMarkers}
       </MapView>
@@ -521,6 +587,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
+  },
+  distanceLabel: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    borderWidth: 1,
+    backgroundColor: 'white',
+  },
+  distanceLabelText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 })
 
