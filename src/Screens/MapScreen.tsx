@@ -40,7 +40,7 @@ const MapScreen = () => {
   const [queryResult, setQueryResult] = useState<(userInfo | golfInterface)[]>([]);
   const [queryFilter, setQueryFilter] = useState<FilterType>("all");
   const [filter, setFilter] = useState<FilterType>("all");
-  const [searchLocation, setSearchLocation] = useState<locationType & { width?: number, heigth?: number } | undefined>(undefined);
+  const [searchLocation, setSearchLocation] = useState<locationType & { width?: number, heigth?: number } | undefined>(initLocation);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [users, setUsers] = useState<userInfo[]>([]);
   const [golfs, setGolfs] = useState<golfInterface[]>([]);
@@ -418,7 +418,7 @@ const MapScreen = () => {
   };
 
   const distanceCircles = useMemo(() => {
-    if (!showDistanceCircles || !location) return null;
+    if (!showDistanceCircles || !searchLocation) return null;
     
     const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
     const colors = ['rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(0, 128, 0, 0.2)'];
@@ -428,8 +428,8 @@ const MapScreen = () => {
       <Circle
         key={`distance-circle-${distance}`}
         center={{
-          latitude: location.latitude,
-          longitude: location.longitude,
+          latitude: searchLocation.latitude,
+          longitude: searchLocation.longitude,
         }}
         radius={distance}
         fillColor={colors[index]}
@@ -437,10 +437,10 @@ const MapScreen = () => {
         strokeWidth={2}
       />
     ));
-  }, [showDistanceCircles, location]);
+  }, [showDistanceCircles, searchLocation]);
 
   const distanceLabels = useMemo(() => {
-    if (!showDistanceCircles || !location) return null;
+    if (!showDistanceCircles || !searchLocation) return null;
     
     const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
     const labels = [t("map.30km"), t("map.50km"), t("map.100km")];
@@ -450,14 +450,14 @@ const MapScreen = () => {
       // Calculer la position du label (à droite du cercle)
       const earthRadius = 6371000; // Rayon de la Terre en mètres
       const latOffset = 0;
-      const lngOffset = (distance / earthRadius) * (180 / Math.PI) / Math.cos(location.latitude * Math.PI / 180);
+      const lngOffset = (distance / earthRadius) * (180 / Math.PI) / Math.cos(searchLocation.latitude * Math.PI / 180);
       
       return (
         <Marker
           key={`distance-label-${distance}`}
           coordinate={{
-            latitude: location.latitude + latOffset,
-            longitude: location.longitude + lngOffset,
+            latitude: searchLocation.latitude + latOffset,
+            longitude: searchLocation.longitude + lngOffset,
           }}
           anchor={{ x: 0, y: 0.5 }}
         >
@@ -469,7 +469,7 @@ const MapScreen = () => {
         </Marker>
       );
     });
-  }, [showDistanceCircles, location]);
+  }, [showDistanceCircles, searchLocation]);
 
   return (
     <View style={[styles.globalView]}>
