@@ -47,10 +47,16 @@ const MapScreen = () => {
   const [mapType, setMapType] = useState<MapType>("standard");
   const [loadingCenter, setLoadingCenter] = useState(false);
   const [showDistanceCircles, setShowDistanceCircles] = useState(false);
+  const [circleMode, setCircleMode] = useState<'user' | 'center'>('user');
+  const [debouncedSearchLocation, setDebouncedSearchLocation] = useState(searchLocation);
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
   const toggleDistanceCircles = useCallback(() => setShowDistanceCircles(prev => !prev), []);
+
+  const toggleCircleMode = useCallback(() => {
+    setCircleMode(prev => prev === 'user' ? 'center' : 'user');
+  }, []);
 
   const getAndSetLocation = async () => {
     const position = await getCurrentLocation();
@@ -118,6 +124,15 @@ const MapScreen = () => {
   useEffect(() => {
     if (!isInputFocused) Keyboard.dismiss();
   }, [isInputFocused]);
+
+  // Debounce search location for smoother circle movement
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchLocation(searchLocation);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchLocation]);
 
   const updateUserLocation = useCallback(async (long = location?.longitude, lat = location?.latitude, toast = true) => {
     const request = await client.user.editLocation([long ?? 0, lat ?? 0]);
@@ -314,6 +329,14 @@ const MapScreen = () => {
       main: false,
       loading: false
     },
+    // Nouveau bouton pour changer le mode des cercles (visible seulement si les cercles sont affichés)
+    ...(showDistanceCircles ? [{
+      icon: circleMode === 'user' ? "account-circle" : "crosshairs",
+      label: circleMode === 'user' ? t("map.circles_from_center") : t("map.circles_from_user"),
+      onPress: () => toggleCircleMode(),
+      main: false,
+      loading: false
+    }] : []),
     {
       icon: showDistanceCircles ? "circle-off-outline" : "circle-outline",
       label: showDistanceCircles ? t("map.hide_circles") : t("map.show_circles"),
@@ -334,7 +357,7 @@ const MapScreen = () => {
       main: true,
       loading: loadingCenter
     },
-  ], [mapType, showDistanceCircles, loadingCenter, t, changeMapType, toggleDistanceCircles, centerMap])
+  ], [mapType, showDistanceCircles, circleMode, loadingCenter, t, changeMapType, toggleDistanceCircles, toggleCircleMode, centerMap])
 
 
   const fabButtons = useMemo(() => iconActions.map((i, idx) => (
@@ -418,7 +441,10 @@ const MapScreen = () => {
   };
 
   const distanceCircles = useMemo(() => {
-    if (!showDistanceCircles || !searchLocation) return null;
+    if (!showDistanceCircles) return null;
+    
+    const centerLocation = circleMode === 'user' ? location : debouncedSearchLocation;
+    if (!centerLocation) return null;
     
     const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
     const colors = ['rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(0, 128, 0, 0.2)'];
@@ -426,10 +452,10 @@ const MapScreen = () => {
     
     return distances.map((distance, index) => (
       <Circle
-        key={`distance-circle-${distance}`}
+        key={`distance-circle-${distance}-${circleMode}`}
         center={{
-          latitude: searchLocation.latitude,
-          longitude: searchLocation.longitude,
+          latitude: centerLocation.latitude,
+          longitude: centerLocation.longitude,
         }}
         radius={distance}
         fillColor={colors[index]}
@@ -437,10 +463,13 @@ const MapScreen = () => {
         strokeWidth={2}
       />
     ));
-  }, [showDistanceCircles, searchLocation]);
+  }, [showDistanceCircles, location, debouncedSearchLocation, circleMode]);
 
   const distanceLabels = useMemo(() => {
-    if (!showDistanceCircles || !searchLocation) return null;
+    if (!showDistanceCircles) return null;
+    
+    const centerLocation = circleMode === 'user' ? location : debouncedSearchLocation;
+    if (!centerLocation) return null;
     
     const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
     const labels = [t("map.30km"), t("map.50km"), t("map.100km")];
@@ -450,14 +479,14 @@ const MapScreen = () => {
       // Calculer la position du label (à droite du cercle)
       const earthRadius = 6371000; // Rayon de la Terre en mètres
       const latOffset = 0;
-      const lngOffset = (distance / earthRadius) * (180 / Math.PI) / Math.cos(searchLocation.latitude * Math.PI / 180);
+      const lngOffset = (distance / earthRadius) * (180 / Math.PI) / Math.cos(centerLocation.latitude * Math.PI / 180);
       
       return (
         <Marker
-          key={`distance-label-${distance}`}
+          key={`distance-label-${distance}-${circleMode}`}
           coordinate={{
-            latitude: searchLocation.latitude + latOffset,
-            longitude: searchLocation.longitude + lngOffset,
+            latitude: centerLocation.latitude + latOffset,
+            longitude: centerLocation.longitude + lngOffset,
           }}
           anchor={{ x: 0, y: 0.5 }}
         >
@@ -469,7 +498,7 @@ const MapScreen = () => {
         </Marker>
       );
     });
-  }, [showDistanceCircles, searchLocation]);
+  }, [showDistanceCircles, location, debouncedSearchLocation, circleMode, t]);
 
   return (
     <View style={[styles.globalView]}>

@@ -243,6 +243,10 @@
         "change_type": "Change map type",
         "account_sync": "Update account location",
         "center": "Center on user",
+        "show_circles": "Show distance circles",
+        "hide_circles": "Hide distance circles",
+        "circles_from_center": "Circles from map center",
+        "circles_from_user": "Circles from user location",
         "30km": "30 km",
         "50km": "50 km",
         "100km": "100 km"

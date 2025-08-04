@@ -243,6 +243,10 @@
         "change_type": "Changer de type de carte",
         "account_sync": "Actualiser la localisation du compte",
         "center": "Centrer sur l'utilisateur",
+        "show_circles": "Afficher les cercles de distance",
+        "hide_circles": "Masquer les cercles de distance",
+        "circles_from_center": "Cercles au centre de la carte",
+        "circles_from_user": "Cercles autour de l'utilisateur",
         "30km": "30 km",
         "50km": "50 km",
         "100km": "100 km"
