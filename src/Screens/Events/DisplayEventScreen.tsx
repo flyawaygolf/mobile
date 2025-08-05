@@ -10,11 +10,11 @@ import * as AddCalendarEvent from 'react-native-add-calendar-event';
 import { check, PERMISSIONS, request } from 'react-native-permissions';
 
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
-import { handleToast, messageFormatDate, navigationProps } from '../../Services';
+import { golfCoverUrl, handleToast, messageFormatDate, navigationProps } from '../../Services';
 import { full_height, full_width } from '../../Style/style';
 import { BottomModal, Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
-import { cdnbaseurl, eventurl } from '../../Services/constante';
+import { eventurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
 import { Avatar } from '../../Components/Member';
 import { displayHCP } from '../../Services/handicapNumbers';
@@ -153,7 +153,7 @@ export default function DisplayEventScreen({ route }: any) {
 
   return (
     <SafeBottomContainer padding={{ top: 0, bottom: 0, left: 0, right: 0 }}>
-      <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: `${cdnbaseurl}/golf_covers/${eventInfo?.golf_info.slug}/default.jpg`, cache: "force-cache" }}>
+      <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: eventInfo?.golf_info.slug ? golfCoverUrl(eventInfo?.golf_info.slug) : undefined, cache: "force-cache" }}>
         <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
           {eventInfo && (
             <>

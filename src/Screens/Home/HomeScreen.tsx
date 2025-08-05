@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { Appbar, Banner, Text } from "react-native-paper";
+import { Appbar, Banner, Button, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
@@ -11,10 +11,12 @@ import { RootState, useAppSelector } from "../../Redux";
 import { ShrinkEffect } from "../../Components/Effects";
 import { userFlags } from "../../Services/Client";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const HomeScreen = () => {
 
   const { user, client } = useClient();
+  const { t } = useTranslation();
   const { colors } = useTheme();
   const navigation = useNavigation<navigationProps>();
   const notifications = useAppSelector((state) => state.notificationFeed);
@@ -47,9 +49,15 @@ const HomeScreen = () => {
     return (
       <View style={[styles.row, { justifyContent: "flex-end", marginRight: 10 }]}>
         {
-          displayPremiumUpgrade() && <Appbar.Action color={colors.text_normal} icon="account-arrow-up" onPress={() => navigation.navigate("SettingsStack", {
+          displayPremiumUpgrade() && <Button mode="outlined" textColor={colors.text_normal} onPress={() => navigation.navigate("SettingsStack", {
             screen: "PremiumScreen"
-          })} />
+          })}>{t("premium.title")}</Button>
+        }
+        {
+          /**
+           *           displayPremiumUpgrade() && <Appbar.Action color={colors.text_normal} icon="account-arrow-up" onPress={() => navigation.navigate("SettingsStack", {
+
+           */
         }
         <ShrinkEffect onPress={() => navigation.navigate("NotificationsScreen")} style={{ position: "relative" }}>
           <Appbar.Action color={colors.text_normal} icon="bell" onPress={() => navigation.navigate("NotificationsScreen")} />

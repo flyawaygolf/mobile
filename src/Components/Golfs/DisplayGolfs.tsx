@@ -4,11 +4,10 @@ import { View } from "react-native";
 
 import styles from "../../Style/style";
 import { useTheme } from "../Container";
-import { formatDistance } from "../../Services";
+import { formatDistance, golfAvatarUrl } from "../../Services";
 import { ShrinkEffect } from "../Effects";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { Avatar } from "../Member";
-import { cdnbaseurl } from "../../Services/constante";
 
 type PropsType = {
     informations: golfInterface;
@@ -44,7 +43,7 @@ function DisplayGolfs({ informations, onPress, full_width = false }: PropsType) 
                             borderWidth: 3,
                         }}
                         radius={8}
-                        url={`${cdnbaseurl}/golf_avatars/${informations.slug}/default.jpg`}
+                        url={golfAvatarUrl(informations.slug)}
                     />
                     <View>
                         <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{informations.name}</Text>

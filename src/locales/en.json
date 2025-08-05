@@ -453,6 +453,8 @@
         "no_events_guilds": "No event groups. Join an event to see associated groups"
     },
     "premium": {
+        "title": "Premium",
+        "subtitle": "Become a Premium member to unlock exclusive features and support app development.",
         "settings_title": "Premium Settings",
         "availability_settings": "Availability Settings",
         "view_post_impressions_title": "View post impressions",

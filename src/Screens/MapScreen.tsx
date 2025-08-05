@@ -49,6 +49,7 @@ const MapScreen = () => {
   const [showDistanceCircles, setShowDistanceCircles] = useState(false);
   const [circleMode, setCircleMode] = useState<'user' | 'center'>('user');
   const [debouncedSearchLocation, setDebouncedSearchLocation] = useState(searchLocation);
+  const [regionChangeTimeout, setRegionChangeTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
@@ -386,10 +387,10 @@ const MapScreen = () => {
   )), [searchChips, queryFilter, filter, isInputFocused, t, debounceSearch, handleChipPress]);
 
 
-  const userMarkers = useMemo(() => users.map((u, idx) => {
+  const userMarkers = useMemo(() => users.map((u) => {
     return (
       <Marker
-        key={idx}
+        key={`user-${u.user_id}`}
         onPress={() => navigation.navigate("ProfileStack", {
           screen: "ProfileScreen",
           params: {
@@ -400,9 +401,8 @@ const MapScreen = () => {
           longitude: u.golf_info.location.longitude,
           latitude: u.golf_info.location.latitude,
         }}
-      // calloutOffset={{ x: -8, y: 28 }}
-      // calloutAnchor={{ x: 0.5, y: -0.2 }}
-      // tracksViewChanges={false}
+        title={u.username}
+        tracksViewChanges={false}
       >
         <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
       </Marker>
@@ -431,25 +431,44 @@ const MapScreen = () => {
     )
   }), [golfs, searchLocation, navigation]);
 
-  const debouncedRegionChange = (region: Region) => {
-    const { widthMeters, heightMeters } = calculateMapSize(region);    
-    setSearchLocation({
-      ...region,
-      heigth: heightMeters,
-      width: widthMeters,
-    });
-  };
+  const debouncedRegionChange = useCallback((region: Region) => {
+    // Annuler le timeout précédent s'il existe
+    if (regionChangeTimeout) {
+      clearTimeout(regionChangeTimeout);
+    }
+
+    // Créer un nouveau timeout
+    const newTimeout = setTimeout(() => {
+      const { widthMeters, heightMeters } = calculateMapSize(region);
+      setSearchLocation({
+        ...region,
+        heigth: heightMeters,
+        width: widthMeters,
+      });
+    }, 200); // Réduire le délai à 200ms
+
+    setRegionChangeTimeout(newTimeout);
+  }, [regionChangeTimeout, calculateMapSize]);
+
+  // Nettoyer le timeout lors du démontage du composant
+  useEffect(() => {
+    return () => {
+      if (regionChangeTimeout) {
+        clearTimeout(regionChangeTimeout);
+      }
+    };
+  }, [regionChangeTimeout]);
 
   const distanceCircles = useMemo(() => {
     if (!showDistanceCircles) return null;
-    
+
     const centerLocation = circleMode === 'user' ? location : debouncedSearchLocation;
     if (!centerLocation) return null;
-    
+
     const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
     const colors = ['rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(0, 128, 0, 0.2)'];
     const strokeColors = ['rgba(255, 0, 0, 0.5)', 'rgba(255, 165, 0, 0.5)', 'rgba(0, 128, 0, 0.5)'];
-    
+
     return distances.map((distance, index) => (
       <Circle
         key={`distance-circle-${distance}-${circleMode}`}
@@ -467,20 +486,20 @@ const MapScreen = () => {
 
   const distanceLabels = useMemo(() => {
     if (!showDistanceCircles) return null;
-    
+
     const centerLocation = circleMode === 'user' ? location : debouncedSearchLocation;
     if (!centerLocation) return null;
-    
+
     const distances = [30000, 50000, 100000]; // 30km, 50km, 100km en mètres
     const labels = [t("map.30km"), t("map.50km"), t("map.100km")];
     const labelColors = ['#FF0000', '#FFA500', '#008000'];
-    
+
     return distances.map((distance, index) => {
       // Calculer la position du label (à droite du cercle)
       const earthRadius = 6371000; // Rayon de la Terre en mètres
       const latOffset = 0;
       const lngOffset = (distance / earthRadius) * (180 / Math.PI) / Math.cos(centerLocation.latitude * Math.PI / 180);
-      
+
       return (
         <Marker
           key={`distance-label-${distance}-${circleMode}`}
@@ -580,8 +599,8 @@ const MapScreen = () => {
       >
         {distanceCircles}
         {distanceLabels}
-        {users.length > 0 && userMarkers}
-        {golfs.length > 0 && golfMarkers}
+        {userMarkers}
+        {golfMarkers}
       </MapView>
     </View>
   );

@@ -7,8 +7,7 @@ import FastImage from '@d11/react-native-fast-image';
 
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
-import { handleToast, navigationProps } from '../../Services';
-import { cdnbaseurl } from '../../Services/constante';
+import { golfAvatarUrl, golfCoverUrl, handleToast, navigationProps } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Loader } from '../../Other';
 import { useAppDispatch, useAppSelector } from '../../Redux';
@@ -84,11 +83,11 @@ const GolfsPlayedScreen = () => {
                     <FastImage
                         resizeMode="cover"
                         style={{ backgroundColor: colors.good_color, ...StyleSheet.absoluteFillObject }}
-                        source={{ uri: `${cdnbaseurl}/golf_covers/${item.slug}/default.jpg` }} />
+                        source={{ uri: golfCoverUrl(item.slug) }} />
                 </View>
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                        <Avatar style={{ borderColor: colors.bg_primary, borderWidth: 1 }} url={`${cdnbaseurl}/golf_avatars/${item.slug}/default.jpg`} size={40} radius={8} />
+                        <Avatar style={{ borderColor: colors.bg_primary, borderWidth: 1 }} url={golfAvatarUrl(item.slug)} size={40} radius={8} />
                         <View>
                             <Text style={{ marginLeft: 5 }}>{item.name}</Text>
                             <Text style={{ marginLeft: 5 }}>{item.city}, {item.country}</Text>

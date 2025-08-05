@@ -453,6 +453,8 @@
         "no_events_guilds": "Aucun groupe d'événement. Rejoindre un événement pour voir les groupes associés"
     },
     "premium": {
+        "title": "Premium",
+        "subtitle": "Devenez membre Premium pour débloquer des fonctionnalités exclusives et soutenir le développement de l'application.",
         "settings_title": "Paramètres Premium",
         "availability_settings": "Paramètres de disponibilité",
         "view_post_impressions_title": "Voir les impressions des posts",

@@ -2,14 +2,13 @@ import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import FastImage from '@d11/react-native-fast-image';
 
 import { useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
-import { formatDistance, openURL } from '../../Services';
-import { cdnbaseurl } from '../../Services/constante';
+import { formatDistance, golfAvatarUrl, golfCoverUrl, openURL } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Avatar } from '../../Components/Member';
-import FastImage from '@d11/react-native-fast-image';
 
 type SectionProps = {
     golfInfo: golfInterface;
@@ -22,7 +21,7 @@ const GolfProfileScreen = ({ golfInfo }: SectionProps) => {
     return (
         <View>
             <View style={{ height: 150, backgroundColor: colors.bg_secondary }}>
-                <FastImage source={{ uri: `${cdnbaseurl}/golf_covers/${golfInfo.slug}/default.jpg` }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
+                <FastImage source={{ uri: golfCoverUrl(golfInfo.slug) }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
             </View>
             <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                 <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
@@ -35,7 +34,7 @@ const GolfProfileScreen = ({ golfInfo }: SectionProps) => {
                             marginLeft: 10,
                         }}
                         radius={8}
-                        url={`${cdnbaseurl}/golf_avatars/${golfInfo.slug}/default.jpg`}
+                        url={golfAvatarUrl(golfInfo.slug)}
                     />
                 </View>
             </View>

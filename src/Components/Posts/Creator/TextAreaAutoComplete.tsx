@@ -196,6 +196,7 @@ function TextAreaAutoComplete({ value, setValue, maxLength, autoFocus }: section
                 maxLength={maxLength}
                 placeholderTextColor={colors.text_normal}
                 style={{
+                    fontSize: 18,
                     color: colors.text_normal
                 }}
                 placeholder={t("posts.what_new") as string}

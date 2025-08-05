@@ -16,7 +16,7 @@ function HomeNavigator() {
     const { colors } = useTheme();
     const { t } = useTranslation();
 
-    const [index, setIndex] = useState(1);
+    const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'recents', title: t("home.recents") },
         { key: 'follows', title: t("home.follows") }

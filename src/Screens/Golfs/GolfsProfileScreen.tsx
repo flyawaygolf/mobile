@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Linking, Platform, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Appbar, Button, Card, List, Text } from 'react-native-paper';
+import { FlatList, Linking, Platform, Pressable, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Appbar, Button, Card, IconButton, List, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from '@d11/react-native-fast-image';
 
 import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
-import { formatDistance, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
+import { formatDistance, golfAvatarUrl, golfCoverUrl, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';
-import { cdnbaseurl, golfurl } from '../../Services/constante';
+import { golfurl } from '../../Services/constante';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Loader } from '../../Other';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
@@ -17,7 +18,6 @@ import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import DisplayPost from '../../Components/Posts/DisplayPost';
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import EventCard from '../../Components/Events/EventCard';
-import FastImage from '@d11/react-native-fast-image';
 import ScorecardDisplay from '../../Components/Golfs/ScorecardDisplay';
 
 const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "GolfsProfileScreen">) => {
@@ -235,24 +235,63 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     const golfHeader = () => golfInfo && (
         (
             <>
-                <View style={{ height: 150, backgroundColor: colors.bg_secondary }}>
-                    <FastImage source={{ uri: `${cdnbaseurl}/golf_covers/${golfInfo.slug}/default.jpg` }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
+                <View style={{ height: 125, backgroundColor: colors.bg_secondary }}>
+                    <FastImage source={{ uri: golfCoverUrl(golfInfo.slug) }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
                 </View>
-                <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+                <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
                     <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
                         <Avatar
                             size={80}
                             style={{
                                 borderColor: colors.bg_primary,
                                 borderWidth: 3,
-                                marginTop: -40,
+                                marginTop: -20,
                                 marginLeft: 10,
                             }}
                             radius={8}
-                            url={`${cdnbaseurl}/golf_avatars/${golfInfo.slug}/default.jpg`}
+                            url={golfAvatarUrl(golfInfo.slug)}
                         />
                     </View>
-                    <View style={{ position: "absolute", rowGap: 5, right: 10, top: 10, flexDirection: "row", alignItems: "center", gap: 5 }}>
+                    <View style={{ justifyContent: "flex-start", flexDirection: "column", gap: 5, marginLeft: 5, marginTop: 5, flex: 1, paddingRight: 5 }}>
+                        <Text ellipsizeMode='tail' style={{ fontSize: 20, fontWeight: "bold", flexWrap: "wrap" }} numberOfLines={1}>{golfInfo.name}</Text>
+                        {
+                            golfInfo.city && golfInfo.country && (
+                                <View style={{ flexDirection: "row", justifyContent: "flex-start", }}>
+                                    <Text numberOfLines={1} ellipsizeMode="tail">{golfInfo.city}, {golfInfo.country}</Text>
+                                </View>
+                            )
+                        }
+                    </View>
+                </View>
+                <View style={{ marginTop: 5, marginLeft: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: "wrap", maxWidth: "50%" }}>
+                        {
+                            golfInfo.email && (
+                                <Pressable onPress={() => Linking.openURL(`mailto:${golfInfo.email}`)} style={{ flexDirection: "column", alignItems: "center" }}>
+                                    <IconButton iconColor={colors.fa_primary} mode='contained' containerColor={colors.bg_third} size={20} icon={"email-fast"} />
+                                    <Text>{t("golf.email")}</Text>
+                                </Pressable>
+                            )
+                        }
+                        {
+                            golfInfo.phone && (
+                                <Pressable onPress={() => Linking.openURL(`tel:${golfInfo.phone}`)} style={{ flexDirection: "column", alignItems: "center" }}>
+                                    <IconButton iconColor={colors.fa_primary} mode='contained' containerColor={colors.bg_third} size={20} icon={"phone"} />
+                                    <Text>{t("golf.phone")}</Text>
+                                </Pressable>
+                            )
+                        }
+                        {
+                            golfInfo.website && (
+                                <Pressable onPress={() => openURL(golfInfo.website)} style={{ flexDirection: "column", alignItems: "center" }}>
+                                    <IconButton iconColor={colors.fa_primary} mode='contained' containerColor={colors.bg_third} size={20} icon={"web"} />
+                                    <Text>{t("golf.website")}</Text>
+                                </Pressable>
+                            )
+                        }
+                    </View>
+
+                    <View style={{ position: "absolute", rowGap: 5, right: 10, top: 10, flexDirection: "row", alignItems: "center", gap: 5, maxWidth: "50%" }}>
                         {golfInfo.played ? <Button icon="check-circle" onPress={() => removePlayedGolf()}>{t("golf.played")}</Button> : <Button icon="check-circle-outline" onPress={() => addPlayedGolf()}>{t("golf.not_played")}</Button>}
                         {golfInfo.linked ? <Button icon="link-variant-off" onPress={() => unlinkGolf()}>{t("golf.unlink")}</Button> : <Button icon="link-variant" onPress={() => linkGolf()}>{t("golf.link")}</Button>}
                     </View>
@@ -260,87 +299,48 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                 <List.Accordion expanded={showDetails} onPress={() => setShowDetails(!showDetails)} title={t("golf.details")} id="1">
                     <Card style={{ margin: 5 }} mode="contained">
                         <Card.Content>
-                            <View style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
                                 {
                                     golfInfo.holes && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.holes")}</Text>
-                                            <Text>{golfInfo.holes}</Text>
+                                        <View style={{ flexDirection: "column", alignItems: "center", backgroundColor: colors.bg_primary, padding: 10, borderRadius: 5, minWidth: 100, minHeight: 60 }}>
+                                            <Text>{t("golf.holes")}</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: '900' }}>{golfInfo.holes}</Text>
                                         </View>
                                     )
                                 }
                                 {
                                     golfInfo.scorecards?.[0]?.grid?.[0]?.par && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.par")}</Text>
-                                            <Text>{golfInfo.scorecards[0].grid[0].par.reduce((sum, hole) => sum + (typeof hole === 'number' ? hole : 0), 0)}</Text>
+                                        <View style={{ flexDirection: "column", alignItems: "center", backgroundColor: colors.bg_primary, padding: 10, borderRadius: 5, minWidth: 100, minHeight: 60 }}>
+                                            <Text>{t("golf.par")}</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: '900' }}>{golfInfo.scorecards[0].grid[0].par.reduce((sum, hole) => sum + (typeof hole === 'number' ? hole : 0), 0)}</Text>
                                         </View>
                                     )
                                 }
                                 {
                                     golfInfo.yearBuilt && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.year_built")}</Text>
-                                            <Text>{golfInfo.yearBuilt}</Text>
-                                        </View>
-                                    )
-                                }
-                                {
-                                    golfInfo.city && golfInfo.country && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.location")}</Text>
-                                            <Text>{golfInfo.city}, {golfInfo.country}</Text>
-                                        </View>
-                                    )
-                                }
-                                {
-                                    golfInfo.golfTypes && golfInfo.golfTypes.length > 0 && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.types")}</Text>
-                                            <Text>{golfInfo.golfTypes.map((type) => t(`golf.${type}`))}</Text>
+                                        <View style={{ flexDirection: "column", alignItems: "center", backgroundColor: colors.bg_primary, padding: 10, borderRadius: 5, minWidth: 100, minHeight: 60 }}>
+                                            <Text>{t("golf.year_built")}</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: '900' }}>{golfInfo.yearBuilt}</Text>
                                         </View>
                                     )
                                 }
                                 {
                                     golfInfo.architect && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.architect")}</Text>
-                                            <Text>{golfInfo.architect}</Text>
+                                        <View style={{ flexDirection: "column", alignItems: "center", backgroundColor: colors.bg_primary, padding: 10, borderRadius: 5, minWidth: 100, minHeight: 60 }}>
+                                            <Text>{t("golf.architect")}</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: '900' }}>{golfInfo.architect}</Text>
                                         </View>
                                     )
                                 }
                                 {
                                     golfInfo.distance && (
-                                        <View>
-                                            <Text style={{ fontWeight: '900' }}>{t("golf.distance")}</Text>
-                                            <Text>{formatDistance(golfInfo.distance)}</Text>
+                                        <View style={{ flexDirection: "column", alignItems: "center", backgroundColor: colors.bg_primary, padding: 10, borderRadius: 5, minWidth: 100, minHeight: 60 }}>
+                                            <Text>{t("golf.distance")}</Text>
+                                            <Text style={{ fontSize: 16, fontWeight: '900' }}>{formatDistance(golfInfo.distance)}</Text>
                                         </View>
                                     )
                                 }
                             </View>
-                        </Card.Content>
-                        <Card.Content style={{ marginTop: 5, flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-                            {
-                                golfInfo.email && (
-                                    <Button mode='contained' icon={"email-fast"} onPress={() => Linking.openURL(`mailto:${golfInfo.email}`)}>
-                                        {t("golf.email")}
-                                    </Button>
-                                )
-                            }
-                            {
-                                golfInfo.phone && (
-                                    <Button mode='contained' icon={"phone"} onPress={() => Linking.openURL(`tel:${golfInfo.phone}`)}>
-                                        {t("golf.phone")}
-                                    </Button>
-                                )
-                            }
-                            {
-                                golfInfo.website && (
-                                    <Button mode='contained' icon={"web"} onPress={() => openURL(golfInfo.website)}>
-                                        {t("golf.website")}
-                                    </Button>
-                                )
-                            }
                         </Card.Content>
                         <Card.Content>
                             {
@@ -380,9 +380,15 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
             right: 0
         }}>
             <Appbar.Header style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", alignItems: "center", flex: 1, marginRight: 10 }}>
                     <Appbar.BackAction color={colors.text_normal} onPress={() => navigation ? navigation.goBack() : null} />
-                    <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{golfInfo ? golfInfo.name : "..."}</Text>
+                    <Text
+                        style={{ fontSize: 16, fontWeight: '700', marginLeft: 5, flex: 1 }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                    >
+                        {golfInfo ? golfInfo.name : "..."}
+                    </Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
                     <Appbar.Action icon="share-variant" onPress={() => onShare()} />
