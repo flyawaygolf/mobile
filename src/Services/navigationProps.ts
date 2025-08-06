@@ -18,6 +18,7 @@ import { golfInterface } from './Client/Managers/Interfaces/Golf';
 import { PremiumStackScreens } from '../Navigator/PremiumStack';
 import { GuestStackScreens } from '../Navigator/GuestStack';
 import { guildI } from '../Redux/guildList';
+import { fetchGuildResponseSchema } from './Client/Managers/Interfaces/Guild';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -74,10 +75,13 @@ export type ScorecardStackParams = {
 
 export type MessageStackParams = {
     MessageScreen: {
-        guild: guildI;
+        guild: guildI | fetchGuildResponseSchema;
     };
     CreateGroupScreen: undefined;
     GuildSettingsScreen: {
+        guild: guildI;
+    };
+    AddUsersToGuildScreen: {
         guild: guildI;
     };
 }

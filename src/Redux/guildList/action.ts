@@ -1,6 +1,7 @@
 import { GuildInterface, MessageInterface } from "../../Services/Client/Managers/Interfaces";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
-import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS } from "./actionTypes";
+import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS, UPDATE_GUILD_INFO, ADD_GUILD_MEMBER, REMOVE_GUILD_MEMBER, UPDATE_GUILD_MEMBERS, REFRESH_GUILD_LIST } from "./actionTypes";
+import { guildI } from "./";
 
 export const resetGuildList = (info = []) => ({
     type: RESET_GUILDS,
@@ -27,10 +28,7 @@ export const modifyGuildList = (info: { guild_id: string, content: string, creat
     info
 })
 
-export const updateGuildList = (info: {
-    guild_name?: string,
-    members?: userInfo[],
-}) => ({
+export const updateGuildList = (info: Partial<guildI>) => ({
     type: UPDATE_GUILDS,
     info
 });
@@ -49,3 +47,28 @@ export const changeLastMessageGuildList = (info: IchangeLastMessageGuildList) =>
     type: CHANGE_MESSAGE_UNREAD_GUILDS,
     info
 })
+
+// Nouvelles actions pour la synchronisation interne
+export const updateGuildInfo = (info: { guildId: string; updates: Partial<guildI> }) => ({
+    type: UPDATE_GUILD_INFO,
+    info
+});
+
+export const addGuildMember = (info: { guildId: string; member: userInfo }) => ({
+    type: ADD_GUILD_MEMBER,
+    info
+});
+
+export const removeGuildMember = (info: { guildId: string; userId: string }) => ({
+    type: REMOVE_GUILD_MEMBER,
+    info
+});
+
+export const updateGuildMembers = (info: { guildId: string; members: userInfo[] }) => ({
+    type: UPDATE_GUILD_MEMBERS,
+    info
+});
+
+export const refreshGuildList = () => ({
+    type: REFRESH_GUILD_LIST
+});

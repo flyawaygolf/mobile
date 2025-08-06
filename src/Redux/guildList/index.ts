@@ -25,10 +25,13 @@ export const guildListReducer = (state: guildI[] = [], action: {
         return new_array;
     }  else if (type ===  UPDATE_GUILDS) {
         const new_array = [...state];
-        const { guild_name, members } = action.info;
-        const idx = new_array.findIndex(v => v.guild_name === guild_name);
+        const modif = action.info;
+        const idx = new_array.findIndex(v => v.guild_id === modif.guild_id);
         if (idx < 0) return state;        
-        new_array[idx] = { ...new_array[idx], members, guild_name };
+        new_array[idx] = { 
+            ...new_array[idx], 
+            ...modif
+        };        
         return new_array;
     } else if (type ===  UNREAD_GUILDS) {
         const unreads: MessageInterface.unreadFetchResponseInterface[] = action.info;

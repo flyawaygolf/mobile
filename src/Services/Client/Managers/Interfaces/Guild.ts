@@ -48,6 +48,7 @@ export interface guildUserAddResponse {
         added_count: number,
         failed_count: number,
         added_users: string[],
-        failed_users: string[]
+        failed_users: string[],
+        new_guild: fetchGuildResponseSchema
     }
 }

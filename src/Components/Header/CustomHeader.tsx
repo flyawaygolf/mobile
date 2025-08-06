@@ -28,7 +28,7 @@ const CustomHeader: SectionProps = ({ title, isHome, leftComponent, children }) 
 
     return (
         <Appbar.Header style={{ width: full_width, flexDirection: "row", justifyContent: "space-between", paddingTop: 0 }}>
-            <View style={[styles.row, { justifyContent: "flex-end" }]}>
+            <View style={[styles.row, { justifyContent: "flex-end", marginLeft: 10 }]}>
                 {!isHome ? navigation.canGoBack() ? <Appbar.BackAction onPress={() => navigation.goBack()} /> : <DisplayAvatar /> : <DisplayAvatar />}
                 {title && <Text style={{ fontSize: 16, fontWeight: '700', marginLeft: 5 }}>{title}</Text>}
             </View>

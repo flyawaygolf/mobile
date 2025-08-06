@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { Text } from 'react-native-paper';
@@ -16,6 +16,7 @@ import MessageBoxHeader from '../../Components/Messages/MessageBoxHeader';
 import { MessageBox } from '../../Components/Messages/MessageBox';
 import { handleToast, MessageStackParams, ScreenNavigationProps } from '../../Services';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
+import MessagesContext from '../../Contexts/MessagesContext';
 
 const formatMessages = (messages: fetchMessageResponseInterface[], guild_id: string, client: Client): MessageType.Any[] => messages.map(((m) => {
   return {
@@ -47,6 +48,7 @@ const MessageScreen = ({ route }: ScreenNavigationProps<MessageStackParams, "Mes
   const [messageInfo, setMessageInfo] = useState<MessageType.Text>();
   const dispatch = useDispatch();
   const messages = useAppSelector((state) => state.guildMessagesFeed[guild.guild_id] || []);
+  const messageContext = useContext(MessagesContext);
 
   const advantages = premiumAdvantages(user.premium_type, user.flags)
 
@@ -67,7 +69,8 @@ const MessageScreen = ({ route }: ScreenNavigationProps<MessageStackParams, "Mes
   }, [])
 
   useEffect(() => {
-    getMessages()
+    getMessages();
+    messageContext?.selectGuild(guild.guild_id);
   }, [])
 
 

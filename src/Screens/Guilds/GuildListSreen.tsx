@@ -75,12 +75,19 @@ const GuildListSreen = () => {
   }
 
   useEffect(() => {
-    getData();
+    if(groups.length < 1) {
+      getData();
+    }
   }, []);
+
+  useEffect(() => {
+    setDisplayGroups(groups);
+    setFilterChip(filterChip.map((item) => ({ ...item, selected: item.key === "all" })));
+  }, [groups]);
 
   const renderItem = useCallback(({ item }: { item: guildI }) => (
     <GroupInfo info={item} />
-  ), [groups]);
+  ), [groups, displayGroups]);
 
   const pressChip = async (type: FilterType) => {
     setFilterChip(filterChip.map((item) => ({ ...item, selected: item.key === type })));
