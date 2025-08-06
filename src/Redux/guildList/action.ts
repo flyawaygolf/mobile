@@ -1,5 +1,6 @@
 import { GuildInterface, MessageInterface } from "../../Services/Client/Managers/Interfaces";
-import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS } from "./actionTypes";
+import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
+import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS } from "./actionTypes";
 
 export const resetGuildList = (info = []) => ({
     type: RESET_GUILDS,
@@ -25,6 +26,14 @@ export const modifyGuildList = (info: { guild_id: string, content: string, creat
     type: MODIFY_GUILDS,
     info
 })
+
+export const updateGuildList = (info: {
+    guild_name?: string,
+    members?: userInfo[],
+}) => ({
+    type: UPDATE_GUILDS,
+    info
+});
 
 export const setUnreadGuildList = (info: MessageInterface.unreadFetchResponseInterface[]) => ({
     type: UNREAD_GUILDS,

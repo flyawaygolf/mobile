@@ -53,8 +53,9 @@ function BottomStack({ navigation }: { navigation: navigationProps }) {
         if (navigation) return navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: nickname } })
     }
 
-    const navigateToMessage = (guild_id: string) => {
-        if (navigation) return navigation.navigate("MessagesStack", { screen: "MessageScreen", params: { guild_id: guild_id } })
+    const navigateToMessage = async (guild_id: string) => {
+        const guild_info = await client.client.guilds.fetch(guild_id);
+        if (navigation) return navigation.navigate("MessagesStack", { screen: "MessageScreen", params: { guild: guild_info } })
     }
 
     const redirectLink = (url: string | false) => {

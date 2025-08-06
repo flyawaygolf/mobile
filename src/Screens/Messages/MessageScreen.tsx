@@ -6,7 +6,6 @@ import { connect, useDispatch } from 'react-redux';
 
 import { Chat, MessageType, defaultTheme } from '../../Components/Chat'
 import { SafeBottomContainer, useClient, useTheme, useWebSocket } from '../../Components/Container';
-import { guildI } from '../../Redux/guildList';
 import { Loader } from '../../Other';
 import { RootState, useAppSelector } from '../../Redux';
 import { changeLastMessageGuildList, modifyGuildList } from '../../Redux/guildList/action';
@@ -15,7 +14,7 @@ import Client, { webSocketRoutes } from '../../Services/Client';
 import { fetchMessageResponseInterface } from '../../Services/Client/Managers/Interfaces/Message';
 import MessageBoxHeader from '../../Components/Messages/MessageBoxHeader';
 import { MessageBox } from '../../Components/Messages/MessageBox';
-import { handleToast } from '../../Services';
+import { handleToast, MessageStackParams, ScreenNavigationProps } from '../../Services';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
 
 const formatMessages = (messages: fetchMessageResponseInterface[], guild_id: string, client: Client): MessageType.Any[] => messages.map(((m) => {
@@ -34,10 +33,10 @@ const formatMessages = (messages: fetchMessageResponseInterface[], guild_id: str
   }
 }))
 
-const MessageScreen = ({ route }: any) => {
+const MessageScreen = ({ route }: ScreenNavigationProps<MessageStackParams, "MessageScreen">) => {
 
   const { colors } = useTheme();
-  const { params }: { params: guildI } = route;
+  const { guild } = route.params;
   const { client, user } = useClient();
   const { t, i18n } = useTranslation();
   const { notification } = useWebSocket();
@@ -47,19 +46,19 @@ const MessageScreen = ({ route }: any) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [messageInfo, setMessageInfo] = useState<MessageType.Text>();
   const dispatch = useDispatch();
-  const messages = useAppSelector((state) => state.guildMessagesFeed[params.guild_id] || []);
+  const messages = useAppSelector((state) => state.guildMessagesFeed[guild.guild_id] || []);
 
   const advantages = premiumAdvantages(user.premium_type, user.flags)
 
   const getMessages = useCallback(async () => {
     try {
       setLoadMessages(true)
-      const request = await client.messages.fetch(params.guild_id);
+      const request = await client.messages.fetch(guild.guild_id);
       setLoadMessages(false)
       if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
       if (request.data.length < 1) return;
-      dispatch(initGuildMessages(formatMessages(request.data, params.guild_id, client)))
-      dispatch(modifyGuildList({ guild_id: params.guild_id, content: request.data[0].content, created_at: request.data[0].created_at, message_id: request.data[0].message_id, unread: false }))
+      dispatch(initGuildMessages(formatMessages(request.data, guild.guild_id, client)))
+      dispatch(modifyGuildList({ guild_id: guild.guild_id, content: request.data[0].content, created_at: request.data[0].created_at, message_id: request.data[0].message_id, unread: false }))
       setPaginationKey(request.pagination_key)
       readMessage(request.data[0])
     } catch (error) {
@@ -75,8 +74,8 @@ const MessageScreen = ({ route }: any) => {
   useEffect(() => {
     if (notification.code === webSocketRoutes.SEND_MESSAGE) {
       let data: any = notification.data;
-      if (data.channel_id === params.guild_id) {
-        dispatch(addGuildMessages(formatMessages([data], params.guild_id, client)))
+      if (data.channel_id === guild.guild_id) {
+        dispatch(addGuildMessages(formatMessages([data], guild.guild_id, client)))
         readMessage(data)
       }
     } /*else if(notification.code === webSocketRoutes.START_TYPING) {
@@ -90,10 +89,10 @@ const MessageScreen = ({ route }: any) => {
 
   const onBottom = useCallback(async () => {
     if(!pagination_key) return;
-    const request = await client.messages.fetch(params.guild_id, { pagination_key: pagination_key });
+    const request = await client.messages.fetch(guild.guild_id, { pagination_key: pagination_key });
 
     if (request?.data && request?.data?.length > 0) {
-      dispatch(addScrollGuildMessages(formatMessages(request.data, params.guild_id, client)))
+      dispatch(addScrollGuildMessages(formatMessages(request.data, guild.guild_id, client)))
       if (request.pagination_key) setPaginationKey(request.pagination_key)
     }
   }, []);
@@ -107,14 +106,14 @@ const MessageScreen = ({ route }: any) => {
     if (inWait) return;
     setInwait(true);
     if(message.text.length > advantages.textLength()) return handleToast(t(`errors.2001`))
-    const request = await client.messages.create(params.guild_id, { content: message.text });
+    const request = await client.messages.create(guild.guild_id, { content: message.text });
     setInwait(false);
     if (request.error) return handleToast(t(`errors.${request.error.code}`))
     if (!request.data) return;
-    dispatch(addGuildMessages(formatMessages([request.data], params.guild_id, client)))
+    dispatch(addGuildMessages(formatMessages([request.data], guild.guild_id, client)))
     dispatch(changeLastMessageGuildList({
       data: request.data,
-      guild_id: params.guild_id,
+      guild_id: guild.guild_id,
     }))
   }, []);
 
@@ -164,7 +163,7 @@ const MessageScreen = ({ route }: any) => {
       right: 0,
     }}>
       <MessageModal />
-      <MessageBoxHeader params={params} />
+      <MessageBoxHeader guild={guild} />
       <Chat
         locale={i18n.language}
         onEndReached={() => onBottom()}

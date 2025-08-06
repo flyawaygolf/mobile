@@ -91,7 +91,9 @@
         "reset": "Réinitialiser",
         "yards": "Yards",
         "meters": "Mètres",
-        "total": "Total"
+        "total": "Total",
+        "leave": "Quitter",
+        "you": "Vous"
     },
     "update": {
         "update": "Mettre à jour",
@@ -432,6 +434,13 @@
         "delete": "Supprimer"
     },
     "guilds": {
+        "add_member": "Ajouter un membre",
+        "members": "Membres {{count}}",
+        "no_members": "Aucun membre pour le moment",
+        "settings": "Paramètres du groupe {{guild_name}}",
+        "name": "Nom du groupe",
+        "enter_name": "Entrer le nom du groupe",
+        "owner": "Propriétaire",
         "all": "Tous",
         "unread": "Non lus",
         "favorites": "Favoris",
@@ -447,6 +456,7 @@
         "load_more_messages": "Charger plus de messages",
         "copy_id": "Copier l'identifiant",
         "leave_conversation": "Quitter la conversation",
+        "leave_conversation_confirmation": "Êtes-vous sûr de vouloir quitter cette conversation ?",
         "copy_message": "Copier le message",
         "report_message": "Signaler le message",
         "no_messages": "Pas encore de messages",

@@ -17,6 +17,7 @@ import { eventsInterface } from './Client/Managers/Interfaces/Events';
 import { golfInterface } from './Client/Managers/Interfaces/Golf';
 import { PremiumStackScreens } from '../Navigator/PremiumStack';
 import { GuestStackScreens } from '../Navigator/GuestStack';
+import { guildI } from '../Redux/guildList';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -71,6 +72,16 @@ export type ScorecardStackParams = {
     };
 }
 
+export type MessageStackParams = {
+    MessageScreen: {
+        guild: guildI;
+    };
+    CreateGroupScreen: undefined;
+    GuildSettingsScreen: {
+        guild: guildI;
+    };
+}
+
 export type RootStackParamList = {
     DrawerNavigation: undefined;
     ScorecardStack: {
@@ -96,7 +107,9 @@ export type RootStackParamList = {
     };
     MessagesStack: {
         screen?: MessageStackScreens
-        params?: object;
+        params: {
+            guild?: object;
+        }
     },
     SettingsStack: {
         screen?: SettingsStackScreens;

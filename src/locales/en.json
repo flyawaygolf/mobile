@@ -91,7 +91,9 @@
         "reset": "Reset",
         "yards": "Yards",
         "meters": "Meters",
-        "total": "Total"
+        "total": "Total",
+        "leave": "Leave",
+        "you": "You"
     },
     "update": {
         "update": "Update",
@@ -432,6 +434,13 @@
         "delete": "Delete"
     },
     "guilds": {
+        "add_member": "Add member",
+        "members": "Members {{count}}",
+        "no_members": "No members at the moment",
+        "settings": "Settings for group {{guild_name}}",
+        "name": "Group name",
+        "enter_name": "Enter group name",
+        "owner": "Owner",
         "all": "All",
         "unread": "Unread",
         "favorites": "Favorites",
@@ -447,6 +456,7 @@
         "load_more_messages": "Load more messages",
         "copy_id": "Copy ID",
         "leave_conversation": "Leave the conversation",
+        "leave_conversation_confirmation": "Are you sure you want to leave this conversation?",
         "copy_message": "Copy the message",
         "report_message": "Report the message",
         "no_messages": "No messages here yet",

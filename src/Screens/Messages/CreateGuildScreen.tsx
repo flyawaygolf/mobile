@@ -54,7 +54,9 @@ const CreateGuildScreen = () => {
         setTimeout(() => {
             navigation.navigate("MessagesStack", {
                 screen: "MessageScreen",
-                params: request.data,
+                params: {
+                    guild: request.data
+                },
             })
         }, 500)
     }

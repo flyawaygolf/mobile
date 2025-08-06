@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
 import { Text, Badge, Card, Icon } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from "@react-native-clipboard/clipboard";
@@ -13,8 +13,8 @@ import { connect, useDispatch } from "react-redux";
 import { RootState } from "../../Redux";
 import { deleteGuildList } from "../../Redux/guildList/action";
 import { guildI } from "../../Redux/guildList";
-import { userInfo } from "../../Services/Client/Managers/Interfaces/Guild";
 import { handleToast, navigationProps } from "../../Services";
+import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 
 type sectionProps = {
     info: guildI;
@@ -30,11 +30,30 @@ function GuildInfo({ info }: sectionProps) {
     const navigation = useNavigation<navigationProps>();
     const [users, setUsers] = useState<userInfo[]>(info.users)
 
-    const leaveDm = async () => {
+    const leaveGroup = async () => {
         await client.guilds.leave(info.guild_id);
         dispatch(deleteGuildList(info.guild_id));
         setModalVisible(false)
     }
+
+        const leaveGroupAlert = () => {
+            Alert.alert(
+                t("messages.leave_conversation"),
+                t("messages.leave_conversation_confirmation"),
+                [
+                    {
+                        text: t("commons.cancel"),
+                        style: "cancel",
+                    },
+                    {
+                        text: t("commons.leave"),
+                        onPress: () => leaveGroup(),
+                        style: "destructive",
+                    },
+                ],
+                { cancelable: true }
+            );
+        }
 
     const copyText = (text: string) => {
         Clipboard.setString(text);
@@ -52,7 +71,7 @@ function GuildInfo({ info }: sectionProps) {
                     <Icon source="content-copy" size={22} />
                     <Text>{t("messages.copy_id")}</Text>
                 </ModalSection>
-                <ModalSection onPress={() => leaveDm()}>
+                <ModalSection onPress={() => leaveGroupAlert()}>
                     <Icon source="exit-to-app" size={22} />
                     <Text>{t("messages.leave_conversation")}</Text>
                 </ModalSection>
@@ -68,7 +87,9 @@ function GuildInfo({ info }: sectionProps) {
                 <TouchableOpacity
                     onPress={() => navigation.navigate("MessagesStack", {
                         screen: "MessageScreen",
-                        params: info,
+                        params: {
+                            guild: info,
+                        },
                     })}
                     onLongPress={() => setModalVisible(true)}>
                     <View style={{ flexDirection: "row", alignItems: "center", width: full_width, position: "relative" }}>

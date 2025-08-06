@@ -67,7 +67,7 @@ const GuildListSreen = () => {
 
   async function getData() {
     setLoading(true);
-    const request = await client.guilds.fetch();
+    const request = await client.guilds.list();
     setLoading(false);
     if (request.error || !request.data) return handleToast(t(`errors.${request?.error?.code}`));
     dispatch(initGuildList(request.data))

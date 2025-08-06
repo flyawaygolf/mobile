@@ -11,7 +11,7 @@ import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 
 type PropsType = {
     informations: userInfo;
-    onPress: () => any;
+    onPress?: () => any;
     full_width?: boolean;
     noDescription?: boolean;
     LeftComponent?: React.ReactNode;
@@ -24,7 +24,7 @@ function DisplayMember({ informations, onPress, full_width = false, style, LeftC
     const { colors } = useTheme();
 
     return (
-        <ShrinkEffect onPress={() => onPress()}>
+        <ShrinkEffect onPress={() => onPress && onPress()}>
             <View
                 style={[
                     styles.row,
@@ -46,15 +46,10 @@ function DisplayMember({ informations, onPress, full_width = false, style, LeftC
                         <Text style={{ color: colors.text_muted, fontSize: 13 }}>@{informations.nickname}</Text>
                     </View>
                 </View>
-                {informations?.distance && <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{`${formatDistance(informations.distance)}Km`}</Text>}
+                {
+                    LeftComponent ? LeftComponent : informations?.distance && <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{`${formatDistance(informations.distance)}Km`}</Text>
+                }
             </View>
-            {
-                LeftComponent && (
-                    <View style={{ width: "100%", padding: 5, backgroundColor: colors.bg_secondary, borderRadius: 12, margin: 5 }}>
-                        {LeftComponent}
-                    </View>
-                )
-            }
         </ShrinkEffect>
     );
 }

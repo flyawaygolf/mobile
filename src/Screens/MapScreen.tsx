@@ -510,7 +510,7 @@ const MapScreen = () => {
           anchor={{ x: 0, y: 0.5 }}
         >
           <View style={[styles.distanceLabel, { backgroundColor: labelColors[index] + '20', borderColor: labelColors[index] }]}>
-            <Text style={[styles.distanceLabelText, { color: labelColors[index] }]}>
+            <Text style={[styles.distanceLabelText, { color: labelColors[index] }]} numberOfLines={1} adjustsFontSizeToFit>
               {labels[index]}
             </Text>
           </View>
@@ -642,11 +642,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     backgroundColor: 'white',
+    minWidth: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   distanceLabelText: {
     fontSize: 12,
     fontWeight: 'bold',
     textAlign: 'center',
+    minWidth: 35,
   },
 })
 

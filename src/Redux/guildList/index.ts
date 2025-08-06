@@ -1,5 +1,5 @@
 import { GuildInterface, MessageInterface } from "../../Services/Client/Managers/Interfaces";
-import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS } from "./actionTypes";
+import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS } from "./actionTypes";
 import { IchangeLastMessageGuildList } from "./action";
 
 export type guildI = GuildInterface.fetchGuildResponseSchema & { unread?: boolean } & { last_message: { message_id: string } } 
@@ -22,6 +22,13 @@ export const guildListReducer = (state: guildI[] = [], action: {
         const idx = new_array.findIndex(v => v.guild_id === guild_id);
         if (idx < 0) return state;        
         new_array[idx] = { ...new_array[idx], last_message: { content, created_at, message_id, channel_id, content_language, type, from }, unread }
+        return new_array;
+    }  else if (type ===  UPDATE_GUILDS) {
+        const new_array = [...state];
+        const { guild_name, members } = action.info;
+        const idx = new_array.findIndex(v => v.guild_name === guild_name);
+        if (idx < 0) return state;        
+        new_array[idx] = { ...new_array[idx], members, guild_name };
         return new_array;
     } else if (type ===  UNREAD_GUILDS) {
         const unreads: MessageInterface.unreadFetchResponseInterface[] = action.info;
