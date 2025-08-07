@@ -1,4 +1,4 @@
-import { Text, useTheme, Surface, Icon } from "react-native-paper";
+import { Text, useTheme, Icon } from "react-native-paper";
 import { View, StyleSheet, Pressable } from "react-native";
 import { useClient } from "../Container";
 import { messageStatus, userResponseInterface } from "../../Services/Client/Managers/Interfaces/Message";
@@ -38,7 +38,7 @@ export type SectionProps = {
 
 export default function MessageBubble({ info, status }: SectionProps) {
     const { colors } = useTheme();
-    const { client, user } = useClient();
+    const { user } = useClient();
 
     const [modalVisible, setModalVisible] = useState<boolean>(false);
 
@@ -126,7 +126,7 @@ export default function MessageBubble({ info, status }: SectionProps) {
                 {!isOwnMessage && (
                     <View style={styles.avatarContainer}>
                         <Avatar
-                            url={client.user.avatar(info.from.user_id, info.from.avatar)}
+                            url={info.from.avatar}
                             rounded={true}
                             size={32}
                         />
@@ -140,11 +140,11 @@ export default function MessageBubble({ info, status }: SectionProps) {
                         </Text>
                     )}
 
-                    <Surface style={styles.bubble} elevation={1}>
+                    <View style={styles.bubble}>
                         <Text style={styles.messageText}>
                             {info.content}
                         </Text>
-                    </Surface>
+                    </View>
 
                     <View style={styles.messageInfo}>
                         <Text style={styles.timestamp}>

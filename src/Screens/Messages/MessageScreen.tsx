@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
-import { Text, IconButton, Surface, Divider } from 'react-native-paper';
+import { Text, IconButton, Divider } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import { View, KeyboardAvoidingView, Platform, FlatList, StyleSheet, Animated, TextInput } from 'react-native';
 
@@ -159,11 +159,11 @@ const MessageScreen = ({ route }: ScreenNavigationProps<MessageStackParams, "Mes
   const renderDateSeparator = (date: string) => (
     <View style={styles.dateSeparator}>
       <Divider style={styles.divider} />
-      <Surface style={styles.dateChip} elevation={1}>
+      <View style={styles.dateChip}>
         <Text style={styles.dateText}>
           {dayjs(date).format('DD MMMM YYYY')}
         </Text>
-      </Surface>
+      </View>
       <Divider style={styles.divider} />
     </View>
   );
