@@ -51,7 +51,7 @@ const AddUsersToGuildScreen: React.FC<AddUsersToGuildScreenProps> = ({ route, na
         setLoader(false);
         if (request.error) return handleToast(t(`errors.${request.error.code}`));
         if (request.data) {
-            const { added_users } = request.data;
+            const { added_users, new_guild } = request.data;
             const newMembers = selected.filter(u => added_users.some(uid => uid === u.user_id));
             if (messageContext) {
                 messageContext.updateGuildInfoSync(guild.guild_id, {
@@ -59,11 +59,11 @@ const AddUsersToGuildScreen: React.FC<AddUsersToGuildScreenProps> = ({ route, na
                 });
             }
             handleToast(t("commons.success"));
-            if (request.data.new_guild) {
-                dispatch(addGuildList([request.data.new_guild]));
+            if (new_guild) {
+                dispatch(addGuildList([new_guild]));
                 setTimeout(() => {
                     navigation.navigate("MessageScreen", {
-                        guild: request.data!.new_guild
+                        guild: new_guild
                     });
                 }, 500);
             } else {

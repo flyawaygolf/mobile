@@ -5,9 +5,7 @@ export interface fetchGuildResponseSchema {
     guild_id: string,
     created_at: string,
     type: 0 | 1 | 2,
-    users: Array<userInfo>, // To delete and replace with "members" in the future
     members: Array<userInfo>,
-    title?: string, // to delete and replace with "guild_name" in the future
     guild_name: string,
     event_id?: string,
     member_count?: number,
@@ -49,6 +47,6 @@ export interface guildUserAddResponse {
         failed_count: number,
         added_users: string[],
         failed_users: string[],
-        new_guild: fetchGuildResponseSchema
+        new_guild?: fetchGuildResponseSchema
     }
 }

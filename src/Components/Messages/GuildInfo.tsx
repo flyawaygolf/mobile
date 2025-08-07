@@ -28,7 +28,7 @@ function GuildInfo({ info }: sectionProps) {
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation<navigationProps>();
-    const [users, setUsers] = useState<userInfo[]>(info.users)
+    const [users, setUsers] = useState<userInfo[]>(info.members)
 
     const leaveGroup = async () => {
         await client.guilds.leave(info.guild_id);
@@ -61,7 +61,7 @@ function GuildInfo({ info }: sectionProps) {
     }
 
     useEffect(() => {
-        setUsers(info.users.filter(u => u.user_id !== user.user_id))
+        setUsers(info.members.filter(u => u.user_id !== user.user_id))
     }, [info])
 
     return (
@@ -96,7 +96,7 @@ function GuildInfo({ info }: sectionProps) {
                         {info.unread && <Badge style={{ position: "absolute", top: 2, left: -2, zIndex: 2 }} size={10} />}
                         {info.type === 2 ? <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} /> : users.length > 1 ? <MultipleAvatar /> : <Avatar url={client.user.avatar(users[0]?.user_id, users[0]?.avatar)} />}
                         <View style={{ width: "70%", position: "relative" }}>
-                            { info.title ? <Text numberOfLines={1} textBreakStrategy="balanced">{info.title}</Text> : <Text numberOfLines={1} textBreakStrategy="balanced">{users.map(u => u.username).join(", ")}</Text> }
+                            { info.guild_name ? <Text numberOfLines={1} textBreakStrategy="balanced">{info.guild_name}</Text> : <Text numberOfLines={1} textBreakStrategy="balanced">{users.map(u => u.username).join(", ")}</Text> }
                             {
                                 info.last_message && (
                                     <Text
