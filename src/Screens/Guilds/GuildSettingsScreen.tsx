@@ -304,7 +304,7 @@ const GuildSettingsScreen = ({ route }: ScreenNavigationProps<MessageStackParams
             </Appbar.Header>
 
             {
-                guild.type !== 0 && (
+                user.user_id === guildInfo.owner && guild.type !== 0 && (
                     <GuildNameEditor
                         guildInfo={guildInfo}
                         isEditingName={isEditingName}
@@ -329,7 +329,7 @@ const GuildSettingsScreen = ({ route }: ScreenNavigationProps<MessageStackParams
                 keyExtractor={(item) => item.user_id}
                 renderItem={renderItem}
                 onScrollEndDrag={() => getMembers()}
-                ListHeaderComponent={() => (
+                ListHeaderComponent={() => user.user_id === guildInfo.owner && guild.type !== 0 && (
                     <ShrinkEffect
                         onPress={navigateToAddUsers}
                         style={{
