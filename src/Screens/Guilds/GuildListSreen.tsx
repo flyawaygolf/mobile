@@ -115,7 +115,7 @@ const GuildListSreen = () => {
   return (
     <ScreenContainer>
       <CustomHeader title={t("commons.messages")} isHome leftComponent={<MessageHeader />} />
-      <View>
+      <View style={{ flex: 1 }}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.searchChips}>
           {
             filterChip.map((c, idx) => (

@@ -1,8 +1,21 @@
-import { MessageType } from "../../Components/Chat";
 import { ADD_GUILD_MESSAGES, INIT_GUILD_MESSAGES, RESET_GUILD_MESSAGES, ADD_SCROLL_GUILD_MESSAGES } from "./actionTypes";
 
+export interface messageInfoInterface {
+  author: {
+    id: string;
+    firstName: string;
+    imageUrl: string;
+  };
+  guild_id: string;
+  id: string;
+  status?: string;
+  text: string;
+  type: string;
+  createdAt: number;
+}
+
 export type IguildMessages = {
-    [guild_id: string]: MessageType.Any[];
+    [guild_id: string]: messageInfoInterface[];
 }
 
 export type IguildMessagesv2 = {
@@ -11,7 +24,7 @@ export type IguildMessagesv2 = {
         input: {
             text: string;
         };
-        data: MessageType.Any[]
+        data: messageInfoInterface[]
     };
 }
 

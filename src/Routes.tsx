@@ -42,7 +42,7 @@ function Routes() {
     }
 
     async function getGuilds() {
-        const request = await client.guilds.fetch();
+        const request = await client.guilds.list();
         if (request.error || !request.data) return;
         dispatch(initGuildList(request.data));
         await getUnreads()

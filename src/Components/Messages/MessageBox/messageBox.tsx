@@ -1,15 +1,15 @@
 import Clipboard from "@react-native-clipboard/clipboard";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Icon, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useClient, useTheme } from "../../Container";
 import { BottomModal, ModalSection } from "../../../Other";
-import { MessageType } from "../../Chat";
 import { handleToast } from "../../../Services";
+import { MessageBubbleInfoProps } from "../MessageBubble";
 
 function MessageBox({ info, modalVisible, setModalVisible }: {
-    info: MessageType.Text;
-    setModalVisible: () => void;
+    info: MessageBubbleInfoProps;
+    setModalVisible: Dispatch<SetStateAction<boolean>>;
     modalVisible: boolean;
 }) {
 
@@ -18,7 +18,7 @@ function MessageBox({ info, modalVisible, setModalVisible }: {
     const { t } = useTranslation();
 
     const reportMessage = async () => {
-        await client.messages.report(info.id, 0);
+        await client.messages.report(info.channel_id, 0);
         handleToast(t("commons.success"));
     }
 
@@ -28,7 +28,7 @@ function MessageBox({ info, modalVisible, setModalVisible }: {
     }
 
     return (
-        <BottomModal onSwipeComplete={() => setModalVisible()} dismiss={() => setModalVisible()} isVisible={modalVisible}>
+        <BottomModal onSwipeComplete={() => setModalVisible(false)} dismiss={() => setModalVisible(false)} isVisible={modalVisible}>
             {
                 /**
                  *             <ModalSection onPress={() => copyText(info.id)}>
@@ -39,7 +39,7 @@ function MessageBox({ info, modalVisible, setModalVisible }: {
             </ModalSection>
                  */
             }
-            <ModalSection onPress={() => copyText(info.text)}>
+            <ModalSection onPress={() => copyText(info.content)}>
                 <>
                     <Icon source="content-copy" size={22} />
                     <Text>{t("messages.copy_message")}</Text>
@@ -51,7 +51,7 @@ function MessageBox({ info, modalVisible, setModalVisible }: {
                     <Text>{t("messages.report_message")}</Text>
                 </>
             </ModalSection>
-            <ModalSection noDivider onPress={() => setModalVisible()}>
+            <ModalSection noDivider onPress={() => setModalVisible(false)}>
                 <Text style={{ color: colors.warning_color }}>{t("commons.cancel")}</Text>
             </ModalSection>
         </BottomModal>

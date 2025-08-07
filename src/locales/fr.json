@@ -463,7 +463,8 @@
         "copy_message": "Copier le message",
         "report_message": "Signaler le message",
         "no_messages": "Pas encore de messages",
-        "no_events_guilds": "Aucun groupe d'événement. Rejoindre un événement pour voir les groupes associés"
+        "no_events_guilds": "Aucun groupe d'événement. Rejoindre un événement pour voir les groupes associés",
+        "type_message": "Tapez votre message..."
     },
     "premium": {
         "title": "Premium",
@@ -673,6 +674,7 @@
         "404": "Cette root n'existe pas",
         "204": "Supprimé avec succès",
         "505": "Erreur interne du serveur",
+        "502": "Erreur dans l'application",
         "403": "Accès refusé",
         "100": "Un email de vérification a été envoyé",
         "0": "Paramètre invalide",

@@ -249,9 +249,9 @@
         "hide_circles": "Hide distance circles",
         "circles_from_center": "Circles from map center",
         "circles_from_user": "Circles from user location",
-        "30km": "30 km",
-        "50km": "50 km",
-        "100km": "100 km"
+        "30km": "30km",
+        "50km": "50km",
+        "100km": "100km"
     },
     "badges": {
         "FLYAWAY_EMPLOYEE": "FlyAway Employee",
@@ -463,7 +463,8 @@
         "copy_message": "Copy the message",
         "report_message": "Report the message",
         "no_messages": "No messages here yet",
-        "no_events_guilds": "No event groups. Join an event to see associated groups"
+        "no_events_guilds": "No event groups. Join an event to see associated groups",
+        "type_message": "Type a message..."
     },
     "premium": {
         "title": "Premium",
@@ -766,6 +767,7 @@
         "email_verified": "Email successfully verified",
         "unknown": "An unknown error occurred",
         "success": "Success",
-        "no_internet": "No internet connection"
+        "no_internet": "No internet connection",
+        "app_error": "An error occurred in the app"
     }
 }

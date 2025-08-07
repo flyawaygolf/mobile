@@ -111,7 +111,7 @@ export type RootStackParamList = {
     };
     MessagesStack: {
         screen?: MessageStackScreens
-        params: {
+        params?: {
             guild?: object;
         }
     },

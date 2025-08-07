@@ -22,11 +22,14 @@ const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismis
   const createDM = async () => {
     const response = await client.guilds.create([user_info.user_id]);
     if (response.error) return handleToast(t(`errors.${response.error.code}`))
-    dispatch(addGuildList([response.data as any]));
+    if(!response.data) return handleToast(t("commons.app_error"));
+    dispatch(addGuildList([response.data]));
     setTimeout(() => {
       navigation.navigate("MessagesStack", {
         screen: "MessageScreen",
-        params: response.data,
+        params: {
+          guild: response.data
+        }
       })
     }, 500)
   }
