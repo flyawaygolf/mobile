@@ -1,3 +1,4 @@
+import { cdnbaseurl } from '../../constante';
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import GolfLinkManager from './GolfLinkManager';
 import GolfPlayedManager from './GolfPlayedManager';
@@ -7,13 +8,23 @@ import { fetchGolfResponse } from './Interfaces/Search';
 import { LocationQuery } from './SearchMapManager';
 
 class GolfManager extends RequestEmitter {
+  private cdnurl: string;
   public link: GolfLinkManager;
   public played: GolfPlayedManager;
 
   constructor(params: requestParams) {
     super(params);
+    this.cdnurl = params?.cdnurl ?? cdnbaseurl;
     this.link = new GolfLinkManager(params);
     this.played = new GolfPlayedManager(params);
+  }
+
+  public avatar(golf_id: string) {
+    return `${this.cdnurl}/golfs/avatars/${golf_id}/default.jpg`;
+  }
+
+  public cover(golf_id: string) {
+    return `${this.cdnurl}/golfs/covers/${golf_id}/default.jpg`;
   }
 
   public async fetch(golf_id: string, options?: {

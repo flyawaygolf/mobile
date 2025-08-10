@@ -7,7 +7,7 @@ import FastImage from '@d11/react-native-fast-image';
 
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
-import { golfAvatarUrl, golfCoverUrl, handleToast, navigationProps } from '../../Services';
+import { handleToast, navigationProps } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { Loader } from '../../Other';
 import { useAppDispatch, useAppSelector } from '../../Redux';
@@ -83,11 +83,11 @@ const GolfsPlayedScreen = () => {
                     <FastImage
                         resizeMode="cover"
                         style={{ backgroundColor: colors.good_color, ...StyleSheet.absoluteFillObject }}
-                        source={{ uri: golfCoverUrl(item.slug) }} />
+                        source={{ uri: client.golfs.cover(item.golf_id) }} />
                 </View>
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                        <Avatar style={{ borderColor: colors.bg_primary, borderWidth: 1 }} url={golfAvatarUrl(item.slug)} size={40} radius={8} />
+                        <Avatar style={{ borderColor: colors.bg_primary, borderWidth: 1 }} url={client.golfs.avatar(item.golf_id)} size={40} radius={8} />
                         <View>
                             <Text style={{ marginLeft: 5 }}>{item.name}</Text>
                             <Text style={{ marginLeft: 5 }}>{item.city}, {item.country}</Text>

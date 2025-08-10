@@ -48,7 +48,13 @@ export interface myInformationInterface {
             latitude: number;
             longitude: number;
         }; // [longitude, latitude]
-    }
+    },
+    linked_golf_id?: string;
+    linked_golf?: {
+        golf_id: string;
+        name: string;
+        slug: string;
+    };
 }
 
 export interface myInformations {

@@ -3,8 +3,8 @@ import { Text } from "react-native-paper";
 import { View } from "react-native";
 
 import styles from "../../Style/style";
-import { useTheme } from "../Container";
-import { formatDistance, golfAvatarUrl } from "../../Services";
+import { useClient, useTheme } from "../Container";
+import { formatDistance } from "../../Services";
 import { ShrinkEffect } from "../Effects";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { Avatar } from "../Member";
@@ -18,6 +18,7 @@ type PropsType = {
 function DisplayGolfs({ informations, onPress, full_width = false }: PropsType) {
 
     const { colors } = useTheme();
+    const { client } = useClient();
 
     return (
         <ShrinkEffect onPress={() => onPress()}>
@@ -43,7 +44,7 @@ function DisplayGolfs({ informations, onPress, full_width = false }: PropsType) 
                             borderWidth: 3,
                         }}
                         radius={8}
-                        url={golfAvatarUrl(informations.slug)}
+                        url={client.golfs.avatar(informations.golf_id)}
                     />
                     <View>
                         <Text style={[{ maxWidth: "100%", overflow: "hidden" }]}>{informations.name}</Text>

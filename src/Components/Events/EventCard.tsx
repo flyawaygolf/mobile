@@ -1,9 +1,9 @@
 import { Button, Card, Icon, Text } from "react-native-paper";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
 import { StyleSheet, View } from "react-native";
-import { golfAvatarUrl, golfCoverUrl, messageFormatDate, navigationProps } from "../../Services";
+import { messageFormatDate, navigationProps } from "../../Services";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "../Container";
+import { useClient, useTheme } from "../Container";
 import { ShrinkEffect } from "../Effects";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "../Member";
@@ -16,7 +16,8 @@ type SectionProps = {
 
 export default function EventCard({ event, full_width }: SectionProps) {
 
-    const { t } = useTranslation();
+    const { t } = useTranslation()
+    const { client } = useClient();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
 
@@ -27,12 +28,12 @@ export default function EventCard({ event, full_width }: SectionProps) {
                 <FastImage
                     resizeMode="cover"
                     style={{ backgroundColor: colors.good_color, ...StyleSheet.absoluteFillObject }}
-                    source={{ uri: golfCoverUrl(event?.golf_info.slug) }} />
+                    source={{ uri: client.golfs.cover(event?.golf_info.golf_id) }} />
                 </View>
                 <View style={{ padding: 20, paddingTop: 5 }}>
                     <Text variant="titleLarge" style={{ fontWeight: "bold" }} numberOfLines={1}>{event.title}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, marginBottom: 10 }}>
-                        <Avatar url={golfAvatarUrl(event?.golf_info.slug)} size={40} radius={8} />
+                        <Avatar url={client.golfs.avatar(event.golf_info.golf_id)} size={40} radius={8} />
                         <Text style={{ marginLeft: 5 }}>{event.golf_info.name}</Text>
                     </View>
                     <View style={{ alignItems: "center", flexDirection: "row", display: "flex", marginTop: 5 }}>

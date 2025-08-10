@@ -78,6 +78,12 @@ export interface userInfo {
         show_locked_location?: boolean;
         availability?: AvailabilitySlot[]
     },
+    linked_golf_id?: string;
+    linked_golf?: {
+        golf_id: string;
+        name: string;
+        slug: string;
+    };
     distance?: number
 }
 

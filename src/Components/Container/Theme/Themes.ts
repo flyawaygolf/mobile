@@ -20,8 +20,8 @@ export const WhiteTheme = {
         // App specific colors
         badge_color: "#f04747",
         fa_primary: "#3B3B98",
-        fa_secondary: "#D64800",
-        fa_third: "#AD2200",
+        fa_secondary: "#32328F",
+        fa_third: "#252582",
         
         // Status colors
         warning_color: "#ea4646",

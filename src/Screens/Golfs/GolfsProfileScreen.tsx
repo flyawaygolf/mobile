@@ -7,7 +7,7 @@ import FastImage from '@d11/react-native-fast-image';
 
 import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { full_width } from '../../Style/style';
-import { formatDistance, golfAvatarUrl, golfCoverUrl, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
+import { formatDistance, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
 import { ScreenNavigationProps } from '../../Services';
 import { golfurl } from '../../Services/constante';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
@@ -236,7 +236,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         (
             <>
                 <View style={{ height: 125, backgroundColor: colors.bg_secondary }}>
-                    <FastImage source={{ uri: golfCoverUrl(golfInfo.slug) }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
+                    <FastImage source={{ uri: client.golfs.cover(golfInfo.golf_id) }} style={{ width: full_width, height: "100%", ...StyleSheet.absoluteFillObject }} />
                 </View>
                 <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
                     <View style={{ justifyContent: "flex-start", flexDirection: "row" }}>
@@ -249,7 +249,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                 marginLeft: 10,
                             }}
                             radius={8}
-                            url={golfAvatarUrl(golfInfo.slug)}
+                            url={client.golfs.avatar(golfInfo.golf_id)}
                         />
                     </View>
                     <View style={{ justifyContent: "flex-start", flexDirection: "column", gap: 5, marginLeft: 5, marginTop: 5, flex: 1, paddingRight: 5 }}>

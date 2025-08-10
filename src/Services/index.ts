@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import axios from 'axios';
-import { apibaseurl, cdnbaseurl, usertokenkey } from './constante';
+import { apibaseurl, usertokenkey } from './constante';
 import DeviceInfo from 'react-native-device-info';
 import { formatDate } from './dayjs';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
@@ -31,9 +31,6 @@ export const convertFirstCharacterToUppercase = (stringToConvert: string) => {
 export const handleToast = (text: string) => Toast.show({ text1: text });
 
 export const messageFormatDate = (date?: Date | string | number) => new formatDate(date);
-
-export const golfAvatarUrl = (slug: string) => `${cdnbaseurl}/golf_avatars/${slug}/default.jpg`;
-export const golfCoverUrl = (slug: string) => `${cdnbaseurl}/golf_covers/${slug}/default.jpg`;
 
 /**
  *
