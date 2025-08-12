@@ -93,7 +93,8 @@
         "meters": "Meters",
         "total": "Total",
         "leave": "Leave",
-        "you": "You"
+        "you": "You",
+        "optional": "Optional"
     },
     "update": {
         "update": "Update",
@@ -131,7 +132,38 @@
         "follows": "Follows",
         "no_posts": "No posts to display, browse the app to find users to follow and posts to discover."
     },
+    "event_type": {
+        "title": "Select an event type",
+        "tournament": "Tournament",
+        "lesson": "Lesson",
+        "social": "Social Event",
+        "meeting": "Meeting"
+    },
+    "event_format": {
+        "title": "Select a competition format",
+        "stroke_play": "Stroke Play",
+        "match_play": "Match Play",
+        "stableford": "Stableford",
+        "scramble": "Scramble",
+        "best_ball": "Best Ball"
+    },
+    "event_skill": {
+        "title": "Select a skill level",
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced",
+        "professional": "Professional"
+    },
+    "event_categories": {
+        "title": "Select a category",
+        "help": "Select the categories that apply to this event.",
+        "men": "Men",
+        "women": "Women",
+        "seniors": "Seniors",
+        "juniors": "Juniors"
+    },
     "events": {
+        "all_levels": "All levels",
         "header_title": "Events",
         "title": "Title",
         "description": "Description",
@@ -144,7 +176,9 @@
         "search": "Search an event",
         "select_golf": "Select a golf",
         "select_start_date": "Select start date",
+        "start_date": "Start date",
         "select_end_date": "Select end date",
+        "end_date": "End date",
         "create_event": "Create an event",
         "event": "Event",
         "joined": "Joined",
@@ -182,7 +216,32 @@
         "private": "Private",
         "privates": "Privates",
         "select_players": "Select players",
-        "search_players": "Search players"
+        "search_players": "Search players",
+        "golf": "Golf",
+        "event_type": "Event type",
+        "competition_format": "Competition format",
+        "skill_level": "Skill level required",
+        "categories_allowed": "Allowed categories",
+        "min_age": "Minimum age",
+        "max_age": "Maximum age",
+        "entry_fee": "Entry fee",
+        "special_rules": "Special rules",
+        "cancellation_policy": "Cancellation policy",
+        "dress_code_required": "Dress code required",
+        "equipment_required": "Required equipment",
+        "add_equipment": "Add equipment",
+        "no_equipment_added": "No equipment added",
+        "equipment_help": "List the equipment required for the event.",
+        "items": "items",
+        "none": "None",
+        "none_selected": "None selected",
+        "dates_and_times": "Dates and times",
+        "location_and_fees": "Location and fees",
+        "participants_and_restrictions": "Participants and restrictions",
+        "handicap_restrictions": "Handicap restrictions",
+        "rules_and_conditions": "Rules and conditions",
+        "visibility_and_access": "Visibility and access",
+        "registration_deadline": "Registration deadline"
     },
     "golf": {
         "display_golf": "Display golf",
@@ -753,8 +812,8 @@
         "16005": "(0) Cannot join or leave an event that has already started or ended",
         "16006": "Owner cannot join is own event",
         "16007": "Owner cannot leave is own event",
-        "16008": "(4) You cannot create an event with a handicap lower than required",
-        "16009": "(5) You cannot create an event with a handicap higher than required",
+        "16008": "(4) You cannot joint an event with a handicap lower than required",
+        "16009": "(5) You cannot joint an event with a handicap higher than required",
         "16010": "(1) Event is full",
         "16011": "(6) Event is private",
         "16012": "(3) Event has no guild",

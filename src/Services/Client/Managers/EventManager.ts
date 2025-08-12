@@ -15,7 +15,7 @@ class EventManager extends RequestEmitter {
 
   public async delete(event_id: string) {
     const request = await this.deleteRequest(`/events/${event_id}`);
-    const response = request as GlobalInterface.emptyResponse;
+    const response = request as GlobalInterface.successResponse;
 
     return response;
   }

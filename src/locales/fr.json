@@ -93,7 +93,8 @@
         "meters": "Mètres",
         "total": "Total",
         "leave": "Quitter",
-        "you": "Vous"
+        "you": "Vous",
+        "optional": "Optionnel"
     },
     "update": {
         "update": "Mettre à jour",
@@ -131,7 +132,38 @@
         "follows": "Abonnements",
         "no_posts": "Aucun poste à afficher, parcourez l'application pour trouver des utilisateurs à suivre et des posts à découvrir."
     },
+    "event_type": {
+        "title": "Sélectionner un type d'événement",
+        "tournament": "Tournoi",
+        "lesson": "Leçon",
+        "social": "Événement social",
+        "meeting": "Réunion"
+    },
+    "event_format": {
+        "title": "Sélectionner un format de compétition",
+        "stroke_play": "Stroke Play",
+        "match_play": "Match Play",
+        "stableford": "Stableford",
+        "scramble": "Scramble",
+        "best_ball": "Best Ball"
+    },
+    "event_skill": {
+        "title": "Sélectionner un niveau de compétence",
+        "beginner": "Débutant",
+        "intermediate": "Intermédiaire",
+        "advanced": "Avancé",
+        "professional": "Professionnel"
+    },
+    "event_categories": {
+        "title": "Sélectionner une catégorie",
+        "help": "Sélectionnez les catégories qui s'appliquent à cet événement.",
+        "men": "Hommes",
+        "women": "Femmes",
+        "seniors": "Seniors",
+        "juniors": "Juniors"
+    },
     "events": {
+        "all_levels": "Tous les niveaux",
         "header_title": "Événements",
         "title": "Titre",
         "description": "Description",
@@ -143,7 +175,9 @@
         "search": "Rechercher un événement",
         "select_golf": "Selectionner un golf",
         "select_start_date": "Selectionner une date de départ",
+        "start_date": "Date de départ",
         "select_end_date": "Selectionner une date de fin",
+        "end_date": "Date de fin",
         "max_participants": "Nombre maximum de participants (2 à 250)",
         "create_event": "Créer un événement",
         "event": "Événement",
@@ -182,7 +216,32 @@
         "private": "Privé",
         "privates": "Privés",
         "select_players": "Sélectionner des joueurs",
-        "search_players": "Rechercher des joueurs"
+        "search_players": "Rechercher des joueurs",
+        "golf": "Golf",
+        "event_type": "Type d'événement",
+        "competition_format": "Format de compétition",
+        "skill_level": "Niveau requis",
+        "categories_allowed": "Catégories autorisées",
+        "min_age": "Âge minimum",
+        "max_age": "Âge maximum",
+        "entry_fee": "Frais d'inscription",
+        "special_rules": "Règles spéciales",
+        "cancellation_policy": "Politique d'annulation",
+        "dress_code_required": "Code vestimentaire requis",
+        "equipment_required": "Équipement requis",
+        "add_equipment": "Ajouter un équipement",
+        "no_equipment_added": "Aucun équipement ajouté",
+        "equipment_help": "Listez l'équipement requis pour l'événement.",
+        "items": "éléments",
+        "none": "Aucun",
+        "none_selected": "Aucun sélectionné",
+        "dates_and_times": "Dates et horaires",
+        "location_and_fees": "Lieu et tarifs",
+        "participants_and_restrictions": "Participants et restrictions",
+        "handicap_restrictions": "Restrictions de handicap",
+        "rules_and_conditions": "Règles et conditions",
+        "visibility_and_access": "Visibilité et accès",
+        "registration_deadline": "Date limite d'inscription"
     },
     "golf": {
         "display_golf": "Afficher le golf",

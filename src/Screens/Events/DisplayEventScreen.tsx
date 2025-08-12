@@ -11,7 +11,7 @@ import { check, PERMISSIONS, request } from 'react-native-permissions';
 
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import { handleToast, messageFormatDate, navigationProps } from '../../Services';
-import { full_height, full_width } from '../../Style/style';
+import { full_width } from '../../Style/style';
 import { BottomModal, Loader } from '../../Other';
 import { ShrinkEffect } from '../../Components/Effects';
 import { eventurl } from '../../Services/constante';
@@ -109,6 +109,8 @@ export default function DisplayEventScreen({ route }: any) {
 
   const isOwner = (eventInfo: eventsInterface) => eventInfo.owner_info.user_id === user.user_id;
 
+  const isOfficial = (eventInfo: eventsInterface) => !!eventInfo.official;
+
   const displayJointButton = () => {
     if (eventInfo) {
       if (isOwner(eventInfo)) {
@@ -153,81 +155,214 @@ export default function DisplayEventScreen({ route }: any) {
 
   return (
     <SafeBottomContainer padding={{ top: 0, bottom: 0, left: 0, right: 0 }}>
-      <ImageBackground style={{ height: full_height, width: full_width, flex: 1, backgroundColor: colors.bg_secondary }} source={{ uri: eventInfo?.golf_info.slug ? client.golfs.cover(eventInfo?.golf_info.golf_id) : undefined, cache: "force-cache" }}>
-        <View style={{ zIndex: 99, position: "absolute", bottom: 0, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+      <View style={{ flex: 1, backgroundColor: colors.bg_secondary }}>
+        {/* Header fixé */}
+        <ImageBackground
+          style={{
+            width: full_width,
+            height: 220,
+            justifyContent: 'flex-end',
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
+            overflow: 'hidden',
+            backgroundColor: colors.bg_secondary,
+          }}
+          source={{
+            uri: eventInfo?.golf_info.slug
+              ? client.golfs.cover(eventInfo?.golf_info.golf_id)
+              : undefined,
+            cache: "force-cache"
+          }}
+        >
+          <View style={{
+            position: "absolute",
+            top: top + 10,
+            left: 0,
+            right: 0,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 10,
+            zIndex: 10,
+          }}>
+            <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
+            {eventInfo ? (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
+                <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
+                {eventInfo.joined && (
+                  <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
+                )}
+              </View>
+            ) : <Loader />}
+          </View>
+          {/* Titre + badge officiel */}
           {eventInfo && (
-            <>
-              <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
-              <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
-                <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
-                <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-                <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
-                <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-                <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
-              </BottomModal>
-            </>
+            <View style={{
+              padding: 20,
+              paddingBottom: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              borderBottomLeftRadius: 30,
+              borderBottomRightRadius: 30,
+            }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 28, color: 'white', flex: 1 }}>{eventInfo.title}</Text>
+              {isOfficial(eventInfo) && (
+                <Chip style={{ backgroundColor: colors.fa_primary, borderRadius: 100 }} icon="check-decagram" textStyle={{ color: 'white', fontWeight: 'bold' }}>
+                  {t('events.official')}
+                </Chip>
+              )}
+            </View>
           )}
+        </ImageBackground>
 
-        </View>
-        <View style={{ position: "absolute", padding: 10, paddingTop: top + 10, width: full_width, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-          <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
-          {
-            // <Button mode='contained'>{t("events.event")}</Button>
-          }
+        {/* Modal de partage et participants */}
+        {eventInfo && (
+          <>
+            <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
+            <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
+              <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
+              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+              <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
+              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+              <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
+            </BottomModal>
+          </>
+        )}
+
+        {/* ScrollView pour tout le contenu */}
+        <ScrollView
+          style={{
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingTop: 20,
+            marginBottom: 90, // espace pour le bouton principal
+          }}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}
+        >
           {eventInfo ? (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
-              <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
-              {
-                eventInfo.joined && (
-                  <>
-                    <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
-                  </>
-                )
-              }
+            <View style={{ flexDirection: "column", gap: 20 }}>
+              {/* Type d'événement + format + badge officiel */}
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
+                <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">
+                  {t(`event_type.${eventInfo.event_type}`)}
+                </Chip>
+                <Chip style={{ borderRadius: 100 }} icon="star">
+                  {t('events.competition_format')}: {t(`event_format.${eventInfo.format}`)}
+                </Chip>
+                {isOfficial(eventInfo) && (
+                  <Chip style={{ backgroundColor: colors.fa_primary, borderRadius: 100 }} icon="check-decagram" textStyle={{ color: 'white', fontWeight: 'bold' }}>
+                    {t('events.official')}
+                  </Chip>
+                )}
+              </View>
+
+              {/* Dates et horaires */}
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.dates_and_times')}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
+                <Chip style={{ borderRadius: 100 }} icon="calendar-start">
+                  {t('events.start_date')}: {messageFormatDate(eventInfo.start_date).custom('LLL')}
+                </Chip>
+                <Chip style={{ borderRadius: 100 }} icon="calendar-end">
+                  {t('events.end_date')}: {messageFormatDate(eventInfo.end_date).custom('LLL')}
+                </Chip>
+              </View>
+
+              {/* Lieu */}
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.location_and_fees')}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
+                <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
+                </ShrinkEffect>
+                <Chip style={{ borderRadius: 100 }} icon="cash-marker">{t("events.greenfee")} {eventInfo?.greenfee ?? 0}</Chip>
+                {eventInfo.entry_fee !== undefined && (
+                  <Chip style={{ borderRadius: 100 }} icon="cash-marker">{t("events.entry_fee")} {eventInfo.entry_fee}</Chip>
+                )}
+              </View>
+
+              {/* Participants */}
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.participants_and_restrictions')}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
+                <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100 }} icon="account-group-outline">
+                  {t("events.participants")} {eventInfo.participants} / {eventInfo?.max_participants ?? 2}
+                </Chip>
+                <Chip style={{ borderRadius: 100 }} avatar={<Avatar size={25} url={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)} />} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: eventInfo.owner_info.nickname } })}>
+                  {t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}
+                </Chip>
+                {eventInfo.skill_level && (
+                  <Chip style={{ borderRadius: 100 }} icon="school">
+                    {t('events.skill_level')}: {t(`skill.${eventInfo.skill_level}`)}
+                  </Chip>
+                )}
+                <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">
+                  {t("events.handicap")} {displayHCP(eventInfo?.min_handicap ?? 520)} - {displayHCP(eventInfo?.max_handicap ?? -100)}
+                </Chip>
+                {eventInfo.category && (
+                  <Chip style={{ borderRadius: 100 }} icon="account-group">
+                    {t('events.categories_allowed')}: {Object.entries(eventInfo.category).filter(([_, v]) => v).map(([k]) => t(`event_categories.${k}`)).join(', ')}
+                  </Chip>
+                )}
+                {(eventInfo.age_restriction?.min_age || eventInfo.age_restriction?.max_age) && (
+                  <Chip style={{ borderRadius: 100 }} icon="calendar-account">
+                    {t('events.age_restriction')}: {eventInfo.age_restriction?.min_age ?? '-'} - {eventInfo.age_restriction?.max_age ?? '-'}
+                  </Chip>
+                )}
+              </View>
+
+              {/* Règles et conditions */}
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.rules_and_conditions')}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
+                {eventInfo.dress_code && (
+                  <Chip style={{ borderRadius: 100 }} icon="tshirt-crew">{t('events.dress_code_required')}</Chip>
+                )}
+                {eventInfo.equipment_required && eventInfo.equipment_required.length > 0 && (
+                  <Chip style={{ borderRadius: 100 }} icon="golf">{t('events.equipment_required')}: {eventInfo.equipment_required.join(', ')}</Chip>
+                )}
+                {eventInfo.special_rules && (
+                  <Chip style={{ borderRadius: 100 }} icon="alert-circle-outline">{t('events.special_rules')}: {eventInfo.special_rules}</Chip>
+                )}
+                {eventInfo.cancellation_policy && (
+                  <Chip style={{ borderRadius: 100 }} icon="cancel">{t('events.cancellation_policy')}: {eventInfo.cancellation_policy}</Chip>
+                )}
+              </View>
+
+              {/* Visibilité et accès */}
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.visibility_and_access')}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
+                <Chip style={{ borderRadius: 100 }} icon={eventInfo.favorites ? "star" : "star-outline"}>{t('events.favorites')}</Chip>
+                <Chip style={{ borderRadius: 100 }} icon={eventInfo.is_private ? "lock" : "lock-open"}>{eventInfo.is_private ? t('events.private') : t('events.public')}</Chip>
+              </View>
+
+              {/* Description */}
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.about_event')}</Text>
+              <Text style={{ marginBottom: 10 }}>{eventInfo.description}</Text>
             </View>
           ) : <Loader />}
-        </View>
-        <View style={{ zIndex: 99, position: "absolute", bottom: 15, width: full_width, padding: 10, flexDirection: "row", justifyContent: "center" }}>
+        </ScrollView>
+
+        {/* Bouton principal fixé en bas */}
+        <View style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: 15,
+          backgroundColor: colors.bg_primary,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 5,
+          alignItems: "center",
+        }}>
           {displayJointButton()}
         </View>
-        <ScrollView style={{ top: full_height / 4, backgroundColor: colors.bg_primary, borderRadius: 30, padding: 30, }}>
-          {
-            eventInfo ? (
-              <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
-                <View>
-                  <Text style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 10 }}>{eventInfo.title}</Text>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <ShrinkEffect onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: eventInfo.golf_info.golf_id } })} style={{ flexDirection: "row", alignItems: "center" }}>
-                      <Chip style={{ borderRadius: 100 }} icon="map-marker-radius-outline">{eventInfo.golf_info.name}</Chip>
-                    </ShrinkEffect>
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">{messageFormatDate(eventInfo.start_date).custom('LL')} - {messageFormatDate(eventInfo.end_date).custom('LL')}</Chip>
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <Chip onPress={() => setDisplayParticipants(true)} style={{ borderRadius: 100, marginRight: 5 }} icon="account-group-outline">{t("events.participants")} {eventInfo.participants} /{eventInfo?.max_participants ?? 2}</Chip>
-                    <Chip style={{ borderRadius: 100 }} onPress={() => navigation.navigate("ProfileStack", {
-                      screen: "ProfileScreen",
-                      params: {
-                        nickname: eventInfo.owner_info.nickname
-                      }
-                    })} avatar={<Avatar size={25} url={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)} />}>{t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}</Chip>
-                  </View>
-                  <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
-                    <Chip style={{ borderRadius: 100, marginRight: 5 }} icon="cash-marker">{t("events.greenfee")} {eventInfo?.greenfee ?? 0}</Chip>
-                    <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">{t("events.handicap")} {displayHCP(eventInfo?.min_hancicap ?? 520)} - {displayHCP(eventInfo?.max_handicap ?? -100)}</Chip>
-                  </View>
-                  <View style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: 20, marginTop: 10 }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t("events.about_event")}</Text>
-                    <Text>{eventInfo.description}</Text>
-                  </View>
-                </View>
-              </View>
-            ) : <Loader />
-          }
-        </ScrollView>
-      </ImageBackground>
+      </View>
     </SafeBottomContainer>
   );
 }

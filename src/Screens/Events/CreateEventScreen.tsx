@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { TextInput, Button, Switch, Text, Icon, Chip } from 'react-native-paper';
+import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import { TextInput, Button, Switch, Text, Chip, List } from 'react-native-paper';
 import DatePicker from 'react-native-date-picker';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -12,18 +12,87 @@ import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { DisplayGolfs } from '../../Components/Golfs';
 import { SearchBar } from '../../Components/Elements/Input';
 import HandicapModal from '../../Components/Events/HandicapModal';
+import EventTypeSelector from '../../Components/Events/EventTypeSelector';
+import CompetitionFormatSelector from '../../Components/Events/CompetitionFormatSelector';
+import SkillLevelSelector from '../../Components/Events/SkillLevelSelector';
+import CategorySelector from '../../Components/Events/CategorySelector';
+import EquipmentSelector from '../../Components/Events/EquipmentSelector';
 import { displayHCP } from '../../Services/handicapNumbers';
 import { Br } from '../../Components/Text';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { Avatar, DisplayMember } from '../../Components/Member';
+import {
+    CalendarEventType,
+    CompetitionFormatEnum,
+    SkillLevelEnum,
+    CategoryInterface
+} from '../../Services/Client/Managers/Interfaces/Events';
+import dayjs from 'dayjs';
 
 export default function CreateEventScreen() {
     const { client, user, location } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
+
+    // Helper functions pour obtenir les libellés
+    const getEventTypeLabel = (type: CalendarEventType) => {
+        const typeNames = ['tournament', 'lesson', 'social', 'meeting'];
+        return t(`event_type.${typeNames[type]}`);
+    };
+
+    const getFormatLabel = (format: CompetitionFormatEnum) => {
+        const formatNames = ['', 'stroke_play', 'match_play', 'stableford', 'best_ball', 'scramble'];
+        return t(`event_format.${formatNames[format]}`);
+    };
+
+    const getSkillLevelLabel = (level?: SkillLevelEnum) => {
+        if (!level) return t('events.all_levels');
+        const levelNames = ['', 'beginner', 'intermediate', 'advanced', 'professional'];
+        return t(`skill.${levelNames[level]}`);
+    };
+
+    const getCategoriesLabel = (cats: CategoryInterface) => {
+        const selected = [
+            cats.male && t('event_categories.men'),
+            cats.female && t('event_categories.women'),
+            cats.senior && t('event_categories.seniors'),
+            cats.kid && t('event_categories.juniors')
+        ].filter(Boolean);
+        return selected.length > 0 ? selected.join(', ') : t('events.none_selected');
+    };
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+
+    // Nouveaux champs suivant la logique du pro-website
+    const [eventType, setEventType] = useState<CalendarEventType>(CalendarEventType.TOURNAMENT);
+    const [competitionFormat, setCompetitionFormat] = useState<CompetitionFormatEnum>(CompetitionFormatEnum.STROKE_PLAY);
+    const [skillLevel, setSkillLevel] = useState<SkillLevelEnum | undefined>(undefined);
+
+    // Restrictions d'âge
+    const [minAge, setMinAge] = useState<string>('');
+    const [maxAge, setMaxAge] = useState<string>('');
+
+    // Catégories autorisées
+    const [categories, setCategories] = useState<CategoryInterface>({
+        male: true,
+        female: true,
+        senior: false,
+        kid: false
+    });
+
+    // Équipements requis
+    const [equipmentRequired, setEquipmentRequired] = useState<string[]>([]);
+
+    // Frais d'inscription et règles
+    const [entryFee, setEntryFee] = useState<string>('0');
+    const [specialRules, setSpecialRules] = useState('');
+    const [cancellationPolicy, setCancellationPolicy] = useState('');
+    const [dressCode, setDressCode] = useState(false);
+
+    // Date limite d'inscription
+    const [registrationDeadline, setRegistrationDeadline] = useState<Date | null>(null);
+    const [isRegistrationDeadlinePickerVisible, setRegistrationDeadlinePickerVisibility] = useState(false);
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [golf, setGolf] = useState<golfInterface | undefined>(undefined);
@@ -43,16 +112,25 @@ export default function CreateEventScreen() {
     const [keyboardHeight, setKeyboardHeight] = useState(0);
 
     const [startDate, setStartDate] = useState<Date>(new Date());
-    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(dayjs(new Date()).add(1, 'day').toDate());
 
     const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
 
     const [minHandicapModalVisible, setMinHandicapModalVisible] = useState(false);
-    const [minHandicap, setMinHandicap] = useState<number>(540);
 
+    // Inversion de la logique : minHandicap = le plus petit, maxHandicap = le plus grand
+    const [maxHandicap, setMaxHandicap] = useState<number>(540);
     const [maxHandicapModalVisible, setMaxHandicapModalVisible] = useState(false);
-    const [maxHandicap, setMaxHandicap] = useState<number>(-100);
+    const [minHandicap, setMinHandicap] = useState<number>(-100);
+
+    // États pour les nouveaux modals
+    const [eventTypeModalVisible, setEventTypeModalVisible] = useState(false);
+    const [competitionFormatModalVisible, setCompetitionFormatModalVisible] = useState(false);
+    const [skillLevelModalVisible, setSkillLevelModalVisible] = useState(false);
+    const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+    const [equipmentModalVisible, setEquipmentModalVisible] = useState(false);
+    const [showOptionals, setShowOptionals] = useState(false);
 
     const changePrivateMode = (newMode: boolean) => {
         if (newMode) {
@@ -102,8 +180,17 @@ export default function CreateEventScreen() {
     }
 
     useEffect(() => {
-        if (maxHandicap > minHandicap) setMaxHandicap(minHandicap);
+        if (minHandicap > maxHandicap) setMinHandicap(maxHandicap);
     }, [minHandicap, maxHandicap]);
+
+    // Ajustement automatique de la date de fin (logique du pro-website)
+    useEffect(() => {
+        if (startDate && (!endDate || endDate <= startDate)) {
+            const newEndDate = new Date(startDate);
+            newEndDate.setHours(startDate.getHours() + 2);
+            setEndDate(newEndDate);
+        }
+    }, [startDate]);
 
     useEffect(() => {
         start();
@@ -159,20 +246,39 @@ export default function CreateEventScreen() {
         if (isNaN(maxParticipants) || maxParticipants < 2 || maxParticipants > 250) return handleToast(t(`errors.verify_fields`));
         if (is_private && players.length < 1) return handleToast(t(`errors.verify_fields`));
 
+        // Validation des dates (logique du pro-website)
+        if (endDate <= startDate) {
+            return handleToast(t('errors.end_date_after_start'));
+        }
+
         setLoading(true);
         const request = await client.events.create({
             title: title,
             description: description,
             end_date: endDate,
             start_date: startDate,
+            event_type: eventType,
+            format: competitionFormat,
+            skill_level: skillLevel,
+            age_restriction: (minAge || maxAge) ? {
+                min_age: minAge ? parseInt(minAge) : undefined,
+                max_age: maxAge ? parseInt(maxAge) : undefined
+            } : undefined,
+            category: categories,
+            equipment_required: equipmentRequired.length > 0 ? equipmentRequired : undefined,
+            entry_fee: entryFee ? parseInt(entryFee) : undefined,
+            special_rules: specialRules || undefined,
+            cancellation_policy: cancellationPolicy || undefined,
+            dress_code: dressCode,
+            registration_deadline: registrationDeadline || undefined,
             favorites: isFavorite,
             golf_id: golf.golf_id,
             max_participants: maxParticipants,
             is_private: is_private,
             players: !is_private ? undefined : players.map((player: userInfo) => player.user_id),
             greenfee: parseInt(greenFee),
-            min_handicap: minHandicap,
-            max_handicap: maxHandicap,
+            min_handicap: maxHandicap, // inversé
+            max_handicap: minHandicap, // inversé
         })
         setLoading(false);
         if (request.error) return handleToast(t(`errors.${request.error.code}`));
@@ -187,6 +293,14 @@ export default function CreateEventScreen() {
             });
         }
     };
+
+    const sectionTitle: StyleProp<TextStyle> = {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 12,
+        marginTop: 8,
+        color: colors.text_muted
+    }
 
     return (
         <EventsContainer navigation={navigation} title={t('events.create_event')}>
@@ -258,10 +372,98 @@ export default function CreateEventScreen() {
                     setModif={(value) => setMaxHandicap(value)}
                     handicap={maxHandicap}
                 />
+
+                {/* Nouveaux modals suivant la logique du pro-website */}
+                <EventTypeSelector
+                    visible={eventTypeModalVisible}
+                    hideModal={() => setEventTypeModalVisible(false)}
+                    value={eventType}
+                    onChange={setEventType}
+                />
+
+                <CompetitionFormatSelector
+                    visible={competitionFormatModalVisible}
+                    hideModal={() => setCompetitionFormatModalVisible(false)}
+                    value={competitionFormat}
+                    onChange={setCompetitionFormat}
+                />
+
+                <SkillLevelSelector
+                    visible={skillLevelModalVisible}
+                    hideModal={() => setSkillLevelModalVisible(false)}
+                    value={skillLevel}
+                    onChange={setSkillLevel}
+                />
+
+                <CategorySelector
+                    visible={categoryModalVisible}
+                    hideModal={() => setCategoryModalVisible(false)}
+                    value={categories}
+                    onChange={setCategories}
+                />
+
+                <EquipmentSelector
+                    visible={equipmentModalVisible}
+                    hideModal={() => setEquipmentModalVisible(false)}
+                    value={equipmentRequired}
+                    onChange={setEquipmentRequired}
+                />
+
+                {/* DatePickers */}
+                <DatePicker
+                    modal
+                    minimumDate={new Date()}
+                    open={isStartDatePickerVisible}
+                    date={startDate}
+                    onConfirm={(date) => {
+                        setStartDatePickerVisibility(false)
+                        setStartDate(date)
+                        // Ajuster automatiquement la date de fin si nécessaire
+                        if (!endDate || endDate <= date) {
+                            const newEndDate = new Date(date);
+                            newEndDate.setHours(date.getHours() + 2);
+                            setEndDate(newEndDate);
+                        }
+                    }}
+                    onCancel={() => {
+                        setStartDatePickerVisibility(false)
+                    }}
+                />
+
+                <DatePicker
+                    modal
+                    minimumDate={startDate}
+                    open={isEndDatePickerVisible}
+                    date={endDate ?? new Date()}
+                    onConfirm={(date) => {
+                        setEndDatePickerVisibility(false)
+                        setEndDate(date)
+                    }}
+                    onCancel={() => {
+                        setEndDatePickerVisibility(false)
+                    }}
+                />
+
+                <DatePicker
+                    modal
+                    maximumDate={startDate}
+                    open={isRegistrationDeadlinePickerVisible}
+                    date={registrationDeadline ?? new Date()}
+                    onConfirm={(date) => {
+                        setRegistrationDeadlinePickerVisibility(false)
+                        setRegistrationDeadline(date)
+                    }}
+                    onCancel={() => {
+                        setRegistrationDeadlinePickerVisibility(false)
+                    }}
+                />
+
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <Text>* {t('commons.required_fields')}</Text>
                     <Br />
-                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.general_info")}:</Text>
+
+                    {/* SECTION : INFORMATIONS GÉNÉRALES */}
+                    <Text variant='headlineMedium' style={sectionTitle}>{t("events.general_info")}</Text>
                     <TextInput
                         label={t('events.title') + ' *'}
                         value={title}
@@ -279,127 +481,238 @@ export default function CreateEventScreen() {
                         maxLength={512}
                         style={styles.input}
                     />
-                    <TextInput
-                        label={t('events.max_participants')}
-                        value={maxParticipantsString}
-                        onChangeText={(txt) => setMaxParticipants(txt)}
-                        mode="outlined"
-                        keyboardType="number-pad"
-                        style={styles.input}
-                    />
-
-                    <Br />
-                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.location")}:</Text>
-                    <TextInput
-                        label={t('events.greenfee')}
-                        value={greenFee}
-                        onChangeText={setGreenFee}
-                        mode="outlined"
-                        keyboardType="number-pad"
-                        style={styles.input}
-                    />
                     <Button
                         mode="outlined"
-                        onPress={() => setGolfModalVisible(true)}
-                        style={styles.input}>
-                        {(golf ? golf.name : t('events.select_golf')) + ' *'}
+                        onPress={() => setEventTypeModalVisible(true)}
+                        style={styles.input}
+                        contentStyle={styles.buttonContent}
+                    >
+                        {t('events.event_type')}: {getEventTypeLabel(eventType)}
+                    </Button>
+                    <Button
+                        mode="outlined"
+                        onPress={() => setCompetitionFormatModalVisible(true)}
+                        style={styles.input}
+                        contentStyle={styles.buttonContent}
+                    >
+                        {t('events.competition_format')}: {getFormatLabel(competitionFormat)}
                     </Button>
 
                     <Br />
-                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.dates")}:</Text>
+
+                    {/* SECTION : DATES ET HORAIRES */}
+                    <Text variant='headlineMedium' style={sectionTitle}>{t("events.dates_and_times")}</Text>
+
                     <Button
                         mode="outlined"
-                        onPress={() => setStartDatePickerVisibility(true)}>
-                        {(startDate ? startDate.toLocaleString() : t('events.select_start_date'))}
+                        onPress={() => setStartDatePickerVisibility(true)}
+                        style={styles.input}
+                        contentStyle={styles.buttonContent}
+                    >
+                       {t('events.start_date')}: {startDate.toLocaleString()} *
                     </Button>
-                    <DatePicker
-                        modal
-                        minimumDate={new Date()}
-                        open={isStartDatePickerVisible}
-                        date={startDate}
-                        onConfirm={(date) => {
-                            setStartDatePickerVisibility(false)
-                            setStartDate(date)
-                        }}
-                        onCancel={() => {
-                            setStartDatePickerVisibility(false)
-                        }}
-                    />
-                    <View style={{ display: "flex", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 5 }}>
-                        <Icon source={"arrow-down"} size={30} />
-                    </View>
+
                     <Button
                         mode="outlined"
                         onPress={() => setEndDatePickerVisibility(true)}
                         style={styles.input}
+                        contentStyle={styles.buttonContent}
                     >
-                        {(endDate ? endDate.toLocaleString() : t('events.select_end_date')) + " *"}
+                        {t('events.end_date')}: {endDate ? endDate.toLocaleString() : t('events.select_end_date')} *
                     </Button>
-                    <DatePicker
-                        modal
-                        minimumDate={startDate}
-                        open={isEndDatePickerVisible}
-                        date={endDate ?? new Date()}
-                        onConfirm={(date) => {
-                            setEndDatePickerVisibility(false)
-                            setEndDate(date)
-                        }}
-                        onCancel={() => {
-                            setEndDatePickerVisibility(false)
-                        }}
+
+                    <Button
+                        mode="outlined"
+                        onPress={() => setRegistrationDeadlinePickerVisibility(true)}
+                        style={styles.input}
+                        contentStyle={styles.buttonContent}
+                    >
+                        {t('events.registration_deadline')}: {registrationDeadline ? registrationDeadline.toLocaleString() : t('commons.optional')}
+                    </Button>
+
+                    <Br />
+
+                    {/* SECTION : LIEU ET TARIFS */}
+                    <Text variant='headlineMedium' style={sectionTitle}>{t("events.location_and_fees")}</Text>
+
+                    <Button
+                        mode="outlined"
+                        onPress={() => setGolfModalVisible(true)}
+                        style={styles.input}
+                        contentStyle={styles.buttonContent}
+                    >
+                        {t('events.golf')}: {golf ? golf.name : t('events.select_golf')} *
+                    </Button>
+
+                    <List.Accordion expanded={showOptionals} onPress={() => setShowOptionals(!showOptionals)} title={t("commons.optional_fields")} id="1">
+                        <TextInput
+                            label={t('events.greenfee')}
+                            value={greenFee}
+                            onChangeText={setGreenFee}
+                            mode="outlined"
+                            keyboardType="number-pad"
+                            style={styles.input}
+                        />
+
+                        <TextInput
+                            label={t('events.entry_fee')}
+                            value={entryFee}
+                            onChangeText={setEntryFee}
+                            mode="outlined"
+                            keyboardType="number-pad"
+                            style={styles.input}
+                        />
+                    </List.Accordion>
+
+                    <Br />
+
+                    {/* SECTION : PARTICIPANTS ET RESTRICTIONS */}
+                    <Text variant='headlineMedium' style={sectionTitle}>{t("events.participants_and_restrictions")}</Text>
+
+                    <TextInput
+                        label={t('events.max_participants') + ' *'}
+                        value={maxParticipantsString}
+                        onChangeText={setMaxParticipants}
+                        mode="outlined"
+                        keyboardType="number-pad"
+                        style={styles.input}
                     />
 
-                    <Br />
-                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.handicap")}:</Text>
-                    <Button
-                        mode="outlined"
-                        onPress={() => setMinHandicapModalVisible(true)}
-                        style={styles.input}>
-                        {t('events.select_min_handicap', {
-                            hcp: displayHCP(minHandicap)
-                        })}
-                    </Button>
-                    <Button
-                        mode="outlined"
-                        onPress={() => setMaxHandicapModalVisible(true)}
-                        style={styles.input}>
-                        {t('events.select_max_handicap', {
-                            hcp: displayHCP(maxHandicap)
-                        })}
-                    </Button>
+                    <List.Accordion expanded={showOptionals} onPress={() => setShowOptionals(!showOptionals)} title={t("commons.optional_fields")} id="2">
+                        <Button
+                            mode="outlined"
+                            onPress={() => setSkillLevelModalVisible(true)}
+                            style={styles.input}
+                            contentStyle={styles.buttonContent}
+                        >
+                            {t('events.skill_level')}: {getSkillLevelLabel(skillLevel)}
+                        </Button>
 
+                        <Button
+                            mode="outlined"
+                            onPress={() => setCategoryModalVisible(true)}
+                            style={styles.input}
+                            contentStyle={styles.buttonContent}
+                        >
+                            {t('events.categories_allowed')}: {getCategoriesLabel(categories)}
+                        </Button>
 
-                    <Br />
-                    <Text variant='bodyLarge' style={{ textDecorationLine: "underline" }}>{t("events.visibility")}:</Text>
-                    <View style={styles.switchContainer}>
-                        <Text>{t("events.favorites")}</Text>
-                        <Switch
-                            value={isFavorite}
-                            onValueChange={changeFavoriteMode}
+                        <View style={styles.ageContainer}>
+                            <TextInput
+                                label={t('events.min_age')}
+                                value={minAge}
+                                onChangeText={setMinAge}
+                                mode="outlined"
+                                keyboardType="number-pad"
+                                style={[styles.input, styles.halfInput]}
+                            />
+                            <TextInput
+                                label={t('events.max_age')}
+                                value={maxAge}
+                                onChangeText={setMaxAge}
+                                mode="outlined"
+                                keyboardType="number-pad"
+                                style={[styles.input, styles.halfInput]}
+                            />
+                        </View>
+
+                        <Br />
+
+                        {/* SECTION : HANDICAP */}
+                        <Text variant='headlineMedium' style={sectionTitle}>{t("events.handicap_restrictions")}</Text>
+
+                        <Button
+                            mode="outlined"
+                            onPress={() => setMinHandicapModalVisible(true)}
+                            style={styles.input}
+                            contentStyle={styles.buttonContent}
+                        >
+                            {t('events.select_min_handicap', { hcp: displayHCP(minHandicap) })}
+                        </Button>
+
+                        <Button
+                            mode="outlined"
+                            onPress={() => setMaxHandicapModalVisible(true)}
+                            style={styles.input}
+                            contentStyle={styles.buttonContent}
+                        >
+                            {t('events.select_max_handicap', { hcp: displayHCP(maxHandicap) })}
+                        </Button>
+
+                        <Br />
+
+                        {/* SECTION : RÈGLES ET CONDITIONS */}
+                        <Text variant='headlineMedium' style={sectionTitle}>{t("events.rules_and_conditions")}</Text>
+
+                        <View style={styles.switchContainer}>
+                            <Text>{t("events.dress_code_required")}</Text>
+                            <Switch
+                                value={dressCode}
+                                onValueChange={setDressCode}
+                            />
+                        </View>
+
+                        <Button
+                            mode="outlined"
+                            onPress={() => setEquipmentModalVisible(true)}
+                            style={styles.input}
+                            contentStyle={styles.buttonContent}
+                        >
+                            {t('events.equipment_required')}: {equipmentRequired.length > 0 ? `${equipmentRequired.length} ${t('events.items')}` : t('events.none')}
+                        </Button>
+
+                        <TextInput
+                            label={t('events.special_rules')}
+                            value={specialRules}
+                            onChangeText={setSpecialRules}
+                            mode="outlined"
+                            multiline
+                            numberOfLines={3}
+                            style={styles.input}
                         />
-                    </View>
-                    <View style={styles.switchContainer}>
-                        <Text>{t("events.private")}</Text>
-                        <Switch
-                            value={is_private}
-                            onValueChange={changePrivateMode}
+
+                        <TextInput
+                            label={t('events.cancellation_policy')}
+                            value={cancellationPolicy}
+                            onChangeText={setCancellationPolicy}
+                            mode="outlined"
+                            multiline
+                            numberOfLines={3}
+                            style={styles.input}
                         />
-                    </View>
-                    {
-                        is_private && (
+
+                        <Br />
+
+                        {/* SECTION : VISIBILITÉ ET ACCÈS */}
+                        <Text variant='headlineMedium' style={sectionTitle}>{t("events.visibility_and_access")}</Text>
+
+                        <View style={styles.switchContainer}>
+                            <Text>{t("events.favorites")}</Text>
+                            <Switch
+                                value={isFavorite}
+                                onValueChange={changeFavoriteMode}
+                            />
+                        </View>
+
+                        <View style={styles.switchContainer}>
+                            <Text>{t("events.private")}</Text>
+                            <Switch
+                                value={is_private}
+                                onValueChange={changePrivateMode}
+                            />
+                        </View>
+
+                        {is_private && (
                             <View>
                                 <Button
                                     mode="outlined"
                                     onPress={() => setPlayersModalVisible(true)}
                                     style={styles.input}
+                                    contentStyle={styles.buttonContent}
                                 >
-                                    {t('events.select_players')}
+                                    {t('events.select_players')}: {players.length > 0 ? `${players.length} ${t('events.selected')}` : t('events.none_selected')}
                                 </Button>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    gap: 8
-                                }}>
+                                <View style={styles.playersContainer}>
                                     {players.map((item) => (
                                         <Chip
                                             key={item.user_id}
@@ -413,15 +726,16 @@ export default function CreateEventScreen() {
                                     ))}
                                 </View>
                             </View>
-                        )
-                    }
+                        )}
+                    </List.Accordion>
 
                     <Br />
                     <Button
                         mode="contained"
                         onPress={handleCreateEvent}
-                        style={styles.button}
+                        style={styles.createButton}
                         loading={loading}
+                        disabled={!title || !description || !endDate || !golf}
                     >
                         {t('events.create_event')}
                     </Button>
@@ -441,11 +755,33 @@ const styles = StyleSheet.create({
     input: {
         marginBottom: 16,
     },
+    buttonContent: {
+        justifyContent: 'flex-start',
+        paddingVertical: 8,
+    },
     switchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 16,
+    },
+    ageContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 8,
+    },
+    halfInput: {
+        flex: 1,
+    },
+    playersContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+        marginTop: 8,
+    },
+    createButton: {
+        marginTop: 24,
+        paddingVertical: 8,
     },
     button: {
         marginTop: 16,
