@@ -174,6 +174,7 @@
         "cancelled": "Cancelled"
     },
     "events": {
+        "handicap_not_allowed": "Handicap not allowed",
         "public": "Public",
         "age_restrictions": "Age restrictions",
         "official": "Official",
@@ -826,8 +827,8 @@
         "16005": "(0) Cannot join or leave an event that has already started or ended",
         "16006": "Owner cannot join is own event",
         "16007": "Owner cannot leave is own event",
-        "16008": "(4) You cannot joint an event with a handicap lower than required",
-        "16009": "(5) You cannot joint an event with a handicap higher than required",
+        "16008": "(4) You cannot join an event with a handicap lower than required",
+        "16009": "(5) You cannot join an event with a handicap higher than required",
         "16010": "(1) Event is full",
         "16011": "(6) Event is private",
         "16012": "(3) Event has no guild",

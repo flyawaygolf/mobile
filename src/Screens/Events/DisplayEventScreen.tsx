@@ -122,31 +122,54 @@ export default function DisplayEventScreen({ route }: any) {
 
   const displayJointButton = () => {
     if (eventInfo) {
+      // Vérification du propriétaire
       if (isOwner(eventInfo)) {
         return (
           <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="delete" onPress={() => deleteEvent(eventInfo)}>
             {t('events.delete')}
           </Button>
         )
-      } else if (!eventInfo.joinable) {
+      }
+      // Vérification si l'événement est non rejoignable
+      else if (!eventInfo.joinable) {
         return (
           <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="block-helper">
             {t('events.not_joinable')}
           </Button>
         )
-      } else if (dayjs(new Date()).isAfter(eventInfo.start_date) && dayjs(new Date()).isBefore(eventInfo.end_date)) {
+      }
+      // Vérification du handicap utilisateur
+      else if (
+        typeof user?.golf_info?.handicap === "number" &&
+        (
+          (typeof eventInfo.min_handicap === "number" && user.golf_info.handicap < eventInfo.min_handicap) ||
+          (typeof eventInfo.max_handicap === "number" && user.golf_info.handicap > eventInfo.max_handicap)
+        )
+      ) {
+        return (
+          <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="block-helper">
+            {t('events.handicap_not_allowed')}
+          </Button>
+        )
+      }
+      // Vérification si l'événement a commencé
+      else if (dayjs(new Date()).isAfter(eventInfo.start_date) && dayjs(new Date()).isBefore(eventInfo.end_date)) {
         return (
           <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="calendar-month">
             {t('events.started')}
           </Button>
         )
-      } else if (dayjs(new Date()).isAfter(eventInfo.end_date)) {
+      }
+      // Vérification si l'événement est terminé
+      else if (dayjs(new Date()).isAfter(eventInfo.end_date)) {
         return (
           <Button textColor={colors.badge_color} style={{ width: "70%" }} mode='outlined' icon="calendar-month">
             {t('events.ended')}
           </Button>
         )
-      } else {
+      }
+      // Bouton rejoindre/quitter
+      else {
         return (
           <Button style={{ width: "70%" }} mode='contained' icon={eventInfo.joined ? "account-minus" : "account-plus"} onPress={() => eventInfo.joined ? leaveEvent(eventInfo) : joinEvent(eventInfo)}>
             {eventInfo.joined ? t('events.leave') : t('events.join')}
