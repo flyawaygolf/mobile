@@ -36,6 +36,9 @@ export default function DisplayEventScreen({ route }: any) {
   const [eventInfo, setEventInfo] = useState<eventsInterface | undefined>(undefined);
   const [displayParcitipants, setDisplayParticipants] = useState<boolean>(false);
   const [showModal, setShowModal] = useState(false);
+  const [showTextModal, setShowTextModal] = useState(false);
+  const [modalText, setModalText] = useState<string>('');
+  const [modalTitle, setModalTitle] = useState<string>('');
 
   const getInfo = async () => {
     if (!event_id) return;
@@ -201,6 +204,12 @@ export default function DisplayEventScreen({ route }: any) {
     }
   };
 
+  const openTextModal = (title: string, text: string) => {
+    setModalTitle(title);
+    setModalText(text);
+    setShowTextModal(true);
+  }
+
   return (
     <SafeBottomContainer padding={{ top: 0, bottom: 0, left: 0, right: 0 }}>
       <View style={{ flex: 1, backgroundColor: colors.bg_secondary }}>
@@ -225,6 +234,12 @@ export default function DisplayEventScreen({ route }: any) {
           {/* Modal de partage et participants */}
           {eventInfo && (
             <>
+              {/* Modal pour afficher le texte complet des règles spéciales ou de la politique d'annulation */}
+              <BottomModal isVisible={showTextModal} onSwipeComplete={() => setShowTextModal(false)} dismiss={() => setShowTextModal(false)}>
+                <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}>{modalTitle}</Text>
+                <Text style={{ marginBottom: 20 }}>{modalText}</Text>
+                <Button uppercase textColor={colors.warning_color} onPress={() => setShowTextModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
+              </BottomModal>
               <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
               <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
                 <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
@@ -349,7 +364,7 @@ export default function DisplayEventScreen({ route }: any) {
                   {t("events.participants")} {eventInfo.participants} / {eventInfo?.max_participants ?? 2}
                 </Chip>
                 <Chip style={{ borderRadius: 100 }} avatar={<Avatar size={25} url={client.user.avatar(eventInfo.owner_info.user_id, eventInfo.owner_info.avatar)} />} onPress={() => navigation.navigate("ProfileStack", { screen: "ProfileScreen", params: { nickname: eventInfo.owner_info.nickname } })}>
-                  {t("events.owner")} {eventInfo.owner_info.username.substring(0, 20)}
+                  {t("events.owner")} - {eventInfo.owner_info.username.substring(0, 20)}
                 </Chip>
                 {eventInfo.skill_level && (
                   <Chip style={{ borderRadius: 100 }} icon="school">
@@ -381,10 +396,22 @@ export default function DisplayEventScreen({ route }: any) {
                   <Chip style={{ borderRadius: 100 }} icon="golf">{t('events.equipment_required')}: {eventInfo.equipment_required.join(', ')}</Chip>
                 )}
                 {eventInfo.special_rules && (
-                  <Chip style={{ borderRadius: 100 }} icon="alert-circle-outline">{t('events.special_rules')}: {eventInfo.special_rules}</Chip>
+                  <Chip
+                    style={{ borderRadius: 100 }}
+                    icon="alert-circle-outline"
+                    onPress={() => openTextModal(t('events.special_rules'), eventInfo.special_rules ?? '')}
+                  >
+                    {t('events.special_rules')}: {eventInfo.special_rules}
+                  </Chip>
                 )}
                 {eventInfo.cancellation_policy && (
-                  <Chip style={{ borderRadius: 100, flexWrap: "wrap" }} icon="cancel">{t('events.cancellation_policy')}: {eventInfo.cancellation_policy}</Chip>
+                  <Chip
+                    style={{ borderRadius: 100, flexWrap: "wrap" }}
+                    icon="cancel"
+                    onPress={() => openTextModal(t('events.cancellation_policy'), eventInfo.cancellation_policy ?? '')}
+                  >
+                    {t('events.cancellation_policy')}: {eventInfo.cancellation_policy}
+                  </Chip>
                 )}
               </View>
 
