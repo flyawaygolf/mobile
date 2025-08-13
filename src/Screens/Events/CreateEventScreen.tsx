@@ -360,17 +360,18 @@ export default function CreateEventScreen() {
                 </BottomModal>
 
                 <HandicapModal
+                    visible={maxHandicapModalVisible}
+                    hideModal={() => setMaxHandicapModalVisible(false)}
+                    min={540}
+                    setModif={(value) => setMaxHandicap(value)}
+                    handicap={maxHandicap}
+                />
+                <HandicapModal
                     visible={minHandicapModalVisible}
                     hideModal={() => setMinHandicapModalVisible(false)}
                     setModif={(value) => setMinHandicap(value)}
                     handicap={minHandicap}
-                />
-                <HandicapModal
-                    visible={maxHandicapModalVisible}
-                    hideModal={() => setMaxHandicapModalVisible(false)}
-                    min={minHandicap}
-                    setModif={(value) => setMaxHandicap(value)}
-                    handicap={maxHandicap}
+                    min={maxHandicap}
                 />
 
                 {/* Nouveaux modals suivant la logique du pro-website */}
@@ -509,7 +510,7 @@ export default function CreateEventScreen() {
                         style={styles.input}
                         contentStyle={styles.buttonContent}
                     >
-                       {t('events.start_date')}: {startDate.toLocaleString()} *
+                        {t('events.start_date')}: {startDate.toLocaleString()} *
                     </Button>
 
                     <Button
@@ -620,6 +621,14 @@ export default function CreateEventScreen() {
 
                         {/* SECTION : HANDICAP */}
                         <Text variant='headlineMedium' style={sectionTitle}>{t("events.handicap_restrictions")}</Text>
+                        <Button
+                            mode="outlined"
+                            onPress={() => setMaxHandicapModalVisible(true)}
+                            style={styles.input}
+                            contentStyle={styles.buttonContent}
+                        >
+                            {t('events.select_max_handicap', { hcp: displayHCP(maxHandicap) })}
+                        </Button>
 
                         <Button
                             mode="outlined"
@@ -628,15 +637,6 @@ export default function CreateEventScreen() {
                             contentStyle={styles.buttonContent}
                         >
                             {t('events.select_min_handicap', { hcp: displayHCP(minHandicap) })}
-                        </Button>
-
-                        <Button
-                            mode="outlined"
-                            onPress={() => setMaxHandicapModalVisible(true)}
-                            style={styles.input}
-                            contentStyle={styles.buttonContent}
-                        >
-                            {t('events.select_max_handicap', { hcp: displayHCP(maxHandicap) })}
                         </Button>
 
                         <Br />

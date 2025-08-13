@@ -160,9 +160,23 @@
         "men": "Men",
         "women": "Women",
         "seniors": "Seniors",
-        "juniors": "Juniors"
+        "juniors": "Juniors",
+        "male": "Men",
+        "female": "Women",
+        "senior": "Seniors",
+        "kid": "Juniors"
+    },
+    "event_status": {
+        "title": "Status",
+        "scheduled": "Scheduled",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
     },
     "events": {
+        "public": "Public",
+        "age_restrictions": "Age restrictions",
+        "official": "Official",
         "all_levels": "All levels",
         "header_title": "Events",
         "title": "Title",

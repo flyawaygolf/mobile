@@ -18,6 +18,12 @@ import { eventurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
 import { Avatar } from '../../Components/Member';
 import { displayHCP } from '../../Services/handicapNumbers';
+import {
+  CalendarEventType,
+  CompetitionFormatEnum,
+  EventStatusEnum,
+  SkillLevelEnum
+} from '../../Services/Client/Managers/Interfaces/Events';
 
 export default function DisplayEventScreen({ route }: any) {
   const { event_id } = route.params;
@@ -153,6 +159,48 @@ export default function DisplayEventScreen({ route }: any) {
     }
   }
 
+  // Helpers pour récupérer la clé de traduction à partir de l'enum
+  const getEventTypeKey = (type: CalendarEventType) => {
+    switch (type) {
+      case CalendarEventType.TOURNAMENT: return 'tournament';
+      case CalendarEventType.LESSON: return 'lesson';
+      case CalendarEventType.SOCIAL: return 'social';
+      case CalendarEventType.MEETING: return 'meeting';
+      default: return String(type);
+    }
+  };
+
+  const getFormatKey = (format: CompetitionFormatEnum) => {
+    switch (format) {
+      case CompetitionFormatEnum.STROKE_PLAY: return 'stroke_play';
+      case CompetitionFormatEnum.MATCH_PLAY: return 'match_play';
+      case CompetitionFormatEnum.STABLEFORD: return 'stableford';
+      case CompetitionFormatEnum.BEST_BALL: return 'best_ball';
+      case CompetitionFormatEnum.SCRAMBLE: return 'scramble';
+      default: return String(format);
+    }
+  };
+
+  const getStatusKey = (status: EventStatusEnum) => {
+    switch (status) {
+      case EventStatusEnum.SCHEDULED: return 'scheduled';
+      case EventStatusEnum.IN_PROGRESS: return 'in_progress';
+      case EventStatusEnum.COMPLETED: return 'completed';
+      case EventStatusEnum.CANCELLED: return 'cancelled';
+      default: return String(status);
+    }
+  };
+
+  const getSkillLevelKey = (level: SkillLevelEnum) => {
+    switch (level) {
+      case SkillLevelEnum.BEGINNER: return 'beginner';
+      case SkillLevelEnum.INTERMEDIATE: return 'intermediate';
+      case SkillLevelEnum.ADVANCED: return 'advanced';
+      case SkillLevelEnum.PROFESSIONAL: return 'professional';
+      default: return String(level);
+    }
+  };
+
   return (
     <SafeBottomContainer padding={{ top: 0, bottom: 0, left: 0, right: 0 }}>
       <View style={{ flex: 1, backgroundColor: colors.bg_secondary }}>
@@ -174,6 +222,19 @@ export default function DisplayEventScreen({ route }: any) {
             cache: "force-cache"
           }}
         >
+          {/* Modal de partage et participants */}
+          {eventInfo && (
+            <>
+              <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
+              <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
+                <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
+                <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+                <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
+                <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
+                <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
+              </BottomModal>
+            </>
+          )}
           <View style={{
             position: "absolute",
             top: top + 10,
@@ -188,7 +249,9 @@ export default function DisplayEventScreen({ route }: any) {
             <IconButton onPress={() => navigation.goBack()} mode='contained' icon="chevron-left" />
             {eventInfo ? (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
+                {
+                  eventInfo.favorites && <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
+                }
                 <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
                 {eventInfo.joined && (
                   <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
@@ -210,27 +273,13 @@ export default function DisplayEventScreen({ route }: any) {
             }}>
               <Text style={{ fontWeight: 'bold', fontSize: 28, color: 'white', flex: 1 }}>{eventInfo.title}</Text>
               {isOfficial(eventInfo) && (
-                <Chip style={{ backgroundColor: colors.fa_primary, borderRadius: 100 }} icon="check-decagram" textStyle={{ color: 'white', fontWeight: 'bold' }}>
+                <Chip style={{ backgroundColor: colors.fa_primary, borderRadius: 100 }} theme={{ colors: { primary: "white" } }} icon="check-decagram" textStyle={{ color: 'white', fontWeight: 'bold' }}>
                   {t('events.official')}
                 </Chip>
               )}
             </View>
           )}
         </ImageBackground>
-
-        {/* Modal de partage et participants */}
-        {eventInfo && (
-          <>
-            <EventParticipantsModal event={eventInfo} setVisible={setDisplayParticipants} visible={displayParcitipants} />
-            <BottomModal isVisible={showModal} onSwipeComplete={() => setShowModal(false)} dismiss={() => setShowModal(false)}>
-              <Button uppercase onPress={() => onShare()} icon="share-variant">{t("events.share")}</Button>
-              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-              <Button uppercase onPress={() => shareEventToPost(eventInfo)} icon="content-duplicate">{t("events.share_post")}</Button>
-              <Divider bold theme={{ colors: { outlineVariant: colors.bg_primary } }} />
-              <Button uppercase textColor={colors.warning_color} onPress={() => setShowModal(false)} icon="keyboard-return">{t("commons.cancel")}</Button>
-            </BottomModal>
-          </>
-        )}
 
         {/* ScrollView pour tout le contenu */}
         <ScrollView
@@ -248,14 +297,24 @@ export default function DisplayEventScreen({ route }: any) {
               {/* Type d'événement + format + badge officiel */}
               <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
                 <Chip style={{ borderRadius: 100 }} icon="calendar-month-outline">
-                  {t(`event_type.${eventInfo.event_type}`)}
+                  {t(`event_type.${getEventTypeKey(eventInfo.event_type)}`)}
                 </Chip>
                 <Chip style={{ borderRadius: 100 }} icon="star">
-                  {t('events.competition_format')}: {t(`event_format.${eventInfo.format}`)}
+                  {t('events.competition_format')}: {t(`event_format.${getFormatKey(eventInfo.format)}`)}
                 </Chip>
                 {isOfficial(eventInfo) && (
-                  <Chip style={{ backgroundColor: colors.fa_primary, borderRadius: 100 }} icon="check-decagram" textStyle={{ color: 'white', fontWeight: 'bold' }}>
+                  <Chip style={{ backgroundColor: colors.fa_primary, borderRadius: 100 }} theme={{ colors: { primary: "white" } }} icon="check-decagram" textStyle={{ fontWeight: 'bold' }}>
                     {t('events.official')}
+                  </Chip>
+                )}
+                {/* Ajout du statut de l'événement */}
+                <Chip style={{ borderRadius: 100 }} icon="information">
+                  {t(`event_status.title`)}: {t(`event_status.${getStatusKey(eventInfo.status)}`)}
+                </Chip>
+                {/* Ajout du niveau de compétence */}
+                {eventInfo.skill_level && (
+                  <Chip style={{ borderRadius: 100 }} icon="school">
+                    {t('events.skill_level')}: {t(`event_skill.${getSkillLevelKey(eventInfo.skill_level)}`)}
                   </Chip>
                 )}
               </View>
@@ -294,7 +353,7 @@ export default function DisplayEventScreen({ route }: any) {
                 </Chip>
                 {eventInfo.skill_level && (
                   <Chip style={{ borderRadius: 100 }} icon="school">
-                    {t('events.skill_level')}: {t(`skill.${eventInfo.skill_level}`)}
+                    {t('events.skill_level')}: {t(`event_skill.${getSkillLevelKey(eventInfo.skill_level)}`)}
                   </Chip>
                 )}
                 <Chip style={{ borderRadius: 100 }} icon="sort-numeric-variant">
@@ -307,7 +366,7 @@ export default function DisplayEventScreen({ route }: any) {
                 )}
                 {(eventInfo.age_restriction?.min_age || eventInfo.age_restriction?.max_age) && (
                   <Chip style={{ borderRadius: 100 }} icon="calendar-account">
-                    {t('events.age_restriction')}: {eventInfo.age_restriction?.min_age ?? '-'} - {eventInfo.age_restriction?.max_age ?? '-'}
+                    {t('events.age_restrictions')}: {eventInfo.age_restriction?.min_age ?? '-'} - {eventInfo.age_restriction?.max_age ?? '-'}
                   </Chip>
                 )}
               </View>
@@ -325,14 +384,16 @@ export default function DisplayEventScreen({ route }: any) {
                   <Chip style={{ borderRadius: 100 }} icon="alert-circle-outline">{t('events.special_rules')}: {eventInfo.special_rules}</Chip>
                 )}
                 {eventInfo.cancellation_policy && (
-                  <Chip style={{ borderRadius: 100 }} icon="cancel">{t('events.cancellation_policy')}: {eventInfo.cancellation_policy}</Chip>
+                  <Chip style={{ borderRadius: 100, flexWrap: "wrap" }} icon="cancel">{t('events.cancellation_policy')}: {eventInfo.cancellation_policy}</Chip>
                 )}
               </View>
 
               {/* Visibilité et accès */}
               <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{t('events.visibility_and_access')}</Text>
               <View style={{ flexDirection: "row", alignItems: "center", gap: 10, flexWrap: 'wrap' }}>
-                <Chip style={{ borderRadius: 100 }} icon={eventInfo.favorites ? "star" : "star-outline"}>{t('events.favorites')}</Chip>
+                { 
+                  eventInfo.favorites && <Chip style={{ borderRadius: 100 }} icon={eventInfo.favorites ? "star" : "star-outline"}>{t('events.favorites')}</Chip>
+                }
                 <Chip style={{ borderRadius: 100 }} icon={eventInfo.is_private ? "lock" : "lock-open"}>{eventInfo.is_private ? t('events.private') : t('events.public')}</Chip>
               </View>
 
