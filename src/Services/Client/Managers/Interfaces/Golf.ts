@@ -33,6 +33,8 @@ export interface golfInterface {
     email: string;
     country: string;
     city: string;
+    street: string;
+    address?: string;
     continent: string;
     content?: string;
     website?: string;
@@ -50,6 +52,7 @@ export interface golfInterface {
     latitude: number;
     longitude: number;
     linked: boolean;
+    official_account?: userInfo;
     distance?: number;
 }
 

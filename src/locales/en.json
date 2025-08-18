@@ -94,7 +94,8 @@
         "total": "Total",
         "leave": "Leave",
         "you": "You",
-        "optional": "Optional"
+        "optional": "Optional",
+        "directions": "Directions"
     },
     "update": {
         "update": "Update",

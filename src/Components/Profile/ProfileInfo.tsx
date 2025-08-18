@@ -123,7 +123,6 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                         title={user_info.username}
                         subtitle={`@${user_info.nickname}`}
                     />
-
                 </Card>
                 <Card style={{ margin: 5 }} mode="contained">
                     <Card.Content>
@@ -133,6 +132,18 @@ const ProfileInfo = ({ navigation, setUserInfo }: ProfileInfoProps) => {
                         </View>
                     </Card.Content>
                 </Card>
+                {
+                    user_info.linked_golf && (
+                        <Card style={{ margin: 5 }} mode="contained" onPress={() => navigation.navigate("GolfsStack", { screen: "GolfsProfileScreen", params: { golf_id: user_info.linked_golf?.golf_id } })}>
+                            <Card.Content>
+                                <View style={{ marginBottom: 5 }}>
+                                    <Text style={{ fontWeight: '900' }}>{t("profile.linked_golf")}</Text>
+                                    <Text>{user_info.linked_golf.name}</Text>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                    )
+                }
                 {
                     premiumAdvantages(user_info.premium_type, user_info.flags).showAvailability() && user_info.premium_settings?.show_availability && (
                         <Card style={{ margin: 5 }} mode="contained">

@@ -49,6 +49,7 @@ export interface userInfo {
     username: string,
     is_private: boolean,
     avatar: string,
+    avatarURL: string,
     premium_type: premium_type,
     flags: number,
     description: string,

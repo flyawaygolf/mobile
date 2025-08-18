@@ -85,6 +85,25 @@ class GolfManager extends RequestEmitter {
     return response;
   }
 
+  public async officialPosts(golf_id: string, options?: {
+    pagination?: paginationParams;
+    limit?: number;
+  }) {
+    let _url = `/golfs/${golf_id}/posts/official`;
+    const parameters = []
+
+    if (options?.pagination) {
+      const { pagination_key, limit } = options.pagination;
+      if (pagination_key) parameters.push(`pagination_key=${pagination_key}`);
+      if (limit) parameters.push(`limit=${limit}`);
+    }
+    if (parameters.length > 0) _url = _url.concat("?");
+    const request = await this.getRequest(_url.concat(parameters.join("&")));
+    const response = request as PostInterface.postResponse;
+
+    return response;
+  }
+
   public async events(golf_id: string, options?: {
     pagination?: paginationParams;
     limit?: number;

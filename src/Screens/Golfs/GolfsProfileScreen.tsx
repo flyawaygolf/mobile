@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Linking, Platform, Pressable, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Appbar, Button, Card, IconButton, List, Text } from 'react-native-paper';
+import { Appbar, Button, Card, Chip, IconButton, List, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from '@d11/react-native-fast-image';
@@ -30,13 +30,17 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     const [showDetails, setShowDetails] = useState(true);
 
     const [golfInfo, setGolfInfo] = useState<golfInterface>({} as golfInterface);
-    const [activeTab, setActiveTab] = useState<'community_posts' | 'users' | 'events' | 'social_links'>('community_posts');
+    const [activeTab, setActiveTab] = useState<'community_posts' | 'users' | 'events' | 'social_links' | 'official_posts'>('official_posts');
 
     const [loading, setLoading] = useState(false);
 
     const [usersPaginationKey, setUsersPaginationKey] = useState<string | undefined>(undefined);
     const [users, setUsers] = useState<userInfo[]>([]);
     const [usersLoader, setUsersLoader] = useState(false);
+
+    const [officialPostsPaginationKey, setOfficialPostsPaginationKey] = useState<string | undefined>(undefined);
+    const [official_posts, setOfficialPosts] = useState<PostInterface.postInterface[]>([]);
+    const [officialPostsLoader, setOfficialPostsLoader] = useState(false);
 
     const [communityPostsPaginationKey, setCommunityPostsPaginationKey] = useState<string | undefined>(undefined);
     const [community_posts, setCommunityPosts] = useState<PostInterface.postInterface[]>([])
@@ -62,6 +66,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
     };
 
     const fetchTabData = async () => {
+        if (activeTab === 'official_posts' && official_posts.length < 1) return await getGolfOfficialPosts();
         if (activeTab === 'users' && users.length < 1) return await getGolfUsers();
         if (activeTab === 'community_posts' && community_posts.length < 1) return await getGolfCommunityPosts();
         if (activeTab === 'events' && events.length < 1) return await getGolfEvents();
@@ -120,6 +125,23 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         if (response.pagination_key) setUsersPaginationKey(response.pagination_key);
         if (refresh) setUsers(response.data);
         else setUsers([...users, ...response.data]);
+    };
+
+    const getGolfOfficialPosts = async (refresh: boolean = false) => {
+        if (loading) return;
+        if (refresh) {
+            setOfficialPostsLoader(true)
+            if (officialPostsLoader) return
+        }
+        setLoading(true);
+        const response = await client.golfs.officialPosts(golf_id, { pagination: { pagination_key: refresh ? undefined : officialPostsPaginationKey } });
+        setLoading(false);
+        if (refresh) setOfficialPostsLoader(false);
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
+        if (!response.data) return;
+        if (response.pagination_key) setOfficialPostsPaginationKey(response.pagination_key);
+        if (refresh) setOfficialPosts(response.data);
+        else setOfficialPosts([...official_posts, ...response.data]);
     };
 
     const getGolfCommunityPosts = async (refresh: boolean = false) => {
@@ -193,21 +215,26 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
         }
     };
 
-    const tabs = [{
-        name: 'community_posts',
-        active: activeTab === 'community_posts',
-    }, {
-        name: 'users',
-        active: activeTab === 'users'
-    },
-    {
-        name: 'events',
-        active: activeTab === 'events'
-    },
-    {
-        name: 'social_links',
-        active: activeTab === 'social_links'
-    }];
+    const tabs = [
+        {
+            name: 'official_posts',
+            active: activeTab === 'official_posts',
+        },
+        {
+            name: 'community_posts',
+            active: activeTab === 'community_posts',
+        }, {
+            name: 'users',
+            active: activeTab === 'users'
+        },
+        {
+            name: 'events',
+            active: activeTab === 'events'
+        },
+        {
+            name: 'social_links',
+            active: activeTab === 'social_links'
+        }];
 
     const renderUsers = useCallback(({ item }: { item: userInfo }) => (
         <DisplayMember
@@ -230,6 +257,10 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
 
     const renderEvents = useCallback(({ item }: { item: eventsInterface }) => (
         <EventCard full_width event={item} />
+    ), []);
+
+    const renderOfficialPosts = useCallback(({ item }: { item: PostInterface.postInterface }) => (
+        <DisplayPost informations={item} />
     ), []);
 
     const golfHeader = () => golfInfo && (
@@ -289,6 +320,28 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                 </Pressable>
                             )
                         }
+                        {
+                            golfInfo.location && (
+                                <View style={{ flexDirection: "column", alignItems: "center" }}>
+                                    <IconButton
+                                        onPress={() => {
+                                            const { latitude, longitude } = golfInfo.location;
+                                            const url =
+                                                Platform.OS === 'ios'
+                                                    ? `http://maps.apple.com/?ll=${latitude},${longitude}`
+                                                    : `geo:${latitude},${longitude}`;
+                                            Linking.openURL(url);
+                                        }}
+                                        iconColor={colors.fa_primary}
+                                        mode='contained'
+                                        containerColor={colors.bg_third}
+                                        size={20}
+                                        icon={"map-marker"}
+                                    />
+                                    <Text>{t("commons.directions")}</Text>
+                                </View>
+                            )
+                        }
                     </View>
 
                     <View style={{ position: "absolute", rowGap: 5, right: 10, top: 10, flexDirection: "row", alignItems: "center", gap: 5, maxWidth: "50%" }}>
@@ -341,6 +394,17 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                     )
                                 }
                             </View>
+                            {
+                                golfInfo.official_account && (
+                                    <Chip
+                                        avatar={<Avatar size={24} url={golfInfo.official_account?.avatarURL} />}
+                                        onPress={() => navigation.navigate("ProfileStack", {
+                                            screen: "ProfileScreen",
+                                            params: {
+                                                nickname: golfInfo.official_account?.nickname
+                                            }
+                                        })}>{golfInfo.official_account?.username}</Chip>
+                                )}
                         </Card.Content>
                         <Card.Content>
                             {
@@ -466,6 +530,25 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                 colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
                                 onRefresh={() => getGolfSocialLinks(true)} />}
                             ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("golf.no_social_links")}</Text>}
+                            scrollIndicatorInsets={Platform.OS === "ios" ? {
+                                right: 1
+                            } : undefined}
+                        />
+                    ) : activeTab === 'official_posts' ? (
+                        <FlatList
+                            ListHeaderComponent={golfHeader()}
+                            onScrollEndDrag={() => getGolfOfficialPosts()}
+                            scrollEventThrottle={16}
+                            data={official_posts}
+                            keyExtractor={(item) => item.post_id}
+                            renderItem={renderOfficialPosts}
+                            refreshControl={<RefreshControl
+                                refreshing={officialPostsLoader}
+                                progressBackgroundColor={colors.bg_primary}
+                                tintColor={colors.fa_primary}
+                                colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
+                                onRefresh={() => getGolfOfficialPosts(true)} />}
+                            ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("golf.no_official_posts")}</Text>}
                             scrollIndicatorInsets={Platform.OS === "ios" ? {
                                 right: 1
                             } : undefined}

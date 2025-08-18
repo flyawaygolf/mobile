@@ -94,7 +94,8 @@
         "total": "Total",
         "leave": "Quitter",
         "you": "Vous",
-        "optional": "Optionnel"
+        "optional": "Optionnel",
+        "directions": "Itinéraire"
     },
     "update": {
         "update": "Mettre à jour",
