@@ -50,6 +50,7 @@ const MapScreen = () => {
   const [circleMode, setCircleMode] = useState<'user' | 'center'>('user');
   const [debouncedSearchLocation, setDebouncedSearchLocation] = useState(searchLocation);
   const [regionChangeTimeout, setRegionChangeTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [mapZoom, setMapZoom] = useState(10); // Ajoute le zoom
 
   const changeMapType = useCallback(() => setMapType(prevType => prevType === "standard" ? "satellite" : "standard"), []);
 
@@ -386,51 +387,44 @@ const MapScreen = () => {
     </ShrinkEffect>
   )), [searchChips, queryFilter, filter, isInputFocused, t, debounceSearch, handleChipPress]);
 
+  // Utilitaire pour clusteriser les points (golfs + users)
+  function clusterPoints(points: { latitude: number, longitude: number, type: 'golf' | 'user', data: any }[], region: Region, zoom: number) {
+    // Taille de la grille dépend du zoom (plus zoomé = plus petite grille)
+    const gridSize = Math.max(0.05, 1 / Math.pow(2, zoom - 8)); // Ajuste selon besoin
 
-  const userMarkers = useMemo(() => users.map((u) => {
-    return (
-      <Marker
-        key={`user-${u.user_id}`}
-        onPress={() => navigation.navigate("ProfileStack", {
-          screen: "ProfileScreen",
-          params: {
-            nickname: u.nickname,
-          },
-        })}
-        coordinate={{
-          longitude: u.golf_info.location.longitude,
-          latitude: u.golf_info.location.latitude,
-        }}
-        title={u.username}
-        tracksViewChanges={false}
-      >
-        <Avatar url={client.user.avatar(u.user_id, u.avatar)} size={33} />
-      </Marker>
-    )
-  }), [users, client, navigation]);
+    const clusters: { latitude: number, longitude: number, count: number, items: any[], type: 'mixed' | 'golf' | 'user' }[] = [];
+    const grid: { [key: string]: { latitude: number, longitude: number, items: any[], type: 'mixed' | 'golf' | 'user' } } = {};
 
-  const golfMarkers = useMemo(() => golfs.map((g, idx) => {
-    const isActive = Number(searchLocation?.latitude?.toFixed(2)) === Number(g.latitude.toFixed(2)) && Number(searchLocation?.longitude?.toFixed(2)) === Number(g.longitude.toFixed(2));
+    points.forEach(pt => {
+      const latKey = Math.floor(pt.latitude / gridSize);
+      const lngKey = Math.floor(pt.longitude / gridSize);
+      const key = `${latKey}_${lngKey}`;
+      if (!grid[key]) {
+        grid[key] = {
+          latitude: latKey * gridSize + gridSize / 2,
+          longitude: lngKey * gridSize + gridSize / 2,
+          items: [],
+          type: pt.type,
+        };
+      }
+      grid[key].items.push(pt.data);
+      if (grid[key].type !== pt.type) grid[key].type = 'mixed';
+    });
 
-    return (
-      <Marker
-        key={`${idx}-${isActive ? 'active' : 'inactive'}`}
-        onPress={() => navigation.navigate("GolfsStack", {
-          screen: "GolfsProfileScreen",
-          params: {
-            golf_id: g.golf_id,
-          }
-        })}
-        pinColor={isActive ? 'yellow' : 'red'}
-        coordinate={{
-          longitude: g.longitude,
-          latitude: g.latitude,
-        }}
-        title={g.name}
-      />
-    )
-  }), [golfs, searchLocation, navigation]);
+    Object.values(grid).forEach(cluster => {
+      clusters.push({
+        latitude: cluster.latitude,
+        longitude: cluster.longitude,
+        count: cluster.items.length,
+        items: cluster.items,
+        type: cluster.type,
+      });
+    });
 
+    return clusters;
+  }
+
+  // Ajoute la gestion du zoom à chaque changement de région
   const debouncedRegionChange = useCallback((region: Region) => {
     // Annuler le timeout précédent s'il existe
     if (regionChangeTimeout) {
@@ -445,6 +439,9 @@ const MapScreen = () => {
         heigth: heightMeters,
         width: widthMeters,
       });
+      // Calcul du zoom (approximation)
+      const zoom = Math.round(Math.log(360 / region.longitudeDelta) / Math.LN2);
+      setMapZoom(zoom);
     }, 200); // Réduire le délai à 200ms
 
     setRegionChangeTimeout(newTimeout);
@@ -458,6 +455,114 @@ const MapScreen = () => {
       }
     };
   }, [regionChangeTimeout]);
+
+  // Combine golfs et users pour le clustering
+  const allPoints = useMemo(() => [
+    ...golfs.map(g => ({
+      latitude: g.latitude,
+      longitude: g.longitude,
+      type: 'golf' as const,
+      data: g,
+    })),
+    ...users.map(u => ({
+      latitude: u.golf_info.location.latitude,
+      longitude: u.golf_info.location.longitude,
+      type: 'user' as const,
+      data: u,
+    }))
+  ], [golfs, users]);
+
+  const clusters = useMemo(() => {
+    if (!searchLocation) return [];
+    return clusterPoints(allPoints, searchLocation, mapZoom);
+  }, [allPoints, searchLocation, mapZoom]);
+
+  type ClusterType = 'golf' | 'user' | 'mixed';
+
+  interface ClusterData {
+    latitude: number;
+    longitude: number;
+    count: number;
+    items: golfInterface[] | userInfo[];
+    type: ClusterType;
+  }
+
+  type RenderClusterOrMarker = (
+    cluster: ClusterData,
+    idx: number
+  ) => React.ReactElement | null;
+
+  const renderClusterOrMarker: RenderClusterOrMarker = useCallback((cluster, idx) => {
+    if (cluster.count === 1) {
+      // Marker individuel
+      const item = cluster.items[0];
+      if (cluster.type === 'golf') {
+        const golfItem = item as golfInterface;
+        return (
+          <Marker
+            key={`golf-${golfItem.golf_id}`}
+            coordinate={{ latitude: golfItem.latitude, longitude: golfItem.longitude }}
+            title={golfItem.name}
+            pinColor="red"
+            onPress={() => navigation.navigate("GolfsStack", {
+              screen: "GolfsProfileScreen",
+              params: { golf_id: golfItem.golf_id }
+            })}
+          />
+        );
+      } else {
+        const userItem = item as userInfo;
+        return (
+          <Marker
+            key={`user-${userItem.user_id}`}
+            coordinate={{
+              latitude: userItem.golf_info.location.latitude,
+              longitude: userItem.golf_info.location.longitude,
+            }}
+            title={userItem.username}
+            tracksViewChanges={false}
+            onPress={() => navigation.navigate("ProfileStack", {
+              screen: "ProfileScreen",
+              params: { nickname: userItem.nickname }
+            })}
+          >
+            <Avatar url={client.user.avatar(userItem.user_id, userItem.avatar)} size={33} />
+          </Marker>
+        );
+      }
+    } else {
+      // Cluster
+      return (
+        <Marker
+          key={`cluster-${idx}`}
+          coordinate={{ latitude: cluster.latitude, longitude: cluster.longitude }}
+          onPress={() => {
+            // Zoom sur le cluster
+            if (mapRef.current && searchLocation) {
+              mapRef.current.animateToRegion({
+                latitude: cluster.latitude,
+                longitude: cluster.longitude,
+                latitudeDelta: searchLocation.latitudeDelta / 2,
+                longitudeDelta: searchLocation.longitudeDelta / 2,
+              }, 500);
+            }
+          }}
+        >
+          <View style={{
+            backgroundColor: cluster.type === 'golf' ? 'rgba(255,0,0,0.7)' : cluster.type === 'user' ? 'rgba(0,128,0,0.7)' : 'rgba(0,128,255,0.7)',
+            borderRadius: 30,
+            padding: 10,
+            borderWidth: 2,
+            borderColor: '#fff',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Text style={{ color: '#fff', fontWeight: 'bold' }}>{cluster.count}</Text>
+          </View>
+        </Marker>
+      );
+    }
+  }, [navigation, client, searchLocation]);
 
   const distanceCircles = useMemo(() => {
     if (!showDistanceCircles) return null;
@@ -554,7 +659,7 @@ const MapScreen = () => {
               onSearchPress={() => debounceSearch(queryFilter)}
               value={query}
               onChangeText={(txt) => setQuery(txt)}
-              placeholder="Search..."
+              placeholder={t("commons.search_placeholder")}
             />
           </FadeInFromTop>
           <ScrollView horizontal={true} contentContainerStyle={styles.searchChips}>
@@ -599,8 +704,8 @@ const MapScreen = () => {
       >
         {distanceCircles}
         {distanceLabels}
-        {userMarkers}
-        {golfMarkers}
+        {/* Remplace userMarkers et golf cluster par le clustering custom */}
+        {clusters.map(renderClusterOrMarker)}
       </MapView>
     </View>
   );

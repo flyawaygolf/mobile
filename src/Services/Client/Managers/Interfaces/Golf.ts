@@ -1,15 +1,16 @@
 import { userInfo } from "./Global";
 
 export interface scorecardTeeboxInterface {
+    teebox_id: string;
+    name: string;
+    slope: number;
+    rating: number;
+    color: {
+        hex: string;
         name: string;
-        slope: number;
-        rating: number;
-        color: {
-            hex: string;
-            name: string;
-        };
-        distances: number[];
-    }
+    };
+    distances: number[];
+}
 
 export interface scorecardGridInterface {
     grid_id: string;

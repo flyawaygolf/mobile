@@ -13,8 +13,9 @@ import { RootState, useAppDispatch, useAppSelector } from '../Redux';
 import { initNotificationFeed } from '../Redux/NotificationFeed/action';
 import { EventsScreen } from '../Screens/Events';
 import { getCurrentLocation, navigationProps, parseURL } from '../Services';
+import ScorecardHomeScreen from '../Screens/Scorecard/ScorecardHomeScreen';
 
-export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen";
+export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen" | "ScorecardHomeScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -77,7 +78,7 @@ function BottomStack({ navigation }: { navigation: navigationProps }) {
 
     const updateLocation = async () => {
         try {
-            const position = await getCurrentLocation();           
+            const position = await getCurrentLocation();
             if (position) {
                 const crd = position.coords;
                 const init_location = {
@@ -188,9 +189,7 @@ function BottomStack({ navigation }: { navigation: navigationProps }) {
                     tabBarBadge: countNotifications()
                 }}
             />
-            {
-                /**
-                 *             <Tab.Screen
+            <Tab.Screen
                 name="ScorecardHomeScreen"
                 component={ScorecardHomeScreen}
                 options={{
@@ -200,8 +199,6 @@ function BottomStack({ navigation }: { navigation: navigationProps }) {
                     title: t("bottom.games")
                 }}
             />
-                 */
-            }
             <Tab.Screen
                 name="MapScreen"
                 component={MapScreen}

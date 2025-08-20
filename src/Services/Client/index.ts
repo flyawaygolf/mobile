@@ -18,6 +18,7 @@ import NotificationManager from './Managers/NotificationManager';
 import EventManager from './Managers/EventManager';
 import SubscriptionManager from './Managers/SubscriptionManager';
 import AffiliationManager from './Managers/AffiliationManager';
+import UserScoreCardManager from './Managers/UserScoreCardManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -45,6 +46,7 @@ class Client extends RequestEmitter {
     public notifications: NotificationManager;
     public events: EventManager;
     public subscription: SubscriptionManager;
+    public userScoreCards: UserScoreCardManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -65,6 +67,7 @@ class Client extends RequestEmitter {
         this.notifications = new NotificationManager(params);
         this.events = new EventManager(params);
         this.subscription = new SubscriptionManager(params);
+        this.userScoreCards = new UserScoreCardManager(params);
     }
 
     public async status() {

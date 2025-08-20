@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ImagePicker from 'react-native-image-crop-picker';
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Appbar, Text, TextInput, ProgressBar, IconButton, Button, SegmentedButtons } from "react-native-paper";
 import { useRealm } from "@realm/react";
@@ -70,8 +69,8 @@ function ProfileEditScreen() {
                 longitude: 0,
             },
         },
-    });    
-    
+    });
+
     const [profilePictures, setProfilePicture] = useState<{
         avatar: string;
         banner?: string;
@@ -212,8 +211,12 @@ function ProfileEditScreen() {
             </Appbar.Header>
             <HandicapModal hideModal={hideModal} modif={modif} setModif={setModif} visible={visible} handicap={modif.golf_info.handicap} />
             {sending.send && <ProgressBar progress={sending.progress} color={colors.fa_primary} />}
-            <ScrollView>
-                <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+            >
+                <ScrollView keyboardShouldPersistTaps="handled">
                     <View>
                         <View style={[{ padding: 5 }]}>
                             <View style={{ height: 100, marginBottom: 5 }}>
@@ -296,8 +299,8 @@ function ProfileEditScreen() {
                             <Button mode={"contained"} onPress={() => showModal()}>{t("profile.edit_hcp")} : {displayHCP(modif.golf_info.handicap)}</Button>
                         </View>
                     </View>
-                </KeyboardAwareScrollView>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </View>
     )
 }

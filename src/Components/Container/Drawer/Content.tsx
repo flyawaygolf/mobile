@@ -77,6 +77,12 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
                 screen: 'GolfsPlayedScreen'
               }
             })} />
+            <Drawer.Item icon="golf-tee" label={t('scorecard.list')} onPress={() => navigation.navigate('MainNavigation', {
+              screen: 'ScorecardStack',
+              params: {
+                screen: 'ScorecardListScreen'
+              }
+            })} />
             <Drawer.Item icon="bookmark" label={t('posts.bookmarks')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'PostsStack',
               params: {

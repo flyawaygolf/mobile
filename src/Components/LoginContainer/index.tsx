@@ -1,9 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { useTheme } from '../Container';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { ScrollView, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 
 function LoginContainer({ children }: PropsWithChildren) {
 
@@ -11,13 +10,17 @@ function LoginContainer({ children }: PropsWithChildren) {
 
     return (
         <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
-            <ScrollView
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center', height: '100%', paddingBottom: 100 }}>
-                <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+            >
+                <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center', height: '100%', paddingBottom: 100 }}>
                     {children}
-                </KeyboardAwareScrollView>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }

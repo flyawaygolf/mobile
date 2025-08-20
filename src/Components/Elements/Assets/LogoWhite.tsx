@@ -1,6 +1,5 @@
 import React from 'react';
 import { DimensionValue, Image, ImageStyle, StyleProp } from 'react-native';
-import { useTheme } from '../../Container';
 
 type PropsType = {
     size?: number;
@@ -9,17 +8,11 @@ type PropsType = {
     style?: StyleProp<ImageStyle>,
 }
 
-function Logo({ size, margin, width, style }: PropsType) {
-
-    const { theme } = useTheme();
+function LogoWhite({ size, margin, width, style }: PropsType) {
 
     return (
         <Image
-            source={
-                theme === "dark" ?
-                    require(`./Images/logo_white.png`)
-                        : require(`./Images/logo_dark.png`)
-            }
+            source={require(`./Images/logo_white.png`)}
             style={[{
                 width: width ?? '100%',
                 height: size ?? 80,
@@ -30,4 +23,4 @@ function Logo({ size, margin, width, style }: PropsType) {
     );
 }
 
-export default Logo;
+export default LogoWhite;

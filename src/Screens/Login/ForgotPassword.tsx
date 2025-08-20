@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView, StyleSheet, View } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { useTheme } from "../../Components/Container";
 import { NormalButton } from "../../Components/Elements/Buttons";
 import { Text, TextInput } from "react-native-paper";
@@ -48,22 +47,27 @@ function ForgotPassword({ navigation }: ScreenNavigationProps<LoginRootParamList
         <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
             <CustomHeader title={"Forgot Password"} />
             <LoaderBox loading={loading} />
-            <KeyboardAwareScrollView style={{ marginTop: 30 }} resetScrollToCoords={{ x: 0, y: 0 }}>
-                <View>
-                    <Text style={{ color: colors.warning_color, textAlign: "center" }}>{error.error && error.response}</Text>
-                    <View style={style.section}>
-                        <TextInput
-                            label={`${t("login.email")}`}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            returnKeyType="next"
-                            value={email}
-                            onChangeText={(text: string) => setEmail(text)}
-                        />
-                        <NormalButton onPress={() => handleSubmit()} text={"Send recovery link"} />
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}>
+                <ScrollView style={{ marginTop: 30 }}>
+                    <View>
+                        <Text style={{ color: colors.warning_color, textAlign: "center" }}>{error.error && error.response}</Text>
+                        <View style={style.section}>
+                            <TextInput
+                                label={`${t("login.email")}`}
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                                returnKeyType="next"
+                                value={email}
+                                onChangeText={(text: string) => setEmail(text)}
+                            />
+                            <NormalButton onPress={() => handleSubmit()} text={"Send recovery link"} />
+                        </View>
                     </View>
-                </View>
-            </KeyboardAwareScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }

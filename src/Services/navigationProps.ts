@@ -13,12 +13,13 @@ import { BottomStackScreens } from '../Navigator/BottomNavigation';
 import { EventStackScreens } from '../Navigator/EventStack';
 import { SubscriptionInterface } from './Client/Managers/Interfaces';
 import { ScorecardStackScreens } from '../Navigator/ScorecardStack';
-import { eventsInterface } from './Client/Managers/Interfaces/Events';
-import { golfInterface } from './Client/Managers/Interfaces/Golf';
+import { CompetitionFormatEnum, eventsInterface } from './Client/Managers/Interfaces/Events';
+import { golfInterface, scorecardGridInterface, scoreCardInterface, scorecardTeeboxInterface } from './Client/Managers/Interfaces/Golf';
 import { PremiumStackScreens } from '../Navigator/PremiumStack';
 import { GuestStackScreens } from '../Navigator/GuestStack';
 import { guildI } from '../Redux/guildList';
 import { fetchGuildResponseSchema } from './Client/Managers/Interfaces/Guild';
+import { GameModeEnum, HoleScorecardSchemaInterface } from './Client/Managers/Interfaces/Scorecard';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -70,6 +71,41 @@ export type ScorecardStackParams = {
     ScorecardHomeScreen: undefined;
     ScorecardCreateScreen: {
         golf_id: string;
+    };
+    ScorecardHoleFillScreen: {
+        golf: golfInterface,
+        scorecard: scoreCardInterface,
+        grid: scorecardGridInterface,
+        teebox: scorecardTeeboxInterface,
+        game_mode: GameModeEnum,
+        format: CompetitionFormatEnum,
+        playing_date: Date,
+        starting_hole: number,
+        name: string,
+    };
+    ScorecardFullScreen: {
+        golf: golfInterface,
+        scorecard: scoreCardInterface,
+        grid: scorecardGridInterface,
+        teebox: scorecardTeeboxInterface,
+        game_mode: GameModeEnum,
+        format: CompetitionFormatEnum,
+        holes: HoleScorecardSchemaInterface[],
+        playing_date: Date,
+        starting_hole: number,
+        name: string,
+    };
+    ScorecardSummarizeScreen: {
+        golf: golfInterface,
+        scorecard: scoreCardInterface,
+        grid: scorecardGridInterface,
+        teebox: scorecardTeeboxInterface,
+        game_mode: GameModeEnum,
+        format: CompetitionFormatEnum,
+        holes: HoleScorecardSchemaInterface[],
+        playing_date: Date,
+        starting_hole: number,
+        name: string,
     };
 }
 

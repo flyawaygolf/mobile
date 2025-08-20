@@ -3,8 +3,18 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 
 import ScorecardHomeScreen from "../Screens/Scorecard/ScorecardHomeScreen";
 import ScorecardCreateScreen from "../Screens/Scorecard/ScorecardCreateScreen";
+import ScorecardHoleFillScreen from "../Screens/Scorecard/ScorecardHoleFillScreen";
+import ScorecardFullScreen from "../Screens/Scorecard/ScorecardFullScreen";
+import ScorecardSummarizeScreen from "../Screens/Scorecard/ScorecardSummarizeScreen";
+import ScorecardListScreen from "../Screens/Scorecard/ScorecardListScreen";
 
-export type ScorecardStackScreens = "ScorecardHomeScreen" | "ScorecardCreateScreen";
+export type ScorecardStackScreens =
+  "ScorecardHomeScreen" |
+  "ScorecardCreateScreen" |
+  "ScorecardHoleFillScreen" |
+  "ScorecardFullScreen" |
+  "ScorecardSummarizeScreen" |
+  "ScorecardListScreen";
 
 const Stack = createStackNavigator();
 
@@ -12,7 +22,11 @@ const ScorecardStack = () => {
 
   const [routes] = React.useState<Array<{ name: ScorecardStackScreens, screen: any }>>([
     { name: "ScorecardHomeScreen", screen: ScorecardHomeScreen },
-    { name: "ScorecardCreateScreen", screen: ScorecardCreateScreen }
+    { name: "ScorecardCreateScreen", screen: ScorecardCreateScreen },
+    { name: "ScorecardHoleFillScreen", screen: ScorecardHoleFillScreen },
+    { name: "ScorecardFullScreen", screen: ScorecardFullScreen },
+    { name: "ScorecardSummarizeScreen", screen: ScorecardSummarizeScreen },
+    { name: "ScorecardListScreen", screen: ScorecardListScreen }
   ]);
 
   return (
