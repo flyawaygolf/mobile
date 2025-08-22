@@ -261,6 +261,9 @@
         "registration_deadline": "Registration deadline"
     },
     "scorecard": {
+        "date": "Date",
+        "stats": "Stats",
+        "players": "Players",
         "list": "Scorecards",
         "title": "Scorecard",
         "details": "Details",

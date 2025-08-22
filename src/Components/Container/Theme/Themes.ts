@@ -2,7 +2,53 @@ import { Platform } from "react-native";
 
 export type Ithemes = 'auto' | 'white' | 'dark';
 
-export const WhiteTheme = {
+export interface colorsInterface {
+    bg_primary: string,
+    bg_primary_opacity: string,
+    bg_secondary: string,
+    bg_third: string,
+    bg_secondary_rgba: string,
+    text_normal: string,
+    text_normal_hover: string,
+    text_link: string,
+    text_muted: string,
+    badge_color: string,
+    fa_primary: string,
+    fa_secondary: string,
+    fa_third: string,
+    warning_color: string,
+    good_color: string,
+    medium_color: string,
+    off_color: string,
+    color_white: string,
+    color_blue: string,
+    color_blue_hover: string,
+    color_red: string,
+    color_green: string,
+    color_yellow: string,
+    color_black: string,
+    color_brass: string,
+    color_bronze: string,
+    color_copper: string,
+    color_gold: string,
+    color_silver: string,
+    color_platinum: string,
+    color_brown: string,
+    color_grey: string,
+    color_jade: string,
+    color_teal: string,
+    color_turquoise: string,
+    color_burgundy: string,
+    color_magenta: string,
+    color_orange: string,
+    color_peach: string,
+    color_purple: string,
+    color_male: string,
+    color_female: string,
+    hover_overlay: string,
+};
+
+export const WhiteTheme: { colors: colorsInterface } = {
     colors: {
         // Background colors
         bg_primary: "#F5F5F5",
@@ -69,7 +115,7 @@ export const WhiteTheme = {
     },
 };
 
-export const DarkTheme = {
+export const DarkTheme: { colors: colorsInterface } = {
     colors: {
         bg_primary: "#171717",
         bg_primary_opacity: "#141414",

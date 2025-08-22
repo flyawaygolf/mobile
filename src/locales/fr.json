@@ -261,6 +261,9 @@
         "registration_deadline": "Date limite d'inscription"
     },
     "scorecard": {
+        "date": "Date",
+        "stats": "Stats",
+        "players": "Joueurs",
         "list": "Mes cartes de score",
         "title": "Feuille de score",
         "details": "Détails",

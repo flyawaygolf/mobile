@@ -43,6 +43,32 @@ export interface HoleScorecardSchemaInterface {
     notes?: string;
 }
 
+interface formatTeeboxInterface {
+    teebox_id: string;
+    name?: string;
+    slope?: number;
+    rating?: number;
+    distances: number[];
+    color?: TeeboxesColor;
+}
+
+interface formatPlayersScoreCardReturnInterface {
+    user_info: {
+        user_id: string;
+        username: string;
+        nickname: string;
+        avatar: string;
+        banner?: string;
+        current_hcp: number;
+        playing_hcp: number;
+    };
+    scorecard_info: {
+        user_scorecard_id: string;
+        holes: HoleScorecardSchemaInterface[];
+        teebox_info?: formatTeeboxInterface;
+    }
+}
+
 export interface getUserScoreCardInterface {
     user_scorecard_id: string;
     teebox_id: string;
@@ -56,7 +82,7 @@ export interface getUserScoreCardInterface {
     playing_date: Date;
     event_id?: string;
     name: string;
-    players: userInfo[];
+    players: formatPlayersScoreCardReturnInterface[];
     total_score?: number;
     status: number;
     holes: HoleScorecardSchemaInterface[];
@@ -71,14 +97,7 @@ export interface getUserScoreCardInterface {
         par: number[];
         handicap: number[];
     } | null;
-    teebox_info: {
-        teebox_id: string;
-        name?: string;
-        slope?: number;
-        rating?: number;
-        distances: number[];
-        color?: TeeboxesColor;
-    } | null,
+    teebox_info?: formatTeeboxInterface | null,
     user_info: userInfo | null;
 }
 

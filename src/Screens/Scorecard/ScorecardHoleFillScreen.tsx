@@ -100,12 +100,13 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
             teebox_id: route.params.teebox?.teebox_id,
         };
 
+        console.log(JSON.stringify(params, null, 2));
+
         const request = await client.userScoreCards.create(params);
         if (request.error) return handleToast(t(`errors.${request?.error?.code}`));
         if (request.data) {
             navigation.navigate("ScorecardSummarizeScreen", {
-                ...route.params,
-                holes: holesData
+                user_scorecard_id: request.data.user_scorecard_id
             });
         }
     };

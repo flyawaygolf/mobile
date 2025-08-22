@@ -96,16 +96,8 @@ export type ScorecardStackParams = {
         name: string,
     };
     ScorecardSummarizeScreen: {
-        golf: golfInterface,
-        scorecard: scoreCardInterface,
-        grid: scorecardGridInterface,
-        teebox: scorecardTeeboxInterface,
-        game_mode: GameModeEnum,
-        format: CompetitionFormatEnum,
-        holes: HoleScorecardSchemaInterface[],
-        playing_date: Date,
-        starting_hole: number,
-        name: string,
+        fromList?: boolean;
+        user_scorecard_id: string;
     };
 }
 
