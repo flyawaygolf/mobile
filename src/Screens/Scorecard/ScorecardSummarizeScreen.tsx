@@ -131,20 +131,20 @@ const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: numbe
 const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStackParams, "ScorecardSummarizeScreen">) => {
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const { client } = useClient();
+    const { client, user } = useClient();
     const navigation = useNavigation<navigationProps>();
-    const { user_scorecard_id, fromList } = route.params;
+    const { user_scorecard_id, fromList, user_id } = route.params;
 
     const [userScoreCard, setUserScoreCard] = useState<getUserScoreCardInterface | null>(null);
 
     useEffect(() => {
         if (user_scorecard_id) {
-            client.userScoreCards.fetchOne(user_scorecard_id).then(response => {
+            client.userScoreCards.fetchOne(user_id, user_scorecard_id).then(response => {
                 if (response.error) return handleToast(t(`errors.${response.error.code}`));
                 if (response.data) setUserScoreCard(response.data);
             });
         }
-    }, [user_scorecard_id]);
+    }, [user_scorecard_id, user_id]);
 
     if (!userScoreCard) return <SafeBottomContainer><Text style={{ padding: 20 }}>{t("commons.loading")}</Text></SafeBottomContainer>;
 

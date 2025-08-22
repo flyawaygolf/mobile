@@ -27,11 +27,11 @@ class UserScoreCardManager extends RequestEmitter {
     return response;
   }
 
-  public async fetch(options?: {
+  public async fetch(user_id: string, options?: {
     pagination?: GlobalInterface.paginationParams;
     limit?: number;
   }) {
-    let _url = `/scorecards`;
+    let _url = `/scorecards/users/${user_id}`;
     const parameters = []
 
     if (options?.pagination) {
@@ -46,8 +46,8 @@ class UserScoreCardManager extends RequestEmitter {
     return response;
   }
 
-  public async fetchOne(user_scorecard_id: string) {
-    const request = await this.getRequest(`/scorecards/${user_scorecard_id}`);
+  public async fetchOne(user_id: string, user_scorecard_id: string) {
+    const request = await this.getRequest(`/scorecards/users/${user_id}${user_scorecard_id}`);
     const response = request as ScorecardInterface.userScoreCardResponse;
 
     return response;

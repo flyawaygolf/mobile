@@ -6,26 +6,12 @@ import { getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../S
 import { useAppDispatch, useAppSelector } from "../../Redux";
 import { Loader } from "../../Other";
 import { addUserScoreCard, initUserScoreCard } from "../../Redux/UserScoreCard/action";
-import { Avatar } from "../../Components/Member";
 import { SettingsContainer, useClient, useTheme } from "../../Components/Container";
 import { Text, Card, Button } from "react-native-paper";
-import { formatDistance, navigationProps } from "../../Services";
+import { navigationProps } from "../../Services";
 import LogoWhite from "../../Components/Elements/Assets/LogoWhite";
 import { useNavigation } from "@react-navigation/native";
 import { colorsInterface } from "../../Components/Container/Theme/Themes";
-
-const getScoreType = (score: number, par: number) => {
-    if (score === 0 || par === 0) return { label: "-", color: "#bdbdbd" };
-    const diff = score - par;
-    if (diff <= -3) return { label: "Albatros", color: "#00bcd4" };
-    if (diff === -2) return { label: "Eagle", color: "#2196f3" };
-    if (diff === -1) return { label: "Birdie", color: "#4caf50" };
-    if (diff === 0) return { label: "Par", color: "#8bc34a" };
-    if (diff === 1) return { label: "Bogey", color: "#ff9800" };
-    if (diff === 2) return { label: "Double", color: "#f44336" };
-    if (diff >= 3) return { label: "Triple+", color: "#d32f2f" };
-    return { label: "-", color: "#bdbdbd" };
-};
 
 const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: number[], colors: colorsInterface) => {
     const scores = holes.map(h => h?.score ?? 0);
@@ -120,7 +106,7 @@ const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: numbe
 
 const ScorecardListScreen = () => {
 
-    const { client } = useClient();
+    const { client, user } = useClient();
     const { t } = useTranslation();
     const { colors } = useTheme();
     const navigation = useNavigation<navigationProps>();
@@ -131,7 +117,7 @@ const ScorecardListScreen = () => {
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
 
     async function getData() {
-        const response = await client.userScoreCards.fetch({ pagination: { pagination_key: pagination_key } });
+        const response = await client.userScoreCards.fetch(user.user_id, { pagination: { pagination_key: pagination_key } });
         setLoader(false)
         if (response.error || !response.data) return;
         if (response.pagination_key) setPaginationKey(response.pagination_key);
@@ -146,7 +132,7 @@ const ScorecardListScreen = () => {
     const bottomHandler = async () => {
         if (loader) return;
         setLoader(true)
-        const response = await client.userScoreCards.fetch({ pagination: { pagination_key: pagination_key } });
+        const response = await client.userScoreCards.fetch(user.user_id, { pagination: { pagination_key: pagination_key } });
         setLoader(false);
         if (response.error || !response.data) return;
         if (response.pagination_key) setPaginationKey(response.pagination_key);

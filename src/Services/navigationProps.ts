@@ -97,6 +97,7 @@ export type ScorecardStackParams = {
     };
     ScorecardSummarizeScreen: {
         fromList?: boolean;
+        user_id: string;
         user_scorecard_id: string;
     };
 }

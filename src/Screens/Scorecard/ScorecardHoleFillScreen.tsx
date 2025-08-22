@@ -9,7 +9,6 @@ import { full_width } from "../../Style/style";
 import { Avatar } from "../../Components/Member";
 import BottomModal from "../../Other/BottomModal";
 
-
 const fairwayOptions = [
     { label: "arrow-left", value: 0, desc: "Miss gauche" },
     { label: "check", value: 1, desc: "Fairway touché" },
@@ -26,7 +25,7 @@ const greenOptions = [
 const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<ScorecardStackParams, "ScorecardHoleFillScreen">) => {
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const { client } = useClient();
+    const { client, user } = useClient();
     const { golf, scorecard, grid, starting_hole } = route.params;
 
     const holesCount = scorecard?.holesCount ?? 18;
@@ -106,6 +105,7 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
         if (request.error) return handleToast(t(`errors.${request?.error?.code}`));
         if (request.data) {
             navigation.navigate("ScorecardSummarizeScreen", {
+                user_id: user.user_id,
                 user_scorecard_id: request.data.user_scorecard_id
             });
         }
