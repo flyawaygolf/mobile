@@ -118,6 +118,7 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
         <SafeBottomContainer>
             <Appbar.Header style={{ width: full_width, borderBottomColor: colors.bg_secondary, borderBottomWidth: 1, marginBottom: 10, paddingLeft: 15 }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Avatar url={client.golfs.avatar(golf.golf_id)} />
                     <View>
                         <Text variant="titleMedium">{golf.name}</Text>

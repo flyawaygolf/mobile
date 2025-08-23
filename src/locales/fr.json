@@ -262,6 +262,13 @@
         "registration_deadline": "Date limite d'inscription"
     },
     "scorecard": {
+        "delete_confirm_title": "Supprimer la carte de score ?",
+        "delete_confirm_text": "Cette action est irréversible. Êtes-vous sûr de vouloir supprimer cette carte de score ?",
+        "delete_confirm_yes": "Oui, supprimer",
+        "delete_confirm_no": "Annuler",
+        "delete": "Supprimer la carte de score",
+        "final_score": "Score final",
+        "save_card": "Enregistrer la carte",
         "date": "Date",
         "stats": "Stats",
         "players": "Joueurs",

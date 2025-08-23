@@ -262,6 +262,13 @@
         "registration_deadline": "Registration deadline"
     },
     "scorecard": {
+        "delete_confirm_title": "Delete scorecard?",
+        "delete_confirm_text": "This action is irreversible. Are you sure you want to delete this scorecard?",
+        "delete_confirm_yes": "Yes, delete",
+        "delete_confirm_no": "Cancel",
+        "delete": "Delete this scorecard",
+        "final_score": "Final score",
+        "save_card": "Save card",
         "date": "Date",
         "stats": "Stats",
         "players": "Players",

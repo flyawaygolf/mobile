@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
-import { Text, Appbar, Card, Icon } from "react-native-paper";
+import { Text, Appbar, Card, Icon, Button, Dialog, Portal } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { handleToast, navigationProps, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
 import { ScrollView, View, ImageBackground, StyleSheet } from "react-native";
@@ -127,6 +127,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
     const { user_scorecard_id, fromList, user_id } = route.params;
 
     const [userScoreCard, setUserScoreCard] = useState<getUserScoreCardInterface | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     useEffect(() => {
         if (user_scorecard_id) {
@@ -224,6 +225,17 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
             params: params
         });
     }
+
+    const deleteScorecard = async () => {
+        setShowDeleteModal(false);
+        const request = await client.userScoreCards.delete(user_scorecard_id);
+        if (request.error) return handleToast(t(`errors.${request.error.code}`));
+        if (request.data) {
+            navigation.navigate("ScorecardStack", {
+                screen: "ScorecardListScreen"
+            });
+        }
+    };
 
     return (
         <SafeBottomContainer>
@@ -585,7 +597,40 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                         )}
                     </View>
                 </Card>
+                {/* Bouton supprimer */}
+                <Button
+                    mode="contained"
+                    buttonColor={colors.text_muted}
+                    icon={"trash-can"}
+                    onPress={() => setShowDeleteModal(true)}
+                >
+                    {t("scorecard.delete")}
+                </Button>
             </ScrollView>
+            <Portal>
+                <Dialog visible={showDeleteModal} onDismiss={() => setShowDeleteModal(false)}>
+                    <Dialog.Title>{t("scorecard.delete_confirm_title")}</Dialog.Title>
+                    <Dialog.Content>
+                        <Text>
+                            {t("scorecard.delete_confirm_text")}
+                        </Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button
+                            onPress={() => deleteScorecard()}
+                            textColor={colors.color_red}
+                            icon="trash-can"
+                        >
+                            {t("scorecard.delete_confirm_yes")}
+                        </Button>
+                        <Button
+                            onPress={() => setShowDeleteModal(false)}
+                        >
+                            {t("scorecard.delete_confirm_no")}
+                        </Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
         </SafeBottomContainer>
     );
 };
