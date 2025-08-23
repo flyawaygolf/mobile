@@ -24,29 +24,45 @@ const StatsCarousel: React.FC<StatsCarouselProps> = ({
     const { t } = useTranslation();
     const { colors } = useTheme();
 
-    // Calculs
-    const scores = holes.map(h => h.score ?? 0);
-    const parArray = grid_info?.par ?? [];
-    const totalScore = scores.reduce((sum, val) => sum + val, 0);
-    const totalPar = parArray.reduce((sum, val) => sum + val, 0);
-    const scoreDiff = totalScore - totalPar;
+    // Détection des trous renseignés (score non null ou undefined)
+    const playedHoles = holes.filter(h => typeof h.score === "number");
+    const playedCount = playedHoles.length;
 
-    const putts = holes.reduce((sum, h) => sum + (h.putts ?? 0), 0);
-    const penalties = holes.reduce((sum, h) => sum + (h.penalty ?? 0), 0);
-    const chips = holes.reduce((sum, h) => sum + (h.chips ?? 0), 0);
-    const sandSaves = holes.filter(h => h.sand === true).length;
+    // Calcul du score total
+    // Si tous les trous joués sont renseignés, on calcule le total, sinon on prend le score_total fourni
+    // On suppose que le score_total est passé dans grid_info ou ailleurs, à adapter selon votre structure
+    const scores = playedHoles.map(h => h.score ?? 0);
+    const parArray = grid_info?.par ?? [];
+    const totalPar = parArray.slice(0, playedCount).reduce((sum, val) => sum + val, 0);
+
+    // Si tous les trous joués sont renseignés, on calcule le totalScore, sinon on prend le score_total fourni
+    let totalScore: number | undefined = undefined;
+    if (playedCount === holes.length && playedCount > 0) {
+        totalScore = scores.reduce((sum, val) => sum + val, 0);
+    } else if (typeof (holes as any).score_total === "number") {
+        totalScore = (holes as any).score_total;
+    } else {
+        totalScore = scores.reduce((sum, val) => sum + val, 0);
+    }
+    const scoreDiff = (totalScore ?? 0) - totalPar;
+
+    // Calculs adaptés sur les trous joués
+    const putts = playedHoles.reduce((sum, h) => sum + (h.putts ?? 0), 0);
+    const penalties = playedHoles.reduce((sum, h) => sum + (h.penalty ?? 0), 0);
+    const chips = playedHoles.reduce((sum, h) => sum + (h.chips ?? 0), 0);
+    const sandSaves = playedHoles.filter(h => h.sand === true).length;
 
     // Putts
-    const puttsArr = holes.map(h => h.putts ?? h.puts ?? 0);
+    const puttsArr = playedHoles.map(h => h.putts ?? h.puts ?? 0);
     const puttsAvg = puttsArr.length > 0 ? (puttsArr.reduce((sum, v) => sum + v, 0) / puttsArr.length).toFixed(1) : "-";
 
     // GIR %
-    const girCount = holes.filter((h, i) => h.green === 1 && (h.score ?? 0) <= (parArray[i] ?? 0)).length;
-    const girPct = holes.length > 0 ? Math.round((girCount / holes.length) * 100) : 0;
+    const girCount = playedHoles.filter((h, i) => h.green === 1 && (h.score ?? 0) <= (parArray[i] ?? 0)).length;
+    const girPct = playedCount > 0 ? Math.round((girCount / playedCount) * 100) : 0;
 
     // Fairways %
-    const fairwayCount = holes.filter(h => h.fairway === 1).length;
-    const fairwayTotal = holes.filter((_, i) => parArray[i] === 4 || parArray[i] === 5).length;
+    const fairwayCount = playedHoles.filter(h => h.fairway === 1).length;
+    const fairwayTotal = playedHoles.filter((_, i) => parArray[i] === 4 || parArray[i] === 5).length;
     const fairwaysPct = fairwayTotal > 0 ? Math.round((fairwayCount / fairwayTotal) * 100) : 0;
 
     // Score par type
@@ -65,7 +81,7 @@ const StatsCarousel: React.FC<StatsCarouselProps> = ({
 
     // Score / Par (Par 3, 4, 5)
     let scorePar = { par3: 0, par4: 0, par5: 0, par6: 0 };
-    holes.forEach((h, i) => {
+    playedHoles.forEach((h, i) => {
         const par = parArray[i] ?? 0;
         if (par === 3) scorePar.par3 += h.score ?? 0;
         if (par === 4) scorePar.par4 += h.score ?? 0;

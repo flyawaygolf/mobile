@@ -32,6 +32,18 @@ export const handleToast = (text: string) => Toast.show({ text1: text });
 
 export const messageFormatDate = (date?: Date | string | number) => new formatDate(date);
 
+export const getContrastColor = (hex: string) => {
+        // Remove hash if present
+        hex = hex.replace(/^#/, "");
+        // Parse r,g,b
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+        // Calculate luminance
+        let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance > 0.7 ? "#222" : "#fff";
+    }
+
 /**
  *
  * @param distance

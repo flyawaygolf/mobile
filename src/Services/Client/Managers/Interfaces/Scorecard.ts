@@ -41,6 +41,8 @@ export interface HoleScorecardSchemaInterface {
     penalty?: number;
     sand?: boolean;
     notes?: string;
+    /** Score total renseigné si la carte n'est pas complète */
+    score_total?: number;
 }
 
 export interface formatTeeboxInterface {

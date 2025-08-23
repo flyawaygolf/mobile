@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
 import { Text, Appbar, Card, Icon, Button, Dialog, Portal } from "react-native-paper";
 import { useEffect, useState } from "react";
-import { handleToast, navigationProps, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { getContrastColor, handleToast, navigationProps, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
 import { ScrollView, View, ImageBackground, StyleSheet } from "react-native";
 import { full_width } from "../../Style/style";
 import { Avatar } from "../../Components/Member";
@@ -161,9 +161,39 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
     );
 
     const { golf_info, grid_info, teebox_info, holes, name, playing_date, total_score, players } = userScoreCard;
-    const totalPar = grid_info?.par?.reduce((sum, val) => sum + val, 0);
-    const scoreArr = holes ?? [];
-    const totalScore = total_score ?? scoreArr.reduce((sum, h) => (sum ?? 0) + (h.score ?? 0), 0);
+    const parArray = grid_info?.par ?? [];
+    // Correction : s'assurer que scoreArr est toujours un tableau
+    const scoreArr: HoleScorecardSchemaInterface[] = Array.isArray(holes) ? holes : [];
+    // Détection du nombre de trous réellement joués
+    const filledScores = scoreArr.filter(h => typeof h.score === "number" && h.score > 0) ?? [];
+    const holesPlayed = filledScores.length;
+
+    // Si la carte n'est pas totalement remplie, on prend le score_total renseigné
+    // Sinon, on le calcule sur les trous joués
+    let totalScore: number;
+    if (holesPlayed === 0) {
+        totalScore = total_score ?? 0;
+    } else if (holesPlayed < holes.length) {
+        // Score partiel (ex: 9 trous)
+        totalScore = filledScores.reduce((sum, h) => sum + (h.score ?? 0), 0);
+    } else {
+        // Score complet
+        totalScore = holes.reduce((sum, h) => sum + (h.score ?? 0), 0);
+    }
+
+    // Calcul du par correspondant aux trous joués
+    let totalPar: number;
+    if (holesPlayed === 0) {
+        totalPar = parArray.reduce((sum, val) => sum + val, 0);
+    } else if (holesPlayed < holes.length) {
+        // Prend le par des trous joués
+        const playedIndexes = holes
+            .map((h, i) => (typeof h.score === "number" && h.score > 0 ? i : -1))
+            .filter(i => i !== -1);
+        totalPar = playedIndexes.reduce((sum, idx) => sum + (parArray[idx] ?? 0), 0);
+    } else {
+        totalPar = parArray.reduce((sum, val) => sum + val, 0);
+    }
 
     // Nouveau leaderboard
     let leaderboard: any[] = [];
@@ -187,16 +217,21 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
 
     // Calculateur de HCP
     let hcpCalc = null;
-    if (teebox_info?.slope && teebox_info?.rating && totalPar) {
+    // Utiliser le score et le par des trous joués (partiel ou complet)
+    if (teebox_info?.slope && teebox_info?.rating && totalPar && holesPlayed > 0) {
         // Formule WHS simplifiée
         const score = totalScore;
-        const par = totalPar;
+        // Pour le rating, si la partie est partielle, on peut ajuster le rating proportionnellement
+        // (optionnel, dépend de la logique métier, ici on fait un simple ratio)
+        let rating = teebox_info.rating;
+        if (holesPlayed < holes.length && holes.length > 0) {
+            rating = Math.round((teebox_info.rating / holes.length) * holesPlayed * 10) / 10;
+        }
         const slope = teebox_info.slope;
-        const rating = teebox_info.rating;
         // HCP = (Score - Rating) * 113 / Slope
         const hcpValue = ((score - rating) * 113) / slope;
         hcpCalc = {
-            score, par, slope, rating,
+            score, par: totalPar, slope, rating,
             value: Math.round(hcpValue * 10) / 10
         };
     }
@@ -476,7 +511,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                         marginRight: 8,
                                     }}>
                                         <Text style={{
-                                            color: "#fff",
+                                            color: getContrastColor(teeboxColor),
                                             fontWeight: "bold",
                                             fontSize: 15,
                                         }}>{teebox.name?.charAt(0) ?? "-"}</Text>

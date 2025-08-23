@@ -141,12 +141,35 @@ const ScorecardListScreen = () => {
     }
 
     const renderItem = ({ item }: { item: getUserScoreCardInterface }) => {
-        const scores = item.holes?.map(h => h?.score ?? 0) ?? [];
         const parArray = item.grid_info?.par ?? [];
-        const totalScore = scores.reduce((sum, val) => sum + val, 0);
-        const totalPar = parArray.reduce((sum, val) => sum + val, 0);
+        // Détection des trous réellement joués
+        const filledScores = item.holes?.filter(h => typeof h.score === "number" && h.score > 0) ?? [];
+        const holesPlayed = filledScores.length;
 
-        const { format, game_mode, user_scorecard_id, golf_info, grid_info, teebox_info, holes, playing_date, name } = item;
+        // Calcul du score total
+        let totalScore: number;
+        if (holesPlayed === 0) {
+            totalScore = item.total_score ?? 0;
+        } else if (holesPlayed < item.holes.length) {
+            totalScore = filledScores.reduce((sum, h) => sum + (h.score ?? 0), 0);
+        } else {
+            totalScore = item.holes.reduce((sum, h) => sum + (h.score ?? 0), 0);
+        }
+
+        // Calcul du par correspondant aux trous joués
+        let totalPar: number;
+        if (holesPlayed === 0) {
+            totalPar = parArray.reduce((sum, val) => sum + val, 0);
+        } else if (holesPlayed < item.holes.length) {
+            const playedIndexes = item.holes
+                .map((h, i) => (typeof h.score === "number" && h.score > 0 ? i : -1))
+                .filter(i => i !== -1);
+            totalPar = playedIndexes.reduce((sum, idx) => sum + (parArray[idx] ?? 0), 0);
+        } else {
+            totalPar = parArray.reduce((sum, val) => sum + val, 0);
+        }
+
+        const { format, game_mode, user_scorecard_id, golf_info, teebox_info, playing_date, name } = item;
 
         const navigateToSummarize = () => {
             navigation.navigate("ScorecardStack", {
@@ -255,7 +278,7 @@ const ScorecardListScreen = () => {
                     </View>
                 </ImageBackground>
                 <View style={{ padding: 16, paddingTop: 10 }}>
-                    {renderScoreTable(holes, grid_info?.par ?? [], colors)}
+                    {renderScoreTable(item.holes, item.grid_info?.par ?? [], colors)}
                     <Button
                         mode="outlined"
                         style={{ marginTop: 10, borderRadius: 10, alignSelf: "flex-end" }}
