@@ -2,9 +2,9 @@ import { CompetitionFormatEnum } from "./Events";
 import { requestResponseInterface, successResponse, userInfo } from "./Global";
 
 export interface TeeboxesColor {
-  id: number;
-  name: string;
-  hexadecimalRgbCode: string;
+    id: number;
+    name: string;
+    hexadecimalRgbCode: string;
 }
 
 export enum GameModeEnum {
@@ -43,7 +43,7 @@ export interface HoleScorecardSchemaInterface {
     notes?: string;
 }
 
-interface formatTeeboxInterface {
+export interface formatTeeboxInterface {
     teebox_id: string;
     name?: string;
     slope?: number;
@@ -52,7 +52,7 @@ interface formatTeeboxInterface {
     color?: TeeboxesColor;
 }
 
-interface formatPlayersScoreCardReturnInterface {
+export interface formatPlayersScoreCardReturnInterface {
     user_info: {
         user_id: string;
         username: string;
@@ -106,44 +106,42 @@ export type userScoreCardResponse = requestResponseInterface<getUserScoreCardInt
 export type multipleUserScoreCardsResponse = requestResponseInterface<getUserScoreCardInterface[]>;
 
 export interface scorecardCreatorParams {
-  /** Identifiant unique de la scorecard de référence/template */
-  scorecard_id: string;
 
-  /** Identifiant du golf lié */
-  golf_id: string;
+    /** Identifiant du teebox utilisé */
+    teebox_id: string,
 
-  /** (Optionnel) Lien avec un event/compétition */
-  event_id?: string;
+    /** (Optionnel) Lien avec un event/compétition */
+    event_id?: string;
 
-  /** Nom personnalisé de la carte de score */
-  name?: string;
+    /** Nom personnalisé de la carte de score */
+    name?: string;
 
-  /** Format du jeu (Stroke play, Match play, etc.) */
-  format?: CompetitionFormatEnum;
+    /** Format du jeu (Stroke play, Match play, etc.) */
+    format?: CompetitionFormatEnum;
 
-  /** Mode de jeu (Public, Privé, Tournoi, etc.) */
-  game_mode?: GameModeEnum;
+    /** Mode de jeu (Public, Privé, Tournoi, etc.) */
+    game_mode?: GameModeEnum;
 
-  /** Trou de départ (par ex. 1 ou 10) */
-  starting_hole?: number;
+    /** Trou de départ (par ex. 1 ou 10) */
+    starting_hole?: number;
 
-  /** Date de la partie */
-  playing_date?: Date;
+    /** Date de la partie */
+    playing_date?: Date;
 
-  /** Statut de la carte (Draft ou Completed) */
-  status?: ScoreCardStatus;
+    /** Statut de la carte (Draft ou Completed) */
+    status?: ScoreCardStatus;
 
-  /** Joueurs associés à la partie */
-  players?: {
-    user_id: string;
-    handicap: number;
-  }[];
+    /** Joueurs associés à la partie */
+    players?: {
+        user_id: string;
+        handicap: number;
+    }[];
 
-  /** Score total (optionnel, peut aussi être calculé après trous) */
-  total_score?: number;
+    /** Score total (optionnel, peut aussi être calculé après trous) */
+    total_score?: number;
 
-  /** Résultats trou par trou */
-  holes?: HoleScorecardSchemaInterface[];
+    /** Résultats trou par trou */
+    holes?: HoleScorecardSchemaInterface[];
 }
 
 export type scorecardCreatorResponse = requestResponseInterface<{
@@ -151,35 +149,35 @@ export type scorecardCreatorResponse = requestResponseInterface<{
 }>
 
 export interface scorecardUpdateParams {
-      /** Nom de la carte de score */
-  name?: string;
+    /** Nom de la carte de score */
+    name?: string;
 
-  /** Format du jeu (Stroke play, Match play, etc.) */
-  format?: CompetitionFormatEnum;
+    /** Format du jeu (Stroke play, Match play, etc.) */
+    format?: CompetitionFormatEnum;
 
-  /** Mode de jeu (Public, Privé, Tournoi, etc.) */
-  game_mode?: GameModeEnum;
+    /** Mode de jeu (Public, Privé, Tournoi, etc.) */
+    game_mode?: GameModeEnum;
 
-  /** Trou de départ */
-  starting_hole?: number;
+    /** Trou de départ */
+    starting_hole?: number;
 
-  /** Date de la partie */
-  playing_date?: Date;
+    /** Date de la partie */
+    playing_date?: Date;
 
-  /** Statut de la carte (Draft, Completed, etc.) */
-  status?: ScoreCardStatus;
+    /** Statut de la carte (Draft, Completed, etc.) */
+    status?: ScoreCardStatus;
 
-  /** Joueurs associés */
-  players?: {
-    user_id: string;
-    handicap: number;
-  }[];
+    /** Joueurs associés */
+    players?: {
+        user_id: string;
+        handicap: number;
+    }[];
 
-  /** Score total */
-  total_score?: number;
+    /** Score total */
+    total_score?: number;
 
-  /** Résultats trou par trou */
-  holes?: HoleScorecardSchemaInterface[];
+    /** Résultats trou par trou */
+    holes?: HoleScorecardSchemaInterface[];
 }
 
 export type scorecardModificationResponse = successResponse

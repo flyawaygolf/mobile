@@ -47,7 +47,7 @@ class UserScoreCardManager extends RequestEmitter {
   }
 
   public async fetchOne(user_id: string, user_scorecard_id: string) {
-    const request = await this.getRequest(`/scorecards/users/${user_id}${user_scorecard_id}`);
+    const request = await this.getRequest(`/scorecards/users/${user_id}/${user_scorecard_id}`);
     const response = request as ScorecardInterface.userScoreCardResponse;
 
     return response;

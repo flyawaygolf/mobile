@@ -20,6 +20,7 @@ const defaultInfo: SinglePostInfoType = {
         username: "",
         is_private: false,
         avatar: "",
+        avatarURL: "",
         flags: 0,
         description: "",
         certified: false,

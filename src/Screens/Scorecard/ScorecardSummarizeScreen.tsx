@@ -7,25 +7,16 @@ import { ScrollView, View, ImageBackground, StyleSheet } from "react-native";
 import { full_width } from "../../Style/style";
 import { Avatar } from "../../Components/Member";
 import { useNavigation } from "@react-navigation/native";
-import { getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
+import { GameModeEnum, getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
 import { displayHCP } from "../../Services/handicapNumbers";
 import { ShrinkEffect } from "../../Components/Effects";
 import LogoWhite from "../../Components/Elements/Assets/LogoWhite";
 import dayjs from "dayjs";
 import { colorsInterface } from "../../Components/Container/Theme/Themes";
-
-const getScoreType = (score: number, par: number) => {
-    if (score === 0 || par === 0) return { label: "-", color: "#bdbdbd" };
-    const diff = score - par;
-    if (diff <= -3) return { label: "Albatros", color: "#00bcd4" };
-    if (diff === -2) return { label: "Eagle", color: "#2196f3" };
-    if (diff === -1) return { label: "Birdie", color: "#4caf50" };
-    if (diff === 0) return { label: "Par", color: "#8bc34a" };
-    if (diff === 1) return { label: "Bogey", color: "#ff9800" };
-    if (diff === 2) return { label: "Double", color: "#f44336" };
-    if (diff >= 3) return { label: "Triple+", color: "#d32f2f" };
-    return { label: "-", color: "#bdbdbd" };
-};
+import { Loader } from "../../Other";
+import { scoreCardInterface, scorecardTeeboxInterface } from "../../Services/Client/Managers/Interfaces/Golf";
+import { CompetitionFormatEnum } from "../../Services/Client/Managers/Interfaces/Events";
+import StatsCarousel from "./StatsCarousel";
 
 const getScoreToPar = (score: number, par: number) => {
     if (!score || !par) return "-";
@@ -131,7 +122,7 @@ const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: numbe
 const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStackParams, "ScorecardSummarizeScreen">) => {
     const { t } = useTranslation();
     const { colors } = useTheme();
-    const { client, user } = useClient();
+    const { client } = useClient();
     const navigation = useNavigation<navigationProps>();
     const { user_scorecard_id, fromList, user_id } = route.params;
 
@@ -146,36 +137,32 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
         }
     }, [user_scorecard_id, user_id]);
 
-    if (!userScoreCard) return <SafeBottomContainer><Text style={{ padding: 20 }}>{t("commons.loading")}</Text></SafeBottomContainer>;
+    if (!userScoreCard) return (
+        <SafeBottomContainer>
+            <Appbar.Header style={{
+                width: full_width,
+                borderBottomColor: colors.bg_secondary,
+                borderBottomWidth: 1,
+                marginBottom: 10,
+                paddingRight: 15,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+            }}>
+                <Appbar.Action icon={fromList ? "arrow-left" : "home"} onPress={() => fromList ? navigation.goBack() : navigation.navigate("BottomNavigation", {
+                    screen: "ScorecardHomeScreen"
+                })} />
+            </Appbar.Header>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", flex: 1 }}>
+                <Loader />
+            </View>
+        </SafeBottomContainer>
+    );
 
     const { golf_info, grid_info, teebox_info, holes, name, playing_date, total_score, players } = userScoreCard;
     const totalPar = grid_info?.par?.reduce((sum, val) => sum + val, 0);
     const scoreArr = holes ?? [];
     const totalScore = total_score ?? scoreArr.reduce((sum, h) => (sum ?? 0) + (h.score ?? 0), 0);
-
-    // Statistiques simples
-    const stats = {
-        birdies: scoreArr.filter((h, i) => getScoreType(h.score ?? 0, grid_info?.par?.[i] ?? 0).label === "Birdie").length,
-        eagles: scoreArr.filter((h, i) => getScoreType(h.score ?? 0, grid_info?.par?.[i] ?? 0).label === "Eagle").length,
-        pars: scoreArr.filter((h, i) => getScoreType(h.score ?? 0, grid_info?.par?.[i] ?? 0).label === "Par").length,
-        bogeys: scoreArr.filter((h, i) => getScoreType(h.score ?? 0, grid_info?.par?.[i] ?? 0).label === "Bogey").length,
-        doubles: scoreArr.filter((h, i) => getScoreType(h.score ?? 0, grid_info?.par?.[i] ?? 0).label === "Double").length,
-        triples: scoreArr.filter((h, i) => getScoreType(h.score ?? 0, grid_info?.par?.[i] ?? 0).label === "Triple+").length,
-    };
-
-    // Statistiques avancées
-    const advancedStats = {
-        putts: scoreArr.reduce((sum, h) => sum + (h.putts ?? h.puts ?? 0), 0),
-        penalties: scoreArr.reduce((sum, h) => sum + (h.penalty ?? 0), 0),
-        chips: scoreArr.reduce((sum, h) => sum + (h.chips ?? 0), 0),
-        sandSaves: scoreArr.filter(h => h.sand === true).length,
-        fairwaysHit: scoreArr.filter(h => h.fairway === 1).length,
-        fairwaysTotal: scoreArr.filter((_, i) => grid_info?.par?.[i] === 4 || grid_info?.par?.[i] === 5).length,
-        greensInReg: scoreArr.filter((h, i) => {
-            // Green hit si h.green === 1 ET score <= par
-            return h.green === 1 && (h.score ?? 0) <= (grid_info?.par?.[i] ?? 0);
-        }).length,
-    };
 
     // Nouveau leaderboard
     let leaderboard: any[] = [];
@@ -211,6 +198,31 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
             score, par, slope, rating,
             value: Math.round(hcpValue * 10) / 10
         };
+    }
+
+    const navigateToScorecard = (params: {
+        golf: {
+            name: string;
+            golf_id: string;
+        },
+        scorecard: scoreCardInterface,
+        grid: {
+            grid_id: string;
+            par: number[];
+            handicap: number[];
+        },
+        teebox: scorecardTeeboxInterface,
+        game_mode: GameModeEnum,
+        format: CompetitionFormatEnum,
+        holes: HoleScorecardSchemaInterface[],
+        playing_date: Date,
+        starting_hole: number,
+        name: string,
+    }) => {
+        navigation.navigate("ScorecardStack", {
+            screen: "ScorecardFullScreen",
+            params: params
+        });
     }
 
     return (
@@ -301,7 +313,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                     {golf_info?.name ?? name}
                                 </Text>
                                 <Text style={{ color: "#fff", fontSize: 13, marginTop: 2 }}>
-                                    {teebox_info?.distances.length ?? 18} TROUS  PAR: {totalPar}  DÉPART: {teebox_info?.color?.name ?? teebox_info?.name ?? "-"}{teebox_info?.distances ? ` (${teebox_info.distances.reduce((sum: number, val: number) => sum + val, 0)}m)` : ""}
+                                    {teebox_info?.distances.length ?? 18} {t("scorecard.holes").toLocaleUpperCase()} • {t("scorecard.par").toLocaleUpperCase()}: {totalPar} • {t("scorecard.teebox").toLocaleUpperCase()}: {teebox_info?.color?.name ?? teebox_info?.name ?? "-"}{teebox_info?.distances ? ` (${teebox_info.distances.reduce((sum: number, val: number) => sum + val, 0)}m)` : ""}
                                 </Text>
                             </View>
                             <View style={{ alignItems: "flex-end", minWidth: 70 }}>
@@ -353,8 +365,8 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", padding: 16, paddingBottom: 6 }}>
                         <View style={{ flexDirection: "row", alignItems: "center", marginRight: 10, gap: 5 }}>
-                            <Icon source="trophy" color="#f39c12" size={20} />
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>Leaderboard</Text>
+                            <Icon source="trophy" color={colors.color_orange} size={20} />
+                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{t("scorecard.leaderboard")}</Text>
                         </View>
                     </View>
                     <View style={{
@@ -365,14 +377,14 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                         paddingBottom: 6
                     }}>
                         <Text style={{ width: 28, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>#</Text>
-                        <Text style={{ flex: 2, color: colors.text_muted, fontWeight: "bold" }}>JOUEUR</Text>
-                        <Text style={{ width: 60, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>DÉPART</Text>
-                        <Text style={{ width: 60, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>SCORE</Text>
-                        <Text style={{ width: 50, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>TO PAR</Text>
+                        <Text style={{ flex: 2, color: colors.text_muted, fontWeight: "bold" }}>{t("scorecard.player")}</Text>
+                        <Text style={{ width: 60, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.teebox")}</Text>
+                        <Text style={{ width: 60, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.score")}</Text>
+                        <Text style={{ width: 50, color: colors.text_muted, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.to_par")}</Text>
                     </View>
                     <View style={{ flexDirection: "column" }}>
                         {leaderboard.length === 0 && (
-                            <Text style={{ color: colors.text_muted, fontStyle: "italic", padding: 16 }}>Aucun joueur dans la partie</Text>
+                            <Text style={{ color: colors.text_muted, fontStyle: "italic", padding: 16 }}>{t("scorecard.no_players")}</Text>
                         )}
                         {leaderboard.map((p, idx) => {
                             const user = p.user_info || {};
@@ -381,7 +393,26 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                             const score = typeof p.score === "number" ? p.score : sumScore(p.scorecard_info?.holes ?? []);
                             const scoreToPar = getScoreToPar(score, totalPar ?? 0);
                             return (
-                                <View
+                                <ShrinkEffect
+                                    onPress={() => navigateToScorecard({
+                                        golf: golf_info ?? {
+                                            name: "",
+                                            golf_id: ""
+                                        },
+                                        format: p.scorecard_info?.format,
+                                        game_mode: p.scorecard_info?.game_mode,
+                                        grid: grid_info ?? {
+                                            grid_id: "",
+                                            par: [],
+                                            handicap: []
+                                        },
+                                        holes: p.scorecard_info?.holes,
+                                        name: userScoreCard.name ?? "",
+                                        playing_date: playing_date ?? new Date(),
+                                        starting_hole: p.scorecard_info?.starting_hole,
+                                        scorecard: p.scorecard_info,
+                                        teebox: teebox,
+                                    })}
                                     key={user.user_id ?? idx}
                                     style={{
                                         flexDirection: "row",
@@ -451,184 +482,20 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                         fontSize: 16,
                                         textAlign: "center",
                                     }}>{scoreToPar}</Text>
-                                </View>
+                                </ShrinkEffect>
                             );
                         })}
                     </View>
                 </Card>
 
-                {/* 3. Statistiques de la carte de score */}
-                <Card style={{
-                    marginBottom: 18,
-                    borderRadius: 18,
-                    elevation: 1,
-                    backgroundColor: colors.bg_secondary,
-                    padding: 0,
-                    overflow: "hidden",
-                }}>
-                    <View style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        padding: 18
-                    }}>
-                        <Icon source="chart-bar" color={colors.color_blue} size={22} />
-                        <Text style={{ fontWeight: "bold", fontSize: 18, marginLeft: 8 }}>Statistiques</Text>
-                    </View>
-                    <View style={{
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "space-between",
-                        padding: 18,
-                        gap: 10,
-                    }}>
-                        <View style={{
-                            backgroundColor: "#e3f2fd",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#2196f3" size={20} />
-                            <Text style={{ color: "#2196f3", fontWeight: "bold", marginTop: 4 }}>Birdies</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{stats.birdies}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#e8f5e9",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#4caf50" size={20} />
-                            <Text style={{ color: "#4caf50", fontWeight: "bold", marginTop: 4 }}>Pars</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{stats.pars}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#fff3e0",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#ff9800" size={20} />
-                            <Text style={{ color: "#ff9800", fontWeight: "bold", marginTop: 4 }}>Bogeys</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{stats.bogeys}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#ffebee",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#f44336" size={20} />
-                            <Text style={{ color: "#f44336", fontWeight: "bold", marginTop: 4 }}>Doubles</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{stats.doubles}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f3e5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#8e24aa" size={20} />
-                            <Text style={{ color: "#8e24aa", fontWeight: "bold", marginTop: 4 }}>Triples+</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{stats.triples}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#e0f7fa",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#00bcd4" size={20} />
-                            <Text style={{ color: "#00bcd4", fontWeight: "bold", marginTop: 4 }}>Eagles</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{stats.eagles}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f5f5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#222" size={20} />
-                            <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>Putts</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{advancedStats.putts}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f5f5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#222" size={20} />
-                            <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>Pénalités</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{advancedStats.penalties}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f5f5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#222" size={20} />
-                            <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>Chips</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{advancedStats.chips}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f5f5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#222" size={20} />
-                            <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>Sand saves</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{advancedStats.sandSaves}</Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f5f5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#222" size={20} />
-                            <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>Fairways touchés</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                                {advancedStats.fairwaysHit} / {advancedStats.fairwaysTotal}
-                            </Text>
-                        </View>
-                        <View style={{
-                            backgroundColor: "#f5f5f5",
-                            borderRadius: 12,
-                            padding: 12,
-                            flexBasis: "48%",
-                            marginBottom: 10,
-                            alignItems: "center",
-                        }}>
-                            <Icon source="golf" color="#222" size={20} />
-                            <Text style={{ color: "#222", fontWeight: "bold", marginTop: 4 }}>Greens en régulation</Text>
-                            <Text style={{ fontWeight: "bold", fontSize: 18 }}>{advancedStats.greensInReg}</Text>
-                        </View>
-                    </View>
-                </Card>
+                <StatsCarousel
+                    holes={scoreArr}
+                    grid_info={grid_info ?? {
+                        grid_id: "",
+                        par: [],
+                        handicap: []
+                    }}
+                />
 
                 {/* 4. Calculateur de HCP */}
                 <Card style={{
@@ -645,7 +512,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                         padding: 18
                     }}>
                         <Icon source="calculator" color={colors.color_blue} size={22} />
-                        <Text style={{ fontWeight: "bold", fontSize: 18, marginLeft: 8 }}>Calculateur de HCP</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 18, marginLeft: 8 }}>{t("scorecard.hcp_calculator")}</Text>
                     </View>
                     <View style={{ padding: 18, alignItems: "center" }}>
                         {hcpCalc ? (
@@ -660,8 +527,8 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                         flexDirection: "column",
                                         alignItems: "center",
                                     }}>
-                                        <Text style={{ color: colors.color_blue, fontWeight: "bold" }}>Score</Text>
-                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: "#222" }}>{hcpCalc.score}</Text>
+                                        <Text style={{ color: colors.color_blue, fontWeight: "bold" }}>{t("scorecard.score")}</Text>
+                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: colors.color_black }}>{hcpCalc.score}</Text>
                                     </View>
                                     <View style={{
                                         backgroundColor: "#f3e5f5",
@@ -672,8 +539,8 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                         flexDirection: "column",
                                         alignItems: "center",
                                     }}>
-                                        <Text style={{ color: "#8e24aa", fontWeight: "bold" }}>Slope</Text>
-                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: "#222" }}>{hcpCalc.slope}</Text>
+                                        <Text style={{ color: colors.color_purple, fontWeight: "bold" }}>{t("scorecard.slope")}</Text>
+                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: colors.color_black }}>{hcpCalc.slope}</Text>
                                     </View>
                                     <View style={{
                                         backgroundColor: "#fff3e0",
@@ -684,8 +551,8 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                         flexDirection: "column",
                                         alignItems: "center",
                                     }}>
-                                        <Text style={{ color: "#ff9800", fontWeight: "bold" }}>Rating</Text>
-                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: "#222" }}>{hcpCalc.rating}</Text>
+                                        <Text style={{ color: colors.color_orange, fontWeight: "bold" }}>{t("scorecard.rating")}</Text>
+                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: colors.color_black }}>{hcpCalc.rating}</Text>
                                     </View>
                                     <View style={{
                                         backgroundColor: "#e8f5e9",
@@ -695,25 +562,25 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                         flexDirection: "column",
                                         alignItems: "center",
                                     }}>
-                                        <Text style={{ color: "#4caf50", fontWeight: "bold" }}>Par</Text>
-                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: "#222" }}>{hcpCalc.par}</Text>
+                                        <Text style={{ color: colors.color_green, fontWeight: "bold" }}>{t("scorecard.par")}</Text>
+                                        <Text style={{ fontWeight: "bold", fontSize: 16, color: colors.color_black }}>{hcpCalc.par}</Text>
                                     </View>
                                 </View>
                                 <Text style={{
                                     fontSize: 22,
                                     fontWeight: "bold",
-                                    color: "#2e7df6",
+                                    color: colors.color_blue,
                                     marginBottom: 8,
                                 }}>
-                                    Index calculé : {hcpCalc.value}
+                                    {t("scorecard.calculated_index")} : {hcpCalc.value}
                                 </Text>
-                                <Text style={{ color: "#888", fontSize: 13, textAlign: "center" }}>
-                                    Calcul WHS : ((Score - Rating) × 113) / Slope
+                                <Text style={{ color: colors.text_muted, fontSize: 13, textAlign: "center" }}>
+                                    {t("scorecard.calcul_whs")} : (({t("scorecard.score")} - {t("scorecard.rating")}) x 113) / {t("scorecard.slope")}
                                 </Text>
                             </>
                         ) : (
-                            <Text style={{ color: "#888", fontSize: 15, marginBottom: 8 }}>
-                                Slope, rating ou par manquant pour le calcul.
+                            <Text style={{ color: colors.text_muted, fontSize: 15, marginBottom: 8 }}>
+                                {t("scorecard.missing_index_calcul_values")}
                             </Text>
                         )}
                     </View>

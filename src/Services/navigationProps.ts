@@ -84,9 +84,16 @@ export type ScorecardStackParams = {
         name: string,
     };
     ScorecardFullScreen: {
-        golf: golfInterface,
+        golf: {
+            name: string;
+            golf_id: string;
+        },
         scorecard: scoreCardInterface,
-        grid: scorecardGridInterface,
+        grid: {
+            grid_id: string;
+            par: number[];
+            handicap: number[];
+        },
         teebox: scorecardTeeboxInterface,
         game_mode: GameModeEnum,
         format: CompetitionFormatEnum,

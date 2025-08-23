@@ -388,7 +388,7 @@ const MapScreen = () => {
   )), [searchChips, queryFilter, filter, isInputFocused, t, debounceSearch, handleChipPress]);
 
   // Utilitaire pour clusteriser les points (golfs + users)
-  function clusterPoints(points: { latitude: number, longitude: number, type: 'golf' | 'user', data: any }[], region: Region, zoom: number) {
+  function clusterPoints(points: { latitude: number, longitude: number, type: 'golf' | 'user', data: any }[], zoom: number) {
     // Taille de la grille dépend du zoom (plus zoomé = plus petite grille)
     const gridSize = Math.max(0.05, 1 / Math.pow(2, zoom - 8)); // Ajuste selon besoin
 
@@ -473,9 +473,8 @@ const MapScreen = () => {
   ], [golfs, users]);
 
   const clusters = useMemo(() => {
-    if (!searchLocation) return [];
-    return clusterPoints(allPoints, searchLocation, mapZoom);
-  }, [allPoints, searchLocation, mapZoom]);
+    return clusterPoints(allPoints, mapZoom);
+  }, [allPoints, mapZoom]);
 
   type ClusterType = 'golf' | 'user' | 'mixed';
 

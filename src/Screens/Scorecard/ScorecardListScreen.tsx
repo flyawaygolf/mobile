@@ -145,7 +145,6 @@ const ScorecardListScreen = () => {
         const parArray = item.grid_info?.par ?? [];
         const totalScore = scores.reduce((sum, val) => sum + val, 0);
         const totalPar = parArray.reduce((sum, val) => sum + val, 0);
-        const diff = totalScore - totalPar;
 
         const { format, game_mode, user_scorecard_id, golf_info, grid_info, teebox_info, holes, playing_date, name } = item;
 
@@ -154,6 +153,7 @@ const ScorecardListScreen = () => {
                 screen: "ScorecardSummarizeScreen",
                 params: {
                     fromList: true,
+                    user_id: user.user_id,
                     user_scorecard_id: user_scorecard_id
 
                 }

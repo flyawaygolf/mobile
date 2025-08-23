@@ -4,7 +4,7 @@ import { Text, Button, TextInput, Appbar, IconButton, Switch } from "react-nativ
 import { useState } from "react";
 import { handleToast, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from "react-native";
-import { HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
+import { HoleScorecardSchemaInterface, scorecardCreatorParams } from "../../Services/Client/Managers/Interfaces/Scorecard";
 import { full_width } from "../../Style/style";
 import { Avatar } from "../../Components/Member";
 import BottomModal from "../../Other/BottomModal";
@@ -84,9 +84,8 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
     const handleSubmit = async () => {
         const total_score = holesData.reduce((sum, h) => (sum ?? 0) + (h.score ?? 0), 0);
 
-        const params = {
-            scorecard_id: scorecard.scorecard_id,
-            golf_id: golf.golf_id,
+        const params: scorecardCreatorParams = {
+            teebox_id: route.params.teebox.teebox_id,
             name: route.params.name,
             format: route.params.format,
             game_mode: route.params.game_mode,
@@ -95,11 +94,7 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
             holes: holesData,
             total_score,
             // event_id, status, players peuvent être ajoutés si présents dans route.params
-            grid_id: grid.grid_id,
-            teebox_id: route.params.teebox?.teebox_id,
         };
-
-        console.log(JSON.stringify(params, null, 2));
 
         const request = await client.userScoreCards.create(params);
         if (request.error) return handleToast(t(`errors.${request?.error?.code}`));

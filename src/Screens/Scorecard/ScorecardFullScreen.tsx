@@ -7,36 +7,12 @@ import { ScrollView, View, Modal, Dimensions } from "react-native";
 import { full_width } from "../../Style/style";
 import { Avatar } from "../../Components/Member";
 
-const getScoreType = (score: number, par: number) => {
-    if (score === 0 || par === 0) return { label: "-", color: "#bdbdbd" };
-    const diff = score - par;
-    if (diff <= -3) return { label: "Albatros", color: "#00bcd4" };
-    if (diff === -2) return { label: "Eagle", color: "#2196f3" };
-    if (diff === -1) return { label: "Birdie", color: "#4caf50" };
-    if (diff === 0) return { label: "Par", color: "#8bc34a" };
-    if (diff === 1) return { label: "Bogey", color: "#ff9800" };
-    if (diff === 2) return { label: "Double", color: "#f44336" };
-    if (diff >= 3) return { label: "Triple+", color: "#d32f2f" };
-    return { label: "-", color: "#bdbdbd" };
-};
-
 const getFairwayIcon = (fairway?: number) => {
     if (fairway === 1) return "check";
     if (fairway === 0) return "arrow-left";
     if (fairway === 2) return "arrow-right";
     return "minus";
 };
-
-const scoreTypesLegend = [
-    { label: "Albatros", color: "#00bcd4", desc: "Par -3 ou moins" },
-    { label: "Eagle", color: "#2196f3", desc: "Par -2" },
-    { label: "Birdie", color: "#4caf50", desc: "Par -1" },
-    { label: "Par", color: "#8bc34a", desc: "Par" },
-    { label: "Bogey", color: "#ff9800", desc: "Par +1" },
-    { label: "Double", color: "#f44336", desc: "Par +2" },
-    { label: "Triple+", color: "#d32f2f", desc: "Par +3 ou plus" },
-    { label: "-", color: "#bdbdbd", desc: "Non renseigné" },
-];
 
 const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<ScorecardStackParams, "ScorecardFullScreen">) => {
     const { t } = useTranslation();
@@ -52,6 +28,30 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
     const screenWidth = Dimensions.get("window").width - 32; // padding horizontal
     const colCount = 6;
     const colWidth = screenWidth / colCount;
+
+    const getScoreType = (score: number, par: number) => {
+        if (score === 0 || par === 0) return { label: "-", color: "#bdbdbd" };
+        const diff = score - par;
+        if (diff <= -3) return { label: t("scorecard.albatros"), color: "#00bcd4" };
+        if (diff === -2) return { label: t("scorecard.eagle"), color: "#2196f3" };
+        if (diff === -1) return { label: t("scorecard.birdie"), color: "#4caf50" };
+        if (diff === 0) return { label: t("scorecard.par"), color: "#8bc34a" };
+        if (diff === 1) return { label: t("scorecard.bogey"), color: "#ff9800" };
+        if (diff === 2) return { label: t("scorecard.double"), color: "#f44336" };
+        if (diff >= 3) return { label: t("scorecard.triple"), color: "#d32f2f" };
+        return { label: "-", color: "#bdbdbd" };
+    };
+
+    const scoreTypesLegend = [
+        { label: t("scorecard.albatros"), color: "#00bcd4", desc: t("scorecard.albatros_desc") },
+        { label: t("scorecard.eagle"), color: "#2196f3", desc: t("scorecard.eagle_desc") },
+        { label: t("scorecard.birdie"), color: "#4caf50", desc: t("scorecard.birdie_desc") },
+        { label: t("scorecard.par"), color: "#8bc34a", desc: t("scorecard.par") },
+        { label: t("scorecard.bogey"), color: "#ff9800", desc: t("scorecard.bogey_desc") },
+        { label: t("scorecard.double"), color: "#f44336", desc: t("scorecard.double_desc") },
+        { label: t("scorecard.triple"), color: "#d32f2f", desc: t("scorecard.triple_desc") },
+        { label: "-", color: "#bdbdbd", desc: t("scorecard.unknown_desc") },
+    ];
 
     return (
         <SafeBottomContainer>
@@ -96,7 +96,7 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
                 }}>
                     <View style={{ flexDirection: "row", borderBottomWidth: 1, borderBottomColor: colors.bg_secondary, paddingBottom: 6 }}>
                         <Text style={{ width: colWidth, fontWeight: "bold", textAlign: "center" }}>#</Text>
-                        <Text style={{ width: colWidth, fontWeight: "bold", textAlign: "center" }}>Par</Text>
+                        <Text style={{ width: colWidth, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.par")}</Text>
                         <Text style={{ width: colWidth, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.hcp")}</Text>
                         <Text style={{ width: colWidth, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.score")}</Text>
                         <Text style={{ width: colWidth, fontWeight: "bold", textAlign: "center" }}>{t("scorecard.putts")}</Text>
