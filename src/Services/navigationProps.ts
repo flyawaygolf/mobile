@@ -19,7 +19,7 @@ import { PremiumStackScreens } from '../Navigator/PremiumStack';
 import { GuestStackScreens } from '../Navigator/GuestStack';
 import { guildI } from '../Redux/guildList';
 import { fetchGuildResponseSchema } from './Client/Managers/Interfaces/Guild';
-import { GameModeEnum, HoleScorecardSchemaInterface } from './Client/Managers/Interfaces/Scorecard';
+import { GameModeEnum, getUserScoreCardInterface, HoleScorecardSchemaInterface } from './Client/Managers/Interfaces/Scorecard';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -87,6 +87,8 @@ export type ScorecardStackParams = {
         playing_date: Date,
         starting_hole: number,
         name: string,
+        holes?: HoleScorecardSchemaInterface[];
+        user_scorecard_id?: string;
     };
     ScorecardFullScreen: {
         golf: {
@@ -198,6 +200,7 @@ export type RootStackParamList = {
             },
             attached_event?: eventsInterface;
             attached_golf?: golfInterface;
+            attached_user_scorecard?: getUserScoreCardInterface;
         }
     };
     EventStack: {

@@ -24,6 +24,7 @@ import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { usertokenkey } from '../../Services/constante';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
 import DisplayEvent from '../../Components/Posts/Views/Components/DisplayEvent';
+import DisplayUserScoreCard from '../../Components/Scorecards/DisplayUserScoreCard';
 
 export type postOptions = {
   paid: boolean;
@@ -32,7 +33,7 @@ export type postOptions = {
 
 const PostCreatorScreenStack = ({ route: { params } }: any) => {
 
-  const { attached_post, shared_post, initFiles, initContent, attached_event, attached_golf } = params;
+  const { attached_post, shared_post, initFiles, initContent, attached_event, attached_golf, attached_user_scorecard } = params;
   const [content, SetContent] = useState(initContent ?? "");
   const [files, setFiles] = useState<Array<{ size: number, name: string, type: string, uri: string }>>([]);
   const [options, setOptions] = useState<postOptions>({
@@ -58,6 +59,11 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
     else setFiles([initFiles])
   }, [initFiles])
 
+  useEffect(() => {
+    if (!attached_user_scorecard) return;
+    setOptions(prev => ({ ...prev, golf: attached_user_scorecard.golf_info }));
+  }, [attached_user_scorecard]);
+
   const sendInfo = async () => {
     if (sending.send) return handleToast(t(`errors.sending_form`))
     if (!content) {
@@ -74,6 +80,7 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
       paid: options.paid,
       golf_id: options.golf?.golf_id,
       attached_event_id: attached_event?.event_id,
+      attached_user_scorecard_id: attached_user_scorecard?.user_scorecard_id,
     };
 
     if (files.length > 0) {
@@ -189,6 +196,9 @@ const PostCreatorScreenStack = ({ route: { params } }: any) => {
           {shared_post && <DisplaySharedPost shared_post={shared_post} />}
           {
             attached_event && <DisplayEvent event={attached_event} />
+          }
+          {
+            attached_user_scorecard && <DisplayUserScoreCard scorecard={attached_user_scorecard} />
           }
         </ScrollView>
         <View style={{

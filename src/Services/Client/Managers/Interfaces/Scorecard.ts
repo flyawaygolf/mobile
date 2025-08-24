@@ -78,8 +78,8 @@ export interface getUserScoreCardInterface {
     scorecard_grid_id: string;
     scorecard_id: string;
     golf_id: string;
-    format: number;
-    game_mode: number;
+    format: CompetitionFormatEnum;
+    game_mode: GameModeEnum;
     starting_hole: number;
     playing_date: Date;
     event_id?: string;
@@ -153,30 +153,6 @@ export type scorecardCreatorResponse = requestResponseInterface<{
 export interface scorecardUpdateParams {
     /** Nom de la carte de score */
     name?: string;
-
-    /** Format du jeu (Stroke play, Match play, etc.) */
-    format?: CompetitionFormatEnum;
-
-    /** Mode de jeu (Public, Privé, Tournoi, etc.) */
-    game_mode?: GameModeEnum;
-
-    /** Trou de départ */
-    starting_hole?: number;
-
-    /** Date de la partie */
-    playing_date?: Date;
-
-    /** Statut de la carte (Draft, Completed, etc.) */
-    status?: ScoreCardStatus;
-
-    /** Joueurs associés */
-    players?: {
-        user_id: string;
-        handicap: number;
-    }[];
-
-    /** Score total */
-    total_score?: number;
 
     /** Résultats trou par trou */
     holes?: HoleScorecardSchemaInterface[];

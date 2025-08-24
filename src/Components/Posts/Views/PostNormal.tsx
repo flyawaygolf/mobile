@@ -10,6 +10,7 @@ import Markdown from "../../Text/Markdown";
 import { SinglePostContext } from "../PostContext";
 import { PostInterface } from "../../../Services/Client/Managers/Interfaces/index";
 import DisplayEvent from "./Components/DisplayEvent";
+import DisplayUserScoreCard from "../../Scorecards/DisplayUserScoreCard";
 
 export type PostNormalContextInfo = PostInterface.postResponseSchema & {
     is_comment?: boolean;
@@ -46,6 +47,9 @@ function PostNormal({ maxLines }: { maxLines?: number }) {
             </View>
             {
                 info.event_info && <DisplayEvent event={info.event_info} />
+            }
+            {
+                info.user_scorecard_info && <DisplayUserScoreCard scorecard={info.user_scorecard_info} />
             }
             <View style={{
                 marginTop: 5,

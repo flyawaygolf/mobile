@@ -2,6 +2,7 @@ import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 import { postEventInterface } from "./Events";
 import type { attachments, embeds, error, givewayInterface, pollInterface, premium_type, requestResponseInterface, userInfo } from "./Global"
 import { golfInterface } from "./Golf";
+import { getUserScoreCardInterface } from "./Scorecard";
 
 /**0 = text only | 1 = image (include gif) | 2 = video | 3 = audio | 4 = others */
 export type postTypes = 0 | 1 | 2 | 3 | 4;
@@ -88,6 +89,7 @@ export interface postResponseSchema {
     from: userInfo
   } | false;
   event_info?: postEventInterface;
+  user_scorecard_info?: getUserScoreCardInterface;
   display_not_allowed: boolean;
   paid?: boolean;
   bookmarks: number;

@@ -32,7 +32,7 @@ export default function DisplayRenderScreen({ route: { params }}: any) {
       if(camera !== RESULTS.LIMITED) await request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
     }
 
-    await CameraRoll.save(info.uri, { 
+    await CameraRoll.saveAsset(info.uri, { 
       type: info.type,
       album: "Trender"
     })

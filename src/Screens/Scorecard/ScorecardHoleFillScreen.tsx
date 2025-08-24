@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
 import { Text, Button, TextInput, Appbar, IconButton, Switch } from "react-native-paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { handleToast, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from "react-native";
-import { HoleScorecardSchemaInterface, scorecardCreatorParams } from "../../Services/Client/Managers/Interfaces/Scorecard";
+import { HoleScorecardSchemaInterface, scorecardCreatorParams, scorecardUpdateParams } from "../../Services/Client/Managers/Interfaces/Scorecard";
 import { full_width } from "../../Style/style";
 import { Avatar } from "../../Components/Member";
 import BottomModal from "../../Other/BottomModal";
@@ -26,14 +26,13 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
     const { t } = useTranslation();
     const { colors } = useTheme();
     const { client, user } = useClient();
-    const { golf, scorecard, grid, starting_hole } = route.params;
+    const { golf, scorecard, grid, starting_hole, holes, user_scorecard_id } = route.params;
 
     const holesCount = scorecard?.holesCount ?? 18;
     const [currentHole, setCurrentHole] = useState<number>(starting_hole || 1);
-    const [holesData, setHolesData] = useState<HoleScorecardSchemaInterface[]>(
-        Array.from({ length: holesCount }, (_, i) => ({
-            hole_number: i + 1,
-        }))
+    const [holesData, setHolesData] = useState<HoleScorecardSchemaInterface[]>(Array.from({ length: holesCount }, (_, i) => ({
+        hole_number: i + 1,
+    }))
     );
     const [showHoleGridModal, setShowHoleGridModal] = useState(false);
 
@@ -54,6 +53,12 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
         if (num < 1 || num > holesCount) return;
         setCurrentHole(num);
     };
+
+    useEffect(() => {
+        if (holes && user_scorecard_id) {
+            setHolesData(holes);
+        }
+    }, [user_scorecard_id, holes]);
 
     // Validation putts+chips+penalties >= score
     const putts = holeData.putts ?? 0;
@@ -102,6 +107,22 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
             navigation.navigate("ScorecardSummarizeScreen", {
                 user_id: user.user_id,
                 user_scorecard_id: request.data.user_scorecard_id
+            });
+        }
+    };
+
+    const handleUpdateSubmit = async () => {
+        const params: scorecardUpdateParams = {
+            holes: holesData
+        };
+        if (!user_scorecard_id) return;
+
+        const request = await client.userScoreCards.update(user_scorecard_id, params);
+        if (request.error) return handleToast(t(`errors.${request?.error?.code}`));
+        if (request.data) {
+            navigation.navigate("ScorecardSummarizeScreen", {
+                user_id: user.user_id,
+                user_scorecard_id: user_scorecard_id
             });
         }
     };
@@ -454,7 +475,7 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
                         marginBottom: 16,
                         textAlign: "center"
                     }}>
-                        {t("scorecard.select_hole_desc") ?? "Accédez rapidement à n'importe quel trou pour le remplir ou consulter."}
+                        {t("scorecard.select_hole_desc")}
                     </Text>
                     <View style={{
                         flexDirection: "row",
@@ -509,23 +530,45 @@ const ScorecardHoleFillScreen = ({ route, navigation }: ScreenNavigationProps<Sc
                         opacity: 0.2,
                     }} />
                     <View style={{ flexDirection: "column", width: "100%", paddingHorizontal: 12 }}>
-                        <Button
-                            mode="contained"
-                            icon="content-save"
-                            onPress={() => {
-                                setShowHoleGridModal(false);
-                                handleSubmit();
-                            }}
-                            style={{
-                                borderRadius: 24,
-                                paddingVertical: 6,
-                                backgroundColor: colors.fa_primary,
-                                marginBottom: 12,
-                            }}
-                            labelStyle={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}
-                        >
-                            {t("commons.save")}
-                        </Button>
+                        {
+                            user_scorecard_id ? (
+                                <Button
+                                    mode="contained"
+                                    icon="content-save"
+                                    onPress={() => {
+                                        setShowHoleGridModal(false);
+                                        handleUpdateSubmit();
+                                    }}
+                                    style={{
+                                        borderRadius: 24,
+                                        paddingVertical: 6,
+                                        backgroundColor: colors.fa_primary,
+                                        marginBottom: 12,
+                                    }}
+                                    labelStyle={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}
+                                >
+                                    {t("scorecard.update_card")}
+                                </Button>
+                            ) : (
+                                <Button
+                                    mode="contained"
+                                    icon="content-save"
+                                    onPress={() => {
+                                        setShowHoleGridModal(false);
+                                        handleSubmit();
+                                    }}
+                                    style={{
+                                        borderRadius: 24,
+                                        paddingVertical: 6,
+                                        backgroundColor: colors.fa_primary,
+                                        marginBottom: 12,
+                                    }}
+                                    labelStyle={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}
+                                >
+                                    {t("scorecard.save_card")}
+                                </Button>
+                            )
+                        }
                         <Button
                             mode="outlined"
                             icon="clipboard-list"
