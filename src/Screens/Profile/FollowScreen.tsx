@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { FlatList, RefreshControl, TouchableOpacity, View } from "react-native";
+import { RefreshControl, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import Toast from 'react-native-toast-message';
 import { Appbar, Icon, Text } from "react-native-paper";
@@ -9,6 +9,7 @@ import styles, { full_width } from "../../Style/style";
 import { FollowInterface } from "../../Services/Client/Managers/Interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "../../Services";
+import { FlashList } from "@shopify/flash-list";
 
 function FollowScreen({ route }: any) {
 
@@ -84,7 +85,7 @@ function FollowScreen({ route }: any) {
                 </View>
             </Appbar.Header>
             {!info ? <Text>{t("commons.nothing_display")}</Text> : (
-                <FlatList
+                <FlashList
                     data={info}
                     keyExtractor={(item) => item.user_id}
                     renderItem={renderItem}

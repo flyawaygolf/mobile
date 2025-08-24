@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { PostContainer, useClient } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
@@ -8,6 +7,7 @@ import { Loader } from '../../Other';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import { useTranslation } from 'react-i18next';
+import { FlashList } from '@shopify/flash-list';
 
 function PostScreenSearch({ route }: any) {
 
@@ -52,7 +52,7 @@ function PostScreenSearch({ route }: any) {
 
     return (
         <PostContainer title="commons.search">
-            <FlatList
+            <FlashList
                 ListFooterComponent={loader ? <Loader /> : undefined}
                 onScrollEndDrag={() => bottomHandler()}
                 data={posts} 

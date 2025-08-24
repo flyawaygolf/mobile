@@ -1,4 +1,3 @@
-import { FlatList } from "react-native-gesture-handler";
 import { handleToast } from "../../Services";
 import { useClient, useTheme } from "../Container";
 import { useTranslation } from "react-i18next";
@@ -8,6 +7,7 @@ import EventCard from "./EventCard";
 import { RefreshControl } from "react-native";
 import { Loader } from "../../Other";
 import { Text } from "react-native-paper";
+import { FlashList } from "@shopify/flash-list";
 
 export default function PrivateEvents() {
     const { client } = useClient();
@@ -44,7 +44,7 @@ export default function PrivateEvents() {
     ), [events]);
 
     return (
-        <FlatList
+        <FlashList
             ListFooterComponent={loading ? <Loader /> : undefined}
             refreshControl={<RefreshControl
                 refreshing={loaderF}
@@ -53,7 +53,6 @@ export default function PrivateEvents() {
                 colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
                 onRefresh={() => getData(true)} />}
             ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_friends_event")}</Text>}
-            initialNumToRender={20}
             data={events}
             renderItem={renderItem}
             keyExtractor={(item) => item.event_id}

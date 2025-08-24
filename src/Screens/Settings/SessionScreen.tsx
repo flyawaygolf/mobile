@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { Text, Button, Dialog, Portal, TextInput } from 'react-native-paper';
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { handleToast } from '../../Services';
 import { fetchSessionsResponseSchema } from '../../Services/Client/Managers/Interfaces/Session';
 import SessionBox from '../../Components/Settings/Session/SessionBox';
+import { FlashList } from '@shopify/flash-list';
 
 function SessionScreen() {
 
@@ -85,7 +86,7 @@ function SessionScreen() {
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
-            <FlatList
+            <FlashList
                 data={info?.filter(i => i.session_id !== user.session_id)}
                 keyExtractor={item => item.session_id}
                 renderItem={memoizedValue}

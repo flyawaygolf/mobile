@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 
@@ -7,6 +6,7 @@ import { PostContainer, useClient } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
+import { FlashList } from '@shopify/flash-list';
 
 function PostScreen({ route }: any) {
 
@@ -54,7 +54,7 @@ function PostScreen({ route }: any) {
 
     return (
         <PostContainer title="posts.discussion">
-            <FlatList
+            <FlashList
                 ListHeaderComponent={informations ? <DisplayPosts comments={true} informations={informations} pined={undefined} is_comment={undefined} /> : <Loader />}
                 ListFooterComponent={loader ? <Loader /> : undefined}
                 onScrollEndDrag={() => bottomHandler()}

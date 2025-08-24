@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog, Paragraph, Portal, Text } from 'react-native-paper';
 import { navigationProps } from '../../Services';
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { blockUserInformations } from '../../Services/Client/Managers/Interfaces/Block';
 import { DisplayMember } from '../../Components/Member';
+import { FlashList } from '@shopify/flash-list';
 
 function BlockedScreen() {
 
@@ -52,7 +53,7 @@ function BlockedScreen() {
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
-            <FlatList
+            <FlashList
                 data={info}
                 ListEmptyComponent={<Text style={{ padding: 10 }}>{t("commons.nothing_display")}</Text>}
                 keyExtractor={item => item.user_id}

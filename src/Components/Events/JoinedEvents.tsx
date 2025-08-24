@@ -1,4 +1,3 @@
-import { FlatList } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useState } from "react";
 import { RefreshControl } from "react-native";
@@ -8,6 +7,7 @@ import { useClient, useTheme } from "../Container";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
 import EventCard from "./EventCard";
 import { Loader } from "../../Other";
+import { FlashList } from "@shopify/flash-list";
 
 export default function JoinedEvents() {
     const { client } = useClient();
@@ -41,7 +41,7 @@ export default function JoinedEvents() {
     ), [events]);
 
     return (
-        <FlatList
+        <FlashList
             ListFooterComponent={loading ? <Loader /> : undefined}
             refreshControl={<RefreshControl
                 refreshing={loaderF}

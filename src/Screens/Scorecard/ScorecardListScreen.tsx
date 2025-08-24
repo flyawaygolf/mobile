@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { FlatList } from "react-native";
+
 import { useEffect, useMemo, useState } from "react";
 import { getUserScoreCardInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
 import { useAppDispatch, useAppSelector } from "../../Redux";
@@ -10,6 +10,7 @@ import { Text } from "react-native-paper";
 import { navigationProps } from "../../Services";
 import { useNavigation } from "@react-navigation/native";
 import DisplayUserScoreCard from "../../Components/Scorecards/DisplayUserScoreCard";
+import { FlashList } from "@shopify/flash-list";
 
 const ScorecardListScreen = () => {
 
@@ -70,7 +71,7 @@ const ScorecardListScreen = () => {
 
     return (
         <SettingsContainer title={t("scorecard.list")}>
-            <FlatList
+            <FlashList
                 ListEmptyComponent={<Text style={{ padding: 5 }}>{t("commons.nothing_display")}</Text>}
                 ListFooterComponent={loader ? <Loader /> : undefined}
                 onScrollEndDrag={() => bottomHandler()}

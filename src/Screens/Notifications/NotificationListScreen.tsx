@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useClient, useTheme } from '../../Components/Container';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { addNotificationFeed, initNotificationFeed, readOneNotificationFeed } from '../../Redux/NotificationFeed/action';
 import { NotificationInterface } from '../../Services/Client/Managers/Interfaces';
 import DisplayNotifications from '../../Components/Notifications/DisplayNotifications';
+import { FlashList } from '@shopify/flash-list';
 
 const NoficationListScreen = () => {
 
@@ -39,7 +40,7 @@ const NoficationListScreen = () => {
   const memoizedValue = useMemo(() => renderItem, [notifications]);
 
   return (
-      <FlatList
+      <FlashList
         data={notifications}
         keyExtractor={item => item.notification_id}
         renderItem={memoizedValue}

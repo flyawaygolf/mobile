@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Button, Card, IconButton, List, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +20,7 @@ import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Event
 import EventCard from '../../Components/Events/EventCard';
 import ScorecardDisplay from '../../Components/Golfs/ScorecardDisplay';
 import { ShrinkEffect } from '../../Components/Effects';
+import { FlashList } from '@shopify/flash-list';
 
 const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "GolfsProfileScreen">) => {
     const { golf_id } = route.params;
@@ -469,7 +470,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
             </Appbar.Header>
             {
                 golfInfo.golf_id ? activeTab === "users" ? (
-                    <FlatList
+                    <FlashList
                         ListHeaderComponent={golfHeader()}
                         onScrollEndDrag={() => getGolfUsers()}
                         scrollEventThrottle={16}
@@ -488,7 +489,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                         } : undefined}
                     />
                 ) : activeTab === "community_posts" ? (
-                    <FlatList
+                    <FlashList
                         ListHeaderComponent={golfHeader()}
                         onScrollEndDrag={() => getGolfCommunityPosts()}
                         scrollEventThrottle={16}
@@ -507,7 +508,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                         } : undefined}
                     />
                 ) : activeTab === "events" ? (
-                    <FlatList
+                    <FlashList
                         ListHeaderComponent={golfHeader()}
                         onScrollEndDrag={() => getGolfEvents()}
                         scrollEventThrottle={16}
@@ -525,7 +526,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                             right: 1
                         } : undefined}
                     />) : activeTab === "social_links" ? (
-                        <FlatList
+                        <FlashList
                             ListHeaderComponent={golfHeader()}
                             onScrollEndDrag={() => getGolfSocialLinks()}
                             scrollEventThrottle={16}
@@ -544,7 +545,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                             } : undefined}
                         />
                     ) : activeTab === 'official_posts' ? (
-                        <FlatList
+                        <FlashList
                             ListHeaderComponent={golfHeader()}
                             onScrollEndDrag={() => getGolfOfficialPosts()}
                             scrollEventThrottle={16}
@@ -570,8 +571,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
 
 const styles = StyleSheet.create({
     tabs: {
-        flexDirection: 'row',
-        borderBottomWidth: 1,
+        flexDirection: 'row'
     },
     tab: {
         flex: 1,

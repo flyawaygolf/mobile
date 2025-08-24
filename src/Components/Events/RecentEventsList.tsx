@@ -1,4 +1,3 @@
-import { FlatList } from "react-native-gesture-handler";
 import { RefreshControl } from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
@@ -8,6 +7,7 @@ import { useClient, useTheme } from "../Container";
 import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
 import EventCard from "./EventCard";
 import { Loader } from "../../Other";
+import { FlashList } from "@shopify/flash-list";
 
 export default function RecentEventsList() {
     const { client } = useClient();
@@ -44,7 +44,7 @@ export default function RecentEventsList() {
     ), [events]);
 
     return (
-        <FlatList
+        <FlashList
             ListFooterComponent={loading ? <Loader /> : undefined}
             refreshControl={<RefreshControl
                 refreshing={loaderF}
@@ -53,7 +53,6 @@ export default function RecentEventsList() {
                 colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
                 onRefresh={() => getData(true)} />}
             ListEmptyComponent={<Text style={{ padding: 5 }}>{t("events.no_events")}</Text>}
-            initialNumToRender={20}
             data={events}
             renderItem={renderItem}
             keyExtractor={(item) => item.event_id}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
-import { TextInput as PaperTextInput, Text } from 'react-native-paper';
+import { TextInput, Text } from 'react-native-paper';
 
 import { useClient, useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
@@ -68,7 +68,7 @@ const RegisterEmailUsername = ({ navigation, route }: ScreenNavigationProps<Logi
       </View>
       <View style={style.section}>
         <Text style={{ color: colors.warning_color, textAlign: 'center', marginBottom: 10 }}> {error.error && error.response} </Text>
-        <PaperTextInput
+        <TextInput
           mode="outlined"
           label={`${t('login.email')}`}
           autoCapitalize="none"
@@ -79,7 +79,7 @@ const RegisterEmailUsername = ({ navigation, route }: ScreenNavigationProps<Logi
         />
       </View>
       <View style={style.section}>
-        <PaperTextInput
+        <TextInput
           mode="outlined"
           label={`${t('login.username')}`}
           autoCapitalize="none"
@@ -88,6 +88,20 @@ const RegisterEmailUsername = ({ navigation, route }: ScreenNavigationProps<Logi
           onChangeText={text => setUsers({ ...users, username: text })}
         />
       </View>
+      {
+        affiliate_to && (
+          <View style={style.section}>
+            <TextInput
+              style={{ marginBottom: 10 }}
+              label={`${t("login.affiliation_code")}`}
+              autoCapitalize="none"
+              returnKeyType="next"
+              disabled={!!affiliate_to}
+              value={affiliate_to ?? ""}
+            />
+          </View>
+        )
+      }
       {loading ? <Loader /> : <NormalButton onPress={() => handleSubmit()} text={t('commons.next')} />}
       <View
         style={{

@@ -1,7 +1,5 @@
 import Config from "react-native-config";
 
-export const ESTIMATE_POSTS_ITEM_SIZE = 150;
-
 export const ON_END_REACHED_THRESHOLD_POSTS = 2;
 
 export const POSTS_LIST_PAGE_SIZE = 15;

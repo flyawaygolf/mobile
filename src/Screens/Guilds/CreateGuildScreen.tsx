@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { Appbar, Button, Chip, Divider, Text } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';

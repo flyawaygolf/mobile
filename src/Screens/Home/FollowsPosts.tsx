@@ -12,7 +12,7 @@ import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import EmptyHome from '../../Components/Home/EmptyHome';
-import { ESTIMATE_POSTS_ITEM_SIZE, ON_END_REACHED_THRESHOLD_POSTS } from '../../Services/constante';
+import { ON_END_REACHED_THRESHOLD_POSTS } from '../../Services/constante';
 
 const FollowsPosts = () => {
 
@@ -75,12 +75,8 @@ const FollowsPosts = () => {
 
   return (
     <FlashList
-      estimatedItemSize={ESTIMATE_POSTS_ITEM_SIZE}
       onEndReached={onEndReached}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_POSTS}
-      overrideItemLayout={(layout) => {
-        layout.size = ESTIMATE_POSTS_ITEM_SIZE
-      }}
       data={posts}
       refreshing={loaderF}
       keyExtractor={item => `${item.post_id}-${item.created_at}`}

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView, TouchableOpacity, View , Platform} from 'react-native';
+import { ScrollView, TouchableOpacity, View , Platform} from 'react-native';
 import { changeIcon, resetIcon } from 'react-native-change-icon';
 import { Checkbox, Divider, Icon, Text } from 'react-native-paper';
 import { useClient, useTheme } from '../../Components/Container';
@@ -13,6 +13,7 @@ import { Ithemes } from '../../Components/Container/Theme/Themes';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
 import { handleToast } from '../../Services';
 import { ShrinkEffect } from '../../Components/Effects';
+import { FlashList } from '@shopify/flash-list';
 
 export default function AppScreen() {
 
@@ -173,7 +174,7 @@ export default function AppScreen() {
                         <Text style={{ marginBottom: 10 }} variant='labelLarge'>{t("settings.app_icon")} :</Text>
                         <Icon source="star-shooting" size={16} />
                     </View>
-                    <FlatList
+                    <FlashList
                         data={icons}
                         horizontal
                         showsHorizontalScrollIndicator={false}

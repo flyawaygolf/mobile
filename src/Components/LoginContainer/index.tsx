@@ -11,13 +11,12 @@ function LoginContainer({ children }: PropsWithChildren) {
     return (
         <SafeAreaView style={[style.area, { backgroundColor: colors.bg_primary }]}>
             <KeyboardAvoidingView
-                style={{ flex: 1 }}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
             >
                 <ScrollView
                     keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center', height: '100%', paddingBottom: 100 }}>
+                    contentContainerStyle={{ paddingBottom: 100 }}>
                     {children}
                 </ScrollView>
             </KeyboardAvoidingView>
@@ -28,6 +27,7 @@ function LoginContainer({ children }: PropsWithChildren) {
 const style = StyleSheet.create({
     area: {
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignContent: 'center',
     },

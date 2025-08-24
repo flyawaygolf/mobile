@@ -2,12 +2,13 @@ import { useTranslation } from "react-i18next";
 import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
 import { Text, Avatar, ActivityIndicator } from "react-native-paper";
 import { SearchBar } from "../../Components/Elements/Input";
-import { FlatList, View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatDistance, handleToast, navigationProps } from "../../Services";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { useNavigation } from "@react-navigation/native";
 import CustomHeader from "../../Components/Header/CustomHeader";
+import { FlashList } from "@shopify/flash-list";
 
 const GolfCard = ({ golf, onCreateScorecard }: { golf: golfInterface, onCreateScorecard: () => void }) => {
     const { colors } = useTheme();
@@ -126,7 +127,7 @@ const ScorecardHomeScreen = () => {
                     placeholder={t("commons.search_placeholder")}
                 />
             </CustomHeader>
-            <FlatList
+            <FlashList
                 ListEmptyComponent={search.length > 0 ? ListEmptyComponent : null}
                 data={golfs}
                 keyExtractor={(item) => item.golf_id}

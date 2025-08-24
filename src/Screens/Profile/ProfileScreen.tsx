@@ -13,6 +13,7 @@ import ProfileInfo from '../../Components/Profile/ProfileInfo';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import DisplayPost from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
+import { AnimatedFlashList } from '@shopify/flash-list';
 
 type SectionProps = {
   nickname: string;
@@ -189,7 +190,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
       <ProfileHeader headerOpacity={headerOpacity} navigation={navigation} />
       {
         user_info.user_id ? activeTab === "golfs" ? (
-          <Animated.FlatList
+          <AnimatedFlashList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
               { useNativeDriver: true }
@@ -206,7 +207,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
             } : undefined}
           />
         ) : activeTab === "posts" ? (
-          <Animated.FlatList
+          <AnimatedFlashList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
               { useNativeDriver: true }
@@ -223,7 +224,7 @@ const ProfileScreen = ({ nickname }: SectionProps) => {
             } : undefined}
           />
         ) : activeTab === "social_links" ? (
-          <Animated.FlatList
+          <AnimatedFlashList
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollY } } }],
               { useNativeDriver: true }

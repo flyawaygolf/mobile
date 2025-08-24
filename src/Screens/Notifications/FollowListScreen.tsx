@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useClient, useTheme } from '../../Components/Container';
 import { FollowInterface } from '../../Services/Client/Managers/Interfaces';
 import { DisplayMember } from '../../Components/Member';
 import { navigationProps } from '../../Services';
 import { useNavigation } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 
 const FollowListScreen = () => {
 
@@ -48,7 +49,7 @@ const FollowListScreen = () => {
   }
 
   return (
-    <FlatList
+    <FlashList
       style={{
         height: "100%"
       }}

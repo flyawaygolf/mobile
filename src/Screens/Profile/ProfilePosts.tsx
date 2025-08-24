@@ -7,6 +7,7 @@ import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import DisplayPost from "../../Components/Posts/DisplayPost";
 import { handleToast } from "../../Services";
 import { Loader } from "../../Other";
+import { AnimatedFlashList } from "@shopify/flash-list";
 
 const ProfilePosts = () => {
     const { nickname, user_info, scrollY } = useProfile();
@@ -43,9 +44,8 @@ const ProfilePosts = () => {
     const memoizedPosts = useMemo(() => renderPosts, [posts]);
 
     return user_info && !loading ? (
-        <Animated.FlatList
+        <AnimatedFlashList
             removeClippedSubviews={true}
-            initialNumToRender={15}
             onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                 { useNativeDriver: true }

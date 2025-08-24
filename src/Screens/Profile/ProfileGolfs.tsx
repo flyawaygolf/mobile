@@ -8,6 +8,7 @@ import { handleToast, navigationProps } from "../../Services";
 import { Loader } from "../../Other";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { DisplayGolfs } from "../../Components/Golfs";
+import { AnimatedFlashList } from "@shopify/flash-list";
 
 const ProfileGolfs = () => {
     const navigation = useNavigation<navigationProps>();
@@ -54,9 +55,8 @@ const ProfileGolfs = () => {
     const memoizedGolfs = useMemo(() => renderGolfs, [golfs]);
 
     return user_info && !loading ? (
-        <Animated.FlatList
+        <AnimatedFlashList
             removeClippedSubviews={true}
-            initialNumToRender={15}
             onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                 { useNativeDriver: true }

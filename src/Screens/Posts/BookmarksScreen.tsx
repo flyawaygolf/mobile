@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { PostContainer, useClient } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
@@ -9,6 +8,7 @@ import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 import { Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
+import { FlashList } from '@shopify/flash-list';
 
 function Bookmarks({ route }: any) {
 
@@ -53,7 +53,7 @@ function Bookmarks({ route }: any) {
 
     return (
         <PostContainer title="posts.bookmarks">
-            <FlatList
+            <FlashList
                 ListEmptyComponent={<Text style={{ padding: 5 }}>{t("commons.nothing_display")}</Text>}
                 ListFooterComponent={loader ? <Loader /> : undefined}
                 onScrollEndDrag={() => bottomHandler()}
