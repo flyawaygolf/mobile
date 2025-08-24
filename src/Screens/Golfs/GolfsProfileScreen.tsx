@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Linking, Platform, Pressable, RefreshControl, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Appbar, Button, Card, Chip, IconButton, List, Text } from 'react-native-paper';
+import { FlatList, Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Appbar, Button, Card, IconButton, List, Text } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from '@d11/react-native-fast-image';
@@ -19,6 +19,7 @@ import DisplayPost from '../../Components/Posts/DisplayPost';
 import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import EventCard from '../../Components/Events/EventCard';
 import ScorecardDisplay from '../../Components/Golfs/ScorecardDisplay';
+import { ShrinkEffect } from '../../Components/Effects';
 
 const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "GolfsProfileScreen">) => {
     const { golf_id } = route.params;
@@ -393,18 +394,24 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                                         </View>
                                     )
                                 }
+                                {
+                                    golfInfo.official_account && (
+                                        <ShrinkEffect onPress={() => {
+                                            navigation.navigate("ProfileStack", {
+                                                screen: "ProfileScreen",
+                                                params: {
+                                                    nickname: golfInfo.official_account?.nickname
+                                                }
+                                            })
+                                        }} style={{ flexDirection: "column", alignItems: "center", backgroundColor: colors.bg_primary, padding: 10, borderRadius: 5, minWidth: 100, minHeight: 60 }}>
+                                            <Text>{t("golf.official_account")}</Text>
+                                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                                <Avatar size={24} url={client.user.avatar(golfInfo.official_account.user_id, golfInfo.official_account.avatar)} />
+                                                <Text style={{ fontSize: 16, fontWeight: '900', marginLeft: 5 }}>{golfInfo.official_account?.username}</Text>
+                                            </View>
+                                        </ShrinkEffect>
+                                    )}
                             </View>
-                            {
-                                golfInfo.official_account && (
-                                    <Chip
-                                        avatar={<Avatar size={24} url={golfInfo.official_account?.avatarURL} />}
-                                        onPress={() => navigation.navigate("ProfileStack", {
-                                            screen: "ProfileScreen",
-                                            params: {
-                                                nickname: golfInfo.official_account?.nickname
-                                            }
-                                        })}>{golfInfo.official_account?.username}</Chip>
-                                )}
                         </Card.Content>
                         <Card.Content>
                             {
@@ -415,22 +422,24 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                 </List.Accordion>
 
                 {(
-                    <View style={[styles.tabs, { borderColor: colors.bg_secondary }]}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={true} contentContainerStyle={{
+                        alignItems: 'center',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        gap: 10
+                    }} style={[styles.tabs]}>
                         {
                             tabs.map((tab, idx) => (
                                 <TouchableOpacity
                                     key={idx}
-                                    style={[styles.tab, tab.active && {
-                                        borderBottomColor: colors.fa_primary,
-                                        borderBottomWidth: 2,
-                                    }]}
+                                    style={[styles.tab, { borderBottomColor: tab.active ? colors.fa_primary : colors.bg_secondary, borderBottomWidth: 2 }]}
                                     onPress={() => setActiveTab(tab.name as 'community_posts' | 'users')}
                                 >
                                     <Text>{t(`golf.${tab.name}`)}</Text>
                                 </TouchableOpacity>
                             ))
                         }
-                    </View>
+                    </ScrollView>
                 )}
             </>
         )
@@ -492,7 +501,7 @@ const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "G
                             tintColor={colors.fa_primary}
                             colors={[colors.fa_primary, colors.fa_secondary, colors.fa_third]}
                             onRefresh={() => getGolfCommunityPosts(true)} />}
-                        ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("golf.no_posts")}</Text>}
+                        ListEmptyComponent={<Text style={{ textAlign: "center" }}>{t("golf.no_community_posts")}</Text>}
                         scrollIndicatorInsets={Platform.OS === "ios" ? {
                             right: 1
                         } : undefined}
@@ -568,6 +577,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingVertical: 15,
+        minWidth: full_width / 5
     },
     activeTab: {
         borderBottomWidth: 2,

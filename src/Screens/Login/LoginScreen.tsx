@@ -142,7 +142,9 @@ const LoginScreen = ({ navigation, route }: ScreenNavigationProps<LoginRootParam
       <View style={{
         alignSelf: 'center',
       }}>
-        <LinkButtonText text={t("login.no_account")} onPress={() => navigation.navigate('RegisterEmailUsername')} />
+        <LinkButtonText text={t("login.no_account")} onPress={() => navigation.navigate('RegisterEmailUsername', {
+          affiliate_to: undefined
+        })} />
       </View>
     </LoginContainer>
 

@@ -31,7 +31,9 @@ const WelcomeScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList,
         </Button>
         <Button 
           mode="outlined" 
-          onPress={() => navigation.navigate('RegisterEmailUsername')} 
+          onPress={() => navigation.navigate("RegisterEmailUsername", {
+            affiliate_to: undefined
+          })} 
           contentStyle={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 48 }}
           labelStyle={{ fontSize: 16, fontWeight: '600' }}
           style={{ marginTop: 15, width: "100%", justifyContent: 'center' }}>

@@ -40,13 +40,12 @@ const RegisterPassword = ({
             return setError({ error: true, response: t(`errors.password_security`) });
 
         navigation.navigate('RegisterBirthdayAccept', {
+            affiliate_to: params.affiliate_to,
             email: users.email,
             username: users.username,
             password: users.password,
         });
     };
-
-    
 
     return (
         <LoginContainer>

@@ -27,17 +27,22 @@ export type LoginRootParamList = {
     LoginScreen?: {
         email?: string;
     };
-    RegisterEmailUsername: undefined;
+    RegisterEmailUsername: {
+        affiliate_to?: string;
+    };
     RegisterPassword: {
+        affiliate_to?: string;
         email: string;
         username: string;
     };
     RegisterBirthdayAccept: {
+        affiliate_to?: string;
         email: string;
         username: string;
         password: string;
     };
     RegisterVerification: {
+        affiliate_to?: string;
         email: string;
     };
     GuestStack: undefined;
@@ -143,7 +148,10 @@ export type RootStackParamList = {
     };
     Splash: undefined;
     LoginNavigator?: {
-        screen: loginRoutesNames
+        screen: loginRoutesNames,
+        params?: {
+            affiliate_to?: string;
+        };
     };
     MessagesStack: {
         screen?: MessageStackScreens

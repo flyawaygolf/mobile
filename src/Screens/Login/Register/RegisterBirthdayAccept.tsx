@@ -32,7 +32,7 @@ const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<Log
         birthday: dayjs().subtract(13, "years").subtract(1, 'day').toDate(),
         accept_tas: false,
     });
-    const [affiliationCode, setAffiliationCode] = useState<string | undefined>(undefined);
+    const [affiliationCode, setAffiliationCode] = useState<string | undefined>(params.affiliate_to);
 
     const handleSubmit = async () => {
 

@@ -272,6 +272,9 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
         }
     };
 
+    const modifyScorecard = async () => {
+    }
+
     return (
         <SafeBottomContainer>
             {/* Header inchangé */}
@@ -632,8 +635,22 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                         )}
                     </View>
                 </Card>
+
+                <Button
+                    style={{
+                        marginBottom: 10
+                    }}
+                    mode="contained"
+                    icon={"clipboard-edit"}
+                    onPress={() => modifyScorecard()}
+                >
+                    {t("scorecard.modify")}
+                </Button>
                 {/* Bouton supprimer */}
                 <Button
+                    style={{
+                        marginBottom: 10
+                    }}
                     mode="contained"
                     buttonColor={colors.text_muted}
                     icon={"trash-can"}

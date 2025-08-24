@@ -9,10 +9,12 @@ import { EmailValidator, LoginRootParamList, ScreenNavigationProps } from '../..
 import { Loader } from '../../../Other';
 import LoginContainer from '../../../Components/LoginContainer';
 
-const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootParamList, 'RegisterEmailUsername'>) => {
+const RegisterEmailUsername = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, 'RegisterEmailUsername'>) => {
   const { t } = useTranslation('');
   const { colors } = useTheme();
   const { client } = useClient();
+
+  const { affiliate_to } = route.params;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({
@@ -49,6 +51,7 @@ const RegisterEmailUsername = ({ navigation }: ScreenNavigationProps<LoginRootPa
     } else {
       setLoading(false);
       navigation.navigate('RegisterPassword', {
+        affiliate_to: affiliate_to,
         email: users.email,
         username: users.username,
       });
