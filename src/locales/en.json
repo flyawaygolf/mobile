@@ -352,7 +352,8 @@
         "hcp_calculator": "HCP Calculator",
         "calculated_index": "Calculated Index",
         "calcul_whs": "WHS Calculation",
-        "missing_index_calcul_values": "Slope, rating or par missing for calculation."
+        "missing_index_calcul_values": "Slope, rating or par missing for calculation.",
+        "p_hcp": "p.hcp"
     },
     "golf": {
         "display_golf": "Display golf",

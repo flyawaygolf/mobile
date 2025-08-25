@@ -1,11 +1,10 @@
-import { Platform } from "react-native";
-
 export type Ithemes = 'auto' | 'white' | 'dark';
 
 export interface colorsInterface {
     bg_primary: string,
     bg_primary_opacity: string,
     bg_secondary: string,
+    bg_secondary_hover: string,
     bg_third: string,
     bg_secondary_rgba: string,
     text_normal: string,
@@ -53,7 +52,8 @@ export const WhiteTheme: { colors: colorsInterface } = {
         // Background colors
         bg_primary: "#F5F5F5",
         bg_primary_opacity: "#D9D9D9",
-        bg_secondary: Platform.OS === "android" ? "#EAEAEA" : "#EAEAEA",
+        bg_secondary: "#EAEAEA",
+        bg_secondary_hover: "#D9D9D9",
         bg_third: "#989898",
         bg_secondary_rgba: "rgba(234, 234, 234, 1)",
         
@@ -120,6 +120,7 @@ export const DarkTheme: { colors: colorsInterface } = {
         bg_primary: "#171717",
         bg_primary_opacity: "#141414",
         bg_secondary: "#272727",
+        bg_secondary_hover: "#141414",
         bg_third: "#0E0E0E",
         text_normal: "#f9f9f9",
         text_normal_hover: "#B7B7B7",

@@ -239,7 +239,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
         <SafeBottomContainer>
             {/* Header inchangé */}
             <Appbar.Header style={{
-                width: full_width,
+                width: full_width, // Supprime cette ligne
                 borderBottomColor: colors.bg_secondary,
                 borderBottomWidth: 1,
                 marginBottom: 10,
@@ -255,11 +255,11 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                     <ShrinkEffect onPress={() => golf_info?.golf_id && navigation.navigate("GolfsStack", {
                         screen: "GolfsProfileScreen",
                         "params": { golf_id: golf_info.golf_id }
-                    })} style={{ flexDirection: "row", alignItems: "center", gap: 10, marginLeft: 10 }} >
+                    })} style={{ flexDirection: "row", alignItems: "center", gap: 5, marginLeft: 5, width: "70%" }} >
                         <Avatar url={client.golfs.avatar(golf_info?.golf_id ?? "")} />
                         <View>
-                            <Text variant="titleMedium">{golf_info?.name ?? "-"}</Text>
-                            <Text>{name}</Text>
+                            <Text numberOfLines={1} variant="titleMedium">{golf_info?.name ?? "-"}</Text>
+                            <Text  numberOfLines={1}>{name}</Text>
                         </View>
                         <Appbar.Action icon={"chevron-right"} />
                     </ShrinkEffect>
@@ -344,7 +344,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "center",
-                                        backgroundColor: colors.bg_secondary_rgba,
+                                        backgroundColor: colors.bg_primary_opacity,
                                         borderRadius: 12,
                                         marginHorizontal: 12,
                                         marginVertical: 8,
@@ -378,7 +378,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                                             fontSize: 12,
                                             marginBottom: 2,
                                         }}>
-                                            P.HCP: {displayHCP(user.playing_hcp ?? user.current_hcp ?? "-")}
+                                            {t("scorecard.p_hcp").toLocaleUpperCase()}: {displayHCP(user.playing_hcp ?? user.current_hcp ?? "-")}
                                         </Text>
                                     </View>
                                     <View style={{

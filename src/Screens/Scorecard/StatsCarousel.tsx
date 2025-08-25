@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { BarChart } from "react-native-chart-kit";
 import { useTheme } from "../../Components/Container";
@@ -104,121 +104,59 @@ const StatsCarousel: React.FC<StatsCarouselProps> = ({
         color: () => colors.fa_secondary,
     };
 
+    const statsSyle: StyleProp<ViewStyle> = {
+                    backgroundColor: colors.bg_secondary,
+                    borderRadius: 10,
+                    padding: 12,
+                    minWidth: "30%",
+                    alignItems: "center",
+                    marginBottom: 8,
+                    elevation: 1,
+                }
+
     return (
         <View style={{ marginVertical: 10 }}>
             {/* Tuiles statistiques */}
             <View style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 marginBottom: 8,
                 gap: 8,
             }}>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{scoreDiff > 0 ? `+${scoreDiff}` : scoreDiff}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.score_diff")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{totalScore}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.score")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{puttsAvg}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.putts_per_hole")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{girPct} %</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.gir")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{fairwaysPct} %</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.fairways")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{putts}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.putts")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{penalties}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.penalties")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{chips}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.chips")}</Text>
                 </View>
-                <View style={{
-                    backgroundColor: colors.bg_secondary,
-                    borderRadius: 10,
-                    padding: 12,
-                    width: "32%",
-                    alignItems: "center",
-                    marginBottom: 8,
-                    elevation: 1,
-                }}>
+                <View style={statsSyle}>
                     <Text style={{ fontWeight: "bold", fontSize: 18 }}>{sandSaves}</Text>
                     <Text style={{ color: colors.text_muted, fontSize: 13, marginTop: 2 }}>{t("scorecard.sand_saves")}</Text>
                 </View>

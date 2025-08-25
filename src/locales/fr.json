@@ -352,7 +352,8 @@
         "hcp_calculator": "Calculateur de HCP",
         "calculated_index": "Index calculé",
         "calcul_whs": "Calcul WHS",
-        "missing_index_calcul_values": "Slope, rating ou par manquant pour le calcul."
+        "missing_index_calcul_values": "Slope, rating ou par manquant pour le calcul.",
+        "p_hcp": "p.hcp"
     },
     "golf": {
         "display_golf": "Afficher le golf",

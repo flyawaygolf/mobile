@@ -66,12 +66,12 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
                 justifyContent: "space-between",
                 alignItems: "center"
             }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginLeft: 5, width: "65%" }}>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Avatar url={client.golfs.avatar(golf.golf_id)} />
                     <View>
-                        <Text variant="titleMedium">{golf.name}</Text>
-                        <Text>{name}</Text>
+                        <Text numberOfLines={1} variant="titleMedium">{golf.name}</Text>
+                        <Text numberOfLines={1}>{name}</Text>
                     </View>
                 </View>
                 <View>
@@ -87,7 +87,7 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
 
             <ScrollView style={{ flex: 1, paddingHorizontal: 8 }}>
                 <View style={{
-                    backgroundColor: colors.bg_primary,
+                    backgroundColor: colors.bg_secondary,
                     borderRadius: 16,
                     padding: 8,
                     marginVertical: 8,

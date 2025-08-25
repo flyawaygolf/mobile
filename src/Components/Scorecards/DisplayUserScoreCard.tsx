@@ -29,69 +29,105 @@ const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: numbe
     };
 
     const renderRow = (rowScores: number[], rowPar: number, startIdx: number) => (
-        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
+        <View
+            style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 4,
+                flexWrap: "wrap", // Ajout pour le responsive
+                justifyContent: "center", // Pour éviter l'étirement
+            }}
+        >
             {rowScores.map((score, i) => {
                 const par = parArray[startIdx + i] ?? 0;
                 const toParLabel = getToParLabel(score, par);
                 return (
-                    <View key={i} style={{
-                        flexDirection: "column",
-                        alignItems: "center",
-                        marginHorizontal: 2,
-                        width: 32,
-                    }}>
-                        <View style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: 16,
-                            backgroundColor: colors.bg_third,
+                    <View
+                        key={i}
+                        style={{
                             flexDirection: "column",
                             alignItems: "center",
-                            justifyContent: "center",
-                            marginBottom: 2,
-                        }}>
-                            <Text style={{
-                                fontWeight: "bold",
-                                fontSize: 16
-                            }}>{score}</Text>
-                        </View>
-                        <View style={{
+                            marginHorizontal: 2,
+                            width: 28, // Réduit pour tenir sur mobile
                             minWidth: 24,
-                            height: 18,
-                            borderRadius: 9,
-                            backgroundColor: "#f2f2f2",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginBottom: 2,
-                            borderWidth: 1,
-                            borderColor: "#e0e0e0"
-                        }}>
-                            <Text style={{
-                                color: "#444",
-                                fontSize: 11,
-                                fontWeight: "bold",
-                            }}>{toParLabel}</Text>
+                        }}
+                    >
+                        <View
+                            style={{
+                                width: 28,
+                                height: 28,
+                                borderRadius: 14,
+                                backgroundColor: colors.bg_third,
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginBottom: 2,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: 15,
+                                }}
+                            >
+                                {score}
+                            </Text>
                         </View>
-                        <Text style={{ fontSize: 10, color: colors.text_muted }}>{startIdx + i + 1}</Text>
+                        <View
+                            style={{
+                                minWidth: 20,
+                                height: 16,
+                                borderRadius: 8,
+                                backgroundColor: "#f2f2f2",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginBottom: 2,
+                                borderWidth: 1,
+                                borderColor: "#e0e0e0",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: "#444",
+                                    fontSize: 10,
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {toParLabel}
+                            </Text>
+                        </View>
+                        <Text style={{ fontSize: 9, color: colors.text_muted }}>
+                            {startIdx + i + 1}
+                        </Text>
                     </View>
                 );
             })}
             {/* Total ligne */}
-            <View style={{
-                alignItems: "center",
-                marginLeft: 6,
-                backgroundColor: colors.bg_secondary_rgba,
-                borderRadius: 8,
-                width: 38,
-                height: 38,
-                justifyContent: "center",
-            }}>
-                <Text style={{
-                    fontWeight: "bold",
-                    fontSize: 17,
-                }}>{rowScores.reduce((a, b) => a + b, 0)}</Text>
-                <Text style={{ fontSize: 11, color: colors.text_muted }}>{rowPar ? `${(rowScores.reduce((a, b) => a + b, 0) - rowPar) < 0 ? "" : "+"}${rowScores.reduce((a, b) => a + b, 0) - rowPar}` : ""}</Text>
+            <View
+                style={{
+                    alignItems: "center",
+                    marginLeft: 6,
+                    backgroundColor: colors.bg_primary_opacity,
+                    borderRadius: 8,
+                    width: 34,
+                    height: 34,
+                    justifyContent: "center",
+                }}
+            >
+                <Text
+                    style={{
+                        fontWeight: "bold",
+                        fontSize: 15,
+                    }}
+                >
+                    {rowScores.reduce((a, b) => a + b, 0)}
+                </Text>
+                <Text style={{ fontSize: 10, color: colors.text_muted }}>
+                    {rowPar
+                        ? `${(rowScores.reduce((a, b) => a + b, 0) - rowPar) < 0 ? "" : "+"}${rowScores.reduce((a, b) => a + b, 0) - rowPar}`
+                        : ""}
+                </Text>
             </View>
         </View>
     );
