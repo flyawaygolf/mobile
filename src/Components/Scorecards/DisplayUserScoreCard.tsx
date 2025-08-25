@@ -36,7 +36,7 @@ const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: numbe
                 alignItems: "center",
                 marginBottom: 4,
                 flexWrap: "wrap", // Ajout pour le responsive
-                justifyContent: "center", // Pour éviter l'étirement
+                justifyContent: "space-evenly", // Pour éviter l'étirement
             }}
         >
             {rowScores.map((score, i) => {
@@ -49,14 +49,13 @@ const renderScoreTable = (holes: HoleScorecardSchemaInterface[], parArray: numbe
                             flexDirection: "column",
                             alignItems: "center",
                             marginHorizontal: 2,
-                            width: 28, // Réduit pour tenir sur mobile
-                            minWidth: 24,
+                            width: 24
                         }}
                     >
                         <View
                             style={{
-                                width: 28,
-                                height: 28,
+                                width: 24,
+                                height: 24,
                                 borderRadius: 14,
                                 backgroundColor: colors.bg_third,
                                 flexDirection: "column",

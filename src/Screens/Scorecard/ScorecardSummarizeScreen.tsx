@@ -241,11 +241,8 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
         <SafeBottomContainer>
             {/* Header inchangé */}
             <Appbar.Header style={{
-                width: full_width, // Supprime cette ligne
                 borderBottomColor: colors.bg_secondary,
                 borderBottomWidth: 1,
-                marginBottom: 10,
-                paddingRight: 15,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center"
@@ -257,7 +254,7 @@ const ScorecardSummarizeScreen = ({ route }: ScreenNavigationProps<ScorecardStac
                     <ShrinkEffect onPress={() => golf_info?.golf_id && navigation.navigate("GolfsStack", {
                         screen: "GolfsProfileScreen",
                         "params": { golf_id: golf_info.golf_id }
-                    })} style={{ flexDirection: "row", alignItems: "center", gap: 5, marginLeft: 5, width: "70%" }} >
+                    })} style={{ flexDirection: "row", alignItems: "center", gap: 5, marginLeft: 5, width: "60%" }} >
                         <Avatar url={client.golfs.avatar(golf_info?.golf_id ?? "")} />
                         <View>
                             <Text numberOfLines={1} variant="titleMedium">{golf_info?.name ?? "-"}</Text>

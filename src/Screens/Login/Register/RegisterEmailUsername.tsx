@@ -124,11 +124,6 @@ const RegisterEmailUsername = ({ navigation, route }: ScreenNavigationProps<Logi
 };
 
 const style = StyleSheet.create({
-  area: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
   section: {
     flexDirection: 'column',
     minHeight: 60,

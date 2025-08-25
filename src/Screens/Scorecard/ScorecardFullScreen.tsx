@@ -6,7 +6,7 @@ import { Text, Button, Appbar, IconButton, List, Icon } from "react-native-paper
 import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
 import { Avatar } from "../../Components/Member";
 import { ScorecardStackParams, ScreenNavigationProps } from "../../Services";
-import { full_width } from "../../Style/style";
+import { full_height, full_width } from "../../Style/style";
 
 const getFairwayIcon = (fairway?: number) => {
     if (fairway === 1) return "check";
@@ -57,17 +57,13 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
     return (
         <SafeBottomContainer>
             <Appbar.Header style={{
-                width: full_width,
                 borderBottomColor: colors.bg_secondary,
                 borderBottomWidth: 1,
-                marginBottom: 10,
-                paddingLeft: 15,
-                paddingRight: 15,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center"
             }}>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 5, marginLeft: 5, width: "65%" }}>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 5, width: "40%" }}>
                     <Appbar.BackAction onPress={() => navigation.goBack()} />
                     <Avatar url={client.golfs.avatar(golf.golf_id)} />
                     <View>
@@ -213,7 +209,7 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
                 visible={showLegend}
                 animationType="slide"
                 transparent
-                onRequestClose={() => setShowLegend(false)}
+                onDismiss={() => setShowLegend(false)}
             >
                 <View style={{
                     flex: 1,
@@ -225,15 +221,15 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
                         backgroundColor: colors.bg_primary,
                         borderRadius: 16,
                         padding: 24,
-                        minWidth: 280,
-                        maxWidth: 370,
+                        minWidth: full_width / 1.5,
+                        maxWidth: full_width / 1.2,
                         alignItems: "center",
                         elevation: 6
                     }}>
                         <Text style={{ fontWeight: "bold", fontSize: 20, marginBottom: 18 }}>
                             {t("scorecard.legend")}
                         </Text>
-                        <View style={{ width: "100%" }}>
+                        <ScrollView style={{ maxHeight: full_height / 1.5, width: "100%" }}>
                             {scoreTypesLegend.map(type => (
                                 <List.Item
                                     key={type.label}
@@ -248,10 +244,10 @@ const ScorecardFullScreen = ({ route, navigation }: ScreenNavigationProps<Scorec
                                     )}
                                     titleStyle={{ color: type.color, fontWeight: "bold", fontSize: 16 }}
                                     descriptionStyle={{ color: colors.text_muted, fontSize: 13 }}
-                                    style={{ marginBottom: 4, borderRadius: 8 }}
+                                    style={{ borderRadius: 8 }}
                                 />
                             ))}
-                        </View>
+                        </ScrollView>
                         <Button
                             mode="contained"
                             style={{ marginTop: 22, borderRadius: 12, width: "80%" }}
