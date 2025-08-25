@@ -1,14 +1,14 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { TextStyle, View, ViewStyle } from 'react-native';
 import { IconButton, Text } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 
-import styles from "../../../../../Style/style";
+import BookmarkButton from "./BookmarkButton";
 import LikeButton from "./LikeButton";
+import { navigationProps } from "../../../../../Services";
+import styles from "../../../../../Style/style";
 import { useTheme } from "../../../../Container";
 import { SinglePostContext } from "../../../PostContext";
-import { navigationProps } from "../../../../../Services";
-import BookmarkButton from "./BookmarkButton";
 
 function Postbottom() {
 

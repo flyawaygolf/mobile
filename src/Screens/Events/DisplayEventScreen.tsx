@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { ImageBackground, Platform, ScrollView, Share, View } from 'react-native';
-import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
-import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ImageBackground, Platform, ScrollView, Share, View } from 'react-native';
 import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
 import { check, PERMISSIONS, request } from 'react-native-permissions';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
-import { handleToast, messageFormatDate, navigationProps } from '../../Services';
-import { full_width } from '../../Style/style';
-import { BottomModal, Loader } from '../../Other';
+import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
 import { ShrinkEffect } from '../../Components/Effects';
-import { eventurl } from '../../Services/constante';
 import EventParticipantsModal from '../../Components/Events/EventParticipantsModal';
 import { Avatar } from '../../Components/Member';
-import { displayHCP } from '../../Services/handicapNumbers';
+import { BottomModal, Loader } from '../../Other';
+import { handleToast, messageFormatDate, navigationProps } from '../../Services';
+import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import {
   CalendarEventType,
   CompetitionFormatEnum,
   EventStatusEnum,
   SkillLevelEnum
 } from '../../Services/Client/Managers/Interfaces/Events';
+import { eventurl } from '../../Services/constante';
+import { displayHCP } from '../../Services/handicapNumbers';
+import { full_width } from '../../Style/style';
 
 export default function DisplayEventScreen({ route }: any) {
   const { event_id } = route.params;

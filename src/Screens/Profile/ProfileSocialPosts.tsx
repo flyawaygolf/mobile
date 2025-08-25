@@ -1,13 +1,14 @@
+import { AnimatedFlashList } from "@shopify/flash-list";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Platform } from "react-native";
 import { Text } from "react-native-paper";
+
 import { useClient, useProfile } from "../../Components/Container";
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import DisplayPost from "../../Components/Posts/DisplayPost";
-import { handleToast } from "../../Services";
 import { Loader } from "../../Other";
-import { AnimatedFlashList } from "@shopify/flash-list";
+import { handleToast } from "../../Services";
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
 const ProfileSocialPosts = () => {
     const { nickname, user_info, scrollY } = useProfile();

@@ -1,15 +1,15 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { IconButton } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 
 import Owner from "./Menu/Owner";
 import User from "./Menu/User";
+import { navigationProps } from "../../../../Services";
+import { GlobalInterface } from "../../../../Services/Client/Managers/Interfaces";
 import styles from "../../../../Style/style";
 import { useClient } from "../../../Container";
 import { Avatar, Username } from "../../../Member";
-import { navigationProps } from "../../../../Services";
-import { GlobalInterface } from "../../../../Services/Client/Managers/Interfaces";
 
 type SectionProps = {
     info: GlobalInterface.userInfo;

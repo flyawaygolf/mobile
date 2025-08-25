@@ -1,13 +1,13 @@
 import React from "react";
-import { Text } from "react-native-paper";
 import { StyleProp, View, ViewStyle } from "react-native";
+import { Text } from "react-native-paper";
 
-import styles from "../../Style/style";
 import { Avatar } from "./";
-import { useClient, useTheme } from "../Container";
 import { formatDistance } from "../../Services";
-import { ShrinkEffect } from "../Effects";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
+import styles from "../../Style/style";
+import { useClient, useTheme } from "../Container";
+import { ShrinkEffect } from "../Effects";
 
 type PropsType = {
     informations: userInfo;

@@ -1,6 +1,6 @@
 import React from "react";
-import { Appbar, Text } from 'react-native-paper';
 import { View } from 'react-native';
+import { Appbar, Text } from 'react-native-paper';
 
 import styles, { full_width } from '../../Style/style';
 import { useNavigation } from "../Container";

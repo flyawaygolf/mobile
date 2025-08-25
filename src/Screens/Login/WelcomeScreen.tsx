@@ -1,11 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
 
-import { LoginRootParamList, ScreenNavigationProps } from '../../Services';
-import { Logo } from '../../Components/Elements/Assets';
 import { useTheme } from '../../Components/Container';
+import { Logo } from '../../Components/Elements/Assets';
+import { LoginRootParamList, ScreenNavigationProps } from '../../Services';
 
 const WelcomeScreen = ({ navigation }: ScreenNavigationProps<LoginRootParamList, "WelcomeScreen">) => {
 

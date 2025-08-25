@@ -1,15 +1,16 @@
-import { Alert, StyleSheet, View } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
+import { Alert, StyleSheet, View } from "react-native";
 import { Badge, Button, Card, IconButton, Text, Tooltip } from "react-native-paper";
-import { useClient, useTheme } from "../Container";
+import { useDispatch } from "react-redux";
+
+import { addGuildList } from "../../Redux/guildList/action";
+import { handleToast, navigationProps } from "../../Services";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { displayHCP } from "../../Services/handicapNumbers";
-import { useTranslation } from "react-i18next";
-import { handleToast, navigationProps } from "../../Services";
-import { addGuildList } from "../../Redux/guildList/action";
-import { useDispatch } from "react-redux";
-import Clipboard from "@react-native-clipboard/clipboard";
 import { full_width } from "../../Style/style";
+import { useClient, useTheme } from "../Container";
 import { Avatar } from "../Member";
 
 const CustomCallout = ({ user_info, onDismiss }: { user_info: userInfo, onDismiss: () => void }) => {

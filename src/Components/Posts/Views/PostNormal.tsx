@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
+
 import Carroussel from "./Components/Carroussel";
 import VideoPlayer from "./Components/VideoPlayer";
 import { useClient, useTheme } from "../../Container";
-import { useTranslation } from "react-i18next";
 import DisplayEmbed from "./Components/DisplayEmbed";
+import { PostInterface } from "../../../Services/Client/Managers/Interfaces/index";
 import Markdown from "../../Text/Markdown";
 import { SinglePostContext } from "../PostContext";
-import { PostInterface } from "../../../Services/Client/Managers/Interfaces/index";
 import DisplayEvent from "./Components/DisplayEvent";
 import DisplayUserScoreCard from "../../Scorecards/DisplayUserScoreCard";
 

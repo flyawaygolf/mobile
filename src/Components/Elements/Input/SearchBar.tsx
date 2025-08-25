@@ -1,9 +1,9 @@
 import React, { LegacyRef } from "react";
-import { IconButton } from "react-native-paper";
 import { TextInputProps, TextInput, View, ViewStyle } from "react-native";
+import { IconButton } from "react-native-paper";
 
-import { useTheme } from "../../Container";
 import styles from "../../../Style/style";
+import { useTheme } from "../../Container";
 import { ShrinkEffect } from "../../Effects";
 
 type SectionProps = React.FC<{

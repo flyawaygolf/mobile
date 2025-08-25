@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Dialog, Paragraph, Portal, Text } from 'react-native-paper';
-import { full_height, full_width } from '../Style/style';
+
 import { useTheme } from '../Components/Container';
 import { deviceInfo } from '../Services';
-import { useTranslation } from 'react-i18next';
+import { full_height, full_width } from '../Style/style';
 
 const OfflineScreen = () => {
 

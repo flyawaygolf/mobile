@@ -1,5 +1,5 @@
-import { NotificationInterface } from "../../Services/Client/Managers/Interfaces";
 import { MARK_READ_NOTIFICATION_FEED, ADD_NOTIFICATION_FEED, INIT_NOTIFICATION_FEED, RESET_NOTIFICATION_FEED, MARK_READ_ONE_NOTIFICATION_FEED } from "./actionTypes";
+import { NotificationInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const notificationFeedReducer = (state: NotificationInterface.notificationFetchResponseSchema[] = [], action: {
     type: string,

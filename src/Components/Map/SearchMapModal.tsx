@@ -1,18 +1,18 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList } from "react-native";
 import { Text } from "react-native-paper";
-import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { navigationProps } from "../../Services";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
-import { FadeInFromBottom } from "../Effects";
 import { full_width } from "../../Style/style";
 import { useTheme } from "../Container";
-import { DisplayMember } from "../Member";
+import { FadeInFromBottom } from "../Effects";
 import { DisplayGolfs } from "../Golfs";
-import { navigationProps } from "../../Services";
+import { DisplayMember } from "../Member";
 
 type PropsType = {
     query: string;

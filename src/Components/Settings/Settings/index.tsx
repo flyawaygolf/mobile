@@ -1,8 +1,8 @@
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useNavigation } from "@react-navigation/native";
 
 import SettingsButtons from "./SettingsButtons";
 import { deviceInfo, handleToast, navigationProps } from "../../../Services";

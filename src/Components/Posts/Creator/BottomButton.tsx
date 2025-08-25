@@ -1,17 +1,17 @@
 import React from "react"
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View, Platform, FlatList, Keyboard } from "react-native";
 import { IconButton, Text } from "react-native-paper";
-import { useTranslation } from "react-i18next";
 
+import { BottomModal } from "../../../Other";
+import { postOptions } from "../../../Screens/CreatePost/PostCreatorScreenStack";
+import { handleToast } from "../../../Services";
+import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Golf";
 import styles from "../../../Style/style";
 import { useClient, useTheme } from "../../Container";
-import { postOptions } from "../../../Screens/CreatePost/PostCreatorScreenStack";
-import { golfInterface } from "../../../Services/Client/Managers/Interfaces/Golf";
-import { BottomModal } from "../../../Other";
 import { SearchBar } from "../../Elements/Input";
 import { DisplayGolfs } from "../../Golfs";
-import { handleToast } from "../../../Services";
 
 type PropsType = {
     addFiles: (target: "photo" | "video") => any,

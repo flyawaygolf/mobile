@@ -1,13 +1,15 @@
-import { Text, useTheme, Icon } from "react-native-paper";
+import { useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
-import { useClient } from "../Container";
-import { messageStatus, userResponseInterface } from "../../Services/Client/Managers/Interfaces/Message";
+import { Text, useTheme, Icon } from "react-native-paper";
+
+import { MessageBox } from "./MessageBox";
 import { attachments, embeds } from "../../Services/Client/Managers/Interfaces/Global";
+import { messageStatus, userResponseInterface } from "../../Services/Client/Managers/Interfaces/Message";
 import { postTypes } from "../../Services/Client/Managers/Interfaces/Post";
 import { ISO_639_CODE_LIST } from "../../Services/Client/utils/ISO-369-1";
+import { useClient } from "../Container";
 import { Avatar } from "../Member";
-import { MessageBox } from "./MessageBox";
-import { useState } from "react";
+
 
 export type MessageBubbleUserInfo = {
     user_id: string

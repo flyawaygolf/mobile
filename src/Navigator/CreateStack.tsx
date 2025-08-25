@@ -1,9 +1,9 @@
-import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React from "react";
 
+import CameraScreen from "../Screens/CreatePost/CameraScreen";
 import DisplayRenderScreen from "../Screens/CreatePost/DisplayRenderScreen";
 import PostCreatorScreenStack from "../Screens/CreatePost/PostCreatorScreenStack";
-import CameraScreen from "../Screens/CreatePost/CameraScreen";
 
 const Stack = createStackNavigator();
 

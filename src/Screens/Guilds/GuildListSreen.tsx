@@ -1,17 +1,17 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { FlatList, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar, Chip, Text } from 'react-native-paper';
 
-import GroupInfo from "../../Components/Messages/GuildInfo";
 import { ScreenContainer, useClient, useTheme } from '../../Components/Container';
-import MessageHeader from '../../Components/Header/Message';
-import CustomHeader from '../../Components/Header/CustomHeader';
-import { useAppDispatch, useAppSelector } from '../../Redux';
 import { ShrinkEffect } from '../../Components/Effects';
+import CustomHeader from '../../Components/Header/CustomHeader';
+import MessageHeader from '../../Components/Header/Message';
+import GroupInfo from "../../Components/Messages/GuildInfo";
+import { useAppDispatch, useAppSelector } from '../../Redux';
+import { guildI } from '../../Redux/guildList';
 import { initGuildList, setUnreadGuildList } from '../../Redux/guildList/action';
 import { handleToast } from '../../Services';
-import { guildI } from '../../Redux/guildList';
 
 type FilterType = "all" | "unread" | "favorites" | "events" | "others"
 

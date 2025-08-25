@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Button, Dialog, Portal, Checkbox, Text, TouchableRipple } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
+
 import { CategoryInterface } from '../../Services/Client/Managers/Interfaces/Events';
 import styles from '../../Style/style';
 

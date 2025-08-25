@@ -1,5 +1,6 @@
 import React from 'react';
 import { DimensionValue, Image, ImageStyle, StyleProp } from 'react-native';
+
 import { useTheme } from '../../Container';
 
 type PropsType = {

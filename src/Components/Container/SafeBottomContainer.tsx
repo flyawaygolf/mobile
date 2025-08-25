@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import useTheme from './Theme/useTheme';
 
 type SectionProps = PropsWithChildren<{

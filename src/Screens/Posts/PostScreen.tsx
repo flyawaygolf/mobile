@@ -1,12 +1,12 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useEffect, useMemo, useState } from 'react';
-import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 import { PostContainer, useClient } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import { FlashList } from '@shopify/flash-list';
 
 function PostScreen({ route }: any) {
 

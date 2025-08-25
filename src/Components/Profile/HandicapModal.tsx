@@ -2,9 +2,9 @@ import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Button, Dialog, Portal, RadioButton, Text, TouchableRipple } from "react-native-paper";
 
+import { modifI } from "../../Screens/Profile/ProfileEditScreen";
 import { handicapNumbersFloat, handicapNumbersInt } from "../../Services/handicapNumbers";
 import styles from "../../Style/style";
-import { modifI } from "../../Screens/Profile/ProfileEditScreen";
 
 type PropsType = {
     handicap: number;

@@ -1,12 +1,12 @@
-import React from "react";
-import { Appbar, Text } from 'react-native-paper';
-import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { View, TouchableOpacity } from 'react-native';
+import { Appbar, Text } from 'react-native-paper';
 
-import styles, { full_width } from '../../Style/style';
-import { Avatar } from '../Member';
 import { navigationProps } from '../../Services';
+import styles, { full_width } from '../../Style/style';
 import { useClient } from "../Container";
+import { Avatar } from '../Member';
 
 type SectionProps = React.FC<{
     isHome?: boolean,

@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Divider } from "react-native-paper";
+
 import { useTheme } from "../Components/Container";
 
 type SectionProps = PropsWithChildren<{

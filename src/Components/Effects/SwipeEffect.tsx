@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useRef } from 'react';
 import { Animated } from 'react-native';
 import { GestureHandlerRootView, PanGestureHandler, PanGestureHandlerGestureEvent, HandlerStateChangeEvent } from 'react-native-gesture-handler';
+
 import { full_width } from '../../Style/style';
 
 const SWIPE_LIMIT = full_width * 0.33;

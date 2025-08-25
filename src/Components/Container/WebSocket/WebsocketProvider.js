@@ -1,10 +1,11 @@
 import React, { useEffect, useReducer } from "react";
+
 import { useConnectionCallback, useMessageCallback } from "./eventHandlers";
 import { initialWebSocketState, reducer } from "./reducer";
-import { useWebLocalsocket } from "./websocketUtils";
 import WebSocketContext from "./webSocketContext";
-import useClient from "../Client/useClient";
+import { useWebLocalsocket } from "./websocketUtils";
 import { webSocketRoutes } from "../../../Services/Client";
+import useClient from "../Client/useClient";
 
 const WebSocketContextProvider = ({ children }) => {
     const client = useClient()

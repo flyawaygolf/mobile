@@ -1,13 +1,19 @@
-import { handleToast } from "../../Services";
-import { useClient, useTheme } from "../Container";
-import { useTranslation } from "react-i18next";
-import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
-import { useCallback, useEffect, useState } from "react";
-import EventCard from "./EventCard";
-import { RefreshControl } from "react-native";
-import { Loader } from "../../Other";
-import { Text } from "react-native-paper";
 import { FlashList } from "@shopify/flash-list";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { RefreshControl } from "react-native";
+import { Text } from "react-native-paper";
+
+import EventCard from "./EventCard";
+import { Loader } from "../../Other";
+import { handleToast } from "../../Services";
+import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
+import { useClient, useTheme } from "../Container";
+
+
+
+
+
 
 export default function PrivateEvents() {
     const { client } = useClient();

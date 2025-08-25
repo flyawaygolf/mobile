@@ -1,13 +1,15 @@
+import { useNavigation } from "@react-navigation/native";
+import { FlashList } from '@shopify/flash-list';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { View } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog, Paragraph, Portal, Text } from 'react-native-paper';
-import { navigationProps } from '../../Services';
+
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
-import { blockUserInformations } from '../../Services/Client/Managers/Interfaces/Block';
 import { DisplayMember } from '../../Components/Member';
-import { FlashList } from '@shopify/flash-list';
+import { navigationProps } from '../../Services';
+import { blockUserInformations } from '../../Services/Client/Managers/Interfaces/Block';
+
 
 function BlockedScreen() {
 

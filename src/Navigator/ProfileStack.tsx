@@ -1,5 +1,6 @@
-import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+
 import { ProfileScreen, ProfileEditScreen } from "../Screens/Profile";
 import FollowScreen from "../Screens/Profile/FollowScreen";
 

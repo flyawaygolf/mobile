@@ -1,11 +1,12 @@
-import { useTranslation } from "react-i18next";
-import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
-import { Text, Button, Appbar, IconButton, List, Icon } from "react-native-paper";
 import { useState } from "react";
-import { ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { useTranslation } from "react-i18next";
 import { ScrollView, View, Modal, Dimensions } from "react-native";
-import { full_width } from "../../Style/style";
+import { Text, Button, Appbar, IconButton, List, Icon } from "react-native-paper";
+
+import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
 import { Avatar } from "../../Components/Member";
+import { ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { full_width } from "../../Style/style";
 
 const getFairwayIcon = (fairway?: number) => {
     if (fairway === 1) return "check";

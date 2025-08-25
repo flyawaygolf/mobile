@@ -1,18 +1,18 @@
+import FastImage from '@d11/react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, View, Alert } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
-import FastImage from '@d11/react-native-fast-image';
 
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
-import { full_width } from '../../Style/style';
-import { handleToast, navigationProps } from '../../Services';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
+import { Avatar } from '../../Components/Member';
 import { Loader } from '../../Other';
 import { useAppDispatch, useAppSelector } from '../../Redux';
 import { addGolfsPlayed, deleteGolfsPlayed, initGolfsPlayed } from '../../Redux/GolfsPlayed/action';
-import { Avatar } from '../../Components/Member';
+import { handleToast, navigationProps } from '../../Services';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
+import { full_width } from '../../Style/style';
 
 const GolfsPlayedScreen = () => {
 

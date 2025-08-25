@@ -1,18 +1,18 @@
-import React, { useState } from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from "react";
 
 import { BottomNavigation } from "./";
-import MessageStack from "./MessageStack";
-import SettingsStack from "./SettingsStack";
-import ProfileStack from "./ProfileStack";
-import GolfsStack from "./GolfsStack";
-import PostStack from "./PostsStack";
 import CreateStack from "./CreateStack";
+import EventStack from "./EventStack";
+import GolfsStack from "./GolfsStack";
+import MessageStack from "./MessageStack";
+import PostStack from "./PostsStack";
+import PremiumStack from "./PremiumStack";
+import ProfileStack from "./ProfileStack";
+import ScorecardStack from "./ScorecardStack";
+import SettingsStack from "./SettingsStack";
 import FavoritesScreen from "../Screens/FavoritesScreen";
 import { NotificationScreen } from "../Screens/Notifications";
-import EventStack from "./EventStack";
-import ScorecardStack from "./ScorecardStack";
-import PremiumStack from "./PremiumStack";
 
 const Stack = createStackNavigator();
 

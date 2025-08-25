@@ -1,14 +1,14 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { FlatList, View } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
 import { Appbar, Button, Dialog, Paragraph, Portal, Text } from 'react-native-paper';
 
-import { favoritesInterface } from '../Services/Client/Managers/Interfaces/Favorites';
 import { ScreenContainer, useClient, useTheme } from '../Components/Container';
-import { handleToast, navigationProps } from '../Services';
-import { full_width } from '../Style/style';
 import { DisplayMember } from '../Components/Member';
+import { handleToast, navigationProps } from '../Services';
+import { favoritesInterface } from '../Services/Client/Managers/Interfaces/Favorites';
+import { full_width } from '../Style/style';
 
 function FavoritesScreen() {
 

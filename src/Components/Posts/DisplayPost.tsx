@@ -1,22 +1,22 @@
+import MaterialIcons from "@react-native-vector-icons/material-design-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { Button, Divider, Text, Card, Icon, Chip } from "react-native-paper";
-import MaterialIcons from "@react-native-vector-icons/material-design-icons";
 import { connect } from 'react-redux';
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
+import { SinglePostContextProvider } from "./PostContext";
+import { Loader } from "../../Other";
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
+import Postbottom from "./Views/Components/Postbottom";
+import Postheader from "./Views/Components/Postheader";
 import { addPostTempSaveTrends } from '../../Redux/postTempSaveFeed/action';
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
+import { navigationProps } from "../../Services/navigationProps";
 import styles from "../../Style/style";
 import { useClient, useTheme } from "../Container";
-import { SinglePostContextProvider } from "./PostContext";
 import PostNormal from "./Views/PostNormal";
-import Postbottom from "./Views/Components/Postbottom";
-import { Loader } from "../../Other";
-import Postheader from "./Views/Components/Postheader";
-import { useNavigation } from "@react-navigation/native";
-import { navigationProps } from "../../Services/navigationProps";
 import { formatDistance } from "../../Services";
 
 type SectionProps = React.FC<{

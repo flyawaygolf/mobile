@@ -1,7 +1,7 @@
+import { guildI } from "./";
+import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS, UPDATE_GUILD_INFO, ADD_GUILD_MEMBER, REMOVE_GUILD_MEMBER, UPDATE_GUILD_MEMBERS, REFRESH_GUILD_LIST } from "./actionTypes";
 import { GuildInterface, MessageInterface } from "../../Services/Client/Managers/Interfaces";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
-import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS, UPDATE_GUILD_INFO, ADD_GUILD_MEMBER, REMOVE_GUILD_MEMBER, UPDATE_GUILD_MEMBERS, REFRESH_GUILD_LIST } from "./actionTypes";
-import { guildI } from "./";
 
 export const resetGuildList = (info = []) => ({
     type: RESET_GUILDS,

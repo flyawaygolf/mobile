@@ -1,33 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleProp, StyleSheet, TextStyle, View } from 'react-native';
-import { TextInput, Button, Switch, Text, Chip, List } from 'react-native-paper';
-import DatePicker from 'react-native-date-picker';
-import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import { TextInput, Button, Switch, Text, Chip, List } from 'react-native-paper';
 
 import { EventsContainer, useClient, useTheme } from '../../Components/Container';
-import { handleToast, navigationProps } from '../../Services';
-import { BottomModal } from '../../Other';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
-import { DisplayGolfs } from '../../Components/Golfs';
 import { SearchBar } from '../../Components/Elements/Input';
-import HandicapModal from '../../Components/Events/HandicapModal';
-import EventTypeSelector from '../../Components/Events/EventTypeSelector';
-import CompetitionFormatSelector from '../../Components/Events/CompetitionFormatSelector';
-import SkillLevelSelector from '../../Components/Events/SkillLevelSelector';
 import CategorySelector from '../../Components/Events/CategorySelector';
+import CompetitionFormatSelector from '../../Components/Events/CompetitionFormatSelector';
 import EquipmentSelector from '../../Components/Events/EquipmentSelector';
-import { displayHCP } from '../../Services/handicapNumbers';
-import { Br } from '../../Components/Text';
-import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
+import EventTypeSelector from '../../Components/Events/EventTypeSelector';
+import HandicapModal from '../../Components/Events/HandicapModal';
+import SkillLevelSelector from '../../Components/Events/SkillLevelSelector';
+import { DisplayGolfs } from '../../Components/Golfs';
 import { Avatar, DisplayMember } from '../../Components/Member';
+import { Br } from '../../Components/Text';
+import { BottomModal } from '../../Other';
+import { handleToast, navigationProps } from '../../Services';
 import {
     CalendarEventType,
     CompetitionFormatEnum,
     SkillLevelEnum,
     CategoryInterface
 } from '../../Services/Client/Managers/Interfaces/Events';
-import dayjs from 'dayjs';
+import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
+import { displayHCP } from '../../Services/handicapNumbers';
+
 
 export default function CreateEventScreen() {
     const { client, user, location } = useClient();

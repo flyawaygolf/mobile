@@ -1,17 +1,17 @@
+import AwesomeIcon from '@react-native-vector-icons/material-design-icons';
+import { useRealm } from '@realm/react';
 import React, { useEffect, useState } from 'react';
-import ClientContext, { clientContextPlaceholder } from './ClientContext';
-import { DefaultTheme, Provider } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
+import { DefaultTheme, Provider } from 'react-native-paper';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
-import { useRealm } from '@realm/react';
-import AwesomeIcon from '@react-native-vector-icons/material-design-icons';
 
+import ClientContext, { clientContextPlaceholder } from './ClientContext';
+import Client from '../../../Services/Client';
+import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 import useTheme from '../Theme/useTheme';
 import { addUser, deleteUser, getAllUsers } from './../../../Services/Realm/userDatabase';
 import { getStorageInfo, initStorage, setStorage, settingsStorageI, userStorageI } from './../../../Services/storage';
-import Client from '../../../Services/Client';
-import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 
 type SectionProps = React.PropsWithChildren<{}>
 

@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Image, Platform, Pressable, StyleSheet, View } from 'react-native';
-import Video from 'react-native-video';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
-import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
-
-import { full_height, full_width } from '../../Style/style';
-import { useTranslation } from 'react-i18next';
-import { handleToast, navigationProps } from '../../Services';
 import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
+import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
+import Video from 'react-native-video';
+
+import { handleToast, navigationProps } from '../../Services';
+import { full_height, full_width } from '../../Style/style';
+
 
 
 export default function DisplayRenderScreen({ route: { params }}: any) {

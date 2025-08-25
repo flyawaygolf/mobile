@@ -1,7 +1,9 @@
 import React from 'react';
-import { useTheme } from '../../Container';
-import { IconButton, Button } from 'react-native-paper';
 import { Image, View, StyleSheet } from 'react-native';
+import { IconButton, Button } from 'react-native-paper';
+
+import { useTheme } from '../../Container';
+
 
 type SectionProps = {
   uri: string;

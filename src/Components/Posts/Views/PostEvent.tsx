@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
+
 import { SinglePostContext } from "../PostContext";
+import DisplayEvent from "./Components/DisplayEvent";
 import Postbottom from "./Components/Postbottom/index";
 import Postheader from "./Components/Postheader";
 import Markdown from "../../Text/Markdown";
-import DisplayEvent from "./Components/DisplayEvent";
 
 function PostEvent() {
 

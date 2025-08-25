@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl } from "react-native";
 import { Text } from "react-native-paper";
 import { connect } from "react-redux";
+
 import { useClient, useTheme } from "../Container";
 import GroupInfo from "./GuildInfo";
 import { RootState, useAppDispatch, useAppSelector } from "../../Redux";
-import { initGuildList, setUnreadGuildList } from "../../Redux/guildList/action";
 import { guildI } from "../../Redux/guildList";
+import { initGuildList, setUnreadGuildList } from "../../Redux/guildList/action";
 import { handleToast } from "../../Services";
 
 function GuildList() {

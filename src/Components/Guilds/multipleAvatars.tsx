@@ -1,6 +1,7 @@
-import React from "react";
-import { cdnbaseurl } from "../../Services/constante";
 import FastImage from "@d11/react-native-fast-image";
+import React from "react";
+
+import { cdnbaseurl } from "../../Services/constante";
 
 export default function MultipleAvatar({ size = 33 }) {
 

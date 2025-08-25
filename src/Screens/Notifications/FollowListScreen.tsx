@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Toast from 'react-native-toast-message';
-import { RefreshControl } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { useClient, useTheme } from '../../Components/Container';
-import { FollowInterface } from '../../Services/Client/Managers/Interfaces';
-import { DisplayMember } from '../../Components/Member';
-import { navigationProps } from '../../Services';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { RefreshControl } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
+
+import { useClient, useTheme } from '../../Components/Container';
+import { DisplayMember } from '../../Components/Member';
+import { navigationProps } from '../../Services';
+import { FollowInterface } from '../../Services/Client/Managers/Interfaces';
 
 const FollowListScreen = () => {
 

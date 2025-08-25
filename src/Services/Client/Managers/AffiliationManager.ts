@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { AffiliationInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { emptyResponse } from './Interfaces/Global';
 
 class AffiliationManager extends RequestEmitter {

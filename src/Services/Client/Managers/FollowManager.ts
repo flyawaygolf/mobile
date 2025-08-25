@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { FollowInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { paginationParams } from './Interfaces/Global';
 
 class FollowManager extends RequestEmitter {

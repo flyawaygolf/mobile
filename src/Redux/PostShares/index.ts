@@ -1,6 +1,6 @@
 
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import { ADD_CREATED_TRENDS_SHARES, ADD_TRENDS_SHARES, DELETE_TRENDS_SHARES, INIT_TRENDS_SHARES, RESET_TRENDS_SHARES } from "./actionTypes";
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const postSharesReducer = (state: PostInterface.postResponseSchema[] = [], action: {
     type: string,

@@ -1,11 +1,12 @@
+import FastImage, { ImageStyle, ResizeMode } from '@d11/react-native-fast-image';
 import React, { memo, useContext, useEffect, useState } from "react";
 import { View, ScrollView, StyleSheet, StyleProp, ImageRequireSource } from "react-native";
-import { Badge } from "react-native-paper";
 import ImageModal from 'react-native-image-modal';
-import FastImage, { ImageStyle, ResizeMode } from '@d11/react-native-fast-image';
+import { Badge } from "react-native-paper";
+
+import { attachments } from "../../../../Services/Client/Managers/Interfaces/Global";
 import { useClient, useTheme } from "../../../Container";
 import { SinglePostContext } from "../../PostContext";
-import { attachments } from "../../../../Services/Client/Managers/Interfaces/Global";
 
 type createType = {
     size: number,

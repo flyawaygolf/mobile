@@ -1,10 +1,13 @@
-import { Appbar } from "react-native-paper";
-import { ScreenContainer, useTheme } from "../../Components/Container";
-import { navigationProps } from "../../Services";
-import { useTranslation } from "react-i18next";
-import CustomHeader from "../../Components/Header/CustomHeader";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { Appbar } from "react-native-paper";
+
 import EventsNavigator from "./EventsNavigator";
+import { ScreenContainer, useTheme } from "../../Components/Container";
+import CustomHeader from "../../Components/Header/CustomHeader";
+import { navigationProps } from "../../Services";
+
+
 
 export default function EventsScreen() {
     const { t } = useTranslation();

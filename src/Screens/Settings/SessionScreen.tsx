@@ -1,12 +1,13 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { View } from 'react-native';
 import { Text, Button, Dialog, Portal, TextInput } from 'react-native-paper';
+
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
+import SessionBox from '../../Components/Settings/Session/SessionBox';
 import { handleToast } from '../../Services';
 import { fetchSessionsResponseSchema } from '../../Services/Client/Managers/Interfaces/Session';
-import SessionBox from '../../Components/Settings/Session/SessionBox';
-import { FlashList } from '@shopify/flash-list';
 
 function SessionScreen() {
 

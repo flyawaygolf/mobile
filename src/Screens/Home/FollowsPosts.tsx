@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { RefreshControl } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { RefreshControl } from 'react-native';
+import { connect } from 'react-redux';
 
 import { useClient, useTheme } from '../../Components/Container';
+import EmptyHome from '../../Components/Home/EmptyHome';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
-import { addMainTrends, initMainTrends } from '../../Redux/mainFeed/action';
 import { Loader } from '../../Other';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
-
+import { addMainTrends, initMainTrends } from '../../Redux/mainFeed/action';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import EmptyHome from '../../Components/Home/EmptyHome';
 import { ON_END_REACHED_THRESHOLD_POSTS } from '../../Services/constante';
 
 const FollowsPosts = () => {

@@ -1,7 +1,8 @@
 import React, { Suspense, lazy, useCallback, useState } from "react";
-import { Divider, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { NativeSyntheticEvent, StyleProp, TextLayoutEventData, TextStyle } from "react-native";
+import { Divider, Text } from "react-native-paper";
+
 import { handleToast, translateText } from "../../Services";
 import { premiumAdvantages } from "../../Services/premiumAdvantages";
 import { useClient } from "../Container";

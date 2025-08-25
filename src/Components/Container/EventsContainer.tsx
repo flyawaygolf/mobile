@@ -1,9 +1,12 @@
 import React from 'react';
-import SafeBottomContainer from './SafeBottomContainer';
-import { Appbar, Text } from 'react-native-paper';
-import styles, { full_width } from '../../Style/style';
 import { View } from 'react-native';
+import { Appbar, Text } from 'react-native-paper';
+
+import SafeBottomContainer from './SafeBottomContainer';
 import { navigationProps } from '../../Services';
+import styles, { full_width } from '../../Style/style';
+
+
 
 const EventsContainer = ({ children, title, navigation }: React.PropsWithChildren<{
     title: string;

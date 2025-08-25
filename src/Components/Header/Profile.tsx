@@ -1,6 +1,6 @@
 import React from "react";
-import { Appbar } from 'react-native-paper';
 import { Image, View } from 'react-native';
+import { Appbar } from 'react-native-paper';
 
 import { useTheme } from "../Container";
 

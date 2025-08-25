@@ -1,8 +1,8 @@
-import { cdnbaseurl } from '../../constante';
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import GolfLinkManager from './GolfLinkManager';
 import GolfPlayedManager from './GolfPlayedManager';
 import { EventInterface, PostInterface } from './Interfaces';
+import { cdnbaseurl } from '../../constante';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { paginationParams } from './Interfaces/Global';
 import { fetchGolfResponse } from './Interfaces/Search';
 import { LocationQuery } from './SearchMapManager';

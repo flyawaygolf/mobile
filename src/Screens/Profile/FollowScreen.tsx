@@ -1,15 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useState, useCallback } from "react";
-import { RefreshControl, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import Toast from 'react-native-toast-message';
+import { RefreshControl, TouchableOpacity, View } from "react-native";
 import { Appbar, Icon, Text } from "react-native-paper";
+import Toast from 'react-native-toast-message';
+
 import { ScreenContainer, useClient, useTheme, } from "../../Components/Container";
 import { Avatar } from "../../Components/Member";
-import styles, { full_width } from "../../Style/style";
-import { FollowInterface } from "../../Services/Client/Managers/Interfaces";
-import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "../../Services";
-import { FlashList } from "@shopify/flash-list";
+import { FollowInterface } from "../../Services/Client/Managers/Interfaces";
+import styles, { full_width } from "../../Style/style";
+
 
 function FollowScreen({ route }: any) {
 

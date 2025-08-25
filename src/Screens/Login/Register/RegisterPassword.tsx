@@ -5,8 +5,8 @@ import { TextInput as PaperTextInput, Text } from 'react-native-paper';
 
 import { useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
-import { LoginRootParamList, ScreenNavigationProps } from '../../../Services';
 import LoginContainer from '../../../Components/LoginContainer';
+import { LoginRootParamList, ScreenNavigationProps } from '../../../Services';
 
 const RegisterPassword = ({
     navigation,

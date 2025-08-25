@@ -1,16 +1,17 @@
-import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import { useTranslation } from "react-i18next";
 import { useNavigation } from '@react-navigation/native';
-import { useClient, useTheme } from "../Container";
-import { Username, Avatar } from "../Member";
-import styles from "../../Style/style";
-import { navigationProps } from "../../Services";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { TouchableOpacity, View } from "react-native";
 import { Icon } from "react-native-paper";
+
+import { navigationProps } from "../../Services";
 import { NotificationInterface } from "../../Services/Client/Managers/Interfaces";
 import { notificationTypeInterface } from "../../Services/Client/Managers/Interfaces/Global";
-import { Markdown } from "../Text";
+import styles from "../../Style/style";
+import { useClient, useTheme } from "../Container";
 import { ShrinkEffect } from "../Effects";
+import { Username, Avatar } from "../Member";
+import { Markdown } from "../Text";
 
 type sectionProps = {
     info: NotificationInterface.notificationFetchResponseSchema;

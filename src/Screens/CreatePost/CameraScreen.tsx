@@ -1,14 +1,15 @@
+import { useIsFocused, useNavigation } from '@react-navigation/core'
 import * as React from 'react'
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, Platform } from 'react-native'
 import { Gesture, GestureDetector, TapGestureHandler, } from 'react-native-gesture-handler'
-import Reanimated, { Extrapolation, interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { useIsFocused, useNavigation } from '@react-navigation/core'
 import { IconButton } from 'react-native-paper'
+import Reanimated, { Extrapolation, interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { Camera, CameraRuntimeError, PhotoFile, useCameraDevice, useCameraFormat, VideoFile, useLocationPermission, useMicrophonePermission, useCameraPermission, } from 'react-native-vision-camera'
+
+import { CaptureButton } from '../../Components/Camera/CaptureButton'
 import { MAX_ZOOM_FACTOR, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../Components/Camera/Constants'
 import { useIsForeground } from '../../Components/Camera/useIsForeground'
-import { CaptureButton } from '../../Components/Camera/CaptureButton'
 import { navigationProps } from '../../Services'
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera)

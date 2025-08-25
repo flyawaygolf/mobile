@@ -1,19 +1,20 @@
+import { useNavigation } from '@react-navigation/native';
+import { AnimatedFlashList } from '@shopify/flash-list';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View, Animated, Platform } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 
 import { SafeBottomContainer, useClient, useProfile, useTheme } from '../../Components/Container';
-import { handleToast, navigationProps } from '../../Services';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { DisplayGolfs } from '../../Components/Golfs';
+import DisplayPost from '../../Components/Posts/DisplayPost';
 import ProfileHeader from '../../Components/Profile/ProfileHeader';
 import ProfileInfo from '../../Components/Profile/ProfileInfo';
-import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import DisplayPost from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
-import { AnimatedFlashList } from '@shopify/flash-list';
+import { handleToast, navigationProps } from '../../Services';
+import { PostInterface } from '../../Services/Client/Managers/Interfaces';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
+
 
 type SectionProps = {
   nickname: string;

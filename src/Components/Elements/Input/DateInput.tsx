@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, Pressable } from "react-native";
 import DatePicker from 'react-native-date-picker'
 import { TextInput } from "react-native-paper";
-import { useTranslation } from "react-i18next";
-import { messageFormatDate } from "../../../Services";
-import { Platform, Pressable } from "react-native";
 import { TextInputLabelProp } from "react-native-paper/lib/typescript/components/TextInput/types";
+
+import { messageFormatDate } from "../../../Services";
+
 
 type SectionProps = {
     onChange: (params: Date) => any;

@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { RefreshControl } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { FlashList } from '@shopify/flash-list';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { RefreshControl } from 'react-native';
+import { connect } from 'react-redux';
 
 import { useClient, useTheme } from '../../Components/Container';
+import EmptyHome from '../../Components/Home/EmptyHome';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
 import { Loader } from '../../Other';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
-
-import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import EmptyHome from '../../Components/Home/EmptyHome';
 import { addRecentMainPosts, initRecentMainPosts } from '../../Redux/recentMainFeed/action';
+import { PostInterface } from '../../Services/Client/Managers/Interfaces';
 import { ON_END_REACHED_THRESHOLD_POSTS } from '../../Services/constante';
 
 const RecentPosts = () => {

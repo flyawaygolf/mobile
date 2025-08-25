@@ -1,14 +1,16 @@
+import { useNavigation } from "@react-navigation/native";
+import { AnimatedFlashList } from "@shopify/flash-list";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Platform } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Text } from "react-native-paper";
+
 import { useClient, useProfile } from "../../Components/Container";
-import { handleToast, navigationProps } from "../../Services";
-import { Loader } from "../../Other";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { DisplayGolfs } from "../../Components/Golfs";
-import { AnimatedFlashList } from "@shopify/flash-list";
+import { Loader } from "../../Other";
+import { handleToast, navigationProps } from "../../Services";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
+
 
 const ProfileGolfs = () => {
     const navigation = useNavigation<navigationProps>();

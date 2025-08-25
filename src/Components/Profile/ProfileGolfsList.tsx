@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
-import { DisplayGolfs } from "../Golfs";
-import { handleToast, navigationProps } from "../../Services";
 import { useCallback, useMemo, useState } from "react";
-import { FlatList } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useClient } from "../Container";
+import { FlatList } from "react-native";
 import { Text } from "react-native-paper";
+
+import { handleToast, navigationProps } from "../../Services";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
+import { useClient } from "../Container";
+import { DisplayGolfs } from "../Golfs";
 
 type SectionProps = {
     user_id: string;

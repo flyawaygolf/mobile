@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text, TouchableRipple, Icon } from 'react-native-paper';
+
 import { useTheme } from '../../Components/Container';
 
 interface ExpandableSectionProps {

@@ -1,16 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
-import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
-import { handleToast, MessageStackParams, navigationProps, ScreenNavigationProps } from "../../Services";
-import { useTranslation } from "react-i18next";
-import { Appbar, Avatar, Icon, IconButton, Text, TextInput } from "react-native-paper";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, FlatList, View } from "react-native";
-import { DisplayMember } from "../../Components/Member";
-import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
-import { ShrinkEffect } from "../../Components/Effects";
+import { Appbar, Avatar, Icon, IconButton, Text, TextInput } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import { deleteGuildList, updateGuildInfo as updateGuildInfoRedux } from "../../Redux/guildList/action";
+
+import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
+import { ShrinkEffect } from "../../Components/Effects";
+import { DisplayMember } from "../../Components/Member";
 import MessagesContext from "../../Contexts/MessagesContext";
+import { deleteGuildList, updateGuildInfo as updateGuildInfoRedux } from "../../Redux/guildList/action";
+import { handleToast, MessageStackParams, navigationProps, ScreenNavigationProps } from "../../Services";
+import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 
 // Composant pour l'édition du nom de la guilde
 const GuildNameEditor = ({

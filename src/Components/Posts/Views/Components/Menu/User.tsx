@@ -1,15 +1,17 @@
+import Clipboard from "@react-native-clipboard/clipboard";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Share } from "react-native";
+import { Button, Divider } from "react-native-paper";
 import Toast from 'react-native-toast-message';
-import Clipboard from "@react-native-clipboard/clipboard";
 
 import { BottomModal } from "../../../../../Other";
-import { useClient, useTheme } from "../../../../Container";
-import { Button, Divider } from "react-native-paper";
-import { SinglePostContext } from "../../../PostContext";
-import { Share } from "react-native";
-import { posturl } from "../../../../../Services/constante";
 import PostsReportModal from "../../../../../Screens/Reports/PostsReportModal";
+import { posturl } from "../../../../../Services/constante";
+import { useClient, useTheme } from "../../../../Container";
+import { SinglePostContext } from "../../../PostContext";
+
+
 
 type SectionProps = {
     modalVisible: boolean,

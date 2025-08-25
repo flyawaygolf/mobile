@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { SubscriptionInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 
 class SubscriptionManager extends RequestEmitter {
 

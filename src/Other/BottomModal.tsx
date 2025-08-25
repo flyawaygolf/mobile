@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { Platform, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useTheme } from '../Components/Container';
 
 type SectionProps = PropsWithChildren<{

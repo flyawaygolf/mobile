@@ -1,5 +1,5 @@
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import { ADD_TRENDS, DELETE_TRENDS, INIT_TRENDS, RESET_TRENDS, ADD_CREATED_TRENDS } from "./actionTypes";
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const resetMainTrends = (info: []) => ({
     type: RESET_TRENDS,

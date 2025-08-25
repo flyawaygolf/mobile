@@ -1,7 +1,7 @@
-import { cdnbaseurl } from '../../constante';
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { GlobalInterface, PostInterface, SearchInterface } from './Interfaces';
 import PostUserManager from './PostUserManager';
+import { cdnbaseurl } from '../../constante';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 
 class PostManager extends RequestEmitter {
   public user: PostUserManager;

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useState } from 'react';
 
 import { MainNavigation } from "./";
-
 import DrawerContent from '../Components/Container/Drawer/Content';
 
 const DrawerNavigator = createDrawerNavigator();

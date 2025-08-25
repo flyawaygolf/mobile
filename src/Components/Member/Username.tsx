@@ -1,16 +1,17 @@
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime'
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Icon, Text } from "react-native-paper";
-import dayjs from "dayjs";
-import styles from "../../Style/style";
-import { useTheme } from "../Container";
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { useTranslation } from "react-i18next";
+
 import { messageFormatDate } from "../../Services";
-import UserPermissions from "../../Services/Client/Permissions/UserPermissions";
 import { userFlags } from "../../Services/Client";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
 import { myInformationInterface } from "../../Services/Client/Managers/Interfaces/Me";
+import UserPermissions from "../../Services/Client/Permissions/UserPermissions";
+import styles from "../../Style/style";
+import { useTheme } from "../Container";
 
 dayjs.extend(relativeTime)
 

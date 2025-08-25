@@ -2,9 +2,10 @@ import React from "react";
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import { LoginRootParamList, ScreenNavigationProps } from "../../Services";
-import LoginContainer from "../../Components/LoginContainer";
+
 import { NormalButton } from "../../Components/Elements/Buttons";
+import LoginContainer from "../../Components/LoginContainer";
+import { LoginRootParamList, ScreenNavigationProps } from "../../Services";
 
 function RegisterVerification({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterVerification">) {
 

@@ -1,4 +1,6 @@
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     View,
     StyleSheet,
@@ -6,13 +8,12 @@ import {
     TouchableOpacity,
     Alert,
 } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
 import { IconButton, Switch, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
+
+import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
+import { handleToast, messageFormatDate } from '../../Services';
 import { AvailabilitySlot } from '../../Services/Client/Managers/Interfaces/Me';
 import { availabilityDefault } from '../../Services/premiumAdvantages';
-import { handleToast, messageFormatDate } from '../../Services';
 
 export default function AvailabilityPremiumSettingsScreen() {
     const { colors } = useTheme();

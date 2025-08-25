@@ -1,12 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Appbar } from 'react-native-paper';
-import { useNavigation } from "@react-navigation/native";
-import { full_width } from "../../Style/style";
-import { Avatar } from "../Member";
+
 import { navigationProps } from "../../Services";
+import { full_width } from "../../Style/style";
 import useClient from "../Container/Client/useClient";
 import useTheme from "../Container/Theme/useTheme";
 import { ShrinkEffect } from "../Effects";
+import { Avatar } from "../Member";
 
 type SectionProps = React.FC<{
     isHome?: boolean;

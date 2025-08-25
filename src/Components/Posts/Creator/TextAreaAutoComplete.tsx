@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, TextInput, TouchableOpacity, View } from "react-native";
-import { useClient, useTheme } from "../../Container";
-import DisplayMember from "../../Member/DisplayMember";
+
 import { GlobalInterface } from "../../../Services/Client/Managers/Interfaces";
-import { emojies_defs } from "../../Text/Markdown/emojis";
+import { useClient, useTheme } from "../../Container";
 import { DisplayEmoji } from "../../Emojis";
+import DisplayMember from "../../Member/DisplayMember";
+import { emojies_defs } from "../../Text/Markdown/emojis";
 
 type sectionProps = {
     autoFocus: boolean;

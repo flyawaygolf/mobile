@@ -1,17 +1,17 @@
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, StyleSheet } from 'react-native';
 import { Text, Checkbox, TextInput, HelperText, Icon } from 'react-native-paper';
-import dayjs from 'dayjs';
 
-import styles from '../../../Style/style';
 import { useClient, useTheme } from '../../../Components/Container';
+import { ShakeEffect } from '../../../Components/Effects';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
 import { DateInput } from '../../../Components/Elements/Input';
-import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
-import { Loader } from '../../../Other';
 import LoginContainer from '../../../Components/LoginContainer';
-import { ShakeEffect } from '../../../Components/Effects';
+import { Loader } from '../../../Other';
+import { cguLink, LoginRootParamList, openURL, ScreenNavigationProps } from '../../../Services';
+import styles from '../../../Style/style';
 
 const RegisterBirthdayAccept = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "RegisterBirthdayAccept">) => {
 

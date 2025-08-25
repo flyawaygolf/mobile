@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { StyleSheet, ViewProps } from 'react-native';
-import Toast from 'react-native-toast-message';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
@@ -17,10 +16,10 @@ import Reanimated, {
   useAnimatedGestureHandler,
   useSharedValue,
 } from 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
+import { Camera, PhotoFile, TakePhotoOptions, VideoFile } from 'react-native-vision-camera';
 
 import { START_RECORDING_DELAY, CAPTURE_BUTTON_SIZE, BORDER_WIDTH, SCREEN_HEIGHT, PAN_GESTURE_HANDLER_FAIL_X, PAN_GESTURE_HANDLER_ACTIVE_Y } from "./Constants";
-
-import { Camera, PhotoFile, TakePhotoOptions, VideoFile } from 'react-native-vision-camera';
 
 interface Props extends ViewProps {
   camera: React.RefObject<Camera>

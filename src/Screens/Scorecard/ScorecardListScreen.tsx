@@ -1,16 +1,17 @@
-import { useTranslation } from "react-i18next";
-
-import { useEffect, useMemo, useState } from "react";
-import { getUserScoreCardInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
-import { useAppDispatch, useAppSelector } from "../../Redux";
-import { Loader } from "../../Other";
-import { addUserScoreCard, initUserScoreCard } from "../../Redux/UserScoreCard/action";
-import { SettingsContainer, useClient } from "../../Components/Container";
-import { Text } from "react-native-paper";
-import { navigationProps } from "../../Services";
 import { useNavigation } from "@react-navigation/native";
-import DisplayUserScoreCard from "../../Components/Scorecards/DisplayUserScoreCard";
 import { FlashList } from "@shopify/flash-list";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Text } from "react-native-paper";
+
+import { SettingsContainer, useClient } from "../../Components/Container";
+import DisplayUserScoreCard from "../../Components/Scorecards/DisplayUserScoreCard";
+import { Loader } from "../../Other";
+import { useAppDispatch, useAppSelector } from "../../Redux";
+import { addUserScoreCard, initUserScoreCard } from "../../Redux/UserScoreCard/action";
+import { navigationProps } from "../../Services";
+import { getUserScoreCardInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
+
 
 const ScorecardListScreen = () => {
 

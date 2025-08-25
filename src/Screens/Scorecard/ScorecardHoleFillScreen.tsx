@@ -1,13 +1,14 @@
-import { useTranslation } from "react-i18next";
-import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
-import { Text, Button, TextInput, Appbar, IconButton, Switch } from "react-native-paper";
 import { useEffect, useState } from "react";
-import { handleToast, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from "react-native";
-import { HoleScorecardSchemaInterface, scorecardCreatorParams, scorecardUpdateParams } from "../../Services/Client/Managers/Interfaces/Scorecard";
-import { full_width } from "../../Style/style";
+import { Text, Button, TextInput, Appbar, IconButton, Switch } from "react-native-paper";
+
+import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
 import { Avatar } from "../../Components/Member";
 import BottomModal from "../../Other/BottomModal";
+import { handleToast, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { HoleScorecardSchemaInterface, scorecardCreatorParams, scorecardUpdateParams } from "../../Services/Client/Managers/Interfaces/Scorecard";
+import { full_width } from "../../Style/style";
 
 const fairwayOptions = [
     { label: "arrow-left", value: 0, desc: "Miss gauche" },

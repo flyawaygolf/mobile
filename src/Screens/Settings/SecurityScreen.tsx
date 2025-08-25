@@ -1,12 +1,13 @@
+import { useRealm } from '@realm/react';
 import React, { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from 'react-native';
 import { Text, Button, Dialog, Paragraph, Portal, TextInput as PaperTextInput, TextInput } from 'react-native-paper';
-import { useRealm } from '@realm/react';
+
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
+import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
 import { cguLink, cgvLink, openURL, privacyLink } from '../../Services';
 import { deleteUser } from '../../Services/Realm/userDatabase';
-import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
 
 function SecurityScreen() {
 

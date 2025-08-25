@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { ExploreInterface, PostInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { exploreBestUserResponse, exploreRandomUserResponse } from './Interfaces/Explore';
 
 class ExploreManager extends RequestEmitter {

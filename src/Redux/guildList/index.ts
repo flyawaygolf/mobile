@@ -1,6 +1,6 @@
-import { GuildInterface, MessageInterface } from "../../Services/Client/Managers/Interfaces";
-import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS } from "./actionTypes";
 import { IchangeLastMessageGuildList } from "./action";
+import { ADD_GUILDS, DELETE_GUILDS, INIT_GUILDS, MODIFY_GUILDS, RESET_GUILDS, UNREAD_GUILDS, CHANGE_MESSAGE_UNREAD_GUILDS, UPDATE_GUILDS } from "./actionTypes";
+import { GuildInterface, MessageInterface } from "../../Services/Client/Managers/Interfaces";
 
 export type guildI = GuildInterface.fetchGuildResponseSchema & { unread?: boolean } & { last_message: { message_id: string } } 
 

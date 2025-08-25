@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Appbar, Divider, Chip } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
+import { connect, useDispatch } from 'react-redux';
 
 import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
-import { handleToast } from '../../Services';
-import { MessageStackParams, ScreenNavigationProps } from '../../Services';
-import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
 import { SearchBar } from '../../Components/Elements/Input';
 import { Avatar, DisplayMember } from '../../Components/Member';
-import { full_width } from '../../Style/style';
 import MessagesContext from '../../Contexts/MessagesContext';
-import { connect, useDispatch } from 'react-redux';
 import { RootState } from '../../Redux';
 import { addGuildList } from '../../Redux/guildList/action';
+import { MessageStackParams, ScreenNavigationProps } from '../../Services';
+import { handleToast } from '../../Services';
+import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
+import { full_width } from '../../Style/style';
 
 interface AddUsersToGuildScreenProps extends ScreenNavigationProps<MessageStackParams, 'AddUsersToGuildScreen'> { }
 

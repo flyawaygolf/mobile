@@ -1,4 +1,5 @@
 import Realm from "realm";
+
 import { myInformationInterface } from "../Client/Managers/Interfaces/Me";
 
 // Définition de la classe utilisateur

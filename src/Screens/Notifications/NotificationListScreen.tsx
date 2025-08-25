@@ -1,15 +1,16 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Toast from 'react-native-toast-message';
 import { RefreshControl } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useClient, useTheme } from '../../Components/Container';
-import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
+import Toast from 'react-native-toast-message';
 import { connect } from 'react-redux';
+
+import { useClient, useTheme } from '../../Components/Container';
+import DisplayNotifications from '../../Components/Notifications/DisplayNotifications';
+import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
 import { addNotificationFeed, initNotificationFeed, readOneNotificationFeed } from '../../Redux/NotificationFeed/action';
 import { NotificationInterface } from '../../Services/Client/Managers/Interfaces';
-import DisplayNotifications from '../../Components/Notifications/DisplayNotifications';
-import { FlashList } from '@shopify/flash-list';
 
 const NoficationListScreen = () => {
 

@@ -1,5 +1,5 @@
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import { ADD_TRENDS, DELETE_TRENDS, INIT_TRENDS, RESET_TRENDS } from "./actionTypes";
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const exploreTopWorldTrendsReducer = (state: PostInterface.postResponseSchema[] = [], action: {
     type: string,

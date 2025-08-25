@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from 'react-i18next';
-import ImagePicker from 'react-native-image-crop-picker';
-import { ScrollView, View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import FastImage from "@d11/react-native-fast-image";
 import { useNavigation } from "@react-navigation/native";
-import { Appbar, Text, TextInput, ProgressBar, IconButton, Button, SegmentedButtons } from "react-native-paper";
 import { useRealm } from "@realm/react";
 import { AxiosRequestConfig } from "axios";
-import FastImage from "@d11/react-native-fast-image";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
+import { ScrollView, View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
+import ImagePicker from 'react-native-image-crop-picker';
+import { Appbar, Text, TextInput, ProgressBar, IconButton, Button, SegmentedButtons } from "react-native-paper";
 
-import useTheme from "../../Components/Container/Theme/useTheme";
 import { useClient } from "../../Components/Container";
-import { axiosInstance, getPermissions, handleToast } from "../../Services";
+import useTheme from "../../Components/Container/Theme/useTheme";
 import { Avatar } from "../../Components/Member";
-import { full_width } from "../../Style/style";
+import HandicapModal from "../../Components/Profile/HandicapModal";
+import { axiosInstance, getPermissions, handleToast } from "../../Services";
+import { gender } from "../../Services/Client/Managers/Interfaces/Global";
+import { usertokenkey } from "../../Services/constante";
 import { displayHCP } from "../../Services/handicapNumbers";
 import { addUser } from "../../Services/Realm/userDatabase";
-import { gender } from "../../Services/Client/Managers/Interfaces/Global";
-import HandicapModal from "../../Components/Profile/HandicapModal";
-import { usertokenkey } from "../../Services/constante";
+import { full_width } from "../../Style/style";
 
 export interface fileI {
     size: number;

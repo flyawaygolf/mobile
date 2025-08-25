@@ -1,8 +1,8 @@
+import FastImage, { ImageStyle } from "@d11/react-native-fast-image";
 import React from "react";
+import { StyleProp } from "react-native";
 
 import { useTheme } from "../Container";
-import { StyleProp } from "react-native";
-import FastImage, { ImageStyle } from "@d11/react-native-fast-image";
 
 type PropsType = {
     url: string;

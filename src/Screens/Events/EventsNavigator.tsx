@@ -1,12 +1,13 @@
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+
 import { useTheme } from '../../Components/Container';
-import { full_width } from '../../Style/style';
 import JoinedEvents from '../../Components/Events/JoinedEvents';
 import NearbyEventList from '../../Components/Events/NearbyEventList';
 import PrivateEvents from '../../Components/Events/PrivateEvents';
 import RecentEventsList from '../../Components/Events/RecentEventsList';
+import { full_width } from '../../Style/style';
 
 const renderScene = SceneMap({
     joined: JoinedEvents,

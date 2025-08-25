@@ -1,17 +1,19 @@
-import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
-import { Appbar, Text, Card, Button, Avatar, TextInput } from "react-native-paper";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { formatDistance, handleToast, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
-import { full_width } from "../../Style/style";
 import { useTranslation } from "react-i18next";
+import { ScrollView, View, Image, KeyboardAvoidingView, Platform } from "react-native";
+import { Appbar, Text, Card, Button, Avatar, TextInput } from "react-native-paper";
+
+import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
+import BottomModal from "../../Other/BottomModal";
+import { formatDistance, handleToast, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { CompetitionFormatEnum } from "../../Services/Client/Managers/Interfaces/Events";
 import { golfInterface, scoreCardInterface, scorecardGridInterface, scorecardTeeboxInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { GameModeEnum } from "../../Services/Client/Managers/Interfaces/Scorecard";
-import { ScrollView, View, Image, KeyboardAvoidingView, Platform } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { CompetitionFormatEnum } from "../../Services/Client/Managers/Interfaces/Events";
-import BottomModal from "../../Other/BottomModal";
 import { displayHCP } from "../../Services/handicapNumbers";
-import dayjs from "dayjs";
+import { full_width } from "../../Style/style";
+
 
 const ScorecardCreateScreen = ({ route, navigation }: ScreenNavigationProps<ScorecardStackParams, "ScorecardCreateScreen">) => {
     const { golf_id } = route.params;

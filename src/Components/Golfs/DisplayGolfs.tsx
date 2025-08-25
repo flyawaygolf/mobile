@@ -1,12 +1,12 @@
 import React from "react";
-import { Text } from "react-native-paper";
 import { View } from "react-native";
+import { Text } from "react-native-paper";
 
+import { formatDistance } from "../../Services";
+import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import styles from "../../Style/style";
 import { useClient, useTheme } from "../Container";
-import { formatDistance } from "../../Services";
 import { ShrinkEffect } from "../Effects";
-import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
 import { Avatar } from "../Member";
 
 type PropsType = {

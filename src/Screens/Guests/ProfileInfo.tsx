@@ -1,18 +1,19 @@
+import FastImage from '@d11/react-native-fast-image';
+import Clipboard from "@react-native-clipboard/clipboard";
 import React, { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, View } from "react-native";
 import { Badge, Card, Icon, IconButton, Text } from "react-native-paper";
-import { useTranslation } from "react-i18next";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { handleToast } from "../../Services";
-import { displayHCP } from "../../Services/handicapNumbers";
-import { userFlags } from '../../Services/Client';
-import FastImage from '@d11/react-native-fast-image';
-import { availabilityDefault, premiumAdvantages } from '../../Services/premiumAdvantages';
-import { ShrinkEffect } from '../../Components/Effects';
-import ShowAvailability from '../../Components/Premium/ShowAvalability';
-import { Avatar } from '../../Components/Member';
+
 import { useClient, useTheme } from '../../Components/Container';
+import { ShrinkEffect } from '../../Components/Effects';
+import { Avatar } from '../../Components/Member';
+import ShowAvailability from '../../Components/Premium/ShowAvalability';
+import { handleToast } from "../../Services";
+import { userFlags } from '../../Services/Client';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
+import { displayHCP } from "../../Services/handicapNumbers";
+import { availabilityDefault, premiumAdvantages } from '../../Services/premiumAdvantages';
 
 type ProfileInfoProps = {
     user_info: userInfo;

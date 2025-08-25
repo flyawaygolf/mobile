@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { full_height, full_width } from '../Style/style';
-import { Loader } from '../Other';
+
 import { useTheme } from '../Components/Container';
-import { deviceInfo } from '../Services';
 import { Logo } from '../Components/Elements/Assets';
+import { Loader } from '../Other';
+import { deviceInfo } from '../Services';
+import { full_height, full_width } from '../Style/style';
 
 const SplashScreen = () => {
 

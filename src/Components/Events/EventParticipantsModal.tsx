@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events"
-import { FlatList, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FlatList, Platform } from "react-native";
 import { Text } from "react-native-paper";
-import { handleToast, navigationProps } from "../../Services";
-import { useClient } from "../Container";
-import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
+
 import { BottomModal, Loader } from "../../Other";
+import { handleToast, navigationProps } from "../../Services";
+import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events"
+import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
+import { useClient } from "../Container";
 import { DisplayMember } from "../Member";
 
 type SectionProps = {

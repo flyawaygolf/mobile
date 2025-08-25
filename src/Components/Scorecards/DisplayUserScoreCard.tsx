@@ -1,12 +1,13 @@
-import { Button, Card, Text } from "react-native-paper";
-import { useClient, useTheme } from "../Container";
-import { ImageBackground, StyleSheet } from "react-native";
-import { View } from "react-native";
-import LogoWhite from "../Elements/Assets/LogoWhite";
-import { getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
-import { colorsInterface } from "../Container/Theme/Themes";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
+import { ImageBackground, StyleSheet } from "react-native";
+import { View } from "react-native";
+import { Button, Card, Text } from "react-native-paper";
+
+import { getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
+import { useClient, useTheme } from "../Container";
+import { colorsInterface } from "../Container/Theme/Themes";
+import LogoWhite from "../Elements/Assets/LogoWhite";
 
 type SectionProps = {
     onPress?: () => any;

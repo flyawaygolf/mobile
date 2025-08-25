@@ -1,11 +1,12 @@
 import React, { PropsWithChildren, useState } from "react";
-import { Appbar, Button, DataTable, Divider, Text } from "react-native-paper";
-import { View } from "react-native";
-
-import styles, { full_width } from "../../Style/style";
-import { SafeBottomContainer, useTheme } from ".";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Appbar, Button, DataTable, Divider, Text } from "react-native-paper";
+
+import { SafeBottomContainer, useTheme } from ".";
 import { BottomModal } from "../../Other";
+import styles, { full_width } from "../../Style/style";
+
 
 type SectionProps = PropsWithChildren<{
   changeVisibilty: () => void,

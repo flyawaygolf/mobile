@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Alert, Animated, Share, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, Text, Tooltip } from "react-native-paper";
-import { useTranslation } from "react-i18next";
 
-import { handleToast, navigationProps } from "../../Services";
-import { useClient, useProfile, useTheme } from "../Container";
-import { profileurl } from '../../Services/constante';
 import UsersReportModal from '../../Screens/Reports/UsersReportModal';
+import { handleToast, navigationProps } from "../../Services";
+import { profileurl } from '../../Services/constante';
+import { useClient, useProfile, useTheme } from "../Container";
 
 type ProfileHeaderProps = {
     navigation: navigationProps;

@@ -1,26 +1,27 @@
+import FastImage from '@d11/react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Appbar, Button, Card, IconButton, List, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
-import FastImage from '@d11/react-native-fast-image';
 
 import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
-import { full_width } from '../../Style/style';
-import { formatDistance, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
-import { ScreenNavigationProps } from '../../Services';
-import { golfurl } from '../../Services/constante';
-import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
-import { Loader } from '../../Other';
-import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
-import { Avatar, DisplayMember } from '../../Components/Member';
-import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import DisplayPost from '../../Components/Posts/DisplayPost';
-import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
+import { ShrinkEffect } from '../../Components/Effects';
 import EventCard from '../../Components/Events/EventCard';
 import ScorecardDisplay from '../../Components/Golfs/ScorecardDisplay';
-import { ShrinkEffect } from '../../Components/Effects';
-import { FlashList } from '@shopify/flash-list';
+import { Avatar, DisplayMember } from '../../Components/Member';
+import DisplayPost from '../../Components/Posts/DisplayPost';
+import { Loader } from '../../Other';
+import { formatDistance, GolfsStackParams, handleToast, navigationProps, openURL } from '../../Services';
+import { ScreenNavigationProps } from '../../Services';
+import { PostInterface } from '../../Services/Client/Managers/Interfaces';
+import { eventsInterface } from '../../Services/Client/Managers/Interfaces/Events';
+import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
+import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
+import { golfurl } from '../../Services/constante';
+import { full_width } from '../../Style/style';
+
 
 const GolfProfileScreen = ({ route }: ScreenNavigationProps<GolfsStackParams, "GolfsProfileScreen">) => {
     const { golf_id } = route.params;

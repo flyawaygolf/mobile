@@ -1,13 +1,14 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+
 import { PostContainer, useClient } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
-import { addPostSearch, initPostSearch } from '../../Redux/PostSearch/action';
 import { Loader } from '../../Other';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
+import { addPostSearch, initPostSearch } from '../../Redux/PostSearch/action';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import { useTranslation } from 'react-i18next';
-import { FlashList } from '@shopify/flash-list';
 
 function PostScreenSearch({ route }: any) {
 

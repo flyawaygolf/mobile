@@ -1,18 +1,18 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Share, View } from "react-native";
 import { Appbar, Icon, Text } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 
-import { Avatar } from "../Member";
-import { full_width } from "../../Style/style";
-import { useClient, useTheme } from "../Container";
+import MessagesContext from "../../Contexts/MessagesContext";
 import { guildI } from "../../Redux/guildList";
 import { navigationProps } from "../../Services";
-import { ShrinkEffect } from "../Effects";
-import { messageurl } from "../../Services/constante";
-import { useTranslation } from "react-i18next";
-import MessagesContext from "../../Contexts/MessagesContext";
 import { fetchGuildResponseSchema } from "../../Services/Client/Managers/Interfaces/Guild";
+import { messageurl } from "../../Services/constante";
+import { full_width } from "../../Style/style";
+import { useClient, useTheme } from "../Container";
+import { ShrinkEffect } from "../Effects";
+import { Avatar } from "../Member";
 
 type sectionProps = {
     guild: guildI | fetchGuildResponseSchema;

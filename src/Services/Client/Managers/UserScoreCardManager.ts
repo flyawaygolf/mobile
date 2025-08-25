@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { ScorecardInterface, GlobalInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 
 class UserScoreCardManager extends RequestEmitter {
   constructor(params: requestParams) {

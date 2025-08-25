@@ -1,5 +1,5 @@
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import { ADD_CREATED_TRENDS_SEARCH, ADD_TRENDS_SEARCH, DELETE_TRENDS_SEARCH, INIT_TRENDS_SEARCH, RESET_TRENDS_SEARCH } from "./actionTypes";
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const postSearchReducer = (state: PostInterface.postResponseSchema[] = [], action: {
     type: string,

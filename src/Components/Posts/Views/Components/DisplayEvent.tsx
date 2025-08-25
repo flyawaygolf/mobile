@@ -1,12 +1,13 @@
-import React from "react";
-import { Text, Icon } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
+import React from "react";
 import { View } from "react-native";
+import { Text, Icon } from "react-native-paper";
+
 import { navigationProps } from "../../../../Services";
 import { postEventInterface } from "../../../../Services/Client/Managers/Interfaces/Events";
-import { ShrinkEffect } from "../../../Effects";
 import { useTheme } from "../../../Container";
+import { ShrinkEffect } from "../../../Effects";
 
 type displayEmbedType = {
     event: postEventInterface

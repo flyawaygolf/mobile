@@ -2,8 +2,9 @@ import React from "react";
 import { View } from "react-native";
 import { Icon } from "react-native-paper";
 import { Text } from "react-native-paper";
-import { useTheme } from "../../Container";
+
 import { full_width } from "../../../Style/style";
+import { useTheme } from "../../Container";
 
 type SectionProps = {
     title: string,

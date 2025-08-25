@@ -1,7 +1,8 @@
-import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import HomePremiumSettingsScreen from "../Screens/Premium/HomePremiumSettingsScreen";
+import React from "react";
+
 import AvailabilityPremiumSettingsScreen from "../Screens/Premium/AvailabilityPremiumSettingsScreen";
+import HomePremiumSettingsScreen from "../Screens/Premium/HomePremiumSettingsScreen";
 
 export type PremiumStackScreens = "HomePremiumSettingsScreen" | "AvailabilityPremiumSettingsScreen";
 

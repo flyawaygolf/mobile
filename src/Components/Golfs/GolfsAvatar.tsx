@@ -1,5 +1,4 @@
 import React from "react";
-
 import { StyleProp, ViewStyle } from "react-native";
 import { Avatar } from "react-native-paper";
 

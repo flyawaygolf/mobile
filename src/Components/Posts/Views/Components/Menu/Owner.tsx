@@ -1,18 +1,19 @@
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Share } from "react-native";
+import { Button, Dialog, Divider, Portal } from "react-native-paper";
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
-import Clipboard from "@react-native-clipboard/clipboard";
-import { Button, Dialog, Divider, Portal } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 
 import { BottomModal } from "../../../../../Other";
-import { useClient, useTheme } from "../../../../Container";
-import { deleteProfileTrends } from "../../../../../Redux/profileFeed/action";
 import { deleteMainTrends } from "../../../../../Redux/mainFeed/action";
-import { navigationProps } from "../../../../../Services/navigationProps";
+import { deleteProfileTrends } from "../../../../../Redux/profileFeed/action";
 import { posturl } from "../../../../../Services/constante";
-import { Share } from "react-native";
+import { navigationProps } from "../../../../../Services/navigationProps";
+import { useClient, useTheme } from "../../../../Container";
+
 
 type SectionProps = {
     modalVisible: boolean,

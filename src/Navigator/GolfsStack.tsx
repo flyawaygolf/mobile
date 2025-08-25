@@ -1,8 +1,9 @@
-import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+
+import GolfsPlayedScreen from "../Screens/Golfs/GolfsPlayedScreen";
 import GolfsProfileScreen from "../Screens/Golfs/GolfsProfileScreen";
 import LittleMapScreen from "../Screens/Golfs/LittleMapScreen";
-import GolfsPlayedScreen from "../Screens/Golfs/GolfsPlayedScreen";
 
 export type GolfStackScreens = "GolfsProfileScreen" | "LittleMapScreen" | "GolfsPlayedScreen";
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { websocketurl } from '../../../Services/constante';
+
 import { deviceInfo } from '../../../Services';
+import { websocketurl } from '../../../Services/constante';
 
 
 export function useWebLocalsocket(onOpen, onMessage) {

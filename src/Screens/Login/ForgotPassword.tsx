@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
-import { useTheme } from "../../Components/Container";
-import { NormalButton } from "../../Components/Elements/Buttons";
 import { Text, TextInput } from "react-native-paper";
 
-import { LoaderBox } from "../../Other";
+import { useTheme } from "../../Components/Container";
+import { NormalButton } from "../../Components/Elements/Buttons";
 import CustomHeader from "../../Components/Header/CustomHeader";
+import { LoaderBox } from "../../Other";
 import { axiosInstance, EmailValidator, LoginRootParamList, ScreenNavigationProps } from "../../Services";
 
 function ForgotPassword({ navigation }: ScreenNavigationProps<LoginRootParamList, "ForgotPassword">) {

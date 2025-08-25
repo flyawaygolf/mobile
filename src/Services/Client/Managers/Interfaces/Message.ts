@@ -1,6 +1,6 @@
-import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 import type { error, attachments, embeds, premium_type } from "./Global";
 import type { postTypes } from "./Post";
+import type { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 
 // undefined -> delivered -> seen
 export type messageStatus = undefined | "delivered" | 'seen';

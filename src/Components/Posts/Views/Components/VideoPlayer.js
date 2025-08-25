@@ -1,9 +1,10 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Pressable, StyleSheet, View } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import Video from 'react-native-video';
-import { useTranslation } from "react-i18next";
 import RenderVideoScreen from "react-native-video-controls";
+
 import { full_height, full_width } from "../../../../Style/style";
 import { useTheme } from "../../../Container";
 

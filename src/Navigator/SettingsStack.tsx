@@ -1,13 +1,14 @@
-import React, { useState } from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import BlockedScreen from "../Screens/Settings/BlockedScreen";
-import SessionScreen from "../Screens/Settings/SessionScreen";
-import SecurityScreen from "../Screens/Settings/SecurityScreen";
-import HomeSettingsScreen from "../Screens/Settings/HomeSettingsScreen";
-import AppScreen from "../Screens/Settings/AppScreen";
-import PremiumScreen from "../Screens/Settings/PremiumScreen";
-import SubscriptionValidationScreen from "../Screens/Settings/SubscriptionValidationScreen";
+import React, { useState } from "react";
+
 import AffiliationScreen from "../Screens/Settings/AffiliationScreen";
+import AppScreen from "../Screens/Settings/AppScreen";
+import BlockedScreen from "../Screens/Settings/BlockedScreen";
+import HomeSettingsScreen from "../Screens/Settings/HomeSettingsScreen";
+import PremiumScreen from "../Screens/Settings/PremiumScreen";
+import SecurityScreen from "../Screens/Settings/SecurityScreen";
+import SessionScreen from "../Screens/Settings/SessionScreen";
+import SubscriptionValidationScreen from "../Screens/Settings/SubscriptionValidationScreen";
 
 export type SettingsStackScreens =
     "BlockedScreen" |

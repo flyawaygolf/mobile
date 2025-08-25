@@ -1,11 +1,12 @@
-import { View } from "react-native";
 import React from "react";
-import { Avatar, Username } from "../../Member";
-import { useClient } from "../../Container";
-import styles, { full_width } from "../../../Style/style";
+import { View } from "react-native";
 import { Divider } from "react-native-paper";
-import { Markdown } from "../../Text";
+
 import { PostInterface } from "../../../Services/Client/Managers/Interfaces";
+import styles, { full_width } from "../../../Style/style";
+import { useClient } from "../../Container";
+import { Avatar, Username } from "../../Member";
+import { Markdown } from "../../Text";
 
 type SectionProps = {
     shared_post: PostInterface.postResponseSchema

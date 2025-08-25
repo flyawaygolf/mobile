@@ -1,14 +1,18 @@
-import { useTranslation } from "react-i18next";
-import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
-import { Text, Avatar, ActivityIndicator } from "react-native-paper";
-import { SearchBar } from "../../Components/Elements/Input";
-import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { FlashList } from "@shopify/flash-list";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { Text, Avatar, ActivityIndicator } from "react-native-paper";
+
+import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
+import { SearchBar } from "../../Components/Elements/Input";
+import CustomHeader from "../../Components/Header/CustomHeader";
 import { formatDistance, handleToast, navigationProps } from "../../Services";
 import { golfInterface } from "../../Services/Client/Managers/Interfaces/Golf";
-import { useNavigation } from "@react-navigation/native";
-import CustomHeader from "../../Components/Header/CustomHeader";
-import { FlashList } from "@shopify/flash-list";
+
+
+
 
 const GolfCard = ({ golf, onCreateScorecard }: { golf: golfInterface, onCreateScorecard: () => void }) => {
     const { colors } = useTheme();

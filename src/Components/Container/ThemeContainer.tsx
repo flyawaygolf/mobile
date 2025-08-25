@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+
 import ThemeProvider from './Theme/ThemeProvider';
 
 type SectionProps = PropsWithChildren

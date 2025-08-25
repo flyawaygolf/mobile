@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { GlobalInterface, NotificationInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 
 class NotificationManager extends RequestEmitter {
   constructor(params: requestParams) {

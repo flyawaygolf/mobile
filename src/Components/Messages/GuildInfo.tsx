@@ -1,20 +1,21 @@
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { Text, Badge, Card, Icon } from "react-native-paper";
-import { useNavigation } from '@react-navigation/native';
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useTranslation } from "react-i18next";
-import { full_width } from "../../Style/style";
-import { useClient, useTheme } from "../Container";
-import { Avatar } from "../Member";
-import { BottomModal, ModalSection } from "../../Other";
-import { MultipleAvatar } from "../Guilds";
 import { connect, useDispatch } from "react-redux";
+
+import { BottomModal, ModalSection } from "../../Other";
 import { RootState } from "../../Redux";
-import { deleteGuildList } from "../../Redux/guildList/action";
 import { guildI } from "../../Redux/guildList";
+import { deleteGuildList } from "../../Redux/guildList/action";
 import { handleToast, navigationProps } from "../../Services";
 import { userInfo } from "../../Services/Client/Managers/Interfaces/Global";
+import { full_width } from "../../Style/style";
+import { useClient, useTheme } from "../Container";
+import { MultipleAvatar } from "../Guilds";
+import { Avatar } from "../Member";
 
 type sectionProps = {
     info: guildI;

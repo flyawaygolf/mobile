@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
+
 import useTheme from '../Components/Container/Theme/useTheme';
 import styles from '../Style/style';
 

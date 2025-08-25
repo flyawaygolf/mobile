@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, TouchableRipple, Icon, Text } from 'react-native-paper';
-import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking } from 'react-native';
+import { BottomNavigation, TouchableRipple, Icon, Text } from 'react-native-paper';
+import { connect } from 'react-redux';
 
-import { GuildListSreen, MapScreen } from '../Screens';
 import { useClient, useTheme } from '../Components/Container';
-import HomeScreen from '../Screens/Home/HomeScreen';
 import { RootState, useAppDispatch, useAppSelector } from '../Redux';
 import { initNotificationFeed } from '../Redux/NotificationFeed/action';
+import { GuildListSreen, MapScreen } from '../Screens';
 import { EventsScreen } from '../Screens/Events';
-import { getCurrentLocation, navigationProps, parseURL } from '../Services';
+import HomeScreen from '../Screens/Home/HomeScreen';
 import ScorecardHomeScreen from '../Screens/Scorecard/ScorecardHomeScreen';
+import { getCurrentLocation, navigationProps, parseURL } from '../Services';
 
 export type BottomStackScreens = "HomeScreen" | "MapScreen" | "Messages" | "EventsScreen" | "ScorecardHomeScreen";
 

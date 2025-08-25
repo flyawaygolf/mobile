@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { EventInterface, GlobalInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 
 class EventManager extends RequestEmitter {
   constructor(params: requestParams) {

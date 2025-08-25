@@ -1,5 +1,5 @@
-import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import type { GlobalInterface, PostInterface } from './Interfaces';
+import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 
 class PostUserManager extends RequestEmitter {
   private translate: boolean;

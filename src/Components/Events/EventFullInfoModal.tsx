@@ -1,12 +1,13 @@
-import { Button, Card, Icon, Paragraph, Title } from "react-native-paper";
-import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
-import { View } from "react-native";
-import { handleToast, messageFormatDate } from "../../Services";
-import { useTranslation } from "react-i18next";
-import { useClient, useTheme } from "../Container";
 import { useState } from "react";
-import { cdnbaseurl } from "../../Services/constante";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Button, Card, Icon, Paragraph, Title } from "react-native-paper";
+
 import { BottomModal } from "../../Other";
+import { handleToast, messageFormatDate } from "../../Services";
+import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
+import { cdnbaseurl } from "../../Services/constante";
+import { useClient, useTheme } from "../Container";
 
 // https://dribbble.com/shots/19828369-Toket-com-Event-Mobile-Apps
 

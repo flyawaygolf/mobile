@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Animated } from 'react-native';
+
 import { profileInformationsInterface } from '../../../Services/Client/Managers/Interfaces/User';
 
 export interface ProfileContextI {

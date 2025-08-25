@@ -1,6 +1,6 @@
 
-import { postResponseSchema } from '../../Services/Client/Managers/Interfaces/Post';
 import { ADD_TRENDS, DELETE_TRENDS, INIT_TRENDS, RESET_TRENDS } from './actionTypes';
+import { postResponseSchema } from '../../Services/Client/Managers/Interfaces/Post';
 
 export const resetProfileTrends = (info: []) => ({
     type: RESET_TRENDS,

@@ -1,4 +1,5 @@
 import { createRealmContext } from '@realm/react';
+
 import UserStoreRealmSchema from './userDatabase';
 
 // Configuration du contexte Realm

@@ -1,12 +1,12 @@
-import React, { PropsWithChildren } from "react";
-
-import { View } from "react-native";
-import { useTranslation } from "react-i18next";
-import { Appbar, Text } from "react-native-paper";
-import styles, { full_width } from "../../Style/style";
 import { useNavigation } from "@react-navigation/native";
-import { navigationProps } from "../../Services";
+import React, { PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Appbar, Text } from "react-native-paper";
+
 import SafeBottomContainer from "./SafeBottomContainer";
+import { navigationProps } from "../../Services";
+import styles, { full_width } from "../../Style/style";
 
 type SectionProps = PropsWithChildren<{
     title: string;

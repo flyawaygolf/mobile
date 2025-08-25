@@ -1,5 +1,5 @@
-import { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 import { AvailabilitySlot } from "./Me";
+import { ISO_639_CODE_LIST } from "../../utils/ISO-369-1";
 
 export interface requestResponseInterface<T extends Record<string, any>> {
     error?: error,

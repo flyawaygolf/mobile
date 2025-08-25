@@ -1,10 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Icon, IconButton, Text } from "react-native-paper";
 import { View } from "react-native";
+import { Icon, IconButton, Text } from "react-native-paper";
+
+import { messageFormatDate } from "../../../Services";
 import { fetchSessionsResponseSchema } from "../../../Services/Client/Managers/Interfaces/Session";
 import { useTheme } from "../../Container";
-import { messageFormatDate } from "../../../Services";
 
 type sectionProps = {
     item: fetchSessionsResponseSchema,

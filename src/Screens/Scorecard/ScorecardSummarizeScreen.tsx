@@ -1,23 +1,25 @@
-import { useTranslation } from "react-i18next";
-import { Text, Appbar, Card, Icon, Button, Dialog, Portal, Menu, Divider } from "react-native-paper";
-import ViewShot from "react-native-view-shot";
-import { useEffect, useRef, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { ScrollView, View, Platform } from "react-native";
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
-import { getContrastColor, handleToast, navigationProps, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
-import { full_width } from "../../Style/style";
-import { Avatar } from "../../Components/Member";
-import { GameModeEnum, getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
-import { displayHCP } from "../../Services/handicapNumbers";
-import { ShrinkEffect } from "../../Components/Effects";
-import { Loader } from "../../Other";
-import { scoreCardInterface, scorecardTeeboxInterface } from "../../Services/Client/Managers/Interfaces/Golf";
-import { CompetitionFormatEnum } from "../../Services/Client/Managers/Interfaces/Events";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { ScrollView, View, Platform } from "react-native";
+import { Text, Appbar, Card, Icon, Button, Dialog, Portal, Menu, Divider } from "react-native-paper";
+import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
+import ViewShot from "react-native-view-shot";
+
 import StatsCarousel from "./StatsCarousel";
 import { SafeBottomContainer, useClient, useTheme } from "../../Components/Container";
+import { ShrinkEffect } from "../../Components/Effects";
+import { Avatar } from "../../Components/Member";
 import DisplayUserScoreCard from "../../Components/Scorecards/DisplayUserScoreCard";
-import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
+import { Loader } from "../../Other";
+import { getContrastColor, handleToast, navigationProps, ScorecardStackParams, ScreenNavigationProps } from "../../Services";
+import { CompetitionFormatEnum } from "../../Services/Client/Managers/Interfaces/Events";
+import { scoreCardInterface, scorecardTeeboxInterface } from "../../Services/Client/Managers/Interfaces/Golf";
+import { GameModeEnum, getUserScoreCardInterface, HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
+import { displayHCP } from "../../Services/handicapNumbers";
+import { full_width } from "../../Style/style";
+
 
 const getScoreToPar = (score: number, par: number) => {
     if (!score || !par) return "-";

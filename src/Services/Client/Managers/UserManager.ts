@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
+
 import { cdnbaseurl } from '../../constante';
 import RequestEmitter, { requestParams } from '../utils/RequestEmitter';
 import { successResponse } from './Interfaces/Global';
 import { myInformations } from './Interfaces/Me';
-import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
 import { fetchUserResponse, profileInformations } from './Interfaces/User';
-import { LocationQuery } from './SearchMapManager';
-import UserPermissions from '../Permissions/UserPermissions';
 import PremiumUser from './PremiumUser';
+import { LocationQuery } from './SearchMapManager';
+import { modifI } from '../../../Screens/Profile/ProfileEditScreen';
+import UserPermissions from '../Permissions/UserPermissions';
 
 class UserManager extends RequestEmitter {
   private cdnurl: string;

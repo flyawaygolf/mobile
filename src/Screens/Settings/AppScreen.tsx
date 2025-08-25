@@ -1,19 +1,20 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { ScrollView, TouchableOpacity, View , Platform} from 'react-native';
 import { changeIcon, resetIcon } from 'react-native-change-icon';
 import { Checkbox, Divider, Icon, Text } from 'react-native-paper';
+
 import { useClient, useTheme } from '../../Components/Container';
 import SettingsContainer from '../../Components/Container/SettingsContainer';
-import { Avatar } from '../../Components/Member';
-import { cdnbaseurl } from '../../Services/constante';
-import { languageList } from '../../locales/i18n';
-import { getStorageInfo, setStorage, settingsStorageI } from '../../Services/storage';
 import { Ithemes } from '../../Components/Container/Theme/Themes';
-import { premiumAdvantages } from '../../Services/premiumAdvantages';
-import { handleToast } from '../../Services';
 import { ShrinkEffect } from '../../Components/Effects';
-import { FlashList } from '@shopify/flash-list';
+import { Avatar } from '../../Components/Member';
+import { languageList } from '../../locales/i18n';
+import { handleToast } from '../../Services';
+import { cdnbaseurl } from '../../Services/constante';
+import { premiumAdvantages } from '../../Services/premiumAdvantages';
+import { getStorageInfo, setStorage, settingsStorageI } from '../../Services/storage';
 
 export default function AppScreen() {
 

@@ -5,9 +5,9 @@ import { TextInput, Text } from 'react-native-paper';
 
 import { useClient, useTheme } from '../../../Components/Container';
 import { LinkButtonText, NormalButton } from '../../../Components/Elements/Buttons';
-import { EmailValidator, LoginRootParamList, ScreenNavigationProps } from '../../../Services';
-import { Loader } from '../../../Other';
 import LoginContainer from '../../../Components/LoginContainer';
+import { Loader } from '../../../Other';
+import { EmailValidator, LoginRootParamList, ScreenNavigationProps } from '../../../Services';
 
 const RegisterEmailUsername = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, 'RegisterEmailUsername'>) => {
   const { t } = useTranslation('');

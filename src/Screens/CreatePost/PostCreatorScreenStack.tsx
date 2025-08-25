@@ -1,30 +1,30 @@
+import { useNavigation } from '@react-navigation/native';
+import { AxiosRequestConfig } from 'axios';
+import dayjs from 'dayjs';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, View, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { Chip, ProgressBar } from 'react-native-paper';
-import dayjs from 'dayjs';
+import { connect, useDispatch } from 'react-redux';
 
 import { useClient, PostCreatorContainer } from '../../Components/Container';
-import { axiosInstance, formatDistance, handleToast, navigationProps } from '../../Services';
-import BottomButtonPostCreator from '../../Components/Posts/Creator/BottomButton';
-import { addMainCreatedTrends } from '../../Redux/mainFeed/action';
-import styles, { full_width } from '../../Style/style';
 import { Avatar, Username } from '../../Components/Member';
-import CreatorVideoDisplay from '../../Components/Posts/Creator/CreatorVideoDisplay';
+import BottomButtonPostCreator from '../../Components/Posts/Creator/BottomButton';
 import CreatorImageDisplay from '../../Components/Posts/Creator/CreatorImageDisplay';
+import CreatorVideoDisplay from '../../Components/Posts/Creator/CreatorVideoDisplay';
 import DisplayAttachedPost from '../../Components/Posts/Creator/DisplayAttachedPost';
 import DisplaySharedPost from '../../Components/Posts/Creator/DisplaySharedPost';
-import { useNavigation } from '@react-navigation/native';
-import { RootState } from '../../Redux';
-import { AxiosRequestConfig } from 'axios';
 import TextAreaAutoComplete from '../../Components/Posts/Creator/TextAreaAutoComplete';
+import DisplayEvent from '../../Components/Posts/Views/Components/DisplayEvent';
+import DisplayUserScoreCard from '../../Components/Scorecards/DisplayUserScoreCard';
+import { RootState } from '../../Redux';
+import { addMainCreatedTrends } from '../../Redux/mainFeed/action';
+import { axiosInstance, formatDistance, handleToast, navigationProps } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
 import { usertokenkey } from '../../Services/constante';
 import { premiumAdvantages } from '../../Services/premiumAdvantages';
-import DisplayEvent from '../../Components/Posts/Views/Components/DisplayEvent';
-import DisplayUserScoreCard from '../../Components/Scorecards/DisplayUserScoreCard';
+import styles, { full_width } from '../../Style/style';
 
 export type postOptions = {
   paid: boolean;

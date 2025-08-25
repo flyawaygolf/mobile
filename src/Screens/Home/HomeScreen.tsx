@@ -1,17 +1,19 @@
-import { View } from "react-native";
-import { Appbar, Banner, Button, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
-import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
-import CustomHomeHeader from "../../Components/Home/CustomHomeHeader";
-import styles from "../../Style/style";
-import { navigationProps } from "../../Services";
-import HomeNavigator from "./HomeNavigator";
-import { RootState, useAppSelector } from "../../Redux";
-import { ShrinkEffect } from "../../Components/Effects";
-import { userFlags } from "../../Services/Client";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { Appbar, Banner, Button, Text } from "react-native-paper";
+import { connect } from "react-redux";
+
+import HomeNavigator from "./HomeNavigator";
+import { ScreenContainer, useClient, useTheme } from "../../Components/Container";
+import { ShrinkEffect } from "../../Components/Effects";
+import CustomHomeHeader from "../../Components/Home/CustomHomeHeader";
+import { RootState, useAppSelector } from "../../Redux";
+import { navigationProps } from "../../Services";
+import { userFlags } from "../../Services/Client";
+import styles from "../../Style/style";
+
 
 const HomeScreen = () => {
 

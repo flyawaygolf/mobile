@@ -1,15 +1,16 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { IconButton } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 
-import { full_width } from '../../Style/style';
 import { useClient, useTheme } from '../../Components/Container';
+import CustomHeader from '../../Components/Header/CustomHeader';
 import { handleToast, navigationProps } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
-import CustomHeader from '../../Components/Header/CustomHeader';
-import { SafeAreaView } from 'react-native';
+import { full_width } from '../../Style/style';
+
 
 type LocationType = {
   latitude: number,

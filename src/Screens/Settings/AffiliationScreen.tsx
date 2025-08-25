@@ -1,8 +1,9 @@
+import Clipboard from "@react-native-clipboard/clipboard";
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { Keyboard } from 'react-native';
 import { TextInput, Text } from 'react-native-paper';
-import Clipboard from "@react-native-clipboard/clipboard";
+
 import { useClient, useTheme } from '../../Components/Container';
 import SettingsContainer from '../../Components/Container/SettingsContainer';
 import { handleToast } from '../../Services';

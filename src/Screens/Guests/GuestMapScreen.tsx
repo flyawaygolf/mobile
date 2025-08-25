@@ -1,25 +1,25 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View, StyleSheet, Keyboard, Platform } from 'react-native';
+import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
 import MapView, { MapType, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { Chip, FAB } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { isLocationEnabled, promptForEnableLocationIfNeeded } from 'react-native-android-location-enabler';
 
-import { full_width } from '../../Style/style';
+import GolfProfileScreen from './GolfsProfileScreen';
+import ProfileInfo from './ProfileInfo';
+import SearchMapModal from './SearchMapModal';
 import { useClient, useTheme } from '../../Components/Container';
+import { locationType } from '../../Components/Container/Client/ClientContext';
+import { FadeInFromTop, ShrinkEffect } from '../../Components/Effects';
+import { SearchBar } from '../../Components/Elements/Input';
+import { Avatar } from '../../Components/Member';
+import { BottomModal } from '../../Other';
 import { getCurrentLocation, handleToast, navigationProps } from '../../Services';
 import { userInfo } from '../../Services/Client/Managers/Interfaces/Global';
-import { Avatar } from '../../Components/Member';
-import { SearchBar } from '../../Components/Elements/Input';
-import { FadeInFromTop, ShrinkEffect } from '../../Components/Effects';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
-import SearchMapModal from './SearchMapModal';
-import { locationType } from '../../Components/Container/Client/ClientContext';
-import ProfileInfo from './ProfileInfo';
-import GolfProfileScreen from './GolfsProfileScreen';
-import { BottomModal } from '../../Other';
+import { full_width } from '../../Style/style';
 
 type searchChipsType = {
   icon: string;

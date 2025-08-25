@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useState } from "react";
+
 import { postInterface } from "../../Services/Client/Managers/Interfaces/Post";
 
 const defaultInfo: SinglePostInfoType = {

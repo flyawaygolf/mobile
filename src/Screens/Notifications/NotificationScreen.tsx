@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { NotificationContainer } from '../../Components/Container';
+
 import NotificationListScreen from './NotificationListScreen';
+import { NotificationContainer } from '../../Components/Container';
 
 
 function NotificationScreen() {

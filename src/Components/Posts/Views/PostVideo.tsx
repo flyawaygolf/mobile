@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
+
 import { useClient } from "../../Container";
 import { SinglePostContext } from "../PostContext";
+import Postbottom from "./Components/Postbottom";
 import Postheader from "./Components/Postheader";
 import { Markdown } from "../../Text";
 import VideoPlayer from "./Components/VideoPlayer";
-import Postbottom from "./Components/Postbottom";
 
 function PostVideo() {
 

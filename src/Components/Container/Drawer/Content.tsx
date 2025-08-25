@@ -1,16 +1,16 @@
-import React from 'react';
-import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
-import { Drawer, Text } from 'react-native-paper';
-import { View, StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import FastImage from '@d11/react-native-fast-image';
+import { DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { View, StyleSheet } from 'react-native';
+import { Drawer, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { handleToast } from '../../../Services';
+import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 import globalStyles from '../../../Style/style';
 import useClient from '../Client/useClient';
 import useTheme from '../Theme/useTheme';
-import { handleToast } from '../../../Services';
-import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 
 export default function DrawerContent({ navigation }: DrawerContentComponentProps) {
 

@@ -1,5 +1,5 @@
-import { GlobalInterface } from "../../Services/Client/Managers/Interfaces";
 import { ADD_USERS, INIT_USERS, RESET_USERS } from "./actionTypes";
+import { GlobalInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const exploreTopUsersReducer = (state: GlobalInterface.userInfo[] = [], action: {
     type: string,

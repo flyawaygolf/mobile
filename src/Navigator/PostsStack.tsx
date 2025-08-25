@@ -1,9 +1,10 @@
-import React, { useState } from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from "react";
+
+import BookmarksScreen from "../Screens/Posts/BookmarksScreen";
 import PostScreen from "../Screens/Posts/PostScreen";
 import PostScreenSearch from "../Screens/Posts/PostScreenSearch";
 import PostScreenShares from "../Screens/Posts/PostScreenShares";
-import BookmarksScreen from "../Screens/Posts/BookmarksScreen";
 
 const Stack = createStackNavigator();
 

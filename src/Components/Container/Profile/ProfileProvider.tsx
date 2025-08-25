@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import ProfileContext from './ProfileContext';
 import { Animated } from 'react-native';
+
+import ProfileContext from './ProfileContext';
 import { profileInformationsInterface } from '../../../Services/Client/Managers/Interfaces/User';
 
 type SectionProps = React.PropsWithChildren<{}>

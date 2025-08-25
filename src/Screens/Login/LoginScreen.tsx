@@ -1,18 +1,18 @@
+import { useRealm } from '@realm/react';
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Animated, View, StyleSheet, Easing } from 'react-native';
 import { HelperText, Icon, Text, TextInput } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useRealm } from '@realm/react';
 
-import { convertFirstCharacterToUppercase, deviceInfo, LoginRootParamList, ScreenNavigationProps } from '../../Services';
 import { useClient, useTheme } from '../../Components/Container';
-import { LinkButtonText, NormalButton } from '../../Components/Elements/Buttons';
-import { Loader } from '../../Other';
-import Client from '../../Services/Client';
-import { setStorage } from '../../Services/storage';
-import { addUser } from '../../Services/Realm/userDatabase';
-import LoginContainer from '../../Components/LoginContainer';
 import { ShakeEffect } from '../../Components/Effects';
+import { LinkButtonText, NormalButton } from '../../Components/Elements/Buttons';
+import LoginContainer from '../../Components/LoginContainer';
+import { Loader } from '../../Other';
+import { convertFirstCharacterToUppercase, deviceInfo, LoginRootParamList, ScreenNavigationProps } from '../../Services';
+import Client from '../../Services/Client';
+import { addUser } from '../../Services/Realm/userDatabase';
+import { setStorage } from '../../Services/storage';
 
 const LoginScreen = ({ navigation, route }: ScreenNavigationProps<LoginRootParamList, "LoginScreen">) => {
 

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from "react";
 
 import { CreateEventScreen, DisplayEventScreen } from "../Screens/Events";
 

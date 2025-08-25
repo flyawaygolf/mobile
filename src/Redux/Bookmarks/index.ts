@@ -1,5 +1,5 @@
-import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 import { ADD_CREATED_TRENDS_BOOKMARKS, ADD_TRENDS_BOOKMARKS, DELETE_TRENDS_BOOKMARKS, INIT_TRENDS_BOOKMARKS, RESET_TRENDS_BOOKMARKS } from "./actionTypes";
+import { PostInterface } from "../../Services/Client/Managers/Interfaces";
 
 export const postBookmarksReducer = (state: PostInterface.postResponseSchema[] = [], action: {
     type: string,

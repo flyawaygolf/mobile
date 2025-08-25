@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
-import { useTheme, useWebSocket } from "../Container";
+
 import { webSocketRoutes } from "../../Services/Client";
+import { useTheme, useWebSocket } from "../Container";
 
 type sectionProps = {
     onSubmit: (content: string) => Promise<void>;

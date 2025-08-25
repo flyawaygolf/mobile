@@ -1,22 +1,22 @@
+import dayjs from 'dayjs';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
+import { View, KeyboardAvoidingView, Platform, FlatList, StyleSheet, Animated, TextInput } from 'react-native';
 import { Text, IconButton, Divider } from 'react-native-paper';
 import { connect, useDispatch } from 'react-redux';
-import { View, KeyboardAvoidingView, Platform, FlatList, StyleSheet, Animated, TextInput } from 'react-native';
 
 import { SafeBottomContainer, useClient, useTheme, useWebSocket } from '../../Components/Container';
-import { RootState, useAppSelector } from '../../Redux';
-import { changeLastMessageGuildList, modifyGuildList } from '../../Redux/guildList/action';
-import { addGuildMessages, addScrollGuildMessages, initGuildMessages } from '../../Redux/guildMessages/action';
-import Client, { webSocketRoutes } from '../../Services/Client';
-import { fetchMessageResponseInterface } from '../../Services/Client/Managers/Interfaces/Message';
 import MessageBoxHeader from '../../Components/Messages/MessageBoxHeader';
 import MessageBubble from '../../Components/Messages/MessageBubble';
-import { handleToast, MessageStackParams, ScreenNavigationProps } from '../../Services';
-import { premiumAdvantages } from '../../Services/premiumAdvantages';
 import MessagesContext from '../../Contexts/MessagesContext';
+import { RootState, useAppSelector } from '../../Redux';
+import { changeLastMessageGuildList, modifyGuildList } from '../../Redux/guildList/action';
 import { messageInfoInterface } from '../../Redux/guildMessages';
+import { addGuildMessages, addScrollGuildMessages, initGuildMessages } from '../../Redux/guildMessages/action';
+import { handleToast, MessageStackParams, ScreenNavigationProps } from '../../Services';
+import Client, { webSocketRoutes } from '../../Services/Client';
+import { fetchMessageResponseInterface } from '../../Services/Client/Managers/Interfaces/Message';
+import { premiumAdvantages } from '../../Services/premiumAdvantages';
 
 const formatMessages = (messages: fetchMessageResponseInterface[], guild_id: string, client: Client, sending = false): messageInfoInterface[] => messages.map(((m) => {
   return {

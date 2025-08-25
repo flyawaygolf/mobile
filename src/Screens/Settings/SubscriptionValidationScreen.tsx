@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Text, Card, TextInput } from 'react-native-paper';
-import { useStripe } from '@stripe/stripe-react-native';
 import { useNavigation } from "@react-navigation/native";
+import { useStripe } from '@stripe/stripe-react-native';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { axiosInstance, handleToast, navigationProps, openURL } from '../../Services';
+import { Button, Text, Card, TextInput } from 'react-native-paper';
+
 import { useClient, SettingsContainer, useTheme } from '../../Components/Container';
+import { axiosInstance, handleToast, navigationProps, openURL } from '../../Services';
 import { SubscriptionInterface } from '../../Services/Client/Managers/Interfaces';
 import { usertokenkey } from '../../Services/constante';
 

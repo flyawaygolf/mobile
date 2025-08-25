@@ -1,20 +1,21 @@
+import FastImage from '@d11/react-native-fast-image';
+import Clipboard from "@react-native-clipboard/clipboard";
 import React, { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Badge, Button, Card, Divider, Icon, IconButton, List, Text } from "react-native-paper";
-import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import Clipboard from "@react-native-clipboard/clipboard";
-import { handleToast, navigationProps } from "../../Services";
-import { Avatar } from "../Member";
-import { useClient, useProfile, useTheme } from "../Container";
-import { displayHCP } from "../../Services/handicapNumbers";
+
 import { addGuildList } from "../../Redux/guildList/action";
-import { profileInformationsInterface } from "../../Services/Client/Managers/Interfaces/User";
+import { handleToast, navigationProps } from "../../Services";
 import { userFlags } from '../../Services/Client';
-import { ShrinkEffect } from '../Effects';
-import FastImage from '@d11/react-native-fast-image';
-import ShowAvailability from '../Premium/ShowAvalability';
+import { profileInformationsInterface } from "../../Services/Client/Managers/Interfaces/User";
+import { displayHCP } from "../../Services/handicapNumbers";
 import { availabilityDefault, premiumAdvantages } from '../../Services/premiumAdvantages';
+import { useClient, useProfile, useTheme } from "../Container";
+import { ShrinkEffect } from '../Effects';
+import { Avatar } from "../Member";
+import ShowAvailability from '../Premium/ShowAvalability';
 
 type ProfileInfoProps = {
     navigation: navigationProps;

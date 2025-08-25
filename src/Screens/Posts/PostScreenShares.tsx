@@ -1,14 +1,15 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Text } from 'react-native-paper';
 import { connect } from 'react-redux';
+
 import { PostContainer, useClient } from '../../Components/Container';
 import DisplayPosts from '../../Components/Posts/DisplayPost';
-import { addPostShares, initPostShares } from '../../Redux/PostShares/action';
 import { Loader } from '../../Other';
 import { RootState, useAppDispatch, useAppSelector } from '../../Redux';
-import { Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
+import { addPostShares, initPostShares } from '../../Redux/PostShares/action';
 import { PostInterface } from '../../Services/Client/Managers/Interfaces';
-import { FlashList } from '@shopify/flash-list';
 
 function PostScreenShares({ route }: any) {
 

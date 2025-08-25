@@ -1,5 +1,5 @@
-import { getUserScoreCardInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
 import { ADD_MAIN_USER_SCORE_CARD, DELETE_MAIN_USER_SCORE_CARD, INIT_MAIN_USER_SCORE_CARD, RESET_MAIN_USER_SCORE_CARD } from "./actionTypes";
+import { getUserScoreCardInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
 
 export const userScorecardsReducer = (state: getUserScoreCardInterface[] = [], action: {
     type: string,

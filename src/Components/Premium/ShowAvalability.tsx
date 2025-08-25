@@ -1,8 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
-import { useTranslation } from "react-i18next";
-import { AvailabilitySlot } from "../../Services/Client/Managers/Interfaces/Me";
+
 import { messageFormatDate } from "../../Services";
+import { AvailabilitySlot } from "../../Services/Client/Managers/Interfaces/Me";
 
 type SectionProps = {
     schedule: AvailabilitySlot[]

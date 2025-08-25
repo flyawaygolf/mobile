@@ -1,12 +1,14 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleProp, View, ViewStyle } from "react-native";
-import { Text, Card } from "react-native-paper";
 import { BarChart } from "react-native-chart-kit";
+import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
+import { Text, Card } from "react-native-paper";
+
 import { useTheme } from "../../Components/Container";
 import { HoleScorecardSchemaInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
 import { full_width } from "../../Style/style";
-import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
-import { useTranslation } from "react-i18next";
+
 
 interface StatsCarouselProps {
     holes: HoleScorecardSchemaInterface[];

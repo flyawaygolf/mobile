@@ -1,13 +1,15 @@
-import { Button, Card, Icon, Text } from "react-native-paper";
-import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
-import { StyleSheet, View } from "react-native";
-import { messageFormatDate, navigationProps } from "../../Services";
+import FastImage from "@d11/react-native-fast-image";
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { Button, Card, Icon, Text } from "react-native-paper";
+
+import { messageFormatDate, navigationProps } from "../../Services";
+import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
 import { useClient, useTheme } from "../Container";
 import { ShrinkEffect } from "../Effects";
-import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "../Member";
-import FastImage from "@d11/react-native-fast-image";
+
 
 type SectionProps = {
     event: eventsInterface;

@@ -1,12 +1,12 @@
-import React from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React from "react";
 
-import ScorecardHomeScreen from "../Screens/Scorecard/ScorecardHomeScreen";
 import ScorecardCreateScreen from "../Screens/Scorecard/ScorecardCreateScreen";
-import ScorecardHoleFillScreen from "../Screens/Scorecard/ScorecardHoleFillScreen";
 import ScorecardFullScreen from "../Screens/Scorecard/ScorecardFullScreen";
-import ScorecardSummarizeScreen from "../Screens/Scorecard/ScorecardSummarizeScreen";
+import ScorecardHoleFillScreen from "../Screens/Scorecard/ScorecardHoleFillScreen";
+import ScorecardHomeScreen from "../Screens/Scorecard/ScorecardHomeScreen";
 import ScorecardListScreen from "../Screens/Scorecard/ScorecardListScreen";
+import ScorecardSummarizeScreen from "../Screens/Scorecard/ScorecardSummarizeScreen";
 
 export type ScorecardStackScreens =
   "ScorecardHomeScreen" |

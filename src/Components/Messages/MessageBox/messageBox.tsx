@@ -1,10 +1,11 @@
 import Clipboard from "@react-native-clipboard/clipboard";
 import React, { Dispatch, SetStateAction } from "react";
-import { Icon, Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-import { useClient, useTheme } from "../../Container";
+import { Icon, Text } from "react-native-paper";
+
 import { BottomModal, ModalSection } from "../../../Other";
 import { handleToast } from "../../../Services";
+import { useClient, useTheme } from "../../Container";
 import { MessageBubbleInfoProps } from "../MessageBubble";
 
 function MessageBox({ info, modalVisible, setModalVisible }: {

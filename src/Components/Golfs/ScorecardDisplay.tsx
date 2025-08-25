@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text, DataTable } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import { useTheme } from '../Container';
+
 import { scorecardGridInterface, scoreCardInterface, scorecardTeeboxInterface } from '../../Services/Client/Managers/Interfaces/Golf';
+import { useTheme } from '../Container';
 
 interface ScorecardDisplayProps {
     scorecards: scoreCardInterface[];

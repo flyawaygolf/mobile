@@ -2,8 +2,9 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Button, Icon } from "react-native-paper";
 import { Text } from "react-native-paper";
-import { useTheme } from "../../Container";
+
 import { full_width } from "../../../Style/style";
+import { useTheme } from "../../Container";
 
 type SectionProps = {
     t?: string | any,

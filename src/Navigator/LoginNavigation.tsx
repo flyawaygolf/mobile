@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from '../Screens/Login/LoginScreen';
+import React, { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
+
 import ForgotPassword from '../Screens/Login/ForgotPassword';
+import LoginScreen from '../Screens/Login/LoginScreen';
 import { RegisterBirthdayAccept, RegisterEmailUsername, RegisterPassword } from '../Screens/Login/Register';
 import RegisterVerification from '../Screens/Login/RegisterVerification';
-import { LoginRootParamList, navigationProps, parseURL, ScreenNavigationProps } from '../Services';
 import WelcomeScreen from '../Screens/Login/WelcomeScreen';
-import { Linking } from 'react-native';
+import { LoginRootParamList, navigationProps, parseURL, ScreenNavigationProps } from '../Services';
+
 
 const Stack = createStackNavigator();
 

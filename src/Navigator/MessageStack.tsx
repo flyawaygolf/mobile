@@ -1,11 +1,12 @@
-import React, { useState } from "react";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import CreateGuildScreen from "../Screens/Guilds/CreateGuildScreen";
-import MessageScreen from "../Screens/Messages/MessageScreen";
-import GuildSettingsScreen from "../Screens/Guilds/GuildSettingsScreen";
-import { MessageStackParams } from "../Services";
+import React, { useState } from "react";
+
 import { MessagesProvider } from "../Contexts/MessagesContext";
 import AddUsersToGuildScreen from "../Screens/Guilds/AddUsersToGuildScreen";
+import CreateGuildScreen from "../Screens/Guilds/CreateGuildScreen";
+import GuildSettingsScreen from "../Screens/Guilds/GuildSettingsScreen";
+import MessageScreen from "../Screens/Messages/MessageScreen";
+import { MessageStackParams } from "../Services";
 
 export type MessageStackScreens =
   "MessageScreen" |

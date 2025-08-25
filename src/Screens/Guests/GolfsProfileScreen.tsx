@@ -1,14 +1,14 @@
+import FastImage from '@d11/react-native-fast-image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Button, Card, Text } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import FastImage from '@d11/react-native-fast-image';
 
 import { useClient, useTheme } from '../../Components/Container';
-import { full_width } from '../../Style/style';
+import { Avatar } from '../../Components/Member';
 import { formatDistance, openURL } from '../../Services';
 import { golfInterface } from '../../Services/Client/Managers/Interfaces/Golf';
-import { Avatar } from '../../Components/Member';
+import { full_width } from '../../Style/style';
 
 type SectionProps = {
     golfInfo: golfInterface;

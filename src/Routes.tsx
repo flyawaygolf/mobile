@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { onTokenRefresh } from "@react-native-firebase/messaging";
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { onTokenRefresh } from "@react-native-firebase/messaging";
 
-import { SplashScreen } from './Screens';
+import { useClient, useWebSocket } from './Components/Container';
 import { DrawerNavigation, LoginNavigation } from './Navigator';
+import GuestStack from './Navigator/GuestStack';
+import { RootState, useAppDispatch, useAppSelector } from './Redux';
+import { initGuildList, modifyGuildList, setUnreadGuildList } from './Redux/guildList/action';
+import { addNotificationFeed } from './Redux/NotificationFeed/action';
+import { SplashScreen } from './Screens';
+import UpdateScreen from './Screens/UpdateScreen';
+import { changeElementPlaceArray, getAppInfo } from './Services';
+import { webSocketRoutes } from './Services/Client';
+import { messaging, requestNotificationPermission } from './Services/notifications';
 
 import 'dayjs/locale/fr';
 import 'dayjs/locale/en';
-import { useClient, useWebSocket } from './Components/Container';
-import { RootState, useAppDispatch, useAppSelector } from './Redux';
-import { initGuildList, modifyGuildList, setUnreadGuildList } from './Redux/guildList/action';
-import { webSocketRoutes } from './Services/Client';
-import { changeElementPlaceArray, getAppInfo } from './Services';
-import UpdateScreen from './Screens/UpdateScreen';
-import { messaging, requestNotificationPermission } from './Services/notifications';
-import { addNotificationFeed } from './Redux/NotificationFeed/action';
-import GuestStack from './Navigator/GuestStack';
 
 const Stack = createStackNavigator();
 

@@ -1,24 +1,24 @@
-import { combineReducers } from 'redux';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { combineReducers } from 'redux';
 
 // Importe les réducteurs à partir de différents fichiers
-import { mainFeedReducer } from './mainFeed';
+import { postBookmarksReducer } from './Bookmarks';
 import { exploreRecentTrendsReducer } from './exploreRecentTrends';
-import { exploreWorldRecentTrendsReducer } from './exploreWorldRecentTrends';
 import { exploreTopTrendsReducer } from './exploreTopTrends';
+import { exploreTopUsersReducer } from './exploreTopUsers';
 import { exploreTopWorldTrendsReducer } from './exploreTopWorldTrends';
-import { profileFeedReducer } from './profileFeed';
-import { postSearchReducer } from './PostSearch';
-import { postTempSaveFeedReducer } from './postTempSaveFeed';
+import { exploreWorldRecentTrendsReducer } from './exploreWorldRecentTrends';
+import { golfsPlayedReducer } from './GolfsPlayed';
 import { guildListReducer } from './guildList';
 import { guildMessagesReducer } from './guildMessages';
+import { mainFeedReducer } from './mainFeed';
 import { notificationFeedReducer } from './NotificationFeed';
+import { postSearchReducer } from './PostSearch';
 import { postSharesReducer } from './PostShares';
-import { postBookmarksReducer } from './Bookmarks';
-import { exploreTopUsersReducer } from './exploreTopUsers';
+import { postTempSaveFeedReducer } from './postTempSaveFeed';
+import { profileFeedReducer } from './profileFeed';
 import { recentMainFeedReducer } from './recentMainFeed';
-import { golfsPlayedReducer } from './GolfsPlayed';
 import { userScorecardsReducer } from './UserScoreCard';
 
 // Combine les réducteurs en un seul objet de réducteur

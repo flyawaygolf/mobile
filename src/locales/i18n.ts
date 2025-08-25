@@ -1,9 +1,10 @@
 import i18n, { Module, Newable, NewableModule, InitOptions } from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import * as RNLocalize from 'react-native-localize';
+
 import english from './en.json';
 import french from './fr.json';
 
-import * as RNLocalize from 'react-native-localize';
 
 export const resources = {
     en: {

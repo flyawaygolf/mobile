@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, Card } from "react-native-paper";
+
 import { openURL } from "../../../../Services";
 import { embeds } from "../../../../Services/Client/Managers/Interfaces/Global";
 

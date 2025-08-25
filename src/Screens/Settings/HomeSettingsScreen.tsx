@@ -1,19 +1,21 @@
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useNavigation } from '@react-navigation/native';
+import { useRealm } from '@realm/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, Alert } from "react-native";
 import { Appbar } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
-import Clipboard from "@react-native-clipboard/clipboard";
-import { useRealm } from '@realm/react';
 
 import { SettingsContainer, useClient, useTheme } from '../../Components/Container';
+import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
+import { SettingsStackScreens } from '../../Navigator/SettingsStack';
 import { deviceInfo, navigationProps, openURL } from '../../Services';
+import { websiteurl } from '../../Services/constante';
 import { deleteUser } from '../../Services/Realm/userDatabase';
 
-import { SettingsStackScreens } from '../../Navigator/SettingsStack';
-import SettingsButtons from '../../Components/Settings/Settings/SettingsButtons';
-import { useNavigation } from '@react-navigation/native';
-import { websiteurl } from '../../Services/constante';
+
+
 
 function HomeSettingsScreen() {
 

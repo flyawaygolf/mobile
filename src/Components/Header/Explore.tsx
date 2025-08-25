@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Appbar } from 'react-native-paper';
 import { View } from 'react-native';
+import { Appbar } from 'react-native-paper';
 
 import styles from '../../Style/style';
 import { SearchBar } from "../Elements/Input";

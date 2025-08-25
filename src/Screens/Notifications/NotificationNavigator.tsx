@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { useTheme } from '../../Components/Container';
+
 import FollowListScreen from './FollowListScreen';
 import NotificationListScreen from './NotificationListScreen';
+import { useTheme } from '../../Components/Container';
 
 const renderScene = SceneMap({
   followScreen: FollowListScreen,

@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
+
 import { SinglePostContext } from "../PostContext";
+import Carroussel from "./Components/Carroussel";
 import Postbottom from "./Components/Postbottom/index";
 import Postheader from "./Components/Postheader";
-import Carroussel from "./Components/Carroussel";
 import Markdown from "../../Text/Markdown";
 
 function PostImage() {

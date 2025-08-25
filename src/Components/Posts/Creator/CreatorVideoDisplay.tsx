@@ -1,7 +1,7 @@
 import React from 'react';
-import Video from 'react-native-video';
-import { IconButton } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import Video from 'react-native-video';
 
 type SectionProps = {
     uri: string;

@@ -1,8 +1,10 @@
-import { deleteToken, getInitialNotification, getMessaging, getToken, onNotificationOpenedApp } from "@react-native-firebase/messaging";
 import notifee, { AndroidImportance } from "@notifee/react-native";
-import { checkNotifications, requestNotifications, RESULTS } from 'react-native-permissions';
-import { getStorageInfo, setStorage, userStorageI } from "../storage";
 import { getApp } from "@react-native-firebase/app";
+import { deleteToken, getInitialNotification, getMessaging, getToken, onNotificationOpenedApp } from "@react-native-firebase/messaging";
+import { checkNotifications, requestNotifications, RESULTS } from 'react-native-permissions';
+
+import { getStorageInfo, setStorage, userStorageI } from "../storage";
+
 
 const app = getApp();
 export const messaging = getMessaging(app);

@@ -1,13 +1,15 @@
-import { useTranslation } from "react-i18next";
+import { FlashList } from "@shopify/flash-list";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { RefreshControl } from "react-native";
 import { Text } from "react-native-paper";
-import { handleToast } from "../../Services";
-import { useClient, useTheme } from "../Container";
-import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
+
 import EventCard from "./EventCard";
 import { Loader } from "../../Other";
-import { FlashList } from "@shopify/flash-list";
+import { handleToast } from "../../Services";
+import { eventsInterface } from "../../Services/Client/Managers/Interfaces/Events";
+import { useClient, useTheme } from "../Container";
+
 
 export default function JoinedEvents() {
     const { client } = useClient();

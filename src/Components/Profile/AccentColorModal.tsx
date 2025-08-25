@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native';
+
 import { BottomModal } from '../../Other';
 
 const colors = [
