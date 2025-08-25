@@ -117,7 +117,7 @@ const ScorecardCreateScreen = ({ route, navigation }: ScreenNavigationProps<Scor
                     {/* Cover */}
                     <View style={{ width: "100%", height: 180, position: "relative" }}>
                         <Image
-                            source={{ uri: client.golfs.avatar(golfInfo?.golf_id ?? "") }}
+                            source={{ uri: client.golfs.cover(golfInfo?.golf_id ?? "") }}
                             style={{ width: "100%", height: "100%", backgroundColor: colors.bg_secondary, borderBottomLeftRadius: 24, borderBottomRightRadius: 24 }}
                             resizeMode="cover"
                         />
@@ -133,7 +133,7 @@ const ScorecardCreateScreen = ({ route, navigation }: ScreenNavigationProps<Scor
                         }}>
                             <Avatar.Image
                                 size={48}
-                                source={{ uri: client.golfs.cover(golfInfo?.golf_id ?? "") }}
+                                source={{ uri: client.golfs.avatar(golfInfo?.golf_id ?? "") }}
                                 style={{ marginRight: 12, backgroundColor: "#fff" }}
                             />
                             <View>
