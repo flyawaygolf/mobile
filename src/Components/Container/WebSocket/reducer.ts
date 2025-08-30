@@ -1,10 +1,18 @@
-export const initialWebSocketState = {
-    code: -1,
-    connected: false,
-    data: "",
+export type initialWebSocketStateType = {
+    code: number;
+    connected: boolean;
+    data: {
+        [x: string]: any;
+    };
 };
 
-export const reducer = (state = initialWebSocketState, action) => {
+export const initialWebSocketState: initialWebSocketStateType = {
+    code: -1,
+    connected: false,
+    data: {},
+};
+
+export const reducer = (state = initialWebSocketState, action: initialWebSocketStateType) => {
 
     switch(action.code) {
         case 0:

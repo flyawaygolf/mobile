@@ -13,7 +13,7 @@ import { initGuildList, modifyGuildList, setUnreadGuildList } from './Redux/guil
 import { addNotificationFeed } from './Redux/NotificationFeed/action';
 import { SplashScreen } from './Screens';
 import UpdateScreen from './Screens/UpdateScreen';
-import { changeElementPlaceArray, getAppInfo } from './Services';
+import { changeElementPlaceArray, getAppInfo, handleAchievementToast } from './Services';
 import { webSocketRoutes } from './Services/Client';
 import { messaging, requestNotificationPermission } from './Services/notifications';
 
@@ -25,7 +25,7 @@ const Stack = createStackNavigator();
 function Routes() {
 
     const { state, client } = useClient();
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { notification } = useWebSocket();
     const DmGroupList = useAppSelector((state) => state.guildListFeed);
     const dispatch = useAppDispatch();
@@ -83,6 +83,10 @@ function Routes() {
             const data: any = notification.data;
             if (!data) return;
             dispatch(addNotificationFeed([data]))
+        } else if (notification.code === webSocketRoutes.SEND_ACHIEVEMENT) {
+            const { achievement_id }: any = notification.data;
+            if (!achievement_id) return;
+            handleAchievementToast(t(`achievements.notification_title`), t(`achievements.${achievement_id}.notification_description`));
         }
     }, [notification])
 

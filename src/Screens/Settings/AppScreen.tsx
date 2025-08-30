@@ -45,6 +45,7 @@ export default function AppScreen() {
                 setPremiumSettings({ ...premiumSettings, locale: txt })
                 break;
             case "autotranslate":
+                if(!advantages.translatePosts()) return handleToast(t("settings.premium_required"));
                 setStorage("settings", {
                     ...settings,
                     auto_translate: txt === "true" ? true : false
@@ -216,24 +217,6 @@ export default function AppScreen() {
                         status={premiumSettings?.auto_translate ? 'checked' : 'unchecked'}
                         onPress={() => changeStorage("autotranslate", !premiumSettings?.auto_translate ? "true" : "false")}
                     />
-                </View>
-
-                <View style={{ backgroundColor: colors.bg_secondary, padding: 10, borderRadius: 5, marginBottom: 10 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 5 }}>
-                        <Text style={{ marginBottom: 10 }} variant='labelLarge'>{t("settings.advantages")} :</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingLeft: 25, paddingRight: 25, paddingBottom: 10 }}>
-                        <Text>{t("settings.better_markown")}</Text>
-                        <Icon source={advantages.betterMarkdown() ? "check" : "close"} size={16} color={advantages.betterMarkdown() ? colors.good_color : colors.warning_color} />
-                    </View>
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingLeft: 25, paddingRight: 25, paddingBottom: 10 }}>
-                        <Text>{t("settings.file_size")}</Text>
-                        <Text>{advantages.fileSize()} {t("settings.megabytes")}</Text>
-                    </View>
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingLeft: 25, paddingRight: 25, paddingBottom: 10 }}>
-                        <Text>{t("settings.text_length")}</Text>
-                        <Text>{advantages.textLength()} {t("settings.characters")}</Text>
-                    </View>
                 </View>
             </ScrollView>
         </SettingsContainer>

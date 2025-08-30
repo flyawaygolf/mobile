@@ -61,7 +61,7 @@ class premiumAdvantagesClass {
         else this.type = type;
     }
 
-    isPremium() {
+    isPremium(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -69,7 +69,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    textLength() {
+    textLength(): number {
         if (this.type === 1) return 1024;
         if (this.type === 2) return 2048;
         if (this.type === 3) return 4096;
@@ -77,7 +77,7 @@ class premiumAdvantagesClass {
         return 256;
     }
 
-    fileSize() {
+    fileSize(): number {
         if (this.type === 1) return 512;
         if (this.type === 2) return 512;
         if (this.type === 3) return 1000;
@@ -85,7 +85,7 @@ class premiumAdvantagesClass {
         return 50;
     }
 
-    animatedProfileFilesAllowed() {
+    animatedProfileFilesAllowed(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -101,7 +101,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    nftProfileFilesAllowed() {
+    nftProfileFilesAllowed(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -109,7 +109,10 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    translatePosts() {
+    /**
+     * @description Auto Translate=
+     */
+    translatePosts(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -117,7 +120,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    showPostViews() {
+    showPostViews(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -125,7 +128,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    betterMarkdown() {
+    betterMarkdown(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -133,7 +136,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    showAvailability() {
+    showAvailability(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -141,7 +144,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    showLockedLocation() {
+    showLockedLocation(): boolean {
         if (this.type === 1) return true;
         if (this.type === 2) return true;
         if (this.type === 3) return true;
@@ -149,15 +152,15 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    withdrawCommissions() {
+    withdrawCommissions(): number {
         return 0;
     }
 
-    userProfileSubcriptionCommissions() {
+    userProfileSubcriptionCommissions(): boolean {
         return false;
     }
 
-    advancedStatistics() {
+    advancedStatistics(): boolean {
         if (this.type === 1) return false;
         if (this.type === 2) return false;
         if (this.type === 3) return true;
@@ -165,7 +168,7 @@ class premiumAdvantagesClass {
         return false;
     }
 
-    copyrightProtection() {
+    copyrightProtection(): boolean {
         if (this.type === 1) return false;
         if (this.type === 2) return false;
         if (this.type === 3) return true;

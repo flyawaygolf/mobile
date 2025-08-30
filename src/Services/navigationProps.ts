@@ -21,6 +21,7 @@ import { CompetitionFormatEnum, eventsInterface } from './Client/Managers/Interf
 import { golfInterface, scorecardGridInterface, scoreCardInterface, scorecardTeeboxInterface } from './Client/Managers/Interfaces/Golf';
 import { fetchGuildResponseSchema } from './Client/Managers/Interfaces/Guild';
 import { GameModeEnum, getUserScoreCardInterface, HoleScorecardSchemaInterface } from './Client/Managers/Interfaces/Scorecard';
+import { AchievementStackScreens } from '../Navigator/AchievementStack';
 
 export type LoginRootParamList = {
     WelcomeScreen: undefined;
@@ -142,6 +143,10 @@ export type RootStackParamList = {
             nickname?: string;
             type?: "subscribers" | "subscriptions";
         };
+    };
+    AchievementStack: {
+        screen: AchievementStackScreens,
+        params?: undefined;
     };
     NotificationsScreen: undefined;
     FavoritesScreen: undefined;

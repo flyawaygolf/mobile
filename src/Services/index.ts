@@ -30,20 +30,21 @@ export const convertFirstCharacterToUppercase = (stringToConvert: string) => {
 };
 
 export const handleToast = (text: string) => Toast.show({ text1: text });
+export const handleAchievementToast = (title: string, description: string) => Toast.show({ text1: title, text2: description });
 
 export const messageFormatDate = (date?: Date | string | number) => new formatDate(date);
 
 export const getContrastColor = (hex: string) => {
-        // Remove hash if present
-        hex = hex.replace(/^#/, "");
-        // Parse r,g,b
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        // Calculate luminance
-        let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance > 0.7 ? "#222" : "#fff";
-    }
+  // Remove hash if present
+  hex = hex.replace(/^#/, "");
+  // Parse r,g,b
+  let r = parseInt(hex.substring(0, 2), 16);
+  let g = parseInt(hex.substring(2, 4), 16);
+  let b = parseInt(hex.substring(4, 6), 16);
+  // Calculate luminance
+  let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.7 ? "#222" : "#fff";
+}
 
 /**
  *
@@ -89,14 +90,14 @@ export const getPermissions = async () => {
   if(camera !== RESULTS.GRANTED) await request(Platform.OS === "ios" ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA);*/
 
   const library = await check(Platform.OS === "ios" ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION);
-  if(library !== RESULTS.GRANTED) await request(Platform.OS === "ios" ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION);
+  if (library !== RESULTS.GRANTED) await request(Platform.OS === "ios" ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION);
 
   /*const IOSMicrophone = Platform.OS === "ios" && await check(PERMISSIONS.IOS.MICROPHONE);
   if(IOSMicrophone !== RESULTS.GRANTED) await request(PERMISSIONS.IOS.MICROPHONE);*/
 
 }
 
-export const translateText = async (user_token: string, options: { content: string, to: string}) => {
+export const translateText = async (user_token: string, options: { content: string, to: string }) => {
   const response = await axiosInstance.post('/translate', options, {
     headers: {
       [usertokenkey]: user_token,
@@ -137,45 +138,45 @@ export const getAppInfo = async () => {
     }
   };
 
-  if(!response.data?.ios_version || !response.data?.android_version) return false;
-  if(Platform.OS === 'ios') return response.data.ios_version > parseInt(version, 10);
-  if(Platform.OS === 'android') return response.data.android_version > parseInt(version, 10);
+  if (!response.data?.ios_version || !response.data?.android_version) return false;
+  if (Platform.OS === 'ios') return response.data.ios_version > parseInt(version, 10);
+  if (Platform.OS === 'android') return response.data.android_version > parseInt(version, 10);
   return false;
 };
 
 export const storeLink = (): string => {
-  if(Platform.OS === 'ios') return 'https://apps.apple.com/us/app/flyaway-golf-community/id6737476007';
-  if(Platform.OS === 'android') return 'https://play.google.com/store/apps/details?id=com.flyawaygolf';
+  if (Platform.OS === 'ios') return 'https://apps.apple.com/us/app/flyaway-golf-community/id6737476007';
+  if (Platform.OS === 'android') return 'https://play.google.com/store/apps/details?id=com.flyawaygolf';
   return 'https://flyawaygolf.com';
 };
 
 export const cguLink = (language: string) => {
   let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/terms_of_service.pdf';
-  if(language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_utilisations.pdf';
+  if (language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_utilisations.pdf';
   return lang;
 };
 
 export const cgvLink = (language: string) => {
   let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/terms_of_sales.pdf';
-  if(language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_ventes.pdf';
+  if (language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/conditions_generales_ventes.pdf';
   return lang;
 };
 
 export const privacyLink = (language: string) => {
   let lang = 'https://cdn.flyawaygolf.com/assets/legal/en/privacy_policy.pdf';
-  if(language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/politique_confidentialite.pdf';
+  if (language === 'fr') lang = 'https://cdn.flyawaygolf.com/assets/legal/fr/politique_confidentialite.pdf';
   return lang;
 };
 
 export const parseURL = (url: string): string | false => {
-    if(!url) return false;
-    let link = [''];
-    if(url.startsWith('https://www.flyawaygolf.com')) link = url.split('https://www.flyawaygolf.com');
-    else if(url.startsWith('https://flyawaygolf.com')) link = url.split('https://flyawaygolf.com');
-    else if(url.startsWith('http://www.flyawaygolf.com')) link = url.split('http://www.flyawaygolf.com');
-    else if(url.startsWith('http://flyawaygolf.com')) link = url.split('http://flyawaygolf.com');
+  if (!url) return false;
+  let link = [''];
+  if (url.startsWith('https://www.flyawaygolf.com')) link = url.split('https://www.flyawaygolf.com');
+  else if (url.startsWith('https://flyawaygolf.com')) link = url.split('https://flyawaygolf.com');
+  else if (url.startsWith('http://www.flyawaygolf.com')) link = url.split('http://www.flyawaygolf.com');
+  else if (url.startsWith('http://flyawaygolf.com')) link = url.split('http://flyawaygolf.com');
 
-    return link[1];
+  return link[1];
 };
 
 export const NameValidator = (value: string) => {

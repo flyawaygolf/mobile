@@ -6,8 +6,6 @@ import { View, StyleSheet } from 'react-native';
 import { Drawer, Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { handleToast } from '../../../Services';
-import { premiumAdvantages } from '../../../Services/premiumAdvantages';
 import globalStyles from '../../../Style/style';
 import useClient from '../Client/useClient';
 import useTheme from '../Theme/useTheme';
@@ -58,9 +56,9 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
                 },
               }
             })} />
-            <Drawer.Item icon="star-shooting" label={t('drawer.premium_settings')} onPress={() => premiumAdvantages(user.premium_type, user.flags).isPremium() ? navigation.navigate("MainNavigation", {
+            <Drawer.Item icon="star-shooting" label={t('drawer.premium_settings')} onPress={() => navigation.navigate("MainNavigation", {
               screen: 'PremiumStack',
-            }) : handleToast(t("settings.premium_required"))}
+            })}
             />
             <Drawer.Item icon="calendar-month" label={t('events.create_event')} onPress={() => navigation.navigate('MainNavigation', {
               screen: 'EventStack',
@@ -81,6 +79,12 @@ export default function DrawerContent({ navigation }: DrawerContentComponentProp
               screen: 'ScorecardStack',
               params: {
                 screen: 'ScorecardListScreen'
+              }
+            })} />
+            <Drawer.Item icon="golf-tee" label={t('achievements.list')} onPress={() => navigation.navigate('MainNavigation', {
+              screen: 'AchievementsStack',
+              params: {
+                screen: 'AchievementsListScreen'
               }
             })} />
             <Drawer.Item icon="bookmark" label={t('posts.bookmarks')} onPress={() => navigation.navigate('MainNavigation', {

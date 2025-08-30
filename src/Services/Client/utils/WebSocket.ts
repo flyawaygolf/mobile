@@ -6,6 +6,9 @@ export const WebSocketRoutes = {
   START_TYPING: 4,
   STOP_TYPING: 5,
   RECEIVE_NOTIFICATION: 6,
+  AUTHENTICATE: 7,
+  HEARTBEAT: 8,
+  SEND_ACHIEVEMENT: 9
 };
 
 export default WebSocketRoutes;

@@ -2,10 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ImageBackground, Platform, ScrollView, Share, View } from 'react-native';
-import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import { ImageBackground, ScrollView, Share, View } from 'react-native';
 import { Button, Chip, Divider, IconButton, Text } from 'react-native-paper';
-import { check, PERMISSIONS, request } from 'react-native-permissions';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SafeBottomContainer, useClient, useTheme } from '../../Components/Container';
@@ -96,24 +94,6 @@ export default function DisplayEventScreen({ route }: any) {
     /**
      * Modify for https://www.npmjs.com/package/expo-calendar
      */
-    if (eventInfo) {
-      const eventConfig = {
-        title: eventInfo.title,
-        startDate: eventInfo.start_date,
-        endDate: eventInfo.end_date,
-        location: eventInfo.golf_info.name,
-        notes: eventInfo.description,
-      };
-
-      const check_perm = await check(Platform.OS === 'ios' ? PERMISSIONS.IOS.CALENDARS : PERMISSIONS.ANDROID.WRITE_CALENDAR);
-      if (check_perm === 'granted') AddCalendarEvent.presentEventCreatingDialog(eventConfig);
-      else {
-        const perm = Platform.OS === 'ios' ? await request(PERMISSIONS.IOS.CALENDARS) : await request(PERMISSIONS.ANDROID.WRITE_CALENDAR)
-        if (perm === 'granted') {
-          AddCalendarEvent.presentEventCreatingDialog(eventConfig);
-        }
-      }
-    }
   };
 
   const isOwner = (eventInfo: eventsInterface) => eventInfo.owner_info.user_id === user.user_id;
@@ -291,9 +271,9 @@ export default function DisplayEventScreen({ route }: any) {
                   eventInfo.favorites && <IconButton mode='contained' iconColor={eventInfo.favorites ? colors.color_yellow : undefined} icon={`${eventInfo.favorites ? "star" : "star-outline"}`} />
                 }
                 <IconButton mode='contained' icon="share-variant" onPress={() => setShowModal(true)} />
-                {eventInfo.joined && (
+                {/*eventInfo.joined && (
                   <IconButton mode='contained' icon="calendar-plus" onPress={addEvent} />
-                )}
+                )*/}
               </View>
             ) : <Loader />}
           </View>

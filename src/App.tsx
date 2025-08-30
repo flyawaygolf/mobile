@@ -4,7 +4,6 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { RealmProvider } from '@realm/react';
 import { StripeProvider } from '@stripe/stripe-react-native';
-import React from 'react';
 import Toast, { BaseToastProps } from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 

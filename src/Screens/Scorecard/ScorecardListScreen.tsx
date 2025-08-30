@@ -7,9 +7,7 @@ import { Text } from "react-native-paper";
 import { SettingsContainer, useClient } from "../../Components/Container";
 import DisplayUserScoreCard from "../../Components/Scorecards/DisplayUserScoreCard";
 import { Loader } from "../../Other";
-import { useAppDispatch, useAppSelector } from "../../Redux";
-import { addUserScoreCard, initUserScoreCard } from "../../Redux/UserScoreCard/action";
-import { navigationProps } from "../../Services";
+import { handleToast, navigationProps } from "../../Services";
 import { getUserScoreCardInterface } from "../../Services/Client/Managers/Interfaces/Scorecard";
 
 
@@ -19,18 +17,17 @@ const ScorecardListScreen = () => {
     const { t } = useTranslation();
     const navigation = useNavigation<navigationProps>();
 
-    const userScorecards = useAppSelector((state) => state.userScorecards);
-    const dispatch = useAppDispatch();
+    const [userScorecards, setuserScorecards] = useState<getUserScoreCardInterface[]>([]);
     const [loader, setLoader] = useState(true);
     const [pagination_key, setPaginationKey] = useState<string | undefined>(undefined);
 
     async function getData() {
         const response = await client.userScoreCards.fetch(user.user_id, { pagination: { pagination_key: pagination_key } });
         setLoader(false)
-        if (response.error || !response.data) return;
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
         if (response.pagination_key) setPaginationKey(response.pagination_key);
-        if (response.data.length < 1) return;
-        dispatch(initUserScoreCard(response.data));
+        if (response.data && response.data.length < 1) return;
+        setuserScorecards(response.data ?? []);
     }
 
     useEffect(() => {
@@ -42,10 +39,10 @@ const ScorecardListScreen = () => {
         setLoader(true)
         const response = await client.userScoreCards.fetch(user.user_id, { pagination: { pagination_key: pagination_key } });
         setLoader(false);
-        if (response.error || !response.data) return;
+        if (response.error) return handleToast(t(`errors.${response.error.code}`));
         if (response.pagination_key) setPaginationKey(response.pagination_key);
-        if (response.data.length < 1) return;
-        dispatch(addUserScoreCard(response.data));
+        if (response.data && response.data.length < 1) return;
+        setuserScorecards(prev => [...prev, ...(response.data ?? [])]);
     }
 
     const renderItem = ({ item }: { item: getUserScoreCardInterface }) => {

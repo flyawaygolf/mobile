@@ -16,9 +16,10 @@ import SubscriptionManager from './Managers/SubscriptionManager';
 import UserManager from './Managers/UserManager';
 import UserScoreCardManager from './Managers/UserScoreCardManager';
 import UserFlags from './Permissions/Flags';
-import WebSocketRoutes from './Permissions/WebSocket';
+import WebSocketRoutes from './utils/WebSocket';
 import LanguageList from './utils/LanguageList';
 import RequestEmitter, { requestParams } from './utils/RequestEmitter';
+import AchievementManager from './Managers/AchievementManager';
 
 export const userFlags = UserFlags;
 export const webSocketRoutes = WebSocketRoutes;
@@ -47,6 +48,7 @@ class Client extends RequestEmitter {
     public events: EventManager;
     public subscription: SubscriptionManager;
     public userScoreCards: UserScoreCardManager;
+    public achievements: AchievementManager;
 
     constructor(params: requestParams) {
         super(params);
@@ -68,6 +70,7 @@ class Client extends RequestEmitter {
         this.events = new EventManager(params);
         this.subscription = new SubscriptionManager(params);
         this.userScoreCards = new UserScoreCardManager(params);
+        this.achievements = new AchievementManager(params);
     }
 
     public async status() {
